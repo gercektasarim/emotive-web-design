@@ -1,0 +1,1 @@
+Beyoğlu'nda 12 masalı, 1987'den beri aynı aile tarafından işletilen bir ev yemekleri lokantası için anasayfa tasarla. Müşteriler çoğunlukla öğle arasında gelen çevredeki esnaf ve akşam yemeğe gelen mahalleli. Logo yok, fotoğraf yok, gerçek metin yok. Tek bir index.html istiyorum. Kategori ve duygu konusunda sen karar ver, sormadan üret.
