@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muayene Notu — Hastanıza bakın, not kendiliğinden yazılsın</title>
+<meta name="description" content="Muayene Notu aile hekimleri için muayene konuşmasını bilgisayarınızda dinler ve yapılandırılmış not taslağı hazırlar. Ses ve hasta verisi muayene odasından çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --wall:#DCEAE3; --wall-l:#EEF5F1; --white:#FFFFFF; --teal:#1E4D4A; --teal-2:#2E6C67; --amber:#E3A33B; --amber-l:#FBEBCB;
+  --ink:#1F2B2A; --soft:#465755; --line:#C3D6CD;
+  --ui:"Atkinson Hyperlegible", system-ui, sans-serif; --serif:"Literata", Georgia, serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--wall-l);color:var(--ink);font:400 19px/1.62 var(--ui)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 28px}
+header{background:var(--wall)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:20px;padding-bottom:20px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font:600 22px/1 var(--serif);text-decoration:none;color:var(--teal)}
+header nav{display:flex;gap:24px;font-size:16px}
+header nav a{text-decoration:none;color:var(--soft)}
+.btn{display:inline-block;padding:14px 22px;border-radius:10px;font:700 17px/1 var(--ui);text-decoration:none;background:var(--teal);color:#fff;border:2px solid var(--teal)}
+.btn.l{background:transparent;color:var(--teal)}
+.btn:hover{background:var(--teal-2);border-color:var(--teal-2);color:#fff}
+/* hero */
+.hero{background:var(--wall);padding:30px 0 0;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px;align-items:end}
+h1{font:500 clamp(38px,4.6vw,58px)/1.1 var(--serif);letter-spacing:-.015em;margin:20px 0 20px;color:var(--teal)}
+.lede{font-size:20px;color:var(--soft);max-width:28em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 14px}
+.room{padding-bottom:0}
+.room svg{display:block;width:100%;height:auto;max-width:460px}
+/* note card */
+.visit{background:var(--white);border-radius:16px 16px 0 0;box-shadow:0 -1px 0 var(--line),0 -20px 50px -40px rgba(30,77,74,.6);padding:20px 24px 24px;align-self:end}
+.vh{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:12px}
+.vh b{font:600 18px var(--serif);color:var(--teal)}
+.vh span{font-size:15px;color:var(--soft)}
+.tog{display:inline-flex;background:var(--wall-l);border-radius:999px;padding:4px;margin:14px 0 6px}
+.tog button{font:700 15px var(--ui);border:0;background:transparent;padding:8px 16px;border-radius:999px;color:var(--soft);cursor:pointer}
+.tog button[aria-selected="true"]{background:var(--teal);color:#fff}
+.pane{min-height:360px}
+.talk p{margin:10px 0;font-size:16.5px;line-height:1.5}
+.talk .d{color:var(--teal)}
+.talk b{font-weight:700;display:inline-block;min-width:62px;font-size:14px;color:var(--soft)}
+.talk mark{background:var(--amber-l);color:inherit;padding:0 2px;border-radius:2px}
+.soap dl{margin:8px 0 0}
+.soap .s{display:grid;grid-template-columns:132px 1fr;gap:14px;padding:10px 0;border-bottom:1px solid #E4EEE9}
+.soap dt{font-weight:700;font-size:15px;color:var(--teal)}
+.soap dd{margin:0;font:400 16.5px/1.5 var(--serif)}
+.soap .code{display:inline-block;font:700 13.5px var(--ui);background:var(--wall);padding:2px 8px;border-radius:6px;margin-right:6px}
+.vf{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:14.5px;color:var(--soft)}
+.vf b{color:var(--teal)}
+[hidden]{display:none!important}
+/* sections */
+section{padding:92px 0}
+h2{font:500 clamp(30px,3.4vw,42px)/1.15 var(--serif);color:var(--teal);margin:0 0 18px;max-width:20em}
+.p{max-width:36em;color:var(--soft)}
+.count{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:56px;align-items:center}
+.clock{background:var(--white);border-radius:16px;padding:26px 28px}
+.bar{display:flex;height:46px;border-radius:8px;overflow:hidden;margin:12px 0 6px;font:700 14px/46px var(--ui);color:#fff}
+.bar span{padding-left:12px;white-space:nowrap;overflow:hidden}
+.legend{font-size:15px;color:var(--soft)}
+.clock h3{font:600 17px var(--ui);margin:18px 0 0}
+.clock h3:first-child{margin-top:0}
+/* approve */
+.approve{background:var(--white)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:34px}
+.steps h3{font:600 21px/1.3 var(--serif);margin:0 0 8px;color:var(--teal)}
+.steps p{margin:0;color:var(--soft);font-size:17.5px}
+.steps .n{display:inline-flex;width:34px;height:34px;border-radius:50%;background:var(--wall);color:var(--teal);font-weight:700;align-items:center;justify-content:center;margin-bottom:12px}
+/* room privacy */
+.priv .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:64px;align-items:center}
+.sign{background:var(--white);border:2px solid var(--teal);border-radius:6px;padding:28px 30px;transform:rotate(1.2deg);box-shadow:0 18px 30px -24px rgba(30,77,74,.6);max-width:420px;position:relative}
+.sign::before{content:"";position:absolute;top:-10px;left:50%;width:18px;height:18px;border-radius:50%;background:var(--amber);transform:translateX(-50%);box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.sign h3{font:600 22px/1.25 var(--serif);margin:0 0 10px;color:var(--teal)}
+.sign p{margin:0 0 10px;font-size:17px}
+.sign small{font-size:14px;color:var(--soft)}
+.facts{list-style:none;padding:0;margin:22px 0 0}
+.facts li{padding:12px 0;border-top:1px solid var(--line)}
+.facts b{color:var(--teal)}
+/* quote */
+.q{background:var(--teal);color:#EAF3EF}
+.q blockquote{margin:0;max-width:30em;font:400 clamp(24px,2.6vw,32px)/1.42 var(--serif)}
+.q cite{display:block;font:400 16px var(--ui);font-style:normal;margin-top:18px;color:#BFD6CD}
+/* price */
+.prices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:30px;max-width:900px}
+.pr{background:var(--white);border-radius:16px;padding:28px}
+.pr.on{box-shadow:inset 0 0 0 2px var(--teal)}
+.pr h3{margin:0;font:700 19px var(--ui)}
+.pr .a{font:600 40px/1.1 var(--serif);color:var(--teal);margin:10px 0 4px}
+.pr .a small{font:400 16px var(--ui);color:var(--soft)}
+.pr ul{padding-left:20px;color:var(--soft);font-size:17px}
+details{border-top:1px solid var(--line);padding:18px 0}
+summary{font:600 20px/1.4 var(--serif);cursor:pointer;color:var(--teal)}
+details p{color:var(--soft);max-width:44em;margin:10px 0 0}
+footer{background:var(--wall);padding:36px 0;font-size:15.5px;color:var(--soft)}
+footer .credit{margin-top:10px;font-size:13px}
+@media (max-width:960px){
+  .hero .wrap,.count,.priv .wrap{grid-template-columns:1fr;gap:30px}
+  .room svg{max-width:340px}
+  .steps,.prices{grid-template-columns:1fr}
+  header nav{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .visit{padding:16px 16px 20px}
+  header .btn{display:none}
+  .soap .s{grid-template-columns:1fr;gap:2px}
+  section{padding:64px 0}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="9" cy="10" r="4" fill="#1E4D4A"/><circle cx="19" cy="10" r="4" fill="#E3A33B"/><path d="M3 24c1-5 4-7 6-7s5 2 6 7M13 24c1-5 4-7 6-7s5 2 6 7" fill="none" stroke="#1E4D4A" stroke-width="2"/></svg>Muayene Notu</a>
+    <nav aria-label="Ana menü"><a href="#zaman">Muayene süresi</a><a href="#onay">Notu siz onaylarsınız</a><a href="#oda">Odadan çıkmaz</a><a href="#fiyat">Fiyat</a></nav>
+    <a class="btn l" href="#fiyat">Denemeye başla</a>
+  </div>
+</header>
+
+<main>
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Hastanıza bakın. Not kendiliğinden yazılsın.</h1>
+      <p class="lede">Muayene Notu, konuşmanızı bilgisayarınızda dinler; şikâyeti, bulguları ve planı düzenli bir not taslağına çevirir. Siz göz göze konuşursunuz, muayene bitince okuyup onaylarsınız.</p>
+      <div class="cta"><a class="btn" href="#fiyat">30 gün ücretsiz deneyin</a><a class="btn l" href="#oda">Hasta verisi nerede kalır?</a></div>
+      <div class="room">
+        <svg viewBox="0 0 460 210" role="img" aria-label="Çizim: hekim ve hasta karşılıklı oturuyor, bilgisayar yanda duruyor">
+          <rect x="0" y="176" width="460" height="34" fill="#C3D6CD"/>
+          <rect x="160" y="112" width="140" height="10" rx="2" fill="#8C6A4A"/><rect x="170" y="122" width="8" height="54" fill="#8C6A4A"/><rect x="282" y="122" width="8" height="54" fill="#8C6A4A"/>
+          <rect x="250" y="92" width="40" height="20" rx="2" fill="#465755"/><rect x="246" y="110" width="48" height="3" fill="#465755"/>
+          <circle cx="104" cy="58" r="18" fill="#1E4D4A"/><path d="M76 176v-56c0-22 12-36 28-36s28 14 28 36v56z" fill="#FFFFFF" stroke="#1E4D4A" stroke-width="3"/>
+          <path d="M96 104q8 16 16 0" fill="none" stroke="#1E4D4A" stroke-width="2"/><circle cx="104" cy="118" r="4" fill="#1E4D4A"/>
+          <circle cx="356" cy="62" r="17" fill="#E3A33B"/><path d="M330 176v-52c0-20 11-34 26-34s26 14 26 34v52z" fill="#E3A33B" opacity=".8"/>
+          <path d="M128 60q114-22 210 0" fill="none" stroke="#1E4D4A" stroke-width="1.5" stroke-dasharray="3 5"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="visit" aria-label="Muayene Notu ekranından örnek">
+      <div class="vh"><b>Ayşe K., 54 · 09:52</b><span>Muayene 14 / 41 · 6 dk 40 sn</span></div>
+      <div class="tog" role="tablist" aria-label="Görünüm">
+        <button role="tab" id="t1" aria-selected="false" aria-controls="p1" type="button">Konuşma</button>
+        <button role="tab" id="t2" aria-selected="true" aria-controls="p2" type="button">Not taslağı</button>
+      </div>
+      <div class="pane">
+        <div class="talk" id="p1" role="tabpanel" aria-labelledby="t1" hidden>
+          <p class="d"><b>Hekim</b>Geçen ay ilacı değiştirmiştik, nasıl gitti?</p>
+          <p><b>Hasta</b>Sabahları baş ağrısı azaldı ama <mark>ayak bileklerim şişiyor</mark>, akşama doğru.</p>
+          <p class="d"><b>Hekim</b>Evde ölçüyor musunuz tansiyonu?</p>
+          <p><b>Hasta</b>Ölçüyorum, <mark>genelde 140’a 90</mark> civarı. Bir kere 160 gördüm.</p>
+          <p class="d"><b>Hekim</b>Şimdi ölçtük, <mark>sağ kol 146/92</mark>, nabız 78. Bileklerde hafif ödem var.</p>
+          <p class="d"><b>Hekim</b>Amlodipini 5’e düşürüp <mark>yanına bir ilaç ekleyelim</mark>; iki hafta sonra görüşelim, böbrek değerlerine de bakalım.</p>
+        </div>
+        <div class="soap" id="p2" role="tabpanel" aria-labelledby="t2">
+          <dl>
+            <div class="s"><dt>Şikâyet</dt><dd>Amlodipin 10 mg sonrası sabah baş ağrısında azalma; akşamları bilateral ayak bileği şişliği.</dd></div>
+            <div class="s"><dt>Ev ölçümleri</dt><dd>Ortalama 140/90 mmHg; bir kez 160 sistolik.</dd></div>
+            <div class="s"><dt>Muayene</dt><dd>TA sağ kol 146/92 mmHg, nabız 78/dk ritmik. Bilateral hafif pretibial ödem (+1).</dd></div>
+            <div class="s"><dt>Değerlendirme</dt><dd><span class="code">I10</span>Esansiyel hipertansiyon, hedef dışı; amlodipine bağlı ödem olası.</dd></div>
+            <div class="s"><dt>Plan</dt><dd>Amlodipin 5 mg’a azaltma, ek antihipertansif (hekim seçecek). Kreatinin, potasyum. 2 hafta sonra kontrol.</dd></div>
+          </dl>
+        </div>
+      </div>
+      <div class="vf"><span>Taslak · <b>hekim onayı bekliyor</b></span><span>Ses kaydı muayene bitince silindi</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="zaman">
+  <div class="wrap count">
+    <div>
+      <h2>Yedi dakikanın üçü klavyeye gidiyordu.</h2>
+      <p class="p">Muayene Notu’nu bir aile sağlığı merkezinde çalışan iki hekim yaptı. Önce kendi günlerini kronometreyle tuttular: kırk hastalık bir günde, her muayenenin yaklaşık üç dakikası ekrana bakarak yazmakla geçiyordu.</p>
+      <p class="p">Hasta konuşurken başını kaldırmayan bir hekim, en önemli cümleyi kaçırabilir. Biz o üç dakikayı hastaya geri vermek istedik.</p>
+    </div>
+    <div class="clock" role="img" aria-label="Bir muayenenin süre dağılımı: önce 3 dakika yazma, sonra 40 saniye onay">
+      <h3>Önce · 7 dakikalık muayene</h3>
+      <div class="bar"><span style="width:57%;background:#2E6C67">Hastayla 4 dk</span><span style="width:43%;background:#9AA9A6;color:#1F2B2A">Klavye 3 dk</span></div>
+      <h3>Muayene Notu ile</h3>
+      <div class="bar"><span style="width:86%;background:#2E6C67">Hastayla 6 dk 20 sn</span><span style="width:14%;background:#E3A33B;color:#1F2B2A;padding-left:6px">40 sn</span></div>
+      <p class="legend">Turuncu: muayene sonunda taslağı okuyup onaylama. Kendi ASM’mizde, Mart–Mayıs 2026, 2.140 muayene.</p>
+    </div>
+  </div>
+</section>
+
+<section class="approve" id="onay">
+  <div class="wrap">
+    <h2>Not bir taslaktır. Son sözü hekim söyler.</h2>
+    <p class="p">Muayene Notu tanı koymaz, ilaç seçmez. Konuşmada söylenenleri düzenler; söylenmeyeni yazmaz. Emin olmadığı satırı turuncu ile işaretler.</p>
+    <div class="steps">
+      <div><span class="n">1</span><h3>Muayene başında bir tık</h3><p>Hasta onay verdikten sonra “Başlat”. Mikrofon masadaki dizüstünün kendisidir, ek cihaz yoktur.</p></div>
+      <div><span class="n">2</span><h3>Muayene sonunda okuma</h3><p>Not taslağı şikâyet, bulgu, değerlendirme ve plan başlıklarıyla gelir. Düzeltir, eksik varsa eklersiniz.</p></div>
+      <div><span class="n">3</span><h3>Sisteminize kopyalama</h3><p>Onaylanan not, kullandığınız Aile Hekimliği Bilgi Sistemi’nin alanlarına tek tuşla yapıştırılır.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="priv" id="oda">
+  <div class="wrap">
+    <div>
+      <h2>Söylenen, muayene odasında kalır.</h2>
+      <p class="p">Hasta size, kimseye anlatmadığı şeyleri anlatır. O ses bir sunucuya gitmemeli. Muayene Notu’nun konuşma tanıma ve not modeli dizüstünüzün içinde çalışır; ASM’nin interneti kesik olsa da not yazılır.</p>
+      <ul class="facts">
+        <li><b>Ses kaydı</b> yalnız muayene süresince bellekte tutulur, not oluşunca silinir.</li>
+        <li><b>Not taslağı</b> şifreli olarak yalnız bu bilgisayarda durur, onaydan sonra 24 saat içinde temizlenir.</li>
+        <li><b>Hiçbir veri</b> bizim sunucumuza, bir bulut hizmetine ya da yurt dışına gitmez.</li>
+      </ul>
+    </div>
+    <div class="sign" role="img" aria-label="Masaya konan hasta bilgilendirme kartı">
+      <h3>Değerli hastamız,</h3>
+      <p>Bu muayenede hekiminiz bir not asistanı kullanmaktadır. Konuşmamız bu bilgisayarda yazıya dökülür, kayıt muayene bitince silinir. Hiçbir yere gönderilmez.</p>
+      <p>İstemezseniz söylemeniz yeterli; not elle yazılır.</p>
+      <small>Kurulumla birlikte basılı gönderilir · A5, masa üstü</small>
+    </div>
+  </div>
+</section>
+
+<section class="q">
+  <div class="wrap">
+    <blockquote>“Hastam ‘Hocam bu sefer yüzüme baktınız’ dedi. Utandım, ama haklıydı. Artık konuşurken ekrana değil, ona bakıyorum.”</blockquote>
+    <cite>Dr. Hülya Sezer — Aile Hekimi, Odunpazarı / Eskişehir · 3.400 kayıtlı kişi</cite>
+  </div>
+</section>
+
+<section id="fiyat">
+  <div class="wrap">
+    <h2>Fiyat</h2>
+    <div class="prices">
+      <div class="pr on"><h3>Hekim</h3><div class="a">690 ₺ <small>/ ay</small></div><ul><li>Sınırsız muayene</li><li>Windows ve macOS dizüstü</li><li>İlk 30 gün ücretsiz</li></ul><a class="btn" href="#">Denemeye başla</a></div>
+      <div class="pr"><h3>Aile Sağlığı Merkezi</h3><div class="a">2.400 ₺ <small>/ ay, 4 hekime kadar</small></div><ul><li>Hasta bilgilendirme kartları</li><li>Yerinde kurulum (Eskişehir, Ankara, İstanbul)</li><li>Fatura ASM adına</li></ul><a class="btn l" href="#">Bizi arayın: 0222 000 00 00</a></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap" style="max-width:860px">
+    <h2>Hekimlerin sorduğu</h2>
+    <details open><summary>Hastadan onay almam gerekiyor mu?</summary><p>Evet. Masadaki kart ve sözlü bilgilendirme yeterli olacak şekilde tasarlandı. Hasta istemezse “Başlat” tuşuna basmazsınız; uygulama hiçbir şey dinlemez.</p></details>
+    <details><summary>Yöresel konuşmayı, yaşlı hastaları anlıyor mu?</summary><p>İç Anadolu, Ege ve Karadeniz ağızlarıyla test edildi. Anlamadığı kısmı tahmin etmez, “anlaşılamadı” diye bırakır. Zayıf işittiği bölümler turuncu işaretlenir.</p></details>
+    <details><summary>Hangi sistemlerle çalışır?</summary><p>Not, yaygın kullanılan aile hekimliği yazılımlarının şikâyet, bulgu, tanı ve plan alanlarına panodan yapıştırılır. Doğrudan entegrasyon için yazılım firmanızla görüşüyoruz.</p></details>
+    <details><summary>Bilgisayarım yavaş, kaldırır mı?</summary><p>2020 sonrası, 16 GB belleği olan bir dizüstü yeterli. Not muayene bitimine 5–10 saniye içinde hazır olur.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Muayene Notu · Eskişehir · hekim@muayenenotu.com.tr · Muayene Notu bir tıbbi tanı aracı değildir; not taslağının sorumluluğu onaylayan hekimdedir.
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var t1=document.getElementById('t1'),t2=document.getElementById('t2'),p1=document.getElementById('p1'),p2=document.getElementById('p2');
+  function sel(a){t1.setAttribute('aria-selected',a?'true':'false');t2.setAttribute('aria-selected',a?'false':'true');p1.hidden=!a;p2.hidden=a}
+  t1.addEventListener('click',function(){sel(true)});t2.addEventListener('click',function(){sel(false)});
+  [t1,t2].forEach(function(b){b.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var other=b===t1?t2:t1;other.focus();other.click()}})});
+})();
+</script>
+</body>
+</html>

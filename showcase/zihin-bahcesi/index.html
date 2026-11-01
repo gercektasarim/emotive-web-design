@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zihin Bahçesi — Nefesin yavaşladıkça büyüyen balkon bahçesi</title>
+<meta name="description" content="Zihin Bahçesi mikrofonla nefes ritmini telefonun içinde algılar; nefesin yavaşladıkça ekrandaki bahçe büyür. Konuşan ses yok, seri cezası yok, ses kaydı yok.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..700,100&family=Outfit:wght@300;400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --sky:#DCE6E6;       /* sabah, apartmanlar arası gökyüzü */
+  --concrete:#E6E3DE;  /* balkon betonu */
+  --rail:#8E8A84;
+  --soil:#2C2622;      /* saksı toprağı */
+  --moss:#4F6B2F;      /* yosun */
+  --fern:#9DBB52;      /* taze eğrelti */
+  --bloom:#E49AB0;     /* sardunya */
+  --ink:#24211E;
+  --ink-2:#5A554F;
+  --disp:"Fraunces", Georgia, serif;
+  --sans:"Outfit", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--concrete);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.6;font-weight:400}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--moss);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:var(--disp);font-variation-settings:"SOFT" 100;font-weight:500;line-height:1.08;letter-spacing:-.015em}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;font:500 16px var(--sans);text-decoration:none;cursor:pointer;border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+.btn.moss{background:var(--moss);border-color:var(--moss);color:#fff}
+
+/* balkon */
+.balcony{background:var(--sky);position:relative;overflow:hidden;border-bottom:18px solid #CFCBC4}
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;position:relative;z-index:2}
+.logo{font:600 24px var(--disp);font-variation-settings:"SOFT" 100;text-decoration:none}
+nav .r{display:flex;gap:22px;align-items:center;font-size:16px}
+nav .r a.t{text-decoration:none;color:var(--ink-2)}
+.city{position:absolute;left:46%;right:0;top:160px;height:300px;opacity:.4;pointer-events:none}
+.hero{position:relative;z-index:1;display:grid;grid-template-columns:.85fr 1.15fr;gap:24px;align-items:end;padding-top:20px}
+.copy{padding-bottom:110px}
+.copy h1{font-size:clamp(40px,5.2vw,68px)}
+.copy p{margin-top:18px;color:var(--ink-2);max-width:27em;font-size:19px}
+.copy .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+
+.garden-wrap{position:relative}
+.garden{display:block;width:100%;height:auto}
+.rail{position:absolute;left:-40px;right:-40px;bottom:0;height:120px;background:var(--concrete);border-top:10px solid #D4D0CA}
+.pot-row{position:relative;z-index:2}
+.breathe{position:relative;z-index:3;display:flex;align-items:center;gap:18px;padding:18px 0 42px}
+.hold{width:96px;height:96px;border-radius:50%;border:0;background:var(--moss);color:#fff;font:500 15px/1.2 var(--sans);cursor:pointer;flex:none;transition:transform 4s ease-out,background .4s;touch-action:none;user-select:none;-webkit-user-select:none}
+.hold.in{transform:scale(1.25);background:#3E5624}
+.hint b{display:block;font:500 20px var(--disp);font-variation-settings:"SOFT" 100}
+.hint span{font-size:15.5px;color:var(--ink-2)}
+.meter{display:flex;gap:4px;margin-top:8px}
+.meter i{width:26px;height:7px;border-radius:4px;background:#B9B4AC}
+.meter i.on{background:var(--fern)}
+
+/* svg bitki parçaları */
+.grow{transition:transform 1.6s cubic-bezier(.2,.8,.2,1),opacity 1.2s;transform-box:fill-box;transform-origin:50% 100%}
+.g0{transform:scaleY(.5)}
+.leaf{opacity:0;transform:scale(.3)}
+.leaf.on{opacity:1;transform:scale(1)}
+.flower{opacity:0;transform:scale(.2)}
+.flower.on{opacity:1;transform:scale(1)}
+
+section{padding:96px 0}
+h2{font-size:clamp(32px,4vw,52px);max-width:16em}
+.lede{color:var(--ink-2);max-width:34em;margin-top:14px;font-size:19px}
+
+.quit{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.not{list-style:none;margin-top:6px}
+.not li{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:16px 0;border-top:1px solid #CFCBC4;font-size:17px}
+.not li s{color:var(--ink-2);text-decoration-color:#A9A39B}
+.not .head{font-size:14px;color:var(--ink-2);border:0;padding-bottom:4px}
+
+.seasons{background:#F1EFEB}
+.shelf{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:44px}
+.plant{padding:0 6px 0;position:relative}
+.shelf{border-bottom:0}
+.plant svg{border-bottom:10px solid #B9B5AE;margin-bottom:6px}
+.plant svg{width:100%;height:150px;display:block}
+.plant h3{font-size:22px;margin-top:10px}
+.plant .wk{font-size:14px;color:var(--moss);font-weight:600}
+.plant p{font-size:15.5px;color:var(--ink-2);margin-top:4px}
+.plant.locked svg{filter:grayscale(1);opacity:.45}
+
+.rest{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.sleep{background:var(--soil);color:#EDE8E2;border-radius:22px;padding:28px}
+.sleep h3{font-size:22px}
+.sleep p{color:#CDC5BC;margin-top:10px;font-size:16.5px}
+.sleep .z{font:400 italic 40px var(--disp);color:var(--fern)}
+
+.mic{background:var(--soil);color:#EDE8E2}
+.mic .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.mic .lede{color:#CDC5BC}
+.env{background:#3A332E;border-radius:20px;padding:24px}
+.env svg{width:100%;height:auto;display:block}
+.env .lab{display:flex;justify-content:space-between;font-size:14px;color:#BDB4AA;margin-top:10px;gap:12px}
+.env ul{list-style:none;margin-top:16px;font-size:16px}
+.env li{padding:8px 0;border-top:1px solid #4B433C;display:flex;justify-content:space-between;gap:12px}
+.envp{margin-top:16px;font-size:16.5px;color:#E3DCD3;border-top:1px solid #4B433C;padding-top:14px}
+.env li b{color:var(--fern);font-weight:500;white-space:nowrap}
+
+.quote p{font:400 clamp(26px,3.2vw,40px)/1.25 var(--disp);font-variation-settings:"SOFT" 100;max-width:24em}
+.quote cite{display:block;margin-top:18px;font-style:normal;color:var(--ink-2)}
+
+.buy{display:grid;grid-template-columns:1fr;gap:48px;align-items:start}
+.buy .plan{max-width:620px}
+.buy > div:last-child{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.buy > div:last-child h2{grid-column:1/-1}
+.plan{background:#F7F6F3;border-radius:24px;padding:30px}
+.plan .amt{font:500 50px var(--disp);margin:4px 0}
+.plan .amt small{font:400 16px var(--sans);color:var(--ink-2)}
+.plan ul{list-style:none;margin:14px 0 24px}
+.plan li{padding:8px 0;border-top:1px solid #E2DED8;font-size:16.5px}
+details{border-bottom:1px solid #CFCBC4;padding:16px 0}
+summary{cursor:pointer;font:500 20px var(--disp);font-variation-settings:"SOFT" 100}
+details p{margin-top:8px;color:var(--ink-2);font-size:17px}
+
+footer{border-top:1px solid #CFCBC4;padding:40px 0 32px;font-size:15px;color:var(--ink-2)}
+footer .credit{margin-top:12px;font-size:13px}
+
+@media (max-width:900px){
+  .wrap{padding:0 18px}
+  nav .r a.t{display:none}
+  .hero,.quit,.rest,.mic .grid,.buy,.buy > div:last-child{grid-template-columns:1fr}
+  .copy{padding-bottom:10px}
+  .shelf{grid-template-columns:1fr 1fr}
+  .not li{grid-template-columns:1fr;gap:2px}
+  section{padding:70px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.hold.in{transform:none}}
+</style>
+</head>
+<body>
+<div class="balcony">
+  <svg class="city" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-hidden="true"><path d="M0 300V140h90v-40h70v60h60V80h110v90h50v-50h90v180zM560 300V110h80v-30h60v50h100V60h90v120h70v-40h120v160z" fill="#C3CFCF"/><g fill="#D3DCDC"><rect x="250" y="100" width="14" height="18"/><rect x="280" y="100" width="14" height="18"/><rect x="250" y="130" width="14" height="18"/><rect x="830" y="80" width="14" height="18"/><rect x="860" y="80" width="14" height="18"/><rect x="830" y="110" width="14" height="18"/></g></svg>
+  <div class="wrap">
+    <nav aria-label="Ana menü"><a class="logo" href="#">Zihin Bahçesi</a><div class="r"><a class="t" href="#mevsimler">Ne yetişir</a><a class="t" href="#mikrofon">Mikrofon ne duyar</a><a class="btn" href="#al">İndir</a></div></nav>
+    <header class="hero">
+      <div class="copy">
+        <h1>Nefesin yavaşladıkça, balkonun yeşeriyor.</h1>
+        <p>Zihin Bahçesi mikrofonla nefes ritmini dinler. Konuşan bir ses yok, "zihnini boşalt" yok. Sadece sen, nefesin ve sen yavaşladıkça büyüyen küçük bir bahçe.</p>
+        <div class="ctas"><a class="btn moss" href="#al">iPhone için indir</a><a class="btn" href="#al">Android için indir</a></div>
+      </div>
+
+      <div class="garden-wrap">
+        <svg class="garden" viewBox="0 0 600 420" role="img" aria-label="Balkon korkuluğunda üç saksı. Nefes aldıkça ortadaki eğrelti uzuyor, yapraklar açılıyor, sonunda sardunya çiçek veriyor." id="garden">
+          <path d="M-10 250 C60 250 90 300 150 300 S250 116 300 116 S410 300 470 300 S560 230 610 230" fill="none" stroke="#9DBB52" stroke-width="4" stroke-linecap="round" opacity=".55"/><text x="350" y="96" font-family="Outfit" font-size="18" fill="#3E5624">nefes al · 4,2 sn</text><text x="12" y="236" font-family="Outfit" font-size="18" fill="#3E5624">ver · 6,1 sn</text>
+          <!-- sol saksı: yosun -->
+          <path d="M70 330h110l-12 80H82z" fill="#6F6A64"/><rect x="64" y="322" width="122" height="14" rx="3" fill="#7C7771"/>
+          <ellipse cx="125" cy="322" rx="56" ry="10" fill="#2C2622"/>
+          <path d="M84 322c6-18 18-24 30-14 6-16 26-16 30 0 10-8 22 0 22 14z" fill="#4F6B2F"/>
+          <!-- orta saksı: büyüyen eğrelti -->
+          <path d="M235 300h140l-16 110H251z" fill="#5E5953"/><rect x="228" y="290" width="154" height="16" rx="3" fill="#6C6761"/>
+          <ellipse cx="305" cy="291" rx="72" ry="11" fill="#2C2622"/>
+          <g class="grow g0" id="stem"><path d="M305 290C303 230 310 170 300 110" stroke="#4F6B2F" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+          <g class="leaf" id="l1"><path d="M304 250c-30-6-52-24-58-40 24 0 46 14 58 40z" fill="#9DBB52"/><path d="M306 240c28-10 46-30 48-46-22 4-40 22-48 46z" fill="#8AA947"/></g>
+          <g class="leaf" id="l2"><path d="M304 205c-34-4-56-22-64-40 26 0 50 16 64 40z" fill="#8AA947"/><path d="M306 195c30-8 50-28 54-46-24 4-44 22-54 46z" fill="#9DBB52"/></g>
+          <g class="leaf" id="l3"><path d="M303 160c-26-4-44-18-50-32 20 0 40 12 50 32z" fill="#9DBB52"/><path d="M304 152c22-8 36-22 40-36-18 4-32 18-40 36z" fill="#8AA947"/></g>
+          <g class="flower" id="fl"><circle cx="300" cy="104" r="14" fill="#E49AB0"/><circle cx="286" cy="96" r="11" fill="#EBB1C2"/><circle cx="314" cy="94" r="11" fill="#E49AB0"/><circle cx="300" cy="86" r="11" fill="#EBB1C2"/><circle cx="300" cy="98" r="5" fill="#F6E0A0"/></g>
+          <!-- sağ saksı: küçük kaktüs -->
+          <path d="M440 340h90l-10 70h-70z" fill="#6F6A64"/><rect x="434" y="332" width="102" height="13" rx="3" fill="#7C7771"/>
+          <ellipse cx="485" cy="333" rx="46" ry="8" fill="#2C2622"/>
+          <rect x="474" y="268" width="24" height="66" rx="12" fill="#5F7A3A"/><rect x="456" y="290" width="16" height="30" rx="8" fill="#6C8842"/><path d="M472 304h4" stroke="#6C8842" stroke-width="8"/>
+          <!-- korkuluk -->
+          <rect x="0" y="408" width="600" height="12" fill="#B9B5AE"/>
+        </svg>
+        <div class="breathe">
+          <button class="hold" id="hold" type="button" aria-describedby="hintTxt">Basılı tut, nefes al</button>
+          <div class="hint" aria-live="polite">
+            <b id="hintTitle">Dört saniye nefes al, bırak, altı saniye ver.</b>
+            <span id="hintTxt">Uygulamada mikrofon nefesini kendisi duyar. Burada düğme onun yerine geçiyor.</span>
+            <div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+</div>
+
+<section>
+  <div class="wrap quit">
+    <div>
+      <h2>Meditasyonu üç kez bıraktıysan, haklıydın.</h2>
+      <p class="lede">Çoğu uygulama ilk gün bir ses, yedinci gün bir seri, onuncu gün de bir suçluluk veriyor. Zihin Bahçesi'nde bunların hiçbiri yok. Ekrana bakmak ve yavaş nefes almak yeter; gerisini bahçe söylüyor.</p>
+    </div>
+    <ul class="not">
+      <li class="head"><span>Bıraktığın uygulamalar</span><span>Burada</span></li>
+      <li><s>Yirmi dakikalık konuşmalı rehber</s><span>Üç dakika, sessiz</span></li>
+      <li><s>"Zihnini boşalt" talimatı</s><span>Tek iş: yavaş nefes</span></li>
+      <li><s>Kırılan seri, kızgın bildirim</s><span>Gelmediğin gün bahçe uyur, ölmez</span></li>
+      <li><s>Puan, rozet, sıralama</s><span>Yalnızca yeni bir yaprak</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="seasons" id="mevsimler">
+  <div class="wrap">
+    <h2>Her hafta balkona bir şey eklenir.</h2>
+    <p class="lede">Ne geleceğini tam bilmezsin; nefesinin temposuna göre değişir. İnsanların geri dönme nedeni çoğu zaman bu küçük merak.</p>
+    <div class="shelf">
+      <div class="plant"><svg viewBox="0 0 160 150" aria-hidden="true"><path d="M50 110h60l-6 38H56z" fill="#6F6A64"/><path d="M80 110c-2-30 2-60-4-90" stroke="#4F6B2F" stroke-width="4" fill="none"/><path d="M79 80c-20-4-34-14-38-26 16 0 30 10 38 26zM81 64c18-6 30-18 32-30-14 2-26 14-32 30z" fill="#9DBB52"/></svg><span class="wk">1. hafta</span><h3>Eğrelti</h3><p>Herkes buradan başlar. Uzun nefeslerde açılır.</p></div>
+      <div class="plant"><svg viewBox="0 0 160 150" aria-hidden="true"><path d="M50 110h60l-6 38H56z" fill="#6F6A64"/><path d="M80 110V50" stroke="#4F6B2F" stroke-width="4"/><circle cx="80" cy="42" r="12" fill="#E49AB0"/><circle cx="68" cy="36" r="9" fill="#EBB1C2"/><circle cx="92" cy="36" r="9" fill="#E49AB0"/><path d="M80 90c-16-2-26-10-28-18 12 0 22 6 28 18z" fill="#8AA947"/></svg><span class="wk">3. hafta</span><h3>Sardunya</h3><p>Akşam nefeslerinde daha çabuk çiçek verir.</p></div>
+      <div class="plant locked"><svg viewBox="0 0 160 150" aria-hidden="true"><path d="M50 110h60l-6 38H56z" fill="#6F6A64"/><path d="M80 110V62M80 80l-14-12M80 72l16-14" stroke="#6B4E33" stroke-width="4" fill="none"/><g fill="#5F7A3A"><ellipse cx="62" cy="52" rx="14" ry="8" transform="rotate(-30 62 52)"/><ellipse cx="98" cy="46" rx="14" ry="8" transform="rotate(25 98 46)"/><ellipse cx="80" cy="34" rx="15" ry="9"/><ellipse cx="70" cy="30" rx="12" ry="7" transform="rotate(-50 70 30)"/><ellipse cx="92" cy="28" rx="12" ry="7" transform="rotate(40 92 28)"/></g><ellipse cx="68" cy="62" rx="7" ry="9" fill="#E8D25A"/><ellipse cx="96" cy="58" rx="6" ry="8" fill="#E8D25A"/></svg><span class="wk">6. hafta</span><h3>Limon fidanı</h3><p>Sabırlı nefesler ister. Ne zaman meyve vereceği sürpriz.</p></div>
+      <div class="plant locked"><svg viewBox="0 0 160 150" aria-hidden="true"><path d="M44 70h72a6 6 0 0 1 6 6v64a6 6 0 0 1-6 6H44a6 6 0 0 1-6-6V76a6 6 0 0 1 6-6z" fill="#DDE6E6" stroke="#8E8A84" stroke-width="2"/><path d="M38 118h84v22a6 6 0 0 1-6 6H44a6 6 0 0 1-6-6z" fill="#2C2622"/><path d="M42 120c8-16 18-12 22-2 4-14 20-14 24 0 6-10 18-10 22 2 4-6 10-4 12 0z" fill="#4F6B2F"/><path d="M60 118v-16M58 104c-6-4-6-10 0-12M60 102c6-4 8-10 2-12" stroke="#6C8842" stroke-width="2" fill="none"/><circle cx="74" cy="110" r="2.5" fill="#E6F2B8"/><circle cx="100" cy="108" r="2.5" fill="#E6F2B8"/><circle cx="88" cy="114" r="2" fill="#E6F2B8"/><rect x="58" y="62" width="44" height="10" rx="3" fill="#8E8A84"/></svg><span class="wk">10. hafta</span><h3>Yosun bahçesi</h3><p>Gece nefesleri için. Karanlıkta hafif parlar.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap rest">
+    <div>
+      <h2>Gelmediğin günler bahçe uyur.</h2>
+      <p class="lede">Bir hafta açmadın mı? Döndüğünde yapraklar biraz kıvrılmış, toprak kurumuş olur; ilk nefesinle yeniden kalkar. Hiçbir bitki ölmez, hiçbir şey sıfırlanmaz.</p>
+    </div>
+    <div class="sleep"><span class="z">z z</span><h3>Altı gündür uyuyor</h3><p>Sardunya yapraklarını kapattı. Bir dakikalık yavaş nefes onu uyandırmaya yeter. Bildirim yok; ne zaman istersen.</p></div>
+  </div>
+</section>
+
+<section class="mic" id="mikrofon">
+  <div class="wrap grid">
+    <div>
+      <h2 style="color:#F3EFEA">Mikrofon nefesini duyar. Sesini değil.</h2>
+      <p class="lede">Nefes ritmini çıkaran model telefonun içinde çalışır. Mikrofondan gelen ses anında yalnızca bir eğriye, yani nefesin inip çıkışına çevrilir; konuşma, odadaki sesler, kim olduğun bu eğride yoktur. Ses hiçbir yerde kaydedilmez.</p>
+    </div>
+    <div class="env" aria-label="Mikrofondan çıkan tek veri: nefes eğrisi">
+      <svg viewBox="0 0 400 110" aria-hidden="true"><path d="M0 80 C30 20 60 20 90 80 S150 100 170 80 S220 20 250 22 S300 90 330 84 S380 30 400 40" fill="none" stroke="#9DBB52" stroke-width="3"/><path d="M0 95h400" stroke="#4B433C"/></svg>
+      <div class="lab"><span>al · 4,2 sn</span><span>ver · 6,1 sn</span><span>dakikada 6 nefes</span></div>
+      <p class="envp">Telefonunda kalan tek şey bu eğri; yedi gün sonra o da silinir. Ses kaydı yok, internet gerekmez.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap quote">
+    <p>"Headspace'i de Calm'ı da bıraktım. Bunu bırakamıyorum çünkü limon fidanının ne yapacağını merak ediyorum. Saçma ama işe yarıyor."</p>
+    <cite>Onur Tekin · Yazılım geliştirici, Beşiktaş'ta 3. kat balkonu olan · İstanbul</cite>
+  </div>
+</section>
+
+<section id="al" style="padding-top:0">
+  <div class="wrap buy">
+    <div class="plan">
+      <h3 style="font-size:26px">Zihin Bahçesi</h3>
+      <p class="amt">₺249 <small>tek seferlik</small></p>
+      <ul>
+        <li>Bütün bitkiler ve mevsimler, sonsuza kadar</li>
+        <li>Üç dakikalık, on dakikalık ve uyku öncesi nefes</li>
+        <li>İlk hafta ücretsiz, eğrelti senin kalır</li>
+        <li>Abonelik yok</li>
+      </ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn moss" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+    </div>
+    <div>
+      <h2 style="font-size:32px;margin-bottom:8px">Sorular</h2>
+      <details><summary>Kalabalık bir yerde çalışır mı?</summary><p>Kulaklık mikrofonuyla metroda bile çalışır. Model nefesi arka plan gürültüsünden ayırmak için eğitildi; çok gürültülü ortamda ekrana dokunarak da ilerleyebilirsin.</p></details>
+      <details><summary>Burnumdan nefes alıyorum, duyar mı?</summary><p>Evet; telefonu göğüs hizasında, otuz santimden yakın tutman yeter.</p></details>
+      <details><summary>Çocuğum da kullanabilir mi?</summary><p>Evet, yedi yaş üstü çocuklar bahçeyi çok seviyor. Hesap ya da e-posta gerekmez.</p></details>
+      <details><summary>Bu bir tedavi mi?</summary><p>Hayır. Yavaş nefes rahatlatıcıdır ama kaygı ya da uyku sorunun sürüyorsa bir uzmana danış.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Zihin Bahçesi · Kadıköy'de, 4 metrekarelik bir balkonda tasarlandı. merhaba@zihinbahcesi.app</p>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var hold=document.getElementById('hold'),title=document.getElementById('hintTitle'),txt=document.getElementById('hintTxt');
+  var meter=[].slice.call(document.querySelectorAll('#meter i'));
+  var stem=document.getElementById('stem'),parts=['l1','l2','l3','fl'].map(function(id){return document.getElementById(id)});
+  var good=0,t0=0,down=false,relT=0;
+  function grow(){
+    meter.forEach(function(m,i){m.classList.toggle('on',i<good)});
+    stem.style.transform='scaleY('+Math.min(1,.5+good*.12)+')';
+    parts.forEach(function(p,i){p.classList.toggle('on',i===0||good>i+1)});
+    if(good>=5){title.textContent='Sardunya açtı.';txt.textContent='Beş yavaş nefes, yaklaşık bir dakika. Uygulamada bahçe yarın da burada olacak.';hold.textContent='Bir daha';}
+  }
+  function start(e){if(e)e.preventDefault();if(good>=5){good=0;grow();title.textContent='Dört saniye nefes al, bırak, altı saniye ver.';}down=true;t0=Date.now();hold.classList.add('in');hold.textContent='Nefes al…';}
+  function end(){
+    if(!down)return;down=false;hold.classList.remove('in');
+    var d=(Date.now()-t0)/1000;
+    if(d<2.5){title.textContent='Biraz hızlıydı.';txt.textContent='Acele yok; bahçe bekliyor. Bir dahakinde dörde kadar say.';hold.textContent='Basılı tut, nefes al';return;}
+    hold.textContent='Şimdi ver…';hold.disabled=true;
+    title.textContent='Güzel. Şimdi yavaşça ver.';txt.textContent='Altı saniye kadar.';
+    setTimeout(function(){good++;hold.disabled=false;hold.textContent=good>=5?'Bir daha':'Basılı tut, nefes al';if(good<5){title.textContent='Bahçe biraz uzadı.';txt.textContent=good+' yavaş nefes. Bir tane daha.';}grow();},2500);
+  }
+  hold.addEventListener('pointerdown',start);
+  hold.addEventListener('pointerup',end);hold.addEventListener('pointerleave',end);
+  hold.addEventListener('keydown',function(e){if((e.key===' '||e.key==='Enter')&&!down&&!e.repeat){start(e);}});
+  hold.addEventListener('keyup',function(e){if(e.key===' '||e.key==='Enter'){end();}});
+  grow();
+})();
+</script>
+</body>
+</html>

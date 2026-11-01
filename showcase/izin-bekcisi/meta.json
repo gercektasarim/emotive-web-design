@@ -1,0 +1,21 @@
+{
+  "slug": "izin-bekcisi",
+  "name": "İzin Bekçisi",
+  "interpretation": "Gece nöbet defteri",
+  "world": "Gece komodinde ters duran telefon, durum çubuğundaki turuncu ve yeşil göstergeler, bekçinin nöbet defteri ve resmi tutanak dili.",
+  "palette": [
+    "#0F141C",
+    "#E8ECF2",
+    "#FF9F0A",
+    "#30D158",
+    "#5B9BFF",
+    "#C49BFF"
+  ],
+  "fonts": [
+    "Spline Sans",
+    "Spline Sans Mono"
+  ],
+  "score": 27,
+  "lowest": "Tanınabilirlik",
+  "moment": "22:00–07:00 nöbet çizelgesinde bir erişime dokununca o gecenin tutanağı açılır: kim, ne kadar, normal mi ve düz bir cümleyle ne yapabileceğin."
+}

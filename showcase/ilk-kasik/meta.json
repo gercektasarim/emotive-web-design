@@ -1,0 +1,21 @@
+{
+  "slug": "ilk-kasik",
+  "name": "İlk Kaşık",
+  "interpretation": "Püre paleti ve mama tepsisi",
+  "world": "Mama sandalyesinin beyaz tepsisi, üç bölmeli silikon tabak ve havuç, bezelye, pancar, muz püreleri.",
+  "palette": [
+    "#F6E7E2",
+    "#1E3328",
+    "#EC7A2C",
+    "#78A23A",
+    "#A2264E",
+    "#F1CC45"
+  ],
+  "fonts": [
+    "Baloo 2",
+    "Nunito"
+  ],
+  "score": 25,
+  "lowest": "Varsayılan",
+  "moment": "Ekim ayının kaşık takviminde bir güne dokunmak: rengi o günün yeni besini, yanında miktar, tepki ve doktora sorulacak not."
+}

@@ -1,0 +1,21 @@
+{
+  "slug": "alerji-kalkani",
+  "name": "Alerji Kalkanı",
+  "interpretation": "Etiket ve fosforlu kalem",
+  "world": "Market rafı önünde ambalajın arka yüzü: küçük içindekiler yazısı, besin tablosunun kalın siyah çizgileri, fosforlu kalem.",
+  "palette": [
+    "#FFFFFF",
+    "#131413",
+    "#F3E24E",
+    "#A3221A",
+    "#0D6A50",
+    "#EFF0EC"
+  ],
+  "fonts": [
+    "Atkinson Hyperlegible",
+    "Roboto Condensed"
+  ],
+  "score": 28,
+  "lowest": "Palet/doku",
+  "moment": "Çocuğun alerjenlerini ve ürünü seçince içindekiler yazısındaki gizli adların (arachis yağı, peynir altı suyu) fosforlu kalemle işaretlenip kararın çıkması."
+}

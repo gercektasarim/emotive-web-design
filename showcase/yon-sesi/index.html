@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yön Sesi — Hastanede polikliniğinizi sesle bulun</title>
+<meta name="description" content="Yön Sesi, görme engelliler için hastane ve AVM koridorlarında kapı tabelalarını okur, kulaklıktan gelen yönlü sesle sizi gideceğiniz kapıya götürür. Bodrum katta, internetsiz çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600&family=Commissioner:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#FFFFFF;      /* hastane duvarı */
+  --lino:#E6E8E3;      /* linolyum zemin */
+  --navy:#0B2545;      /* yönlendirme tabelası */
+  --green:#00875A;     /* zemin yön çizgisi (şekil) */
+  --green-ink:#006B47;
+  --slate:#3D4A5C;
+  --sign-yellow:#FFD23F; /* acil/kat numarası vurgusu, yalnız lacivert üstünde */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--wall);color:var(--navy);font:400 1.25rem/1.6 "Commissioner",system-ui,sans-serif;overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+a{color:var(--green-ink);text-decoration-thickness:2px;text-underline-offset:.2em}
+:focus-visible{outline:4px solid var(--sign-yellow);outline-offset:2px;box-shadow:0 0 0 8px var(--navy)}
+.skip{position:absolute;left:1rem;top:-6rem;background:var(--navy);color:#fff;padding:1rem;z-index:9}
+.skip:focus{top:1rem}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+h1,h2,h3{font-weight:800;line-height:1.1}
+h1{font-size:clamp(2.4rem,5vw,3.9rem);font-weight:900;max-width:16ch;letter-spacing:-.01em}
+h3{font-size:1.4rem}
+p{max-width:58ch}
+.sign{display:inline-flex;align-items:center;gap:1rem;background:var(--navy);color:#fff;padding:.7rem 1.3rem .55rem;border-radius:4px;font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;line-height:1.15;max-width:100%}
+.sign .arr{flex:none;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:60px;padding:0 1.6rem;border-radius:6px;font:800 1.15rem "Commissioner";text-decoration:none;border:3px solid var(--navy);cursor:pointer}
+.btn.n{background:var(--navy);color:#fff}
+.btn.w{background:#fff;color:var(--navy)}
+
+header{border-bottom:6px solid var(--green)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:84px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:.7rem;font:900 1.5rem "Commissioner";color:var(--navy);text-decoration:none}
+.help{text-align:right;font-size:1rem;line-height:1.35}
+.help a{font-weight:800;font-size:1.25rem;color:var(--navy);text-decoration:none;display:inline-flex;min-height:44px;align-items:center}
+.help a:hover{text-decoration:underline}
+
+/* hero */
+.hero{padding:3rem 0 4rem;border-bottom:1px solid #c7ccd3}
+.hero .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:3rem;align-items:start}
+.lede{font-size:1.35rem;margin:1.3rem 0 1.8rem}
+.ctas{display:flex;gap:.8rem;flex-wrap:wrap}
+.note{margin-top:1.2rem;font-size:1.05rem;color:var(--slate)}
+.route{background:#fff;border:3px solid var(--navy);border-radius:8px;overflow:hidden}
+.route-head{background:var(--navy);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:.8rem 1.1rem;font-size:1.05rem}
+.route-head b{font-weight:800}
+.route-head .mono{font-family:"Azeret Mono";color:var(--sign-yellow)}
+.plan{display:block;width:100%;height:auto;background:var(--lino)}
+.plan text{font:600 11px "Commissioner";fill:var(--navy)}
+.plan .room{fill:#fff;stroke:#b9bfc7;stroke-width:1.5}
+.plan .target{fill:#fff;stroke:var(--navy);stroke-width:3}
+.say{display:grid;grid-template-columns:76px 1fr;gap:1rem;align-items:center;padding:1.1rem}
+.ear{width:76px;height:76px}
+.say p{font-size:1.4rem;font-weight:600;line-height:1.35}
+.say small{display:block;font:400 1rem "Azeret Mono";color:var(--slate);margin-top:.3rem}
+.route-foot{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0 1.1rem 1.1rem;flex-wrap:wrap}
+.route-foot .count{font-family:"Azeret Mono";font-size:1rem;color:var(--slate)}
+
+/* ear section */
+.sec{padding:5.5rem 0}
+.sec-head{margin-bottom:2.4rem}
+.sec-head p{margin-top:1.2rem;font-size:1.25rem}
+.clockface{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.dirs{list-style:none;border-top:3px solid var(--navy)}
+.dirs li{display:grid;grid-template-columns:7rem 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid #c7ccd3}
+.dirs b{font-family:"Azeret Mono";font-weight:600}
+
+/* signs read */
+.read{background:var(--lino);padding:5.5rem 0}
+.boards{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.board{background:var(--navy);color:#fff;border-radius:6px;padding:1.2rem 1.2rem 1rem;display:flex;flex-direction:column;gap:.7rem}
+.board .t{font-weight:800;font-size:1.25rem;line-height:1.2}
+.board .t span{color:var(--sign-yellow)}
+.board .heard{background:#fff;color:var(--navy);border-radius:4px;padding:.7rem .8rem;font-size:1.05rem;line-height:1.4}
+.board .heard::before{content:"Duyduğunuz: ";font-weight:800}
+
+/* setup */
+.setup .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.phone{width:min(320px,100%);margin:0 auto;border:3px solid var(--navy);border-radius:28px;padding:1.4rem 1rem;background:#fff}
+.phone .big{display:flex;align-items:center;justify-content:center;min-height:96px;border-radius:14px;margin-bottom:.8rem;font-weight:900;font-size:1.45rem;text-align:center;line-height:1.15;padding:.5rem}
+.phone .b1{background:var(--navy);color:#fff}
+.phone .b2{background:var(--green-ink);color:#fff}
+.phone .b3{background:#fff;color:var(--navy);border:3px solid var(--navy)}
+.setup ol{margin:1.2rem 0 0 1.4rem}
+.setup li{padding:.5rem 0}
+
+/* basement */
+.basement{background:var(--navy);color:#fff;padding:5.5rem 0}
+.basement :focus-visible{outline-color:var(--sign-yellow);box-shadow:none}
+.basement .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center}
+.basement p{color:#DCE3EC;margin-top:1.1rem}
+.basement h2{font-size:clamp(2rem,4vw,3rem)}
+.floor{border:3px solid #fff;border-radius:6px;padding:1.4rem;text-align:center}
+.floor .k{font:900 5rem/1 "Commissioner";color:var(--sign-yellow)}
+.floor p{margin:.6rem auto 0;color:#fff}
+.floor ul{list-style:none;text-align:left;margin-top:1.2rem;border-top:1px solid #34507a}
+.floor li{padding:.6rem 0;border-bottom:1px solid #34507a;display:flex;justify-content:space-between;gap:1rem;font-size:1.1rem}
+
+/* price */
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.ticket{border:3px solid var(--navy);border-radius:8px;padding:2rem;border-top:16px solid var(--green)}
+.ticket .amt{font:900 3rem/1 "Commissioner";margin:.6rem 0 .3rem}
+.ticket ul{margin:1.2rem 0 1.5rem 1.3rem}
+.ticket li{padding:.3rem 0}
+
+.quote{background:var(--lino);padding:5rem 0}
+.quote blockquote{font-size:clamp(1.6rem,3.2vw,2.4rem);font-weight:600;line-height:1.3;max-width:28ch}
+.quote figcaption{margin-top:1.2rem;color:var(--slate)}
+
+.faq{padding:5rem 0 6rem}
+.faq .wrap{max-width:900px}
+details{border-bottom:2px solid var(--navy)}
+summary{cursor:pointer;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-weight:800;font-size:1.25rem;padding:.8rem 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";flex:none;width:36px;height:36px;border-radius:50%;background:var(--navy) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M12 15l6 6 6-6' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E")}
+details[open] summary::after{transform:rotate(180deg)}
+details p{padding-bottom:1.4rem;color:var(--slate)}
+
+footer{border-top:6px solid var(--green);padding:3rem 0 2rem;font-size:1.05rem;color:var(--slate)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+footer .credit{margin-top:2rem;font-size:.95rem}
+footer .credit a{color:var(--slate)}
+
+@media (max-width:960px){
+  .hero .wrap,.clockface,.setup .wrap,.basement .wrap,.price .wrap{grid-template-columns:minmax(0,1fr);gap:2.4rem}
+  .boards{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 1rem}
+  .help{text-align:left}
+  .boards{grid-template-columns:1fr}
+  .say{grid-template-columns:56px 1fr}.ear{width:56px;height:56px}
+  .say p{font-size:1.25rem}
+  .btn{width:100%}
+  .dirs li{grid-template-columns:1fr;gap:.1rem}
+  .sign{font-size:1.4rem;padding:.6rem .9rem .45rem}
+  .sign .arr{width:36px;height:36px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Yön Sesi ana sayfa">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="6" fill="#0B2545"/><path d="M9 28 L20 10 L31 28" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><path d="M5 34h30" stroke="#00875A" stroke-width="4"/></svg>
+      Yön Sesi
+    </a>
+    <div class="help">Kurulumda yardım, her gün 08.00–20.00<br><a href="tel:+908500000968">0 850 000 09 68</a></div>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <h1 id="h1">Kardiyoloji polikliniği nerede? Kulağınız söylesin.</h1>
+      <p class="lede">Yön Sesi koridordaki kapı tabelalarını okur ve sizi kulaklıktan gelen yönlü bir sesle götürür. Ses sağdan geliyorsa sağa dönersiniz. Kimsenin koluna girmeden.</p>
+      <div class="ctas"><a class="btn n" href="#ucret">Telefona indir</a><a class="btn w" href="#kurulum">Kurulumu kim yapar?</a></div>
+      <p class="note">TalkBack ve VoiceOver ile çalışır. Hastane bodrumunda, internet yokken de.</p>
+    </div>
+
+    <div class="route" role="region" aria-labelledby="rt-h">
+      <div class="route-head"><b id="rt-h">Hedef: Kardiyoloji Polikliniği, B-214</b><span class="mono">Sıra no 37</span></div>
+      <svg class="plan" viewBox="0 0 460 210" aria-hidden="true">
+        <rect x="0" y="0" width="460" height="210" fill="#E6E8E3"/>
+        <rect class="room" x="20" y="14" width="80" height="62"/><text x="32" y="50">Danışma</text>
+        <rect class="room" x="110" y="14" width="70" height="62"/><text x="124" y="50">Eczane</text>
+        <rect class="room" x="190" y="14" width="54" height="62"/><text x="196" y="50">Asansör</text>
+        <rect class="room" x="254" y="14" width="80" height="62"/><text x="266" y="44">B-210</text><text x="266" y="58">Göz</text>
+        <rect class="target" x="344" y="14" width="98" height="62"/><text x="356" y="44" style="font-weight:800">B-214</text><text x="356" y="58">Kardiyoloji</text>
+        <rect class="room" x="20" y="134" width="120" height="62"/><text x="34" y="170">Laboratuvar</text>
+        <rect class="room" x="150" y="134" width="94" height="62"/><text x="162" y="170">WC</text>
+        <rect class="room" x="254" y="134" width="188" height="62"/><text x="270" y="170">Bekleme salonu</text>
+        <path d="M30 104 H440" stroke="#c7ccd3" stroke-width="2" stroke-dasharray="6 6"/>
+        <path id="line" d="M40 104 H217 V80 M217 104 H392 V80" stroke="#00875A" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".25"/>
+        <path id="done" d="M40 104 H40" stroke="#00875A" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <g id="me"><circle r="12" fill="#0B2545"/><circle r="5" fill="#fff"/></g>
+      </svg>
+      <div class="say">
+        <svg class="ear" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="33" fill="none" stroke="#c7ccd3" stroke-width="2" stroke-dasharray="3 5"/><rect x="18" y="31" width="7" height="14" rx="3" fill="#0B2545"/><rect x="51" y="31" width="7" height="14" rx="3" fill="#0B2545"/><ellipse cx="38" cy="38" rx="14" ry="16" fill="#E6E8E3" stroke="#0B2545" stroke-width="3"/><path d="M34 23 L38 16 L42 23" fill="#0B2545"/><g id="arc" transform="rotate(0 38 38)"><path d="M26 9 A33 33 0 0 1 50 9" stroke="#00875A" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="38" cy="5" r="5" fill="#00875A"/></g></svg>
+        <div aria-live="polite" id="step-live"><p id="step-t"></p><small id="step-m"></small></div>
+      </div>
+      <div class="route-foot">
+        <button class="btn n" type="button" id="next" style="min-height:56px">Sonraki adım</button>
+        <span class="count" id="count">Adım 1 / 5</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="ear-h">
+  <div class="wrap clockface">
+    <div>
+      <h2 id="ear-h" class="sign"><span class="arr" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 11h14M11 4l7 7-7 7" stroke="#0B2545" stroke-width="3" fill="none"/></svg></span>Ses nereden geliyorsa, yol oradan</h2>
+      <p style="margin-top:1.4rem">Kulaklığınızda yumuşak bir tık sesi duyarsınız. Gideceğiniz yön sağdaysa ses sağ kulağınıza kayar, tam önünüzdeyse ortada durur. Yaklaştıkça sıklaşır, kapıya varınca susar.</p>
+      <p style="margin-top:1rem;color:var(--slate)">Kemik iletimli kulaklık öneriyoruz: koridordaki anonsları, hemşirenin seslenmesini duymaya devam edersiniz. Tek kulaklık da olur.</p>
+    </div>
+    <ul class="dirs" aria-label="Yön tarifi örnekleri">
+      <li><b>saat 12</b><span>“Düz devam edin, 15 adım.”</span></li>
+      <li><b>saat 3</b><span>“Sağa dönün. Kapı tam karşınızda.”</span></li>
+      <li><b>saat 9</b><span>“Asansörler solunuzda. Çağırma düğmesi bel hizasında.”</span></li>
+      <li><b>engel</b><span>“Önünüzde tekerlekli sandalye duruyor, sağdan geçin.”</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="read" aria-labelledby="rd-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="rd-h" class="sign"><span class="arr" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M11 18V4M4 11l7-7 7 7" stroke="#0B2545" stroke-width="3" fill="none"/></svg></span>Tabelaları sizin için okur</h2>
+      <p>Hastanede yön, tabelada yazar. Yön Sesi kameradan kapı tabelasını, kat yönlendirmesini, sıra ekranını okur ve size yalnız işinize yarayanı söyler.</p>
+    </div>
+    <div class="boards">
+      <div class="board"><span class="t">B Blok · <span>2. Kat</span><br>Poliklinikler →</span><p class="heard">“Poliklinikler sağda.”</p></div>
+      <div class="board"><span class="t">B-214<br>Kardiyoloji Polikliniği</span><p class="heard">“Kardiyoloji kapısındasınız.”</p></div>
+      <div class="board"><span class="t">Sıradaki hasta<br><span>34</span> → Oda 3</span><p class="heard">“Şu an 34. Sizin numaranız 37, üç kişi var.”</p></div>
+      <div class="board"><span class="t">WC · Engelli WC ←</span><p class="heard">“Engelli tuvaleti solda, 8 adım.”</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec setup" id="kurulum" aria-labelledby="su-h">
+  <div class="wrap">
+    <div>
+      <h2 id="su-h" class="sign"><span class="arr" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 11h14M11 4l7 7-7 7" stroke="#0B2545" stroke-width="3" fill="none"/></svg></span>Kurulumu torununuz 5 dakikada yapar</h2>
+      <p style="margin-top:1.4rem">Telefonda yalnız üç büyük düğme kalır. Gerisini bir kez kurmak yeter.</p>
+      <ol>
+        <li>Uygulamayı indirin, sesli kılavuzu açın.</li>
+        <li>Sık gittiğiniz hastaneyi seçin; kat planı telefona iner.</li>
+        <li>Randevu SMS'ini gösterin; poliklinik ve kat kendiliğinden yazılır.</li>
+      </ol>
+      <p style="margin-top:1.2rem;color:var(--slate)">Yardım isterseniz destek hattımız sizi arar ve telefonda adım adım birlikte kurarız.</p>
+    </div>
+    <div class="phone" aria-label="Uygulamanın ana ekranı: üç düğme" role="img">
+      <div class="big b1">Randevuma götür</div>
+      <div class="big b2">Burada ne yazıyor?</div>
+      <div class="big b3">Çıkışa götür</div>
+    </div>
+  </div>
+</section>
+
+<section class="basement" aria-labelledby="bs-h">
+  <div class="wrap">
+    <div>
+      <h2 id="bs-h">MR bodrum katta. Orada telefon çekmez. Yön Sesi çalışır.</h2>
+      <p>Hastanenin kat planı telefonunuza bir kez iner; yol tarifi, tabela okuma ve yönlü ses tamamen telefonun içinde çalışır. Kalın duvarlı radyoloji katında, otoparkta, asansörde internet aramaz.</p>
+      <p>Kameranın gördüğü görüntü kaydedilmez, kimseye gönderilmez. Hangi polikliniğe gittiğiniz, hangi tahlili verdiğiniz telefonunuzda kalır.</p>
+    </div>
+    <div class="floor" role="group" aria-label="Örnek: bodrum kat">
+      <div class="k" aria-hidden="true">-2</div>
+      <p>Radyoloji · MR · Tomografi</p>
+      <ul>
+        <li><span>Şebeke</span><b>Yok</b></li>
+        <li><span>Yön tarifi</span><b>Çalışıyor</b></li>
+        <li><span>Gönderilen görüntü</span><b>0</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec price" id="ucret" aria-labelledby="pr-h">
+  <div class="wrap">
+    <div>
+      <h2 id="pr-h" class="sign"><span class="arr" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 11h14M11 4l7 7-7 7" stroke="#0B2545" stroke-width="3" fill="none"/></svg></span>Ücret</h2>
+      <p style="margin-top:1.4rem">Engelli raporu ya da engelli kimlik kartı olanlara ücretsiz. Rapor fotoğrafı telefonda doğrulanır, bize gönderilmez.</p>
+      <p style="margin-top:1rem;color:var(--slate)">Şu an 46 şehir hastanesi, üniversite hastanesi ve büyük devlet hastanesinin kat planı hazır; 120 AVM ve 9 havalimanı terminali de var. Listede olmayan bir yer için kat planını biz hazırlarız, ortalama 3 hafta sürer.</p>
+    </div>
+    <div class="ticket">
+      <h3>Yön Sesi</h3>
+      <p class="amt">0 ₺</p>
+      <p style="color:var(--slate)">raporla · raporsuz tek seferlik 199 ₺</p>
+      <ul>
+        <li>Tüm hazır kat planları</li>
+        <li>Tabela ve sıra ekranı okuma</li>
+        <li>Yönlü ses, titreşimli uyarı</li>
+        <li>Telefonla kurulum desteği</li>
+      </ul>
+      <div class="ctas"><a class="btn n" href="#">Android için indir</a><a class="btn w" href="#">iPhone için indir</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı sözü">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Kırk yıl postacılık yaptım, adres bulmak benim işimdi. Gözüm gidince hastanede kapı soran adam oldum. Şimdi yine kendi yolumu kendim buluyorum.”</blockquote>
+      <figcaption><b style="color:var(--navy)">Kemal Yıldırım</b>, 71 · emekli PTT dağıtıcısı, glokom · Konya</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="sss-h">
+  <div class="wrap">
+    <h2 id="sss-h" style="font-size:clamp(1.9rem,3.6vw,2.6rem);margin-bottom:1.4rem">Sık sorulanlar</h2>
+    <details><summary>Telefonu elimde mi tutmam gerekiyor?</summary><p>Hayır. Göğüs cebinde, kamera dışarı bakacak şekilde ya da boyun askısında taşıyabilirsiniz. Bastonunuz elinizde kalır.</p></details>
+    <details><summary>Merdivene, kalabalığa karşı uyarır mı?</summary><p>Basamak, açık kapı, koridorda duran sedye ve tekerlekli sandalye için titreşimle uyarır. Yine de bastonunuzu bırakmayın; Yön Sesi bastonun yerine değil, yanında çalışır.</p></details>
+    <details><summary>Kulaklığım yoksa ne olur?</summary><p>Telefonun hoparlöründen de konuşur, ama yönlü ses için iki kulaklı ya da kemik iletimli bir kulaklık gerekir. Kablolu, en ucuz kulaklık da yeterli.</p></details>
+    <details><summary>Gittiğim hastane listede yok.</summary><p>Destek hattını arayın; hastane adını söyleyin. Kat planı hazırlanana kadar Yön Sesi yine tabelaları okur ve “Burada ne yazıyor?” düğmesiyle size yardımcı olur.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--navy)">Yön Sesi</b> · İzmir, Bayraklı<br>destek@yonsesi.app · 0 850 000 09 68</div>
+    <div><a href="#">Erişilebilirlik beyanı</a> · <a href="#">KVKK</a> · <a href="#">Hastaneler için</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var steps=[
+    {t:'Danışma bankosu solunuzda kaldı. Düz devam edin, 22 adım.',m:'saat 12 · ses ortada',x:40,rot:0,path:'M40 104 H40'},
+    {t:'Asansörler solunuzda, saat 9 yönünde. Çağırma düğmesi bel hizasında.',m:'saat 9 · ses sol kulakta',x:217,y:104,rot:-80,path:'M40 104 H217'},
+    {t:'2. kattasınız. Asansörden çıkınca sağa dönün.',m:'saat 3 · ses sağ kulakta',x:217,y:104,rot:80,path:'M40 104 H217 V80'},
+    {t:'Tabela okundu: B-210 Göz Polikliniği. Sizin kapınız bir sonraki.',m:'saat 2 · 9 adım',x:330,y:104,rot:45,path:'M40 104 H217 V80 M217 104 H330'},
+    {t:'Kardiyoloji Polikliniği tam sağınızda. Kapı açık. Şu an 34 numara içeride, sizin numaranız 37.',m:'vardınız · ses sustu',x:392,y:84,rot:90,path:'M40 104 H217 V80 M217 104 H392 V84'}
+  ];
+  var i=0,me=document.getElementById('me');
+  function show(){
+    var s=steps[i];document.getElementById('step-t').textContent=s.t;document.getElementById('step-m').textContent=s.m;
+    me.setAttribute('transform','translate('+s.x+' '+(s.y||104)+')');
+    document.getElementById('done').setAttribute('d',s.path);
+    document.getElementById('arc').setAttribute('transform','rotate('+s.rot+' 38 38)');
+    document.getElementById('count').textContent='Adım '+(i+1)+' / '+steps.length;
+    document.getElementById('next').textContent=i===steps.length-1?'Baştan başla':'Sonraki adım';
+  }
+  document.getElementById('next').addEventListener('click',function(){i=(i+1)%steps.length;show()});
+  show();
+})();
+</script>
+</body>
+</html>

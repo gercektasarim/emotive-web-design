@@ -1,0 +1,21 @@
+{
+  "slug": "ev-guvende",
+  "name": "Ev Güvende",
+  "interpretation": "Sabah özeti + gece kaydı",
+  "world": "Bahçeli evin gece kapı önü kızılötesi kamerada: gri-yeşil gece, demir bahçe kapısı, duvarda yürüyen kedi, sallanan dal.",
+  "palette": [
+    "#161B19",
+    "#1D2421",
+    "#E2E8E4",
+    "#9CC3B2",
+    "#D9A55A",
+    "#F08A7A"
+  ],
+  "fonts": [
+    "Chivo",
+    "Chivo Mono"
+  ],
+  "score": 28,
+  "lowest": "Konudan gelen palet/doku",
+  "moment": "Gece zaman çizelgesindeki dokuz noktaya dokundukça IR karede kedi, dal, komşu, kurye ya da yabancı belirir ve 'neden çalmadı / neden çaldı' kararı yazılır."
+}

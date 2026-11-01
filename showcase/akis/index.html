@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akış — Kekemelik terapisinin evdeki egzersiz arkadaşı</title>
+<meta name="description" content="Akış, kekemelik yaşayan çocuk ve gençlerin akıcılık egzersizlerini dinler; yumuşak başlangıç ve nefesle ilerlemeyi ölçer. Ses telefondan çıkmaz, terapiste yalnız sayılar gider.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sis:#EEF3F1;
+  --orman:#12302B;
+  --deniz:#2A8276;
+  --gunes:#F2B84B;
+  --beyaz:#FFFFFF;
+  --soluk:#46605A;
+  --cizgi:#CFDCD7;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sis);color:var(--orman);font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-size:19px;line-height:1.6}
+:focus-visible{outline:3px solid var(--deniz);outline-offset:3px;border-radius:6px}
+a{color:var(--deniz)}
+h1,h2,h3{font-family:"Lexend",sans-serif;font-weight:400;letter-spacing:-.3px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 28px}
+header{display:flex;justify-content:space-between;align-items:center;max-width:1140px;margin:0 auto;padding:24px 28px}
+.logo{font-family:Lexend;font-weight:600;font-size:22px;color:var(--orman);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo svg{width:40px;height:16px}
+header nav a{margin-left:26px;color:var(--orman);text-decoration:none;font-size:17px}
+header nav a:hover{color:var(--deniz);text-decoration:underline;text-underline-offset:6px}
+.btn{display:inline-block;font:inherit;font-weight:700;font-size:18px;padding:14px 24px;border-radius:999px;background:var(--orman);color:#fff;text-decoration:none;border:2px solid var(--orman);cursor:pointer}
+.btn:hover{background:var(--deniz);border-color:var(--deniz)}
+.btn.ince{background:transparent;color:var(--orman)}
+.btn.ince:hover{background:var(--orman);color:#fff}
+header nav a.btn{color:#fff;margin-left:26px}
+
+.hero{padding-top:50px}
+.hero-ust{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:end}
+.hero h1{font-size:clamp(44px,6vw,80px);line-height:1.02;margin:0;font-weight:300;letter-spacing:-1.5px}
+.hero h1 b{font-weight:600}
+.hero p{margin:0 0 24px;font-size:20px;max-width:40ch}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+
+/* egzersiz şeridi */
+.egzersiz{margin-top:50px;background:var(--beyaz);border-radius:28px 28px 0 0;padding:30px 34px 34px;display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:center;box-shadow:0 -1px 0 var(--cizgi)}
+.nefes{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.halka{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;position:relative}
+.halka::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--cizgi)}
+.halka .ic{width:var(--s,96px);height:var(--s,96px);border-radius:50%;background:rgba(42,130,118,.16);border:3px solid var(--deniz);transition:width 3s ease-in-out,height 3s ease-in-out;display:grid;place-items:center;font-family:Lexend;font-size:15px;color:var(--orman)}
+.nefes small{color:var(--soluk);font-size:15px;line-height:1.35}
+.cumle .ust{display:flex;justify-content:space-between;font-size:15px;color:var(--soluk);gap:12px;flex-wrap:wrap}
+.cumle .s{font-family:Lexend;font-size:clamp(26px,3.2vw,40px);font-weight:300;margin:6px 0 4px;letter-spacing:-.5px}
+.cumle .s .y{color:var(--deniz);font-weight:600}
+.cumle svg{width:100%;height:auto;display:block}
+.cumle .yol{stroke-dasharray:1400;stroke-dashoffset:0}
+.cumle .yol.ciz{animation:ciz 3.5s ease-out forwards}
+@keyframes ciz{from{stroke-dashoffset:1400}to{stroke-dashoffset:0}}
+.cumle .alt{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.rozet{display:inline-flex;align-items:center;gap:8px;background:#E3F1EE;color:var(--orman);border-radius:999px;padding:6px 14px;font-size:16px}
+.rozet i{width:10px;height:10px;border-radius:50%;background:var(--deniz)}
+.rozet.g i{background:var(--gunes)}
+
+section{padding:96px 0}
+.beyaz{background:var(--beyaz)}
+h2{font-size:clamp(30px,3.8vw,48px);line-height:1.12;margin:0 0 18px;max-width:22ch}
+.metin{max-width:58ch}
+
+/* ölçer / ölçmez */
+.olcum{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:40px;border-top:2px solid var(--orman)}
+.olcum > div{padding:26px 34px 0 0}
+.olcum > div + div{padding-left:34px;border-left:1px solid var(--cizgi)}
+.olcum h3{font-size:22px;margin:0 0 12px;font-weight:600}
+.olcum ul{list-style:none;padding:0;margin:0}
+.olcum li{padding:12px 0;border-bottom:1px solid var(--cizgi)}
+.olcum li b{display:block}
+.olcum li span{color:var(--soluk);font-size:17px}
+
+/* basamaklar */
+.basamak{display:grid;grid-template-columns:.85fr 1.15fr;gap:60px;align-items:start}
+.yokus{position:relative;list-style:none;margin:0;padding:0;display:flex;flex-direction:column-reverse;gap:12px}
+.yokus li{background:var(--beyaz);border-radius:16px;padding:16px 20px;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;border:1.5px solid var(--cizgi)}
+.yokus li .d{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:Lexend;font-weight:600;background:var(--sis)}
+.yokus li.tamam .d{background:var(--deniz);color:#fff}
+.yokus li.simdi{border-color:var(--gunes);border-width:2.5px}
+.yokus li.simdi .d{background:var(--gunes)}
+.yokus li small{color:var(--soluk);font-size:15px}
+.yokus li em{font-style:normal;font-size:15px;color:var(--soluk);white-space:nowrap}
+.yokus li:nth-child(1){margin-right:0}
+.yokus li:nth-child(2){margin-left:24px}
+.yokus li:nth-child(3){margin-left:48px}
+.yokus li:nth-child(4){margin-left:72px}
+.yokus li:nth-child(5){margin-left:96px}
+
+/* terapist raporu */
+.rapor-wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.rapor{background:var(--sis);border-radius:20px;padding:28px;font-size:17px;border:1.5px solid var(--cizgi)}
+.rapor .bas{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--cizgi);padding-bottom:12px;margin-bottom:16px}
+.rapor .bas b{font-family:Lexend;font-weight:600;font-size:19px}
+.rapor .bas span{color:var(--soluk);font-size:15px}
+.satir{display:grid;grid-template-columns:1fr auto;gap:10px;padding:8px 0}
+.satir span{color:var(--soluk)}
+.satir b{font-variant-numeric:tabular-nums}
+.bar{height:8px;background:#DCE7E3;border-radius:6px;margin:4px 0 10px;overflow:hidden;position:relative}
+.bar i{display:block;height:100%;background:var(--deniz);border-radius:6px}
+.bar s{position:absolute;top:0;bottom:0;width:2px;background:var(--orman);text-decoration:none}
+.rapor .not{background:var(--beyaz);border-radius:12px;padding:12px 14px;margin-top:14px;font-size:16px}
+.rapor .not b{color:var(--deniz)}
+
+.kanit{background:var(--orman);color:#E7F0ED}
+.kanit h2{color:#fff}
+.kanit .metin{color:#BFD3CD}
+.akis{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:18px;align-items:center;margin-top:40px}
+.akis .kutu{border:1.5px solid #3C5E57;border-radius:16px;padding:20px}
+.akis .kutu b{display:block;color:#fff;font-family:Lexend;font-weight:600;margin-bottom:6px}
+.akis .kutu span{font-size:16px;color:#BFD3CD}
+.akis .ok{color:var(--gunes);font-size:28px}
+.akis .kutu.sil{border-style:dashed}
+
+.alintilar{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.alintilar figure{margin:0;padding-top:20px;border-top:4px solid var(--gunes)}
+.alintilar blockquote{margin:0;font-family:Lexend;font-weight:300;font-size:clamp(21px,2.2vw,27px);line-height:1.4}
+.alintilar figcaption{margin-top:14px;color:var(--soluk);font-size:16px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:30px}
+.paket{background:var(--beyaz);border-radius:22px;padding:30px;border:1.5px solid var(--cizgi)}
+.paket h3{margin:0;font-size:22px;font-weight:600}
+.paket .t{font-family:Lexend;font-size:42px;margin:8px 0 0;font-weight:400}
+.paket .t small{font-family:"Atkinson Hyperlegible";font-size:17px;color:var(--soluk)}
+.paket ul{padding-left:20px;margin:14px 0 22px}
+details{border-bottom:1px solid var(--cizgi);padding:18px 0}
+summary{cursor:pointer;font-weight:700;font-size:19px}
+details p{margin:10px 0 0;max-width:64ch}
+.sss{margin-top:60px;max-width:860px}
+footer{padding:40px 0;font-size:16px;color:var(--soluk);border-top:1px solid var(--cizgi)}
+footer .r{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--soluk)}
+.credit{margin-top:18px;font-size:14px}
+
+@media (max-width:900px){
+  header nav a:not(.btn){display:none}
+  .hero-ust,.basamak,.rapor-wrap,.alintilar,.fiyat{grid-template-columns:1fr;gap:30px}
+  .egzersiz{grid-template-columns:1fr;padding:24px 20px;gap:20px}
+  .nefes{flex-direction:row;text-align:left}
+  .halka{width:110px;height:110px;flex:none}
+  .olcum{grid-template-columns:1fr}
+  .olcum > div + div{padding-left:0;border-left:0}
+  .olcum > div{padding-right:0}
+  .akis{grid-template-columns:1fr;gap:10px}
+  .akis .ok{transform:rotate(90deg);justify-self:center}
+  .yokus li:nth-child(n){margin-left:0}
+  section{padding:66px 0}
+}
+@media (max-width:480px){
+  .wrap,header{padding-left:18px;padding-right:18px}
+  .yokus li{grid-template-columns:40px 1fr}
+  .yokus li em{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#" aria-label="Akış ana sayfa"><svg viewBox="0 0 40 16" aria-hidden="true"><path d="M1 14 C10 14 12 2 20 2 S30 14 39 14" fill="none" stroke="#2A8276" stroke-width="3" stroke-linecap="round"/></svg>Akış</a>
+  <nav aria-label="Ana menü">
+    <a href="#olcum">Ne ölçer</a>
+    <a href="#basamak">Çocuk için</a>
+    <a href="#terapist">Terapist için</a>
+    <a href="#fiyat">Fiyat</a>
+    <a class="btn" href="#fiyat">İndir</a>
+  </nav>
+</header>
+
+<main>
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-ust">
+      <h1>Söz sende. <b>Acele yok.</b></h1>
+      <div>
+        <p>Akış, kekemelik yaşayan çocuk ve gençlerin terapide öğrendiği egzersizleri evde dinler: nefesi, yumuşak başlangıcı, uzatmayı. Takılmaları saymaz; neyin işe yaradığını gösterir.</p>
+        <div class="cta"><a class="btn" href="#fiyat">Terapistinle başla</a><a class="btn ince" href="#terapist">Terapistler için</a></div>
+      </div>
+    </div>
+
+    <div class="egzersiz" aria-label="Akış egzersiz ekranı: nefes halkası ve yumuşak başlangıçla söylenen cümlenin ses eğrisi">
+      <div class="nefes">
+        <div class="halka"><div class="ic" id="ic">nefes</div></div>
+        <small id="nefesyazi">Burnundan al, 3 saniye.<br>Sonra sesi yavaşça aç.</small>
+      </div>
+      <div class="cumle">
+        <div class="ust"><span>Ege · bugünkü 4. cümle · yumuşak başlangıç</span><span>Sessiz oda · ses kaydı yok</span></div>
+        <p class="s"><span class="y">A</span>nnemle markete <span class="y">g</span>ittik.</p>
+        <svg viewBox="0 0 800 130" aria-hidden="true">
+          <line x1="0" y1="110" x2="800" y2="110" stroke="#CFDCD7" stroke-width="2"/>
+          <path class="yol" id="yol" d="M0 110 C40 110 60 108 90 90 C120 70 140 52 170 48 C200 44 220 60 250 56 C280 52 300 40 330 46 C360 52 380 80 400 100 C420 112 440 110 460 108 C490 100 500 74 530 62 C560 50 590 58 620 52 C650 46 680 60 700 84 C720 104 760 110 800 110" fill="none" stroke="#2A8276" stroke-width="5" stroke-linecap="round"/>
+          <path d="M0 110 C40 110 60 108 90 90 L90 110z" fill="rgba(242,184,75,.45)"/>
+          <path d="M460 108 C490 100 500 74 530 62 L530 110 L460 110z" fill="rgba(242,184,75,.45)"/>
+          <text x="6" y="80" font-size="15" fill="#46605A" font-family="Atkinson Hyperlegible">yumuşak açılış</text>
+          <text x="466" y="46" font-size="15" fill="#46605A" font-family="Atkinson Hyperlegible">yumuşak açılış</text>
+        </svg>
+        <div class="alt">
+          <span class="rozet"><i></i>2 / 2 yumuşak başlangıç</span>
+          <span class="rozet g"><i></i>nefes ile ses arasında 0,4 sn</span>
+          <button class="btn ince" id="dene" type="button" style="padding:9px 18px;font-size:16px">Bir kez birlikte dene</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="beyaz" id="olcum">
+  <div class="wrap">
+    <h2>Takılma sayacı değil, egzersiz arkadaşı.</h2>
+    <p class="metin">Çocuğa kırmızı işaretli bir “kekeleme skoru” göstermek, konuşmayı daha zor hale getirir. Akış bu yüzden neyi ölçtüğü kadar neyi göstermediği konusunda da dikkatlidir.</p>
+    <div class="olcum">
+      <div>
+        <h3>Ölçer ve gösterir</h3>
+        <ul>
+          <li><b>Yumuşak başlangıç</b><span>Sesin sert değil, nefesle yavaşça açılıp açılmadığı.</span></li>
+          <li><b>Nefes ile ses arasındaki süre</b><span>Nefes alıp tutmak yerine akışla konuşmaya geçiş.</span></li>
+          <li><b>Konuşma hızı</b><span>Hece / saniye; terapistin belirlediği hedef aralığa göre.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Çocuğa göstermez</h3>
+        <ul>
+          <li><b>Takılma sayısı</b><span>Bu yalnız terapistin raporunda, bağlamıyla birlikte yer alır.</span></li>
+          <li><b>Başkalarıyla karşılaştırma</b><span>Sınıf ortalaması, sıralama, “yaşıtların” yoktur.</span></li>
+          <li><b>Tanı</b><span>Akış bir tanı ya da tedavi aracı değildir; dil ve konuşma terapistinin işini evde sürdürür.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="basamak">
+  <div class="wrap basamak">
+    <div>
+      <h2>Odadan sınıfa, kendi hızında.</h2>
+      <p class="metin">Terapistin birlikte belirlediği basamaklar uygulamaya girer. Ege bir basamağı rahat geçince bir sonrakine geçmeyi kendisi seçer. Kimse onu sınıfta söz almaya zorlamaz; sadece hazır olduğunda yanında bir plan vardır.</p>
+      <p class="metin" style="color:var(--soluk);font-size:17px">Örnek: 11 yaşında, 6. sınıf, 5 aydır terapide.</p>
+    </div>
+    <ol class="yokus" aria-label="Ege'nin konuşma basamakları, kolaydan zora">
+      <li class="tamam"><span class="d" aria-hidden="true">✓</span><div><b>Odada, yalnız</b><br><small>Kelime ve kısa cümlelerle yumuşak başlangıç</small></div><em>Eylül</em></li>
+      <li class="tamam"><span class="d" aria-hidden="true">✓</span><div><b>Kardeşine kitap okumak</b><br><small>Bir sayfa, uzatma tekniğiyle</small></div><em>Ekim</em></li>
+      <li class="simdi"><span class="d" aria-hidden="true">3</span><div><b>Telefonla dedesini aramak</b><br><small>Akış önce 2 dakikalık nefes ısınması yapar</small></div><em>bu hafta</em></li>
+      <li><span class="d" aria-hidden="true">4</span><div><b>Bakkaldan bir şey istemek</b><br><small>Söyleyeceği cümleyi önceden prova</small></div><em>sonra</em></li>
+      <li><span class="d" aria-hidden="true">5</span><div><b>Derste bir kez parmak kaldırmak</b><br><small>Öğretmenle önceden konuşulmuş bir soru</small></div><em>hedef</em></li>
+    </ol>
+  </div>
+</section>
+
+<section class="beyaz" id="terapist">
+  <div class="wrap rapor-wrap">
+    <div>
+      <h2>Terapiste ses değil, sayılar gider.</h2>
+      <p class="metin">Seanslar arasındaki bir haftada ne olduğunu çoğu zaman bilemezsiniz. Akış, ailenin onayıyla, haftalık bir özet hazırlar. Özette ses kaydı yoktur; yalnız egzersizlerin sayısal sonucu ve çocuğun kendi notları vardır.</p>
+      <p class="metin">Terapist paneli bilgisayardan açılır; danışan başına hedef aralık ve egzersiz listesi belirlenir.</p>
+    </div>
+    <div class="rapor" aria-label="Terapist için haftalık özet örneği">
+      <div class="bas"><b>Ege K., 11 · haftalık özet</b><span>3–9 Kasım · 5 gün egzersiz</span></div>
+      <div class="satir"><span>Yumuşak başlangıç oranı</span><b>%78</b></div>
+      <div class="bar" aria-hidden="true"><i style="width:78%"></i><s style="left:62%"></s></div>
+      <div class="satir"><span>Konuşma hızı (hedef 3,0–3,8 hece/sn)</span><b>3,4</b></div>
+      <div class="bar" aria-hidden="true"><i style="width:68%"></i><s style="left:76%"></s></div>
+      <div class="satir"><span>Ortalama egzersiz süresi</span><b>14 dk / gün</b></div>
+      <div class="satir"><span>Zorlandığı başlangıçlar</span><b>/k/, /t/</b></div>
+      <div class="not"><b>Ege'nin notu:</b> “Dedemi aradım. İlk cümlede takıldım ama nefes alıp devam ettim.”</div>
+    </div>
+  </div>
+</section>
+
+<section class="kanit">
+  <div class="wrap">
+    <h2>Takıldığı anların kaydı hiçbir yerde durmaz.</h2>
+    <p class="metin">Bir çocuğun en zorlandığı anlar, en korunması gereken verisidir. Akış sesi telefonun içinde dinler, ölçer ve siler. İnternet bağlantısı gerekmez; buluta, sunucuya, yapay zekâ eğitimine hiçbir ses gitmez.</p>
+    <div class="akis" aria-label="Verinin yolu">
+      <div class="kutu"><b>Mikrofon</b><span>Yalnız egzersiz ekranı açıkken.</span></div>
+      <span class="ok" aria-hidden="true">→</span>
+      <div class="kutu"><b>Telefonda ölçüm</b><span>Başlangıç eğrisi, hız, nefes süresi.</span></div>
+      <span class="ok" aria-hidden="true">→</span>
+      <div class="kutu sil"><b>Ses silinir</b><span>Kalan: “4. cümle · 2/2 yumuşak · 3,4 hece/sn”.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap alintilar">
+    <figure>
+      <blockquote>“Evde egzersiz yapıp yapmadığını sormak zorunda kalmıyorum artık. Seansa geldiğinde neyi konuşacağımızı ikimiz de biliyoruz.”</blockquote>
+      <figcaption>Uzm. Dil ve Konuşma Terapisti Selin Yavuz · İzmir</figcaption>
+    </figure>
+    <figure>
+      <blockquote>“Uygulama bana kaç kere takıldığımı söylemiyor. Ne zaman iyi başladığımı söylüyor. Bu daha iyi.”</blockquote>
+      <figcaption>Ege, 11 yaşında · annesinin izniyle</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="beyaz" id="fiyat">
+  <div class="wrap">
+    <h2>Terapiyle birlikte kullanılır.</h2>
+    <div class="fiyat">
+      <div class="paket"><h3>Aile</h3><p class="t">690 ₺ <small>/ yıl</small></p><ul><li>Bir çocuk ya da genç için</li><li>Terapistin hazırladığı egzersiz planı</li><li>Haftalık özet (onay verirseniz)</li><li>30 gün ücretsiz deneme</li></ul><a class="btn" href="#">iPhone ya da Android için indir</a></div>
+      <div class="paket"><h3>Terapist paneli</h3><p class="t">Ücretsiz <small>10 danışana kadar</small></p><ul><li>Danışan başına hedef aralık</li><li>Egzersiz kütüphanesi (Türkçe ses gruplarına göre)</li><li>Daha fazla danışan için kurum lisansı</li></ul><a class="btn ince" href="#">Terapist hesabı iste</a></div>
+    </div>
+    <div class="sss">
+      <details><summary>Akış kekemeliği iyileştirir mi?</summary><p>Akış bir tedavi değildir. Bir dil ve konuşma terapistinin önerdiği tekniklerin evde düzenli çalışılmasına yardım eder. Terapi almıyorsanız önce bir uzmana başvurmanızı öneririz.</p></details>
+      <details><summary>Kaç yaşından itibaren kullanılabilir?</summary><p>8–17 yaş için tasarlandı. Daha küçük çocuklarda ebeveyn ile birlikte, terapistin önerisiyle kullanılabilir.</p></details>
+      <details><summary>Terapistimiz uygulamayı bilmiyorsa?</summary><p>Haftalık özeti PDF olarak indirip seansa götürebilirsiniz. Egzersiz planını da birlikte uygulamaya girebilirsiniz.</p></details>
+      <details><summary>Çocuğum ekran karşısında daha da gerilirse?</summary><p>Egzersizler ekrana bakmadan, yalnız sesle de yapılabilir. Akış gün içinde en fazla 20 dakika egzersiz önerir ve sonra durur.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="r"><span>Akış · Kendi hızında konuşmak için.</span><span>destek@akis.app · Gizlilik · KVKK · Klinik danışma kurulu</span></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  const btn=document.getElementById('dene'),ic=document.getElementById('ic'),yazi=document.getElementById('nefesyazi'),yol=document.getElementById('yol');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  btn.addEventListener('click',()=>{
+    if(reduce){yazi.innerHTML='Nefes al, sonra sesi yavaşça aç.';return}
+    btn.disabled=true;
+    ic.style.setProperty('--s','140px');ic.textContent='al…';yazi.innerHTML='Burnundan al…<br>1 · 2 · 3';
+    yol.classList.remove('ciz');
+    yol.style.strokeDashoffset='1400';
+    setTimeout(()=>{ic.style.setProperty('--s','70px');ic.textContent='ver';yazi.innerHTML='Şimdi sesi yavaşça aç:<br>“Aaannemle…”';void yol.offsetWidth;yol.style.strokeDashoffset='';yol.classList.add('ciz')},3100);
+    setTimeout(()=>{ic.style.setProperty('--s','96px');ic.textContent='✓';yazi.innerHTML='Yumuşak başladın.<br>Acele yok.';btn.disabled=false},6800);
+  });
+})();
+</script>
+</body>
+</html>

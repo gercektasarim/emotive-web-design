@@ -1,0 +1,21 @@
+{
+  "slug": "sukran",
+  "name": "Şükran",
+  "interpretation": "Tahtada üç an",
+  "world": "Sınıfın yeşil tahtası ve ahşap tebeşirliği, öğretmenler odasında ince belli bardakta çay, Kasım akşamüstü okul bahçesinde kızaran ağaç.",
+  "palette": [
+    "#2E4A3E",
+    "#F2F1EA",
+    "#6E5A43",
+    "#B87A22",
+    "#E19C86",
+    "#ECEFE9"
+  ],
+  "fonts": [
+    "Lora",
+    "Mulish"
+  ],
+  "score": 29,
+  "lowest": "Tanınabilirlik",
+  "moment": "Günün üç polaroidine dokununca arkasındaki tek satırlık notun görünmesi."
+}

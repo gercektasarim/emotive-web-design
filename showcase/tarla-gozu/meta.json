@@ -1,0 +1,20 @@
+{
+  "slug": "tarla-gozu",
+  "name": "Tarla Gözü",
+  "interpretation": "Sera içi teşhis fişi",
+  "world": "Antalya'da plastik serada süt beyazı naylon ışığı, sarı yapışkan tuzaklar ve kıvrılmış domates yaprakları.",
+  "palette": [
+    "#EEF1E7",
+    "#1E3A1F",
+    "#F2D21B",
+    "#B8321C",
+    "#5E4C33"
+  ],
+  "fonts": [
+    "PT Sans Narrow",
+    "PT Sans"
+  ],
+  "score": 28,
+  "lowest": "Varsayılan kokusu",
+  "moment": "Kamera vizöründeki domates yaprağı 'başka bir yaprak dene' ile virüs, güve ya da erken yanıklığa dönüşür, teşhis ve üç adımlık iş listesi değişir."
+}

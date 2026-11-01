@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Göz Ol — Kameranın gördüğünü sana internetsiz anlatır</title>
+<meta name="description" content="Göz Ol, görme engelliler için kameranın gördüğü sahneyi telefonun içinde, internetsiz betimler: tehlike önce, saat yönü ve adım mesafesiyle. Ücretsiz; TalkBack ve VoiceOver ile çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --asphalt:#1C1D1A;      /* kaldırım asfaltı */
+  --curb:#2A2B27;         /* bordür taşı, kart zemini */
+  --kerb-line:#3B3C37;
+  --yellow:#F2C200;       /* hissedilebilir kılavuz yüzey */
+  --chalk:#F5F3EC;        /* yol çizgisi beyazı */
+  --fog:#C9C8BF;          /* ikincil metin */
+  --stone:#9C9B92;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+body{background:var(--asphalt);color:var(--chalk);font:400 1.1875rem/1.6 "Atkinson Hyperlegible",system-ui,sans-serif;}
+a{color:var(--yellow);text-underline-offset:.2em;text-decoration-thickness:2px}
+:focus-visible{outline:4px solid var(--yellow);outline-offset:4px;border-radius:2px}
+.skip{position:absolute;left:1rem;top:-5rem;background:var(--yellow);color:var(--asphalt);padding:.9rem 1.2rem;font-weight:700;z-index:10;text-decoration:none}
+.skip:focus{top:1rem}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+body{overflow-wrap:break-word}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+h1,h2,h3{font-family:"Archivo Black","Atkinson Hyperlegible",sans-serif;font-weight:400;line-height:1.08;letter-spacing:-.01em}
+h2{font-size:clamp(2rem,4.4vw,3.1rem);max-width:20ch}
+h3{font-size:1.35rem;line-height:1.2}
+p{max-width:62ch}
+
+/* header */
+header.top{border-bottom:1px solid var(--kerb-line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:76px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:.7rem;color:var(--chalk);text-decoration:none;font-family:"Archivo Black";font-size:1.4rem}
+.brand svg{flex:none}
+nav ul{list-style:none;display:flex;gap:.25rem;flex-wrap:wrap}
+nav a{display:inline-flex;align-items:center;min-height:48px;padding:0 .9rem;color:var(--chalk);text-decoration:none;font-weight:700}
+nav a:hover{text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:56px;padding:0 1.5rem;border-radius:4px;font:700 1.1rem/1 "Atkinson Hyperlegible";text-decoration:none;border:3px solid var(--yellow);cursor:pointer}
+.btn.solid{background:var(--yellow);color:var(--asphalt)}
+.btn.line{background:transparent;color:var(--yellow)}
+.btn:hover{filter:brightness(1.08)}
+
+/* hero */
+.hero{padding:4.5rem 0 3.5rem}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:3.5rem;align-items:start}
+.hero h1{font-size:clamp(2.6rem,6.4vw,5rem);max-width:13ch}
+.hero h1 span{display:block;color:var(--yellow)}
+.lede{font-size:1.35rem;color:var(--chalk);margin:1.6rem 0 2rem;max-width:34ch}
+.ctas{display:flex;gap:.8rem;flex-wrap:wrap}
+.hint{color:var(--fog);font-size:1rem;margin-top:1.1rem}
+
+/* demo */
+.demo{background:var(--curb);border:1px solid var(--kerb-line);border-radius:6px;padding:1.4rem}
+.demo h2{font-size:1.15rem;font-family:"Atkinson Hyperlegible";font-weight:700;letter-spacing:0;color:var(--fog);margin-bottom:.8rem}
+.scenes{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1.2rem}
+.scenes button{min-height:56px;background:transparent;border:2px solid var(--kerb-line);color:var(--chalk);font:700 1rem/1.15 "Atkinson Hyperlegible";border-radius:4px;cursor:pointer;padding:.4rem}
+.scenes button[aria-pressed="true"]{background:var(--yellow);color:var(--asphalt);border-color:var(--yellow)}
+.stage{display:grid;grid-template-columns:170px 1fr;gap:1.2rem;align-items:start}
+.radar{width:170px;height:170px}
+.radar text{font:700 11px "Atkinson Hyperlegible";fill:var(--stone)}
+.say{list-style:none;min-height:13.5rem}
+.say li{padding:.55rem 0 .55rem .9rem;border-left:4px solid var(--kerb-line);font-size:1.2rem;line-height:1.35;margin-bottom:.35rem;opacity:0;transform:translateY(4px);transition:opacity .35s,transform .35s}
+.say li.on{opacity:1;transform:none}
+.say li.danger{border-left-color:var(--yellow)}
+.say li small{display:block;font-size:.9rem;color:var(--fog);margin-top:.15rem}
+.demo-foot{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--kerb-line);font-size:.95rem;color:var(--fog)}
+.demo-foot .btn{min-height:48px;font-size:1rem;padding:0 1rem}
+.status{display:inline-flex;align-items:center;gap:.5rem}
+.status i{width:10px;height:10px;border-radius:50%;background:var(--yellow);display:inline-block}
+
+/* tactile band */
+.tactile{height:46px;background:
+  radial-gradient(circle at 50% 50%, #FFD52E 0 5px, transparent 6px) 0 0/23px 23px,
+  var(--yellow);border-top:2px solid #C79F00;border-bottom:2px solid #C79F00}
+.tactile.lines{background:repeating-linear-gradient(90deg,var(--yellow) 0 14px,#FFD52E 14px 18px,var(--yellow) 18px 32px),var(--yellow);height:24px}
+
+section{padding:5.5rem 0}
+.kicker{color:var(--yellow);font-weight:700;font-size:1.05rem;margin-bottom:.8rem;display:block}
+
+/* week */
+.week{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:2.6rem;border-top:3px solid var(--yellow)}
+.week li{list-style:none;padding:1.3rem 1.1rem 0 0;border-right:1px solid var(--kerb-line);padding-left:1.1rem}
+.week li:first-child{padding-left:0}
+.week li:last-child{border-right:0}
+.week .day{font-weight:700;color:var(--yellow);display:block}
+.week .where{font-size:.98rem;color:var(--fog);display:block;margin-bottom:.6rem}
+.week q{display:block;font-size:1.1rem;quotes:"“" "”"}
+
+/* rules */
+.rules{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start}
+.rules ol{list-style:none;counter-reset:r}
+.rules li{counter-increment:r;display:grid;grid-template-columns:3.5rem 1fr;gap:1rem;padding:1.4rem 0;border-bottom:1px solid var(--kerb-line)}
+.rules li::before{content:counter(r);font-family:"Archivo Black";font-size:2.4rem;line-height:1;color:var(--yellow)}
+.rules li p{color:var(--fog);margin-top:.35rem}
+.clock{background:var(--curb);border-radius:6px;padding:1.6rem;border:1px solid var(--kerb-line)}
+.clock p{color:var(--fog);font-size:1rem}
+
+/* offline */
+.offline{background:var(--chalk);color:var(--asphalt)}
+.offline a{color:#5A4700}
+.offline :focus-visible{outline-color:var(--asphalt)}
+.offline .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center}
+.offline h2{max-width:16ch}
+.offline p{margin-top:1.2rem;font-size:1.2rem}
+.ticket{background:var(--asphalt);color:var(--chalk);border-radius:6px;padding:1.6rem;font-size:1.05rem}
+.ticket dl{display:grid;grid-template-columns:auto 1fr;gap:.55rem 1.4rem}
+.ticket dt{color:var(--fog)}
+.ticket dd{font-weight:700}
+.ticket .line{border:0;border-top:1px dashed #55564F;margin:1.2rem 0}
+.ticket .said{color:var(--yellow);font-size:1.25rem;line-height:1.35}
+
+/* readers */
+.readers .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.gest{border-top:1px solid var(--kerb-line)}
+.gest div{display:grid;grid-template-columns:11rem 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--kerb-line)}
+.gest dt{font-weight:700;color:var(--yellow)}
+.gest dd{color:var(--chalk)}
+
+/* price */
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.plan{border:2px solid var(--kerb-line);border-radius:6px;padding:2rem}
+.plan.free{border-color:var(--yellow)}
+.amount{font-family:"Archivo Black";font-size:3.2rem;line-height:1;margin:.8rem 0 .4rem}
+.plan ul{list-style:none;margin:1.2rem 0 1.6rem}
+.plan li{padding:.45rem 0 .45rem 1.6rem;position:relative}
+.plan li::before{content:"";position:absolute;left:0;top:.95rem;width:.7rem;height:.7rem;background:var(--yellow);border-radius:50%}
+.plan .note{color:var(--fog);font-size:1rem}
+.give{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+.give button{min-height:52px;min-width:5.5rem;border:2px solid var(--kerb-line);background:transparent;color:var(--chalk);font:700 1.05rem "Atkinson Hyperlegible";border-radius:4px;cursor:pointer}
+.give button[aria-pressed="true"]{border-color:var(--yellow);background:var(--yellow);color:var(--asphalt)}
+.give-out{min-height:3.2em;color:var(--chalk)}
+
+/* quote */
+.quote{border-top:1px solid var(--kerb-line)}
+blockquote{font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.3;max-width:30ch}
+blockquote p{max-width:none}
+figcaption{margin-top:1.4rem;color:var(--fog)}
+figcaption b{color:var(--chalk)}
+
+/* faq */
+.faq .wrap{max-width:880px}
+details{border-bottom:1px solid var(--kerb-line)}
+summary{list-style:none;cursor:pointer;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-weight:700;font-size:1.2rem;padding:.8rem 0}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:"Archivo Black";color:var(--yellow);font-size:1.6rem}
+details[open] summary::after{content:"−"}
+details p{padding:0 0 1.3rem;color:var(--fog)}
+
+footer{border-top:1px solid var(--kerb-line);padding:3rem 0 2rem;color:var(--fog);font-size:1rem}
+footer .wrap{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+footer .credit{margin-top:2.5rem;font-size:.9rem}
+footer .credit a{color:var(--fog)}
+
+@media (max-width:900px){
+  .hero .wrap,.rules,.offline .wrap,.readers .wrap,.price .wrap{grid-template-columns:minmax(0,1fr);gap:2.2rem}
+  .week{grid-template-columns:1fr;border-top:0}
+  .week li{border-right:0;border-top:1px solid var(--kerb-line);padding:1.1rem 0}
+  .week li:first-child{border-top:3px solid var(--yellow)}
+}
+@media (max-width:560px){
+  body{font-size:1.125rem}
+  .hero{padding-top:2.6rem}
+  nav{display:none}
+  .scenes{grid-template-columns:repeat(2,1fr)}
+  .stage{grid-template-columns:minmax(0,1fr)}
+  .wrap{padding:0 1rem}
+  .radar{width:150px;height:150px;margin:0 auto}
+  .gest div{grid-template-columns:1fr;gap:.2rem}
+  section{padding:4rem 0}
+  .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Göz Ol ana sayfa">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="4" fill="#F2C200"/><g fill="#1C1D1A"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="25" cy="9" r="3"/><circle cx="9" cy="17" r="3"/><circle cx="17" cy="17" r="3"/><circle cx="25" cy="17" r="3"/><circle cx="9" cy="25" r="3"/><circle cx="17" cy="25" r="3"/><circle cx="25" cy="25" r="3"/></g></svg>
+      Göz Ol
+    </a>
+    <nav aria-label="Ana menü">
+      <ul>
+        <li><a href="#nasil">Nasıl konuşur</a></li>
+        <li><a href="#internetsiz">İnternetsiz</a></li>
+        <li><a href="#ucret">Ücret</a></li>
+        <li><a href="#sss">Sorular</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <h1 id="h1">Sağında boş bir sandalye. <span>Önünde iki basamak.</span></h1>
+      <p class="lede">Göz Ol, telefonunun kamerasının gördüğünü sana anlatır. Önce tehlikeyi, sonra yolu, sen sorarsan gerisini. İnternet gerekmez; görüntü telefondan çıkmaz.</p>
+      <div class="ctas">
+        <a class="btn solid" href="#ucret">Android için indir</a>
+        <a class="btn line" href="#ucret">iPhone için indir</a>
+      </div>
+      <p class="hint">Ücretsiz. 212 MB. TalkBack ve VoiceOver ile ilk açılıştan itibaren sesli kurulum.</p>
+    </div>
+
+    <div class="demo" role="region" aria-labelledby="demo-h">
+      <h2 id="demo-h">Bir sahne seç, Göz Ol ne söylerdi dinle</h2>
+      <div class="scenes" role="group" aria-label="Sahneler">
+        <button type="button" aria-pressed="true" data-s="kafe">Kafe girişi</button>
+        <button type="button" aria-pressed="false" data-s="durak">Otobüs durağı</button>
+        <button type="button" aria-pressed="false" data-s="metro">Metro çıkışı</button>
+        <button type="button" aria-pressed="false" data-s="market">Market rafı</button>
+      </div>
+      <div class="stage">
+        <svg class="radar" viewBox="0 0 170 170" aria-hidden="true">
+          <circle cx="85" cy="85" r="78" fill="none" stroke="#3B3C37" stroke-width="2"/>
+          <circle cx="85" cy="85" r="50" fill="none" stroke="#3B3C37" stroke-width="1.5" stroke-dasharray="3 5"/>
+          <circle cx="85" cy="85" r="22" fill="none" stroke="#3B3C37" stroke-width="1.5" stroke-dasharray="3 5"/>
+          <text x="85" y="14" text-anchor="middle">12</text><text x="160" y="89" text-anchor="middle">3</text><text x="85" y="164" text-anchor="middle">6</text><text x="10" y="89" text-anchor="middle">9</text>
+          <path d="M85 85 L78 98 L92 98 Z" fill="#F5F3EC"/>
+          <g id="dots"></g>
+        </svg>
+        <ol class="say" id="say" aria-live="polite"></ol>
+      </div>
+      <div class="demo-foot">
+        <span class="status"><i aria-hidden="true"></i><span id="stat">Uçak modu açık · yanıt 0,4 sn</span></span>
+        <button class="btn line" type="button" id="speak">Sesli oku</button>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="tactile" role="presentation"></div>
+
+<section aria-labelledby="hafta">
+  <div class="wrap">
+    <span class="kicker">Yeni şehirde ilk hafta</span>
+    <h2 id="hafta">Kimseye sormadan geçen beş gün</h2>
+    <p style="margin-top:1.2rem;color:var(--fog)">Elif ekim başında İzmir'e taşındı. Bastonu yolu, Göz Ol ise yolun üstündekileri söyledi. Aşağıdakiler o hafta telefonundan duyduğu cümleler.</p>
+    <ul class="week">
+      <li><span class="day">Pazartesi</span><span class="where">Basmane metro, 2. çıkış</span><q>Yürüyen merdiven sağında, yukarı çıkıyor. Solunda sabit merdiven.</q></li>
+      <li><span class="day">Salı</span><span class="where">Bornova, fakülte girişi</span><q>Saat 1 yönünde cam kapı, yaklaşık 6 adım. Kapı itmeli.</q></li>
+      <li><span class="day">Çarşamba</span><span class="where">Mahalle marketi</span><q>Elindeki: yarım yağlı süt, 1 litre, son tüketim 14 Kasım.</q></li>
+      <li><span class="day">Perşembe</span><span class="where">Alsancak, kafe</span><q>Önünde iki kişilik masa, sağdaki sandalye boş. Masada bir bardak var.</q></li>
+      <li><span class="day">Cuma</span><span class="where">Kordon, akşamüstü</span><q>Saat 11 yönünde bisiklet yolu. Bisiklet yaklaşıyor, sağda kal.</q></li>
+    </ul>
+  </div>
+</section>
+
+<section id="nasil" aria-labelledby="nasil-h" style="border-top:1px solid var(--kerb-line)">
+  <div class="wrap rules">
+    <div>
+      <span class="kicker">Nasıl konuşur</span>
+      <h2 id="nasil-h">Az konuşur. Sırasını bilir.</h2>
+      <p style="margin-top:1.2rem;color:var(--fog)">Sahnedeki her şeyi saymak, hiçbir şey söylememekle aynıdır. Göz Ol üç kurala göre seçer.</p>
+      <div class="clock" style="margin-top:2rem">
+        <h3>Yönler saat kadranıyla</h3>
+        <p style="margin-top:.6rem">Tam önün saat 12, sağın saat 3. Mesafe adımla söylenir; adım boyunu ilk kurulumda 10 adım yürüyerek ölçer.</p>
+      </div>
+    </div>
+    <ol>
+      <li><div><h3>Önce tehlike</h3><p>Basamak, açık rögar, alçak tabela, kaldırıma park etmiş scooter. Bunlar başka her şeyin önüne geçer ve kısa bir titreşimle gelir.</p></div></li>
+      <li><div><h3>Sonra yol</h3><p>Kapı, merdiven, yaya geçidi, boş oturak. Nereye gidebileceğin, saat yönü ve adım sayısıyla.</p></div></li>
+      <li><div><h3>Gerisi sen sorunca</h3><p>Ekrana iki kez dokun: “Sahneyi anlat.” Renkler, yüz ifadeleri, vitrindeki yazı. Sormadıkça susar.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section id="internetsiz" class="offline" aria-labelledby="off-h">
+  <div class="wrap">
+    <div>
+      <span class="kicker" style="color:#5A4700">İnternetsiz</span>
+      <h2 id="off-h">Metro tünelinde de konuşur.</h2>
+      <p>Göz Ol'un görme modeli telefonun içinde çalışır. Konak ile Üçyol arasındaki tünelde, sinyalin olmadığı bodrum katlarda, yurt dışında veri paketi yokken aynı hızda.</p>
+      <p>Kamera karesi açıklandıktan sonra bellekten silinir. Hiçbir görüntü kaydedilmez, hiçbir sunucuya gönderilmez; yanından geçen insanların yüzleri de dahil.</p>
+      <p><b>Kendin dene:</b> uçak modunu aç, uygulamayı başlat, “Sahneyi anlat” de.</p>
+    </div>
+    <div class="ticket" role="group" aria-label="Örnek kayıt: metro tüneli">
+      <dl>
+        <dt>Konum</dt><dd>İzmir Metrosu, Konak → Üçyol</dd>
+        <dt>Bağlantı</dt><dd>Yok · uçak modu</dd>
+        <dt>Yanıt süresi</dt><dd>0,4 saniye</dd>
+        <dt>Kaydedilen kare</dt><dd>0</dd>
+      </dl>
+      <hr class="line">
+      <p style="color:var(--fog);font-size:.95rem">Duyulan</p>
+      <p class="said">“Kapılar sağda açılacak. Kapının önünde iki kişi ayakta.”</p>
+    </div>
+  </div>
+</section>
+
+<section class="readers" aria-labelledby="ek-h">
+  <div class="wrap">
+    <div>
+      <span class="kicker">Ekran okuyucunla</span>
+      <h2 id="ek-h">Alıştığın hareketlerle çalışır</h2>
+      <p style="margin-top:1.2rem;color:var(--fog)">Göz Ol kendi sesini dayatmaz; TalkBack ya da VoiceOver hangi sesi, hangi hızı kullanıyorsa onunla konuşur. Kemik iletimli kulaklıkla trafiği duymaya devam edersin.</p>
+      <p style="margin-top:1rem;color:var(--fog)">Telefonu göğüs askısında, kamera öne bakacak şekilde taşımanı öneriyoruz. Elin bastonda kalır.</p>
+    </div>
+    <dl class="gest">
+      <div><dt>İki kez dokun</dt><dd>Sahneyi anlat</dd></div>
+      <div><dt>Üç parmakla dokun</dt><dd>Yazıyı oku: tabela, menü, otobüs numarası</dd></div>
+      <div><dt>Yukarı kaydır</dt><dd>Yürüme modu: yalnız tehlike ve yol</dd></div>
+      <div><dt>“Bul: kapı”</dt><dd>Aradığın şeyi bulana kadar yönlendirir</dd></div>
+      <div><dt>Telefonu salla</dt><dd>Son cümleyi tekrar et</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="ucret" class="price" aria-labelledby="ucret-h" style="border-top:1px solid var(--kerb-line)">
+  <div class="wrap" style="display:block;margin-bottom:2.2rem">
+    <span class="kicker">Ücret</span>
+    <h2 id="ucret-h">Kullanmak ücretsiz. Hep öyle kalacak.</h2>
+  </div>
+  <div class="wrap">
+    <article class="plan free" aria-labelledby="p1">
+      <h3 id="p1">Göz Ol</h3>
+      <p class="amount">0 ₺</p>
+      <p class="note">Reklam yok, abonelik yok, hesap açmak yok.</p>
+      <ul>
+        <li>Yürüme modu, sahne anlatımı, yazı okuma</li>
+        <li>Türkçe ve İngilizce anlatım</li>
+        <li>Android 10 ve üstü, iPhone XS ve üstü</li>
+      </ul>
+      <div class="ctas"><a class="btn solid" href="#">Android için indir</a><a class="btn line" href="#">iPhone için indir</a></div>
+    </article>
+    <article class="plan" aria-labelledby="p2">
+      <h3 id="p2">Bir başkasına göğüs askısı</h3>
+      <p class="note" style="margin-top:.6rem">Göz Ol'u bir dernek geliştiriyor. Uygulama bağışlarla ücretsiz kalıyor; askılar ve yönlendirme eğitimleri de.</p>
+      <div class="give" role="group" aria-label="Bağış tutarı">
+        <button type="button" aria-pressed="false" data-v="150">150 ₺</button>
+        <button type="button" aria-pressed="true" data-v="250">250 ₺</button>
+        <button type="button" aria-pressed="false" data-v="600">600 ₺</button>
+      </div>
+      <p class="give-out" id="give-out" aria-live="polite">250 ₺: bir kullanıcıya göğüs askısı ve bir saatlik birebir yönlendirme eğitimi.</p>
+      <a class="btn line" href="#">Bağış yap</a>
+      <p class="note" style="margin-top:1rem">2025 yılında gelen bağışın %86'sı askı ve eğitime gitti. <a href="#">Bağımsız denetim raporu (PDF, 1,2 MB)</a></p>
+    </article>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı sözü">
+  <div class="wrap">
+    <figure>
+      <blockquote><p>“Annem her akşam ‘bugün kime yol sordun’ diye arıyordu. Üçüncü hafta cevabım ‘kimseye’ oldu. Kızmadı, sevindi.”</p></blockquote>
+      <figcaption><b>Elif Kara</b>, 22 · Ege Üniversitesi Psikoloji 2. sınıf, İzmir</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="sss" class="faq" aria-labelledby="sss-h" style="border-top:1px solid var(--kerb-line)">
+  <div class="wrap">
+    <h2 id="sss-h" style="margin-bottom:1.6rem">Sorular</h2>
+    <details><summary>Bastonun ya da rehber köpeğin yerine geçer mi?</summary><p>Hayır, geçmemeli. Baston yerdeki engeli, köpek yolu bulur. Göz Ol bunlara ek olarak, onların söyleyemediklerini söyler: tabelada ne yazdığını, masanın boş olup olmadığını, kapının hangi yöne açıldığını.</p></details>
+    <details><summary>Ne kadar pil yer?</summary><p>Yürüme modunda sürekli açıkken saatte yaklaşık %9. Yalnız sorduğunda anlattığı modda günlük kullanım %5'in altında kalıyor.</p></details>
+    <details><summary>Yanlış söylerse ne olur?</summary><p>Emin olmadığında bunu söyler: “Muhtemelen bir basamak, yavaşla.” Karanlıkta ya da yağmurda kamera az görüyorsa “görüş zayıf” uyarısı verir. Kararı her zaman sen verirsin.</p></details>
+    <details><summary>Yüzleri tanır mı?</summary><p>Tanıdığın birini “arkadaşım” olarak kaydedersen, o kişi yanına geldiğinde adını söyler. Kayıt yalnız senin telefonunda durur. Yabancıların yüzleri tanınmaz, yalnızca “saat 2 yönünde biri sana bakıyor” gibi anlatılır.</p></details>
+    <details><summary>Kurulum için birinin yardımı gerekir mi?</summary><p>Hayır. Uygulama ilk açıldığında ekran okuyucunu algılar ve kurulumu baştan sona sesli yaptırır. Adım boyu ölçümü dahil yaklaşık 4 dakika sürer.</p></details>
+  </div>
+</section>
+</main>
+
+<div class="tactile lines" role="presentation"></div>
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--chalk)">Göz Ol</b> · Görme Engelliler Bağımsız Yaşam Derneği projesi<br>destek@gozol.org.tr · 0 232 000 41 41 (hafta içi 10.00–17.00)</div>
+    <div><a href="#">Erişilebilirlik beyanı</a> · <a href="#">KVKK</a> · <a href="#">Denetim raporu</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var S={
+    kafe:{dots:[[70,40,'tehlike'],[120,60,''],[52,95,'']],lines:[
+      ['İki basamak, hemen önünde. Yukarı çıkıyor.','tehlike · saat 12 · 1 adım',1],
+      ['Kapı açık, basamakların sonunda.','yol · saat 12 · 3 adım'],
+      ['Sağında boş bir sandalye, masada kimse yok.','sen sorunca · saat 2 · 4 adım']]},
+    durak:{dots:[[40,70,'tehlike'],[85,30,''],[135,85,'']],lines:[
+      ['Saat 10 yönünde direk, baş hizasında tabela.','tehlike · 2 adım',1],
+      ['Otobüs yaklaşıyor. Hat 202, Bornova Metro.','yol · tabela okundu'],
+      ['Sağında bank, bir kişi oturuyor, yanı boş.','sen sorunca · saat 3 · 3 adım']]},
+    metro:{dots:[[95,45,''],[60,40,''],[128,110,'tehlike']],lines:[
+      ['Sağ arkanda kaldırıma park edilmiş bir scooter.','tehlike · saat 4 · 2 adım',1],
+      ['Önünde yürüyen merdiven, yukarı çıkıyor.','yol · saat 12 · 5 adım'],
+      ['Solunda sabit merdiven, tırabzan sol tarafta.','yol · saat 11 · 5 adım']]},
+    market:{dots:[[85,30,''],[120,40,''],[50,40,'']],lines:[
+      ['Elindeki: yarım yağlı süt, 1 litre.','yazı okundu · son tüketim 14 Kasım'],
+      ['Sağındaki raf: tam yağlı süt, aynı marka.','saat 1 · uzan'],
+      ['Fiyat etiketi: 38,75 ₺.','sen sorunca']]}
+  };
+  var say=document.getElementById('say'),dots=document.getElementById('dots');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur='kafe',timers=[];
+  function show(k){
+    cur=k;timers.forEach(clearTimeout);timers=[];
+    say.innerHTML='';dots.innerHTML='';
+    S[k].dots.forEach(function(d){
+      var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx',d[0]);c.setAttribute('cy',d[1]);c.setAttribute('r',d[2]?9:7);
+      c.setAttribute('fill',d[2]?'#F2C200':'none');c.setAttribute('stroke',d[2]?'#F2C200':'#F5F3EC');c.setAttribute('stroke-width','3');
+      dots.appendChild(c);
+    });
+    S[k].lines.forEach(function(l,i){
+      var li=document.createElement('li');
+      if(l[2])li.className='danger';
+      li.innerHTML=l[0]+'<small>'+l[1]+'</small>';
+      say.appendChild(li);
+      if(reduce){li.classList.add('on')}else{timers.push(setTimeout(function(){li.classList.add('on')},120+i*650))}
+    });
+  }
+  document.querySelectorAll('.scenes button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.scenes button').forEach(function(x){x.setAttribute('aria-pressed','false')});
+      b.setAttribute('aria-pressed','true');show(b.dataset.s);
+    });
+  });
+  document.getElementById('speak').addEventListener('click',function(){
+    if(!('speechSynthesis' in window)){document.getElementById('stat').textContent='Bu tarayıcı sesli okumayı desteklemiyor';return}
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(S[cur].lines.map(function(l){return l[0]}).join(' '));
+    u.lang='tr-TR';u.rate=1.05;speechSynthesis.speak(u);
+  });
+  show('kafe');
+  var G={150:'150 ₺: bir kullanıcıya göğüs askısı.',250:'250 ₺: bir kullanıcıya göğüs askısı ve bir saatlik birebir yönlendirme eğitimi.',600:'600 ₺: iki kullanıcıya askı ve bir grup için yarım günlük şehir içi yönlendirme atölyesi.'};
+  document.querySelectorAll('.give button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.give button').forEach(function(x){x.setAttribute('aria-pressed','false')});
+      b.setAttribute('aria-pressed','true');document.getElementById('give-out').textContent=G[b.dataset.v];
+    });
+  });
+})();
+</script>
+</body>
+</html>

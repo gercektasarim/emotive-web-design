@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokuz Ay — Bu sızı normal mi? Gece 02:00'de de cevap</title>
+<meta name="description" content="Dokuz Ay gebelik belirtilerini, tekmeleri ve kasılmaları kaydeder; hangi belirtinin doktoru aramayı gerektirdiğini internetsiz söyler. Veriler kimseyle paylaşılmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Alegreya:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#F1E7E3; --page:#FFFFFF; --rule:#D5DCEC; --margin:#E2A0A6; --ink:#33203A; --ink-2:#5D4E63;
+  --plum:#6B2E5A; --plum-soft:#F3E4EE; --apri:#B85F2B; --apri-soft:#FBEADF; --sage:#4E7A5B; --sage-soft:#E3EFE6;
+  --serif:"Alegreya",Georgia,serif; --sans:"Alegreya Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--desk);color:var(--ink);font:400 19px/1.6 var(--sans);font-variant-numeric:lining-nums}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px 12px;z-index:9}
+h1,h2,h3{font-family:var(--serif);font-weight:600}
+
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:74px}
+.logo{display:flex;align-items:center;gap:10px;font:600 24px var(--serif);text-decoration:none}
+.logo svg{width:28px;height:28px}
+header nav{display:flex;gap:26px;align-items:center;font-size:17px}
+header nav a{text-decoration:none;color:var(--ink-2)}
+header nav a:hover{color:var(--ink)}
+.btn{display:inline-block;font:700 17.5px var(--sans);padding:13px 22px;border-radius:999px;text-decoration:none}
+.btn.plum{background:var(--plum);color:#fff}
+.btn.plum:hover{background:#7E3A6B}
+.btn.line{box-shadow:inset 0 0 0 2px var(--plum);color:var(--plum)}
+header nav .btn{padding:8px 16px;font-size:16px}
+
+.hero{padding:30px 0 80px}
+.hero h1{font-size:clamp(34px,4.4vw,56px);line-height:1.12;margin:0 0 14px;max-width:21ch}
+.hero h1 .q{font-style:italic;font-weight:500}
+.htop{display:flex;justify-content:space-between;align-items:flex-start;gap:30px}
+.wheel{width:190px;height:190px;flex:none;margin-top:-6px}
+.hero .lede{color:var(--ink-2);max-width:40em;margin:0 0 24px}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
+
+/* notebook spread */
+.spread{display:grid;grid-template-columns:1fr 1fr;background:#FCF1E8;border-radius:10px;border:1.5px solid #E6CDBE;box-shadow:0 1px 0 #D3CFDC,0 30px 60px -40px rgba(51,32,58,.5);position:relative;overflow:hidden}
+.spread::after{content:"";position:absolute;left:50%;top:56px;bottom:20px;border-left:1.5px dashed #D9B9A6;pointer-events:none}
+.cardhead{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 26px;background:var(--plum);color:#FBEFF4;font:700 14.5px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.cardhead span:last-child{letter-spacing:.02em;text-transform:none;font-weight:500}
+.pg{padding:22px 30px 30px;line-height:1.55;min-height:400px}
+.pg .date{font:500 italic 17px var(--serif);color:var(--ink-2);display:flex;justify-content:space-between}
+.pg h3{font:600 22px/32px var(--serif);margin:0}
+.izlem{width:100%;border-collapse:collapse;font-size:16.5px;line-height:1.4;margin:6px 0 4px}
+.izlem th,.izlem td{border-bottom:1px solid #E6CDBE;padding:7px 8px 7px 0!important}
+.izlem th{border-bottom:2px solid var(--plum)}
+.izlem th{text-align:left;font:700 13.5px/32px var(--sans);color:var(--ink-2);padding:0}
+.izlem td{padding:0 6px 1px 0;white-space:nowrap}
+.izlem td:last-child{white-space:normal;color:var(--ink-2)}
+.izlem tr.today td{font-weight:700;color:var(--plum)}
+.log{list-style:none;margin:0;padding:0}
+.log li{display:flex;justify-content:space-between;gap:12px}
+.log li span:last-child{color:var(--ink-2);white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px;line-height:1.2}
+.chips button{all:unset;cursor:pointer;font:500 16px var(--sans);padding:7px 13px;border-radius:999px;background:var(--desk);color:var(--ink)}
+.chips button:hover{background:#E3DFEA}
+.chips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chips button:focus-visible{outline:3px solid var(--plum);outline-offset:2px}
+.answer{line-height:1.55}
+.lvl{display:inline-block;font:700 15px/22px var(--sans);letter-spacing:.02em;padding:2px 12px;border-radius:999px;margin:3px 0 5px;vertical-align:top}
+.lvl.red{background:var(--plum);color:#fff}
+.lvl.amb{background:var(--apri-soft);color:#8A4214}
+.lvl.grn{background:var(--sage-soft);color:var(--sage)}
+.answer h3{line-height:1.25;margin:0 0 8px}
+.answer p{margin:0 0 14px;font-size:18px;line-height:1.55}
+.answer .do{font-size:17.5px;color:var(--ink-2);margin:0;background:#fff;border-radius:10px;padding:12px 14px}
+.answer .do b{color:var(--ink)}
+.offline{position:absolute;right:34px;bottom:14px;font:700 15px var(--sans);color:var(--sage)}
+
+section{padding:76px 0}
+h2{font-size:clamp(30px,3.4vw,44px);line-height:1.15;margin:0 0 16px;max-width:22ch}
+.sub{color:var(--ink-2);max-width:58ch;margin:0 0 40px}
+
+/* tools */
+.tools{background:var(--page)}
+.tw{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.tool{border:1.5px solid var(--rule);border-radius:16px;padding:24px 26px}
+.tool h3{margin:0 0 4px;font-size:24px}
+.tool .k{color:var(--ink-2);font-size:17px;margin:0 0 16px}
+.kicks{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-bottom:10px}
+.kicks i{aspect-ratio:1;border-radius:50%;background:var(--sage);opacity:.9}
+.kicks i:nth-child(n+11){display:none}
+.bar7{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:110px;margin-top:14px}
+.bar7 div{background:var(--sage-soft);border-radius:6px 6px 0 0;position:relative}
+.bar7 div span{position:absolute;top:-22px;left:0;right:0;text-align:center;font-size:14px;color:var(--ink-2)}
+.days7{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;font-size:14px;color:var(--ink-2);text-align:center;margin-top:4px}
+.ctable{width:100%;border-collapse:collapse;font-size:17px}
+.ctable th{text-align:left;font:700 14.5px var(--sans);color:var(--ink-2);border-bottom:1.5px solid var(--rule);padding:6px 0}
+.ctable td{padding:7px 0;border-bottom:1px solid var(--rule)}
+.rule511{margin-top:14px;background:var(--plum-soft);border-radius:12px;padding:12px 14px;font-size:17px}
+.rule511 b{color:var(--plum)}
+
+/* privacy */
+.priv .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.nots{list-style:none;padding:0;margin:0}
+.nots li{padding:14px 0 14px 34px;border-top:1px solid #D3CFDC;position:relative}
+.nots li::before{content:"";position:absolute;left:2px;top:22px;width:14px;height:14px;border-radius:50%;border:2px solid var(--plum)}
+.nots li::after{content:"";position:absolute;left:8px;top:24px;width:4px;height:7px;border:solid var(--plum);border-width:0 2px 2px 0;transform:rotate(45deg)}
+
+/* weeks */
+.weeks{background:var(--page)}
+.track{position:relative;margin-top:10px}
+.track .line{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--plum) 0 58.3%,var(--desk) 58.3% 100%)}
+.track .now{position:absolute;left:58.3%;top:-8px;width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--plum);transform:translateX(-50%)}
+.marks{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:26px}
+.marks div{font-size:16.5px;color:var(--ink-2)}
+.marks b{display:block;font:600 19px var(--serif);color:var(--ink)}
+.marks .wk{font:700 14px var(--sans);color:var(--plum)}
+.marks .done b::after{content:" ✓";color:var(--sage)}
+.marks .next{background:var(--apri-soft);border-radius:10px;padding:10px 12px;margin:-10px -12px}
+
+/* bag */
+.bag .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.check{list-style:none;padding:0;margin:0;columns:2;column-gap:28px}
+.check li{break-inside:avoid;padding:9px 0 9px 32px;position:relative;border-bottom:1px solid #D3CFDC}
+.check li::before{content:"";position:absolute;left:0;top:13px;width:18px;height:18px;border-radius:5px;border:2px solid var(--ink-2)}
+.check li.ok::before{background:var(--sage);border-color:var(--sage)}
+.check li.ok::after{content:"";position:absolute;left:6px;top:15px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+
+.quote{background:var(--desk)}
+.quote .wrap > figure{max-width:none;border-top:2px solid var(--plum);padding-top:18px}
+.quote .lbl{font:500 italic 17px var(--serif);color:var(--plum);margin-bottom:10px;display:block}
+.quote figure{margin:0;max-width:900px}
+.quote blockquote{margin:0;font:500 italic clamp(23px,2.6vw,32px)/1.45 var(--serif);color:var(--ink);max-width:30em}
+.quote figcaption{margin-top:16px;color:var(--ink-2);font-size:17px}
+
+.free{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;background:var(--page);border-radius:18px;padding:34px 38px}
+.free .amt{font:600 58px/1 var(--serif);color:var(--plum)}
+.free .amt small{display:block;font:400 18px var(--sans);color:var(--ink-2);margin-top:8px}
+.free ul{margin:0;padding-left:20px}
+.faq{max-width:860px;margin-top:60px}
+.faq details{border-top:1px solid #D3CFDC}
+.faq details:last-child{border-bottom:1px solid #D3CFDC}
+.faq summary{cursor:pointer;padding:17px 0;font:600 21px var(--serif)}
+.faq p{margin:0 0 16px;color:var(--ink-2)}
+
+footer{padding:34px 0 28px;font-size:16px;color:var(--ink-2);border-top:1px solid #D3CFDC}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .credit{margin-top:16px;font-size:14px}
+
+@media (max-width:980px){
+  header nav a:not(.btn){display:none}
+  .spread{grid-template-columns:1fr}
+  .spread::after{display:none}
+  .pg{min-height:0}
+  .pg + .pg{border-top:1.5px dashed #D9B9A6}
+  .tw,.priv .wrap,.bag .wrap,.free{grid-template-columns:1fr;gap:28px}
+  .marks{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:560px){
+  body{font-size:18px}
+  .wrap{padding:0 16px}
+  .hero{padding-top:18px}
+  .pg{padding:16px 16px 20px}
+  .cardhead{padding:10px 16px;font-size:12.5px;flex-wrap:wrap}
+  .chips button{font-size:15px;padding:6px 11px}
+  .marks{grid-template-columns:1fr 1fr}
+  .wheel{width:82px;height:82px;margin-top:2px}
+  .htop{gap:10px}
+  .check{columns:1}
+  section{padding:66px 0}
+  .free{padding:24px 20px}
+  .offline{position:static;display:block;padding:0 16px 12px}
+  .izlem,.pg > h3:first-of-type{display:none}
+  .nowq{margin-top:4px!important}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Dokuz Ay ana sayfa">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12" fill="none" stroke="#D5DCEC" stroke-width="3"/><path d="M14 2 A12 12 0 1 1 3.6 20" fill="none" stroke="#6B2E5A" stroke-width="3" stroke-linecap="round"/></svg>Dokuz Ay
+    </a>
+    <nav aria-label="Bölümler"><a href="#araclar">Tekme ve kasılma</a><a href="#kontroller">Kontroller</a><a href="#canta">Doğum çantası</a><a href="#ucretsiz">Ücretsiz</a><a class="btn plum" href="#ucretsiz">İndir</a></nav>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="hero" aria-labelledby="h1" style="padding-top:30px">
+  <div class="wrap">
+    <div class="htop">
+    <h1 id="h1">Gece 02:00'de <span class="q">“gebelikte kasık ağrısı normal mi”</span> yazmak yerine.</h1>
+    <svg class="wheel" viewBox="0 0 200 200" role="img" aria-label="Gebelik çarkı: 40 haftanın 28. haftası, tahmini doğum 3 Ocak"><g id="wheel"></g><circle cx="100" cy="100" r="58" fill="#FCF1E8"/><text x="100" y="98" text-anchor="middle" font-family="Alegreya" font-weight="600" font-size="44" fill="#33203A">28</text><text x="100" y="122" text-anchor="middle" font-family="Alegreya Sans" font-size="15" fill="#5D4E63">/ 40 hafta</text></svg>
+    </div>
+    <p class="lede">Dokuz Ay hissettiğinizi kaydeder ve kaçıncı haftada olduğunuza göre üç cevaptan birini verir: normal, bugün doktorunu ara, ya da hemen git. İnternet gerekmez; forumlardaki korku hikâyeleri de yok.</p>
+    <div class="ctas"><a class="btn plum" href="#ucretsiz">iPhone için indir</a><a class="btn line" href="#ucretsiz">Android için indir</a></div>
+
+    <div class="spread" aria-label="Dokuz Ay izlem kartı: solda kayıtlar ve belirtiler, sağda cevap">
+      <div class="cardhead"><span>Gebe izlem kartı · Dokuz Ay</span><span>Tahmini doğum: 3 Ocak 2026</span></div>
+      <div class="pg">
+        <div class="date"><span>Salı, 14 Ekim</span><span>28. hafta 3. gün</span></div>
+        <h3>Kayıtlar</h3>
+        <table class="izlem" aria-label="Gebe izlem kartı kayıtları">
+          <thead><tr><th>Hafta</th><th>Tansiyon</th><th>Kilo</th><th>10 tekme</th><th>Not</th></tr></thead>
+          <tbody>
+            <tr><td>24</td><td>116/72</td><td>+6,4</td><td>—</td><td>şeker yükleme normal</td></tr>
+            <tr><td>26</td><td>114/70</td><td>+7,1</td><td>—</td><td>bel ağrısı</td></tr>
+            <tr class="today"><td>28</td><td>118/74</td><td>+7,9</td><td>42 dk</td><td>mide yanması</td></tr>
+          </tbody>
+        </table>
+        <h3 class="nowq" style="margin-top:32px">Şu an ne hissediyorsunuz?</h3>
+        <div class="chips" role="group" aria-label="Belirtiler" id="chips"></div>
+      </div>
+      <div class="pg answer" aria-live="polite" id="answer"></div>
+      <span class="offline">uçak modunda da aynı cevap</span>
+    </div>
+  </div>
+</section>
+
+<section class="tools" id="araclar" aria-labelledby="h-tools">
+  <div class="wrap">
+    <h2 id="h-tools">Saymanız gereken iki şey, sizin yerinize sayılır</h2>
+    <p class="sub">28. haftadan sonra bebeğin hareketleri, doğuma yakın kasılmaların sıklığı. İkisi de kâğıt kalemle saymak için fazla yorucu; ikisi de önemli.</p>
+    <div class="tw">
+      <div class="tool">
+        <h3>Tekme sayacı</h3>
+        <p class="k">Akşam sol yanınıza uzanın, her hareketi bir dokunuşla sayın. Dokuz Ay sizin bebeğinizin normalini öğrenir.</p>
+        <div class="kicks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="bar7" role="img" aria-label="Son yedi akşam 10 tekmeye ulaşma süresi: 38, 51, 44, 35, 47, 40, 42 dakika">
+          <div style="height:58%"><span>38</span></div><div style="height:80%"><span>51</span></div><div style="height:69%"><span>44</span></div><div style="height:55%"><span>35</span></div><div style="height:74%"><span>47</span></div><div style="height:63%"><span>40</span></div><div style="height:66%;background:var(--sage)"><span>42</span></div>
+        </div>
+        <div class="days7" aria-hidden="true"><span>Çar</span><span>Per</span><span>Cum</span><span>Cmt</span><span>Paz</span><span>Pzt</span><span>Sal</span></div>
+        <p class="k" style="margin:14px 0 0">10 tekmeye ulaşma süresi, dakika. Sayaç bebeğinizin normalini tanımanız için; hareketler azaldığını hissettiğiniz an saymayı beklemeyin, Dokuz Ay sizi hemen hastaneye yönlendirir.</p>
+      </div>
+      <div class="tool">
+        <h3>Kasılma zamanlayıcı</h3>
+        <p class="k">Başladığında ve bittiğinde dokunun. Aralık ve süre kendiliğinden hesaplanır.</p>
+        <table class="ctable">
+          <thead><tr><th>Başladı</th><th>Süre</th><th>Aralık</th></tr></thead>
+          <tbody>
+            <tr><td>04:12</td><td>48 sn</td><td>—</td></tr>
+            <tr><td>04:20</td><td>52 sn</td><td>8 dk</td></tr>
+            <tr><td>04:27</td><td>55 sn</td><td>7 dk</td></tr>
+            <tr><td>04:33</td><td>58 sn</td><td>6 dk</td></tr>
+            <tr><td>04:38</td><td>61 sn</td><td>5 dk</td></tr>
+          </tbody>
+        </table>
+        <div class="rule511"><b>5-1-1'e yaklaşıyorsunuz.</b> Kasılmalar 5 dakikada bir, 1 dakika sürüyor. Bu düzen 1 saat sürerse ya da su gelirse hastaneye geçin. 37. haftadan önceyse beklemeden arayın.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="weeks" id="kontroller" aria-labelledby="h-kon">
+  <div class="wrap">
+    <h2 id="h-kon">Bundan sonra neler olacak, hafta hafta</h2>
+    <p class="sub">Belirsizlik korkuyu büyütür. Dokuz Ay hangi kontrolün ne zaman ve neden yapıldığını önceden, sade dille anlatır.</p>
+    <div class="track" role="img" aria-label="40 haftalık gebelikte 28. hafta"><div class="line"></div><div class="now"></div></div>
+    <div class="marks">
+      <div class="done"><span class="wk">11–14. hafta</span><b>İkili tarama</b>Ense kalınlığı ve kan testi.</div>
+      <div class="done"><span class="wk">18–22. hafta</span><b>Detaylı ultrason</b>Organlar tek tek bakılır.</div>
+      <div class="done"><span class="wk">24–28. hafta</span><b>Şeker yükleme</b>Gebelik şekeri taraması.</div>
+      <div class="next"><span class="wk">28. hafta · şimdi</span><b>Kan grubu, demir</b>Rh negatifseniz iğne zamanı.</div>
+      <div><span class="wk">36–37. hafta</span><b>GBS taraması</b>Basit bir sürüntü testi.</div>
+      <div><span class="wk">37–40. hafta</span><b>Haftalık kontrol</b>NST ile bebeğin kalp atışı.</div>
+    </div>
+  </div>
+</section>
+
+<section class="bag" id="canta" aria-labelledby="h-bag">
+  <div class="wrap">
+    <div>
+      <h2 id="h-bag">34. haftada çanta kapının yanında</h2>
+      <p class="sub" style="margin-bottom:0">“Hazır” hissi bir listeden gelir. Dokuz Ay'ın listesi doğum yapacağınız hastaneye göre değişir; hastanenin kendi verdiklerini çıkarır, eksiklerinizi hatırlatır.</p>
+    </div>
+    <ul class="check" aria-label="Doğum çantası listesi, 9'da 6 hazır">
+      <li class="ok">Kimlik ve gebelik takip kartı</li>
+      <li class="ok">Son ultrason ve tahlil sonuçları</li>
+      <li class="ok">Önden açılan gecelik, 2 adet</li>
+      <li class="ok">Bebek için 3 zıbın, 2 tulum</li>
+      <li class="ok">Lohusa pedi, emzirme sütyeni</li>
+      <li class="ok">Telefon şarjı, uzun kablo</li>
+      <li>Hastane çıkışı için ana kucağı</li>
+      <li>Terlik ve kalın çorap</li>
+      <li>Eşinize bir yedek kıyafet</li>
+    </ul>
+  </div>
+</section>
+
+<section class="priv" aria-labelledby="h-priv">
+  <div class="wrap">
+    <div>
+      <h2 id="h-priv">Hamileliğinizi kime ne zaman söyleyeceğinize siz karar verirsiniz</h2>
+      <p class="sub" style="margin-bottom:0">Telefonunuz değil, bir uygulama şirketi değil. Dokuz Ay'ın sunucusu yok; belirtiler, tekmeler, kilonuz ve son adet tarihiniz yalnız telefonunuzda durur. Cevaplar da telefonun içindeki rehberden gelir, internet olmadan.</p>
+    </div>
+    <ul class="nots">
+      <li>Reklamlar size birden bebek arabası göstermeye başlamaz.</li>
+      <li>İşvereniniz, sigorta şirketi ya da veri satıcıları bir “gebelik” işareti görmez.</li>
+      <li>Eşinizle paylaşmak isterseniz yalnız seçtiğiniz kayıtlar, şifreli gider.</li>
+      <li>Telefonu birine verdiğinizde Dokuz Ay ancak şifrenizle açılır.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı yorumu">
+  <div class="wrap">
+    <figure><span class="lbl">36. hafta · Elif'in kartındaki not</span>
+      <blockquote>“İlk üç ayda her gece forumlarda bir korku hikâyesi okuyup uyuyamazdım. Dokuz Ay bana iki kez ‘bugün doktorunu ara’ dedi, bir kez de ‘normal, sol yanına yat’. Üçünde de haklıydı. Şimdi 36. haftadayım; çanta hazır, ben de.”</blockquote>
+      <figcaption><b style="color:var(--ink)">Elif Koç</b>, 31 · İzmir, Bornova · grafik tasarımcı, ilk gebeliği</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="ucretsiz" aria-labelledby="h-free">
+  <div class="wrap">
+    <div class="free">
+      <div>
+        <h2 id="h-free" style="margin-bottom:8px">Doğuma kadar ücretsiz. Reklamsız.</h2>
+        <p class="sub" style="margin:0">Gebelikte bir şeyin “premium” olmasını doğru bulmuyoruz. Doğumdan sonraki ilk 40 gün için isteğe bağlı bir ek var: emzirme ve uyku takibi, 149 ₺, tek seferlik.</p>
+        <div class="ctas" style="margin:22px 0 0"><a class="btn plum" href="#">iPhone için indir</a><a class="btn line" href="#">Android için indir</a></div>
+      </div>
+      <div>
+        <div class="amt">Ücretsiz<small>belirti rehberi, tekme sayacı, kasılma zamanlayıcı, kontrol takvimi, doğum çantası</small></div>
+      </div>
+    </div>
+    <div class="faq">
+      <details><summary>Dokuz Ay doktorumun yerine geçer mi?</summary><p>Hayır. Ne zaman aramanız gerektiğini söyler; muayene etmez, tanı koymaz. Cevapları kadın doğum uzmanlarının hasta bilgilendirme rehberlerine göre yazdık ve her cevabın sonunda “şüphedeysen ara” yazar.</p></details>
+      <details><summary>Cevaplar internetsiz nasıl çalışıyor?</summary><p>Belirti rehberi ve hafta bilgisi uygulamayla birlikte telefona iner. Sorduğunuz şey hiçbir yere gönderilmez; cevap telefonun içinde, haftanıza göre seçilir.</p></details>
+      <details><summary>İkiz gebeliğim var, işe yarar mı?</summary><p>Evet; kurulumda belirttiğinizde tekme sayacı ve kontrol takvimi ikiz gebeliğe göre ayarlanır, bazı uyarılar daha erken haftalara çekilir.</p></details>
+      <details><summary>Eşim de görebilir mi?</summary><p>İsterseniz. Eşinizin telefonuna yalnız seçtiğiniz kayıtlar (ör. kasılma zamanlayıcı) uçtan uca şifreli gider; belirti günlüğünüz sizde kalır.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row"><span><b style="color:var(--ink)">Dokuz Ay</b> · İzmir. Tıbbi cihaz değildir. Acil durumda 112'yi arayın.</span><a href="mailto:merhaba@dokuzay.app">merhaba@dokuzay.app</a></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var S=[
+    ["Kasıkta çekilme","grn","Normal: rahim bağlarının gerilmesi","28. haftada, özellikle ani kalkarken ya da öksürürken kasıkta saplanır gibi bir çekilme çok yaygındır. Rahmi taşıyan bağlar uzuyor.","<b>Şimdi:</b> yavaşça yana dönerek kalkın, ılık bir duş iyi gelir. Ağrı düzenli aralıklarla geliyor, sertleşme ya da kanama varsa “Düzenli kasılma”ya bakın."],
+    ["Tekmeler azaldı","red","Hemen: doğum yapacağınız hastaneye","28. haftadan sonra hareketlerin azalması beklenerek geçirilmemelidir. Çoğu zaman her şey yolunda çıkar; ama bunu bir NST ile görmek gerekir.","<b>Şimdi:</b> evde sayarak beklemeyin, sabahı da beklemeyin. Hastanenizi arayıp yola çıkın; doğumhane bu başvuruyu her saat kabul eder."],
+    ["Baş ağrısı ve bulanık görme","red","Hemen: doktorunuzu arayın ya da 112","Geçmeyen baş ağrısı, gözde ışık çakmaları, yüzde ve ellerde ani şişlik tansiyon yükselmesinin (preeklampsi) işareti olabilir.","<b>Şimdi:</b> evde aletiniz varsa tansiyonunuzu ölçün ve doktorunuzu arayın. Ulaşamazsanız 112. 140/90 ve üstü acildir."],
+    ["Ayak bileğinde şişlik","grn","Normal: akşam artan ödem","Gün sonunda ayak bileklerinin şişmesi son üç ayda sıktır ve sabaha azalır.","<b>Şimdi:</b> ayaklarınızı kalp hizasına kaldırın, sol yanınıza yatın, su için. Şişlik yüze ve ellere yayıldıysa ya da tek bacakta ağrıyla birlikteyse bugün doktorunuzu arayın."],
+    ["Lekelenme ya da kanama","red","Hemen: hastaneye","Son üç ayda her kanama değerlendirilmelidir; az bile olsa.","<b>Şimdi:</b> ped takın, miktarını ve rengini not edin, doğum yapacağınız hastaneye gidin. Yoğun kanama ya da şiddetli ağrı varsa 112."],
+    ["Su geldi gibi","red","Hemen: hastaneye","Ani gelen ya da durmadan sızan berrak sıvı zarların açıldığını gösterebilir. 28. haftadasınız; 37. haftadan önce su gelmesi beklenmeden değerlendirilmelidir.","<b>Şimdi:</b> temiz bir ped takın, saati ve sıvının rengini not edin, hastaneye gidin. İdrar kaçırmaya benzese de kararı orada versinler."],
+    ["Düzenli kasılma","red","Hemen: 37. hafta öncesi düzenli kasılma","Ara ara gelen, düzensiz ve ağrısız sertleşmeler (Braxton Hicks) normaldir. Ama düzenli, giderek sıklaşan ya da belinize vuran kasılmalar 28. haftada erken doğum belirtisi olabilir.","<b>Şimdi:</b> hastanenizi arayın ve yola çıkın. Yolda kasılma zamanlayıcıyı açık tutun; aralıklar doktorunuzun işine yarar."],
+    ["İdrar yaparken yanma","amb","Bugün: doktorunuzu arayın","Gebelikte idrar yolu enfeksiyonu sıktır ve tedavisi kolaydır; ama tedavisiz kalırsa böbreğe ilerleyebilir ve erken doğumu tetikleyebilir.","<b>Bugün:</b> doktorunuzu arayın, idrar tahlili isteyecektir. Ateş, titreme ya da böğür ağrısı eklenirse beklemeden hastaneye gidin."],
+    ["Mide yanması","grn","Normal: büyüyen rahim mideye bastırıyor","Son üç ayda çok yaygındır ve bebeğe zarar vermez.","<b>Şimdi:</b> az ve sık yiyin, yemekten sonra 2 saat uzanmayın, yastığı yükseltin. Doktorunuzun önerdiği bir antasit kullanabilirsiniz."]
+  ];
+  var lbl={red:"Hemen",amb:"Bugün doktorunu ara",grn:"Normal"};
+  var chips=document.getElementById("chips"),ans=document.getElementById("answer"),h="";
+  S.forEach(function(x,i){h+='<button type="button" aria-pressed="'+(i===0)+'" data-i="'+i+'">'+x[0]+'</button>';});
+  chips.innerHTML=h;
+  function show(i){var x=S[i];
+    ans.innerHTML='<div class="date"><span>Dokuz Ay\'ın cevabı</span><span>28. hafta için</span></div><span class="lvl '+x[1]+'">'+lbl[x[1]]+'</span><h3>'+x[2]+'</h3><p>'+x[3]+'</p><p class="do">'+x[4]+'</p>';
+    [].forEach.call(chips.querySelectorAll("button"),function(b){b.setAttribute("aria-pressed",+b.dataset.i===i?"true":"false")});}
+  chips.addEventListener("click",function(e){var b=e.target.closest("button");if(b)show(+b.dataset.i);});
+  var wh="";for(var w=0;w<40;w++){var a0=(w/40)*Math.PI*2-Math.PI/2,a1=((w+1)/40)*Math.PI*2-Math.PI/2-0.03,R=96,r=68;
+    var p=function(a,rr){return (100+rr*Math.cos(a)).toFixed(1)+" "+(100+rr*Math.sin(a)).toFixed(1)};
+    var col=w<27?"#6B2E5A":(w===27?"#B85F2B":"#E6CDBE"); if(w<13&&w<27) col="#8E5A7E";
+    wh+='<path d="M'+p(a0,R)+' A'+R+' '+R+' 0 0 1 '+p(a1,R)+' L'+p(a1,r)+' A'+r+' '+r+' 0 0 0 '+p(a0,r)+'Z" fill="'+col+'"/>';}
+  document.getElementById("wheel").innerHTML=wh;
+  show(0);
+})();
+</script>
+</body>
+</html>

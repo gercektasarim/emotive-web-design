@@ -1,0 +1,21 @@
+{
+  "slug": "camasir",
+  "name": "Çamaşır Kâhyası",
+  "interpretation": "Bakım etiketi",
+  "world": "Apartman bodrumundaki çamaşırhane: saten bakım etiketi ve sembolleri, makinenin program düğmesi, yıkama suyunun mavisi ve küçülmüş yün kazak.",
+  "palette": [
+    "#DCE8EC",
+    "#FFFFFF",
+    "#17222B",
+    "#A3302B",
+    "#F2E3DF",
+    "#3D7686"
+  ],
+  "fonts": [
+    "Asap Condensed",
+    "Asap"
+  ],
+  "score": 26,
+  "lowest": "Varsayılan kokusu",
+  "moment": "Kıyafet seçildiğinde çizilmiş makine program düğmesi doğru programa döner, dijital ekranda derece ve devir değişir."
+}

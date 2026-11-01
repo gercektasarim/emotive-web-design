@@ -1,0 +1,21 @@
+{
+  "slug": "eksi-maya",
+  "name": "Ekşi Maya",
+  "interpretation": "Cam kavanoz ve bant",
+  "world": "Tezgâhta cam kavanoz, başlangıç seviyesine yapışık kâğıt bant, hedefte kırmızı lastik ve çavdar unu.",
+  "palette": [
+    "#E2E9E5",
+    "#2C241E",
+    "#D9CDB8",
+    "#C92F2A",
+    "#E9DCAE",
+    "#3E6A57"
+  ],
+  "fonts": [
+    "Instrument Sans",
+    "Caveat"
+  ],
+  "score": 27,
+  "lowest": "Palet/doku",
+  "moment": "Süre kaydırıcısı ve mutfak sıcaklığıyla kavanozdaki mayanın kabarıp kırmızı lastiği geçmesi, zirvede 'şimdi besle' demesi, sonra çökmesi."
+}

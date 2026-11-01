@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sade Ekran — Annenin telefonu dört düğme, senin telefonun sessiz</title>
+<meta name="description" content="Sade Ekran, akıllı telefonu dört büyük düğmeye indirir; yapay zekâ annenin alışkanlığına göre düğmelerin yerini ayarlar. Sen uzaktan panelden yalnız özeti görürsün, konuşmaları değil. Tek seferlik 449 ₺.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F7F5;       /* telefon kutusunun beyazı */
+  --card:#FFFFFF;
+  --ink:#1D1F21;
+  --mute:#5C6166;
+  --line:#DDE0DC;
+  --call:#1E7B45;     /* Ara: ahize yeşili */
+  --msg:#7A3FB0;      /* Mesaj */
+  --photo:#F2B705;    /* Fotoğraf */
+  --sos:#C62828;      /* Acil */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:400 1.15rem/1.6 "Rubik",system-ui,sans-serif;overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+a{color:var(--ink);text-underline-offset:.2em}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:1rem;top:-6rem;background:var(--ink);color:#fff;padding:1rem;z-index:9}
+.skip:focus{top:1rem}
+.wrap{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+h1,h2,h3{font-weight:800;line-height:1.08;letter-spacing:-.02em}
+h1{font-size:clamp(2.2rem,4vw,3.1rem);max-width:24ch}
+h2{font-size:clamp(1.9rem,3.4vw,2.6rem);max-width:22ch}
+h3{font-weight:700;font-size:1.2rem;letter-spacing:0}
+p{max-width:60ch}
+.mute{color:var(--mute)}
+.mono{font-family:"DM Mono",monospace}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 1.4rem;border-radius:14px;font:700 1.05rem "Rubik";text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn.k{background:var(--ink);color:#fff}
+.btn.w{background:var(--card);color:var(--ink)}
+
+header .wrap{display:flex;justify-content:space-between;align-items:center;min-height:80px;gap:1rem;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:.6rem;font:800 1.4rem "Rubik";text-decoration:none}
+.logo i{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:30px;height:30px}
+.logo i b{border-radius:4px}
+header nav{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}
+header nav a.n{display:inline-flex;align-items:center;min-height:48px;padding:0 .8rem;text-decoration:none;font-weight:500}
+header nav a.n:hover{text-decoration:underline}
+
+/* hero */
+.hero{padding:1.6rem 0 5rem}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.hero-top p{font-size:1.25rem;margin-top:1rem;max-width:46ch}
+.ctas{display:flex;gap:.7rem;flex-wrap:wrap}
+
+.console{background:var(--card);border:1px solid var(--line);border-radius:20px;display:grid;grid-template-columns:310px 1fr;overflow:hidden}
+.side{background:#EEF0EC;padding:1.6rem;display:flex;flex-direction:column;align-items:center;gap:1rem;border-right:1px solid var(--line)}
+.side .lbl{align-self:flex-start;font-size:.95rem;color:var(--mute)}
+.phone{width:240px;border-radius:34px;background:var(--ink);padding:12px}
+.screen{background:#FAFAF8;border-radius:24px;padding:14px 12px 16px}
+.status{display:flex;justify-content:space-between;font:500 .8rem "DM Mono";color:var(--mute);padding:0 4px 8px}
+.clock{text-align:center;font:700 2.1rem/1 "Rubik";margin:.2rem 0 .1rem}
+.date{text-align:center;font-size:.9rem;color:var(--mute);margin-bottom:.8rem}
+.grid4{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px}
+.big{aspect-ratio:1/1.05;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;font:800 .98rem/1.1 "Rubik";text-align:center;padding:.4rem;min-width:0;hyphens:auto;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.big svg{width:34px;height:34px}
+.b-call{background:var(--call);color:#fff}
+.b-msg{background:var(--msg);color:#fff}
+.b-photo{background:var(--photo);color:var(--ink)}
+.b-sos{background:var(--sos);color:#fff}
+
+.main{padding:1.6rem 1.8rem}
+.main-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+.main-head b{font-size:1.25rem}
+.main-head span{font:400 .95rem "DM Mono";color:var(--mute)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin:1.2rem 0}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem}
+.kpi .v{font:700 1.7rem/1.1 "Rubik"}
+.kpi .l{font-size:.92rem;color:var(--mute)}
+.kpi i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:.35rem}
+.suggest{border:2px solid var(--ink);border-radius:14px;padding:1.1rem 1.2rem;display:grid;grid-template-columns:1fr auto;gap:.6rem 1.2rem;align-items:center}
+.suggest .t{font-weight:700;font-size:1.12rem}
+.suggest p{grid-column:1/2;color:var(--mute);font-size:1.02rem}
+.suggest .act{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;gap:.4rem}
+.suggest .act .btn{min-height:48px;font-size:1rem}
+.toast{margin-top:.9rem;font-size:1rem;min-height:1.6em;color:var(--call);font-weight:500}
+.hours{margin-top:1.2rem}
+.hours .lb{font-size:.95rem;color:var(--mute);margin-bottom:.4rem}
+.bars{display:flex;align-items:flex-end;gap:4px;height:64px}
+.bars span{flex:1;border-radius:3px 3px 0 0;background:var(--line)}
+.bars span.hot{background:var(--photo)}
+.hrs{display:flex;justify-content:space-between;font:400 .8rem "DM Mono";color:var(--mute);margin-top:.25rem}
+
+/* calls */
+.calls{padding:6rem 0;background:var(--card)}
+.calls .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.log{list-style:none;border-top:2px solid var(--ink)}
+.log li{display:grid;grid-template-columns:7.5rem 1fr auto;gap:1rem;padding:.85rem 0;border-bottom:1px solid var(--line);font-size:1.05rem}
+.log li .d{font:400 .95rem "DM Mono";color:var(--mute)}
+.log li .m{font:500 .95rem "DM Mono"}
+.chart{margin-top:1.8rem}
+.chart svg{width:100%;height:auto;display:block}
+.chart text{font:400 12px "DM Mono";fill:var(--mute)}
+
+/* setup */
+.setup{padding:6rem 0}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2.6rem;counter-reset:s;list-style:none}
+.steps li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.3rem}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--ink);color:#fff;font-weight:800;margin-bottom:.9rem}
+.steps p{color:var(--mute);font-size:1.02rem;margin-top:.4rem}
+.steps .t{font:500 .9rem "DM Mono";color:var(--ink);display:block;margin-top:.8rem}
+
+/* privacy */
+.priv{padding:6rem 0;background:var(--ink);color:#fff}
+.priv :focus-visible{outline-color:#fff}
+.priv .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.priv p{color:#D7DAD6;margin-top:1rem}
+.seen{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.seen div{border:1px solid #44484c;border-radius:14px;padding:1.2rem}
+.seen h3{margin-bottom:.6rem}
+.seen ul{list-style:none}
+.seen li{padding:.35rem 0;color:#D7DAD6;font-size:1.02rem}
+.seen .no li{text-decoration:line-through;text-decoration-color:#ff8a80}
+
+/* locked */
+.locked{padding:6rem 0}
+.locked .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:4rem}
+.locked ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.locked li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem}
+.locked li b{display:block}
+.locked li span{color:var(--mute);font-size:1rem}
+
+/* price */
+.price{padding:6rem 0;background:var(--card)}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:2.4rem}
+.plan{border:2px solid var(--line);border-radius:20px;padding:2rem}
+.plan.hl{border-color:var(--ink)}
+.plan .amt{font:800 2.8rem/1 "Rubik";margin:.7rem 0 .3rem}
+.plan ul{margin:1.1rem 0 1.5rem 1.2rem}
+.plan li{padding:.25rem 0}
+
+.quote{padding:5rem 0}
+.quote blockquote{font:500 clamp(1.5rem,3vw,2.2rem)/1.3 "Rubik";max-width:30ch;letter-spacing:-.01em}
+.quote figcaption{margin-top:1.2rem;color:var(--mute)}
+
+.faq{padding:4rem 0 6rem}
+.faq .wrap{max-width:880px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:.7rem;padding:0 1.2rem}
+summary{cursor:pointer;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-weight:700;font-size:1.15rem;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.5rem;font-weight:400}
+details[open] summary::after{content:"−"}
+details p{padding-bottom:1.2rem;color:var(--mute)}
+
+footer{border-top:1px solid var(--line);padding:3rem 0 2rem;font-size:1rem;color:var(--mute)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+footer .credit{margin-top:2rem;font-size:.92rem}
+footer .credit a{color:var(--mute)}
+
+@media (max-width:980px){
+  .console{grid-template-columns:minmax(0,1fr)}
+  .side{border-right:0;border-bottom:1px solid var(--line)}
+  .calls .wrap,.priv .wrap,.locked .wrap{grid-template-columns:minmax(0,1fr);gap:2.4rem}
+  .steps{grid-template-columns:1fr 1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 1rem}
+  header nav a.n{display:none}
+  .main{padding:1.2rem}
+  .suggest{grid-template-columns:1fr}
+  .suggest .act{grid-row:auto;grid-column:auto}
+  .steps,.locked ul,.seen,.plans{grid-template-columns:1fr}
+  .log li{grid-template-columns:1fr auto}
+  .log li .d{grid-column:1/-1}
+  .btn{width:100%}
+  header .btn{width:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Sade Ekran ana sayfa"><i aria-hidden="true"><b style="background:#1E7B45"></b><b style="background:#7A3FB0"></b><b style="background:#F2B705"></b><b style="background:#C62828"></b></i>Sade Ekran</a>
+    <nav aria-label="Ana menü"><a class="n" href="#kurulum">Kurulum</a><a class="n" href="#gizlilik">Ne görürsün</a><a class="n" href="#fiyat">Fiyat</a><a class="btn k" href="#fiyat">Annem için kur</a></nav>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <h1 id="h1">Annenin telefonu dört düğme. Senin telefonun artık her akşam çalmıyor.</h1>
+        <p class="mute">Sade Ekran akıllı telefonu dört büyük düğmeye indirir. Yapay zekâ annenin hangi düğmeye ne zaman bastığını telefonun içinde öğrenir, düğmelerin yerini ona göre ayarlar. Sen panelden yalnız özeti görürsün.</p>
+      </div>
+      <div class="ctas"><a class="btn k" href="#fiyat">Annem için kur · 449 ₺</a></div>
+    </div>
+
+    <div class="console" role="region" aria-labelledby="con-h">
+      <div class="side">
+        <span class="lbl">Annenin ekranı, şu an</span>
+        <div class="phone" role="img" aria-labelledby="ph-desc">
+          <span id="ph-desc" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></span>
+          <div class="screen">
+            <div class="status"><span>Turkcell</span><span>%78</span></div>
+            <div class="clock">20:04</div>
+            <div class="date">Perşembe, 5 Kasım</div>
+            <div class="grid4" id="grid"></div>
+          </div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="main-head"><b id="con-h">Annemin telefonu · Gönül Şahin</b><span>son eşitleme 4 dk önce</span></div>
+        <div class="kpis">
+          <div class="kpi"><div class="v">23</div><div class="l"><i style="background:var(--call)"></i>Ara · bu hafta</div></div>
+          <div class="kpi"><div class="v">9</div><div class="l"><i style="background:var(--msg)"></i>Mesaj</div></div>
+          <div class="kpi"><div class="v">31</div><div class="l"><i style="background:var(--photo)"></i>Fotoğraf</div></div>
+          <div class="kpi"><div class="v">0</div><div class="l"><i style="background:var(--sos)"></i>Acil</div></div>
+        </div>
+        <div class="suggest">
+          <span class="t" id="sg-t">Öneri: “Fotoğraflar” üst sıraya çıksın</span>
+          <p id="sg-p">Annen her akşam 19.30–21.00 arası torun fotoğraflarına bakıyor; şu an düğme sağ altta, başparmağına uzak. Akşamları sol üste alalım mı?</p>
+          <div class="act"><button class="btn k" type="button" id="apply">Uygula</button><button class="btn w" type="button" id="skip">Böyle kalsın</button></div>
+        </div>
+        <p class="toast" id="toast" aria-live="polite"></p>
+        <div class="hours" aria-label="Fotoğraf düğmesinin saatlere göre kullanımı; en yoğun 19 ile 21 arası">
+          <p class="lb">Fotoğraflar · günün saatlerine göre</p>
+          <div class="bars" aria-hidden="true" id="bars"></div>
+          <div class="hrs" aria-hidden="true"><span>06</span><span>12</span><span>18</span><span>24</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="calls" aria-labelledby="ca-h">
+  <div class="wrap">
+    <div>
+      <h2 id="ca-h">“Oğlum, WhatsApp kayboldu” telefonlarına veda</h2>
+      <p class="mute" style="margin-top:1rem">Akıllı telefonu ilk aldığın ay, akşamlarının nasıl geçtiğini hatırla. Aşağıdakiler Emre'nin kendi tuttuğu not. Sade Ekran'dan önceki iki hafta.</p>
+      <ul class="log" style="margin-top:1.6rem" aria-label="Destek çağrıları günlüğü">
+        <li><span class="d">Pzt 20:41</span><span>Ekran yan döndü, düzelmiyor</span><span class="m">14 dk</span></li>
+        <li><span class="d">Çar 21:10</span><span>WhatsApp simgesi kayboldu</span><span class="m">22 dk</span></li>
+        <li><span class="d">Prş 19:55</span><span>“Bir şey indirdim, para mı gitti?”</span><span class="m">31 dk</span></li>
+        <li><span class="d">Cmt 11:02</span><span>Yazılar küçüldü</span><span class="m">9 dk</span></li>
+        <li><span class="d">Paz 20:30</span><span>Görüntülü aramayı açamadı</span><span class="m">17 dk</span></li>
+      </ul>
+    </div>
+    <div class="chart">
+      <h3>Haftalık destek araması</h3>
+      <svg viewBox="0 0 400 210" role="img" aria-labelledby="chart-d">
+        <title id="chart-d">Haftalık destek araması: kurulumdan önceki iki hafta 11 ve 9, sonra 4, 2, 1 ve 1.</title>
+        <g fill="#DDE0DC"><rect x="20" y="40" width="44" height="132"/><rect x="82" y="64" width="44" height="108"/></g>
+        <g fill="#1D1F21"><rect x="144" y="124" width="44" height="48"/><rect x="206" y="148" width="44" height="24"/><rect x="268" y="160" width="44" height="12"/><rect x="330" y="160" width="44" height="12"/></g>
+        <path d="M135 20V178" stroke="#5C6166" stroke-dasharray="4 4"/>
+        <text x="140" y="30" fill="#1D1F21">kurulum</text>
+        <g text-anchor="middle"><text x="42" y="34">11</text><text x="104" y="58">9</text><text x="166" y="118">4</text><text x="228" y="142">2</text><text x="290" y="154">1</text><text x="352" y="154">1</text>
+        <text x="42" y="196">1.</text><text x="104" y="196">2.</text><text x="166" y="196">3.</text><text x="228" y="196">4.</text><text x="290" y="196">5.</text><text x="352" y="196">6. hafta</text></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="setup" id="kurulum" aria-labelledby="su-h">
+  <div class="wrap">
+    <h2 id="su-h">Bayram ziyaretinde 10 dakikada kurulur</h2>
+    <ol class="steps">
+      <li><h3>Uygulamayı aç</h3><p>Annenin telefonuna Sade Ekran'ı yükle. Eski ekran silinmez, kenarda bekler.</p><span class="t">~2 dk</span></li>
+      <li><h3>Dört kişiyi seç</h3><p>“Ara” düğmesinin içinde görünecek yüzler: sen, kardeşin, komşu, aile hekimi.</p><span class="t">~3 dk</span></li>
+      <li><h3>Panelini eşle</h3><p>Kendi telefonunla ekrandaki kodu okut. Artık uzaktan yardım edebilirsin.</p><span class="t">~1 dk</span></li>
+      <li><h3>Birlikte dene</h3><p>Annen bir kez seni arasın, bir fotoğraf açsın. Gerisini telefon öğrenir.</p><span class="t">~4 dk</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="priv" id="gizlilik" aria-labelledby="pr-h">
+  <div class="wrap">
+    <div>
+      <h2 id="pr-h">Yardım etmek için annenin mesajlarını okuman gerekmiyor.</h2>
+      <p>Annenin alışkanlıklarını öğrenen yapay zekâ onun telefonunda çalışır. Kime ne yazdığı, kiminle ne konuştuğu, hangi fotoğrafa baktığı telefondan çıkmaz. Senin paneline gelen tek şey sayılardır: hangi düğmeye kaç kez basıldı, pil kaç, telefon açık mı.</p>
+      <p>Köyde internet zayıfsa da düğmeler aynı çalışır; panel bir sonraki bağlantıda eşitlenir.</p>
+    </div>
+    <div class="seen">
+      <div><h3>Panelinde görürsün</h3><ul><li>Düğme kullanım sayıları</li><li>Pil ve ses seviyesi</li><li>Acil düğmesine basıldı mı</li><li>Yapay zekânın önerileri</li></ul></div>
+      <div class="no"><h3>Hiç görmezsin</h3><ul aria-label="Görmediklerin"><li>Mesajların içeriği</li><li>Arama kayıtları</li><li>Fotoğrafların kendisi</li><li>Konum (annen açmadıkça)</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="locked" aria-labelledby="lo-h">
+  <div class="wrap">
+    <div>
+      <h2 id="lo-h">Yanlışlıkla olamayacak şeyler</h2>
+      <p class="mute" style="margin-top:1rem">Telefonun karmaşıklığı ortadan kalkmaz; annenin önünden çekilir. Ayarlar ve mağaza yalnız senin panelinden açılır.</p>
+    </div>
+    <ul>
+      <li><b>Uygulama silinmez</b><span>Basılı tutunca hiçbir şey olmaz.</span></li>
+      <li><b>Para çıkmaz</b><span>Uygulama içi satın alma ve abonelik kapalı.</span></li>
+      <li><b>Dolandırıcı uyarısı</b><span>Rehberde olmayan numara “banka” derse ekran kırmızı uyarı verir.</span></li>
+      <li><b>Ekran dönmez, yazı küçülmez</b><span>Ayarlar kilitli; değiştirmek için senin onayın gerekir.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="price" id="fiyat" aria-labelledby="fi-h">
+  <div class="wrap">
+    <h2 id="fi-h">Tek seferlik. Panelin ücretsiz.</h2>
+    <div class="plans">
+      <article class="plan hl"><h3>Sade Ekran</h3><p class="amt">449 ₺</p><p class="mute">bir telefon için, abonelik yok</p><ul><li>Dört düğmeli ekran ve uyarlanan yerleşim</li><li>Uzaktan yardım paneli, 3 aile üyesine kadar</li><li>Dolandırıcı arama uyarısı</li><li>Android 10 ve üstü</li></ul><a class="btn k" href="#">Annemin telefonuna kur</a></article>
+      <article class="plan"><h3>Kurulu telefonla gönderelim</h3><p class="amt">6.990 ₺</p><p class="mute">Sade Ekran yüklü, büyük ekranlı Android telefon</p><ul><li>Kişileri sen panelden girersin, telefon hazır gelir</li><li>Annenin adresine kargo, 2 iş günü</li><li>Telefonla 15 dakikalık ilk kullanım görüşmesi</li></ul><a class="btn w" href="#">Hazır telefon sipariş et</a></article>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı sözü">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Eskiden akşam telefonum çalınca kalbim sıkışıyordu, yine ne bozuldu diye. Şimdi annem arayınca sadece sohbet ediyoruz.”</blockquote>
+      <figcaption><b style="color:var(--ink)">Emre Şahin</b>, 38 · yazılım geliştirici, İstanbul · annesi Gönül Hanım, 72, Ordu'da yaşıyor</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="sss-h">
+  <div class="wrap">
+    <h2 id="sss-h" style="margin-bottom:1.4rem">Sorular</h2>
+    <details><summary>Düğmeler yer değiştirince annem şaşırmaz mı?</summary><p>Sade Ekran hiçbir şeyi sessizce değiştirmez. Her öneri önce sana gelir; sen onaylarsan da değişiklik günde en fazla bir kez, annenin telefonu kullanmadığı bir saatte olur. İstersen yerleşimi tamamen sabitleyebilirsin.</p></details>
+    <details><summary>Dört düğme yetmezse?</summary><p>Düğme sayısı 2, 4 ya da 6 olabilir. Ama dört düğmeyle başlamanı öneririz; eklemek, çıkarmaktan kolaydır.</p></details>
+    <details><summary>WhatsApp görüntülü arama çalışıyor mu?</summary><p>Evet. “Ara” düğmesinin içindeki her kişide “sesli” ve “görüntülü” diye iki büyük seçenek var. Görüntülü aramayı WhatsApp üzerinden yapar.</p></details>
+    <details><summary>iPhone'da çalışır mı?</summary><p>Annenin telefonu için şimdilik yalnız Android. Senin panelin iPhone'da da, bilgisayarda da açılır.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--ink)">Sade Ekran</b> · Trabzon Teknokent<br>destek@sadeekran.app · Panelden canlı yazışma, her gün 08.00–23.00</div>
+    <div><a href="#">KVKK</a> · <a href="#">Erişilebilirlik beyanı</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var I={
+    call:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z" fill="currentColor"/></svg>',
+    msg:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z" fill="currentColor"/></svg>',
+    photo:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="9" cy="10" r="2" fill="currentColor"/><path d="M5 17l5-5 4 4 2-2 3 3" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+    sos:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 10v5M12 17.5v.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>'
+  };
+  var B={call:['b-call','Ara'],msg:['b-msg','Mesajlar'],photo:['b-photo','Torun fotoğrafları'],sos:['b-sos','Acil']};
+  var order=['call','msg','sos','photo'],grid=document.getElementById('grid');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function names(o){return o.map(function(k){return B[k][1]}).join(', ')}
+  function render(){
+    grid.innerHTML=order.map(function(k){return '<div class="big '+B[k][0]+'" data-k="'+k+'">'+I[k]+'<span>'+B[k][1]+'</span></div>'}).join('');
+    document.getElementById('ph-desc').textContent='Annenin telefon ekranı, dört düğme sırasıyla: '+names(order);
+  }
+  function move(to){
+    if(reduce){order=to;render();return}
+    var first={};grid.querySelectorAll('.big').forEach(function(el){first[el.dataset.k]=el.getBoundingClientRect()});
+    order=to;render();
+    grid.querySelectorAll('.big').forEach(function(el){var f=first[el.dataset.k],l=el.getBoundingClientRect();el.style.transition='none';el.style.transform='translate('+(f.left-l.left)+'px,'+(f.top-l.top)+'px)';requestAnimationFrame(function(){requestAnimationFrame(function(){el.style.transition='';el.style.transform=''})})});
+  }
+  render();
+  var H=[0,0,1,2,3,2,1,1,2,1,1,2,3,2,6,9,10,7,3];
+  document.getElementById('bars').innerHTML=H.map(function(v,i){return '<span class="'+(i>=13&&i<=16?'hot':'')+'" style="height:'+(8+v*9)+'%"></span>'}).join('');
+  var applied=false,toast=document.getElementById('toast');
+  document.getElementById('apply').addEventListener('click',function(){
+    if(!applied){move(['photo','call','msg','sos']);applied=true;this.textContent='Geri al';toast.textContent='Uygulandı. Akşamları “Fotoğraflar” sol üstte; değişiklik annenin telefonuna 20.00’de geçer.'}
+    else{move(['call','msg','sos','photo']);applied=false;this.textContent='Uygula';toast.textContent='Geri alındı. Düğmeler eski yerinde.'}
+  });
+  document.getElementById('skip').addEventListener('click',function(){toast.textContent='Tamam, bu öneri bir hafta boyunca tekrar gelmeyecek.'});
+})();
+</script>
+</body>
+</html>

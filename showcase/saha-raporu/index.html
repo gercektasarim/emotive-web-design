@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saha Raporu — Günlük şantiye raporunu sahada, konuşarak bitirin</title>
+<meta name="description" content="Saha Raporu şantiye şefinin konuşarak günlük rapor tutmasını sağlar. Eldivenle kullanılır, kapsama olmayan bodrum katta da çalışır, fotoğrafları iş kalemine bağlar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --asphalt:#1B1C1A; --asphalt2:#262724; --concrete:#8A8C86; --conc-l:#D5D5CF; --white:#F4F4F0;
+  --vis:#F5C400; --orange:#E86A1C;
+  --cond:"Barlow Condensed", "Arial Narrow", sans-serif; --body:"Barlow", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--asphalt);color:var(--white);font:400 18px/1.55 var(--body)}
+a{color:inherit}
+:focus-visible{outline:4px solid var(--vis);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+.tape{height:22px;background:repeating-linear-gradient(-45deg,var(--vis) 0 22px,var(--asphalt) 22px 44px)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px}
+.logo{font:800 26px/1 var(--cond);text-transform:uppercase;letter-spacing:.02em;text-decoration:none;display:flex;gap:10px;align-items:center}
+.logo b{background:var(--vis);color:var(--asphalt);padding:3px 8px}
+header nav{display:flex;gap:26px;font:600 17px var(--cond);letter-spacing:.03em;text-transform:uppercase}
+header nav a{text-decoration:none;color:var(--conc-l)}
+.btn{display:inline-block;font:800 20px/1 var(--cond);text-transform:uppercase;letter-spacing:.03em;padding:18px 26px;text-decoration:none;background:var(--vis);color:var(--asphalt);border:3px solid var(--vis)}
+.btn.o{background:transparent;color:var(--white);border-color:var(--conc-l)}
+.btn:hover{background:var(--white);border-color:var(--white);color:var(--asphalt)}
+/* hero */
+.hero{padding:36px 0 80px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center}
+h1{font:800 clamp(52px,7.6vw,112px)/.98 var(--cond);text-transform:uppercase;margin:0 0 24px;letter-spacing:-.005em}
+h1 em{font-style:normal;color:var(--vis);display:block}
+.lede{font-size:21px;color:var(--conc-l);max-width:28em;margin:0 0 30px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.spec{display:flex;gap:26px;flex-wrap:wrap;margin-top:28px;font:600 16px var(--cond);text-transform:uppercase;letter-spacing:.04em;color:var(--concrete)}
+.spec span b{color:var(--white);font-size:22px;display:block;letter-spacing:0}
+/* device */
+.device{background:#111210;border:3px solid #3a3b37;border-radius:26px;padding:16px;box-shadow:0 0 0 8px #2b2c28, 0 40px 60px -30px #000;max-width:420px;justify-self:end;width:100%}
+.dbar{display:flex;justify-content:space-between;font:600 14px var(--cond);letter-spacing:.05em;text-transform:uppercase;color:var(--concrete);padding:0 4px 10px}
+.dbar .nos{color:var(--orange)}
+.rep{background:var(--white);color:var(--asphalt);border-radius:12px;padding:14px 16px}
+.rep h2{font:800 22px/1.05 var(--cond);text-transform:uppercase;margin:0}
+.rep .sub{font-size:14px;color:#55574f;margin-bottom:8px}
+.row{display:grid;grid-template-columns:98px 1fr;gap:8px;padding:7px 0;border-top:1px solid #cfcfc8;font-size:15px;line-height:1.35}
+.row dt{font:700 14px var(--cond);text-transform:uppercase;letter-spacing:.04em;color:#5b5d55;padding-top:1px}
+.row dd{margin:0;min-height:20px}
+.row dd.fill{background:linear-gradient(90deg,#FFF1A8,transparent);transition:background 1.2s}
+.ph{display:inline-block;font:700 12px var(--cond);background:var(--asphalt);color:var(--vis);padding:2px 6px;margin:2px 4px 0 0;letter-spacing:.04em}
+.voice{margin-top:14px;display:flex;align-items:center;gap:14px}
+.talk{width:96px;height:96px;flex:none;border-radius:50%;background:var(--vis);border:6px solid #3b3a1e;color:var(--asphalt);font:800 17px/1 var(--cond);text-transform:uppercase;cursor:pointer;box-shadow:0 0 0 0 rgba(245,196,0,.6)}
+.talk.on{animation:pulse 1.2s infinite}
+@keyframes pulse{to{box-shadow:0 0 0 18px rgba(245,196,0,0)}}
+.said{font:500 15px/1.4 var(--body);color:var(--conc-l);min-height:64px}
+.said b{color:var(--vis);font:700 13px var(--cond);text-transform:uppercase;letter-spacing:.05em;display:block}
+/* sections */
+section{padding:90px 0}
+h2.sec{font:800 clamp(40px,5vw,72px)/1.0 var(--cond);text-transform:uppercase;margin:0 0 20px;max-width:14em}
+.concrete{background:var(--conc-l);color:var(--asphalt);
+  background-image:radial-gradient(rgba(0,0,0,.07) 1px,transparent 1.4px),radial-gradient(rgba(255,255,255,.35) 1px,transparent 1.6px);background-size:9px 9px,13px 13px}
+.concrete p{color:#33352f}
+.day{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:36px;border-top:4px solid var(--asphalt)}
+.day div{padding:16px 16px 0 0;position:relative}
+.day div::before{content:"";position:absolute;top:-12px;left:0;width:20px;height:20px;background:var(--asphalt);border-radius:50%}
+.day div.end::before{background:var(--orange)}
+.day time{font:800 34px/1 var(--cond);display:block;margin:8px 0 6px}
+.day p{margin:0;font-size:16px}
+.day small{display:block;font:700 13px var(--cond);text-transform:uppercase;letter-spacing:.05em;color:#5a5c55;margin-top:8px}
+/* photos */
+.poz{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:34px}
+.tile{background:var(--asphalt2);border:2px solid #3a3b37;padding:0 0 12px}
+.tile svg{display:block;width:100%;height:auto;background:#2f302c}
+.tile b{display:block;font:800 16px/1.1 var(--cond);text-transform:uppercase;padding:10px 12px 2px;color:var(--vis)}
+.tile span{display:block;padding:0 12px;font-size:14.5px;color:var(--conc-l)}
+/* offline */
+.under{background:#0F100E}
+.under .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.under p{color:var(--conc-l);max-width:30em}
+.sig{border:3px solid var(--orange);padding:26px 28px;font:600 20px/1.5 var(--cond);letter-spacing:.03em;text-transform:uppercase}
+.sig div{display:flex;justify-content:space-between;border-bottom:1px dashed #4a4b45;padding:8px 0}
+.sig div:last-child{border:0}
+.sig b{color:var(--vis)}
+.sig .o{color:var(--orange)}
+/* paper */
+.paper .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:start}
+.pdf{background:#fff;color:#222;padding:30px 32px;font-size:14px;line-height:1.5;box-shadow:12px 12px 0 var(--vis)}
+.pdf h3{font:800 22px var(--cond);text-transform:uppercase;margin:0;border-bottom:3px solid #222;padding-bottom:6px}
+.pdf table{width:100%;border-collapse:collapse;margin-top:10px}
+.pdf td{border:1px solid #bbb;padding:6px 8px;vertical-align:top}
+.pdf td:first-child{font-weight:600;width:34%;background:#f2f2ee}
+.quote{font:700 clamp(28px,3.4vw,44px)/1.08 var(--cond);text-transform:none;max-width:24em;margin:0}
+.quote+p{color:var(--concrete);font-size:16px;margin-top:16px}
+/* price */
+.prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:30px;border:3px solid var(--conc-l)}
+.prices > div{padding:26px 24px;border-right:3px solid var(--conc-l)}
+.prices > div:last-child{border-right:0}
+.prices h3{font:800 24px var(--cond);text-transform:uppercase;margin:0}
+.prices .a{font:800 50px/1 var(--cond);color:var(--vis);margin:12px 0 6px}
+.prices ul{padding-left:18px;color:var(--conc-l);font-size:16px}
+details{border-top:2px solid #3a3b37;padding:16px 0}
+summary{font:700 23px var(--cond);text-transform:uppercase;cursor:pointer;letter-spacing:.01em}
+details p{color:var(--conc-l);max-width:44em;margin:8px 0 0}
+.home{background:var(--vis);color:var(--asphalt);padding:46px 0}
+.home .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.home p{font:800 clamp(30px,4vw,54px)/1 var(--cond);text-transform:uppercase;margin:0}
+.home .btn{background:var(--asphalt);color:var(--vis);border-color:var(--asphalt)}
+footer{padding:26px 0;font-size:15px;color:var(--concrete)}
+footer .credit{margin-top:8px;font-size:12px}
+@media (max-width:960px){
+  .hero .wrap,.under .wrap,.paper .wrap{grid-template-columns:1fr}
+  .device{justify-self:start}
+  .day{grid-template-columns:1fr 1fr}
+  .poz{grid-template-columns:1fr 1fr}
+  .prices{grid-template-columns:1fr}
+  .prices > div{border-right:0;border-bottom:3px solid var(--conc-l)}
+  header nav{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .day{grid-template-columns:1fr}
+  .row{grid-template-columns:84px 1fr}
+  section{padding:64px 0}
+  .pdf{padding:20px 18px;box-shadow:8px 8px 0 var(--vis)}
+}
+@media (prefers-reduced-motion:reduce){.talk.on{animation:none}.row dd.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="tape" aria-hidden="true"></div>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#"><b>SR</b>Saha Raporu</a>
+    <nav aria-label="Ana menü"><a href="#gun">Bir gün</a><a href="#poz">Fotoğraf</a><a href="#kapsama">Kapsama yok</a><a href="#fiyat">Fiyat</a></nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" style="padding-top:20px">
+  <div class="wrap">
+    <div>
+      <h1>Raporu şantiyede bitir. <em>Akşam eve git.</em></h1>
+      <p class="lede">Gün içinde düğmeye basıp konuşun: “B Blok dördüncü kat döşeme betonu döküldü, seksen altı metreküp.” Saha Raporu bunu günlük rapora, doğru iş kalemine yazar. Ofise dönüp bilgisayar başında bir saat geçirmezsiniz.</p>
+      <div class="cta"><a class="btn" href="#fiyat">Şantiyede dene · 30 gün</a><a class="btn o" href="#rapor">Rapor örneği</a></div>
+      <div class="spec"><span><b>Eldivenle</b>büyük tuş</span><span><b>Çekmeyen yerde</b>tam çalışır</span><span><b>IP68</b>telefonlarda test edildi</span></div>
+    </div>
+
+    <div class="device" aria-label="Saha Raporu ekranı: sesli not günlük rapora işleniyor">
+      <div class="dbar"><span>16:58 · 14°C · Dilovası</span><span class="nos">Kapsama yok · kaydedildi</span></div>
+      <div class="rep">
+        <h2>Günlük rapor · 14 Kasım</h2>
+        <div class="sub">Gebze Lojistik Deposu · B Blok</div>
+        <dl style="margin:0">
+          <div class="row"><dt>Hava</dt><dd>Parçalı bulutlu, 9–14°C, rüzgâr 18 km/s</dd></div>
+          <div class="row"><dt>Ekip</dt><dd id="f1">Kalıp 12 · Demir 8 · Beton 6</dd></div>
+          <div class="row"><dt>Yapılan iş</dt><dd id="f2"></dd></div>
+          <div class="row"><dt>Fotoğraf</dt><dd id="f3"></dd></div>
+          <div class="row"><dt>Eksik / not</dt><dd id="f4"></dd></div>
+        </dl>
+      </div>
+      <div class="voice">
+        <button class="talk" id="talk" type="button" aria-pressed="false">Basılı tut konuş</button>
+        <div class="said" id="said" aria-live="polite"><b>Son not</b>Tuşa basın, çalışan bir sesli not örneği dinleyin.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tape" aria-hidden="true"></div>
+
+<section class="concrete" id="gun">
+  <div class="wrap">
+    <h2 class="sec">Rapor gün içinde, iş başında yazılır.</h2>
+    <p style="max-width:40em;font-size:19px">Akşam ofiste hafızadan yazılan rapor eksik olur. Saha Raporu’nda her not, olduğu anda, olduğu yerde tutulur. Günün sonunda yapacağınız tek şey okuyup onaylamak.</p>
+    <div class="day">
+      <div><time>07:30</time><p>“Sabah toplantısı yapıldı, iskele kontrolü tamam.”</p><small>İSG notu</small></div>
+      <div><time>10:15</time><p>“Dördüncü kat döşeme betonu başladı, C30, iki pompa.”</p><small>Poz 04.02 · Beton</small></div>
+      <div><time>13:40</time><p>“Elektrik taşeronu gelmedi, şaft boşlukları açık kaldı.”</p><small>Eksik · Elektrik</small></div>
+      <div><time>16:20</time><p>“Beton bitti, seksen altı metreküp, kür örtüsü serildi.”</p><small>Poz 04.02 · 3 fotoğraf</small></div>
+      <div class="end"><time>17:05</time><p>Rapor okundu, imzalandı, kontrol mühendisine gitti.</p><small>Eve gitme saati</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="poz">
+  <div class="wrap">
+    <h2 class="sec">Fotoğraf, iş kalemine yapışır.</h2>
+    <p style="color:var(--conc-l);max-width:40em">Galeride “IMG_4471” diye kaybolmaz. Konuşurken çektiğiniz fotoğraf, o an söylediğiniz poza, kata ve aksa bağlanır. Hakediş zamanı “şu döşemenin fotoğrafı nerede?” diye aramazsınız.</p>
+    <div class="poz">
+      <div class="tile"><svg viewBox="0 0 200 120" role="img" aria-label="Döşeme betonu çizimi"><rect x="0" y="80" width="200" height="40" fill="#5e605a"/><rect x="0" y="74" width="200" height="8" fill="#8a8c86"/><path d="M20 74V30M60 74V30M100 74V30M140 74V30M180 74V30" stroke="#F5C400" stroke-width="3"/><path d="M10 30h180" stroke="#8a8c86" stroke-width="5"/></svg><b>Poz 04.02 · C30/37</b><span>B Blok 4. kat döşeme · 16:12</span></div>
+      <div class="tile"><svg viewBox="0 0 200 120" role="img" aria-label="Demir donatı çizimi"><rect width="200" height="120" fill="#3a3b37"/><g stroke="#B9653A" stroke-width="3"><path d="M0 20h200M0 45h200M0 70h200M0 95h200M25 0v120M60 0v120M95 0v120M130 0v120M165 0v120"/></g></svg><b>Poz 03.11 · Donatı</b><span>Aks C-4 perde · 09:40</span></div>
+      <div class="tile"><svg viewBox="0 0 200 120" role="img" aria-label="Açık şaft boşluğu çizimi"><rect width="200" height="120" fill="#4a4b46"/><rect x="70" y="25" width="60" height="70" fill="#111"/><path d="M70 25l60 70M130 25l-60 70" stroke="#E86A1C" stroke-width="4"/></svg><b>Eksik · Elektrik</b><span>Şaft E-2 açık · 13:41</span></div>
+      <div class="tile"><svg viewBox="0 0 200 120" role="img" aria-label="Kür örtüsü serili döşeme çizimi"><rect width="200" height="120" fill="#5e605a"/><path d="M0 60q25-14 50 0t50 0 50 0 50 0V120H0z" fill="#d9d9d2" opacity=".85"/></svg><b>Poz 04.02 · Kür</b><span>Örtü serildi · 16:55</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="under" id="kapsama">
+  <div class="wrap">
+    <div>
+      <h2 class="sec">Bodrum kat eksi üç. Çubuk yok. Rapor yazılıyor.</h2>
+      <p>Perde betonun içinde, iskelenin tepesinde, şehir dışındaki arazide telefon çekmez. Saha Raporu sesinizi telefonun kendi içinde yazıya döker; internete ihtiyacı yoktur.</p>
+      <p>Sesiniz ve fotoğraflar hiçbir sunucuya gitmez. Rapor, yalnız siz gönder deyince ve yalnız seçtiğiniz kişilere (proje müdürü, kontrol mühendisi) iletilir; çekmiyorsa sinyali bulduğunda.</p>
+    </div>
+    <div class="sig" role="img" aria-label="Telefon durumu: kapsama yok, sesli not yazıya döküldü, rapor kuyrukta">
+      <div><span>Sinyal</span><span class="o">Yok · −3. kat</span></div>
+      <div><span>Bugünkü sesli not</span><b>23</b></div>
+      <div><span>Yazıya dökülen</span><b>23 / 23</b></div>
+      <div><span>Bağlanan fotoğraf</span><b>41</b></div>
+      <div><span>Giden kutusu</span><b>1 rapor · sinyal bekliyor</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="paper" id="rapor">
+  <div class="wrap">
+    <div>
+      <h2 class="sec">Kontrol mühendisinin istediği formatta.</h2>
+      <p style="color:var(--conc-l)">Günlük rapor PDF olarak çıkar; şantiye defterine işlenecek satırlar ayrıca listelenir. Firmanızın şablonu varsa onu yükleyin, alanlar ona göre dolar.</p>
+      <p class="quote" style="margin-top:40px">“Eskiden saat altıda ofise dönüp yedi buçuğa kadar rapor yazıyordum. Şimdi beşte imzalıyorum, servise yetişiyorum.”</p>
+      <p>Murat Kılınç — İnşaat Mühendisi, Şantiye Şefi · Dilovası, Kocaeli</p>
+    </div>
+    <div class="pdf" role="img" aria-label="Günlük şantiye raporu PDF örneği">
+      <h3>Günlük Şantiye Raporu — No 212</h3>
+      <table>
+        <tr><td>Proje</td><td>Gebze Lojistik Deposu, B Blok</td></tr>
+        <tr><td>Tarih</td><td>14.11.2026 Cuma</td></tr>
+        <tr><td>Hava</td><td>Parçalı bulutlu, 9–14°C</td></tr>
+        <tr><td>Personel</td><td>Kalıp 12, demir 8, beton 6, İSG 1 — toplam 27</td></tr>
+        <tr><td>Makine</td><td>Beton pompası 2, kule vinç 1</td></tr>
+        <tr><td>Yapılan işler</td><td>Poz 04.02: 4. kat döşeme betonu C30/37, 86 m³, kür örtüsü serildi. Poz 03.11: C-4 aksı perde donatı kontrolü.</td></tr>
+        <tr><td>Eksikler</td><td>Elektrik taşeronu gelmedi; E-2 şaftı açık, korkuluk takıldı.</td></tr>
+        <tr><td>Ekler</td><td>41 fotoğraf, iş kalemine bağlı</td></tr>
+        <tr><td>Şantiye şefi</td><td>M. Kılınç · imzalı 17:05</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="fiyat" style="background:var(--asphalt2)">
+  <div class="wrap">
+    <h2 class="sec">Fiyat: şantiye başına</h2>
+    <div class="prices">
+      <div><h3>Tek şantiye</h3><div class="a">690 ₺ / ay</div><ul><li>1 şantiye şefi + 2 tekniker</li><li>Sınırsız rapor, ses, fotoğraf</li><li>PDF ve Excel çıktı</li></ul></div>
+      <div><h3>Firma</h3><div class="a">2.900 ₺ / ay</div><ul><li>5 şantiyeye kadar</li><li>Kendi rapor şablonunuz</li><li>Proje müdürüne haftalık özet</li></ul></div>
+      <div><h3>Müteahhit</h3><div class="a">Teklif</div><ul><li>Sınırsız şantiye</li><li>Kendi sunucunuza aktarım</li><li>Saha eğitimi</li></ul></div>
+    </div>
+    <p style="margin-top:22px;color:var(--conc-l)">Telefon için: “Android için indir” · “iPhone için indir”. Uygulama 1,2 GB; şantiyeye gitmeden Wi-Fi’da indirin.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="sec">Sahadan gelen sorular</h2>
+    <details open><summary>Gürültüde anlıyor mu?</summary><p>Kırıcı, pompa ve vinç sesinde test edildi. Telefonu ağza 20 cm’den yakın tutun ya da kask altı kulaklık kullanın. Anlamadığı kelimeyi sarı işaretler; tahmin yazmaz.</p></details>
+    <details><summary>Şantiye dilini biliyor mu? “Hatıl”, “grobeton”, “filiz”…</summary><p>Evet. Türkçe şantiye terimleri ve poz numaraları ile eğitildi. Firmanıza özel kısaltmaları sözlüğe ekleyebilirsiniz.</p></details>
+    <details><summary>Telefon düşerse, kaybolursa?</summary><p>Raporlar şifreli tutulur. Sinyal bulduğunda imzalı raporlar seçtiğiniz kişiye zaten gitmiş olur.</p></details>
+  </div>
+</section>
+
+<div class="home">
+  <div class="wrap"><p>17:05 · Rapor gönderildi. İyi akşamlar.</p><a class="btn" href="#fiyat">30 gün ücretsiz</a></div>
+</div>
+</main>
+<footer>
+  <div class="wrap">Saha Raporu · Kocaeli · destek@saharaporu.app · Hafta içi 07:00–19:00 sahadan arayın: 0262 000 00 00
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var steps=[
+    ["“Dördüncü kat döşeme betonu döküldü, seksen altı metreküp, C otuz.”","f2","Poz 04.02 · 4. kat döşeme betonu C30/37, 86 m³ döküldü"],
+    ["“Fotoğrafları döşemeye bağla.”","f3",'<span class="ph">04.02 · 3 foto</span><span class="ph">03.11 · 2 foto</span>'],
+    ["“Elektrikçi gelmedi, E iki şaftı açık, korkuluk taktık.”","f4","Elektrik taşeronu gelmedi · E-2 şaftı açık, korkuluk takıldı"]
+  ];
+  var btn=document.getElementById('talk'),said=document.getElementById('said'),run=false;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fill(i){var s=steps[i];said.innerHTML='<b>Sesli not · yazıya döküldü</b>'+s[0];var d=document.getElementById(s[1]);d.innerHTML=s[2];d.className='fill';setTimeout(function(){d.className=''},1600)}
+  function play(){if(run)return;run=true;btn.classList.add('on');btn.setAttribute('aria-pressed','true');
+    steps.forEach(function(s){document.getElementById(s[1]).innerHTML=''});
+    steps.forEach(function(s,i){setTimeout(function(){fill(i);if(i===steps.length-1){btn.classList.remove('on');btn.setAttribute('aria-pressed','false');run=false}},reduce?0:600+i*1100)});}
+  btn.addEventListener('click',play);
+  if(reduce){steps.forEach(function(s,i){fill(i)})}else{setTimeout(play,300)}
+})();
+</script>
+</body>
+</html>

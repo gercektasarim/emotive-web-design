@@ -1,0 +1,21 @@
+{
+  "slug": "yon-sesi",
+  "name": "Yön Sesi",
+  "interpretation": "Zemin çizgisi ve tabela",
+  "world": "Hastane koridoru: beyaz duvar, gri linolyum, yerdeki yeşil yön çizgisi ve lacivert poliklinik tabelaları.",
+  "palette": [
+    "#FFFFFF",
+    "#E6E8E3",
+    "#0B2545",
+    "#00875A",
+    "#006B47",
+    "#FFD23F"
+  ],
+  "fonts": [
+    "Commissioner",
+    "Azeret Mono"
+  ],
+  "score": 28,
+  "lowest": "Duygu yolculuğu",
+  "moment": "Kat planında yeşil rota adım adım B-214'e uzanırken baş-üstten çizilmiş kafanın çevresindeki ses yayı dönüp yönü gösterir; son adımda sıra ekranı okunur."
+}

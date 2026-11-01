@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İklim — Ruh halin için yedi günlük tahmin, kışa hazırlık</title>
+<meta name="description" content="İklim uyku, hareket, gün ışığı ve takvim yoğunluğundan ruh halini hava durumu gibi tahmin eder: 'yarın parçalı bulutlu' der ve önlem önerir. Hesap telefonunda yapılır, veri dışarı çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@500;600;700&family=Sofia+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --studio:#2B3550;    /* kasım akşamı 16:49, gün batımından sonraki mavi */
+  --studio-2:#20283D;
+  --map:#E8EDF2;       /* tahmin haritası zemini */
+  --isobar:#C5D0DC;
+  --sun:#F5C140;       /* güneş simgesi */
+  --cloud:#8C98A8;
+  --rain:#3C78C8;
+  --snow:#FFFFFF;
+  --ink:#122033;
+  --ink-2:#4A586B;
+  --cond:"Sofia Sans Condensed", system-ui, sans-serif;
+  --sans:"Sofia Sans", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--map);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:var(--cond);font-weight:700;line-height:1;letter-spacing:.005em}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:4px;font:600 16px var(--sans);text-decoration:none;cursor:pointer;border:2px solid currentColor;background:transparent}
+.btn.sun{background:#fff;border-color:#fff;color:var(--ink)}
+
+/* stüdyo */
+.studio{background:var(--studio);color:#fff;position:relative;overflow:hidden}
+.studio::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 78% 40%,transparent 0 120px,rgba(255,255,255,.07) 121px 122px,transparent 123px 190px,rgba(255,255,255,.06) 191px 192px,transparent 193px 270px,rgba(255,255,255,.05) 271px 272px,transparent 273px 360px,rgba(255,255,255,.04) 361px 362px,transparent 363px);pointer-events:none}
+nav{position:relative;display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.logo{font:700 30px var(--cond);text-decoration:none;display:flex;align-items:center;gap:10px;letter-spacing:.02em}
+.logo svg{width:28px;height:28px}
+nav .r{display:flex;gap:22px;align-items:center;font-size:16px}
+nav .r a.t{text-decoration:none;color:#C9D6EE}
+.hero{position:relative;display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:start;padding:30px 0 44px}
+.hero h1{font-size:clamp(52px,6.4vw,88px);font-weight:700}
+.hero .lead{margin-top:18px;color:#D7E1F3;font-size:19px;max-width:26em}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.hero .ctas .btn{color:#fff}
+.hero .ctas .btn.sun{color:var(--ink)}
+
+/* tahmin */
+.forecast{background:#fff;color:var(--ink);border-radius:6px;overflow:hidden;box-shadow:0 24px 40px -24px rgba(0,0,0,.6)}
+.fc-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;background:var(--studio-2);color:#fff}
+.fc-head b{font:600 22px var(--cond);letter-spacing:.02em}
+.fc-head span{font-size:14px;color:#C9D6EE}
+.days{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid #DDE3EA}
+.day{border:0;background:#fff;padding:14px 4px 12px;text-align:center;cursor:pointer;border-right:1px solid #EEF1F5;font-family:var(--sans);color:var(--ink)}
+.day:last-child{border-right:0}
+.day .dn{font:600 19px var(--cond);display:block}
+.day svg{width:46px;height:46px;margin:6px auto 2px;display:block}
+.day .t{font:600 22px var(--cond);display:block}
+.day .mw{display:block;font-size:12.5px;color:var(--ink-2);line-height:1.2;margin-top:2px}
+.day .en{display:flex;justify-content:center;gap:2px;margin-top:6px}
+.day .en i{width:6px;height:10px;border-radius:2px;background:#DCE2EA}
+.day .en i.on{background:var(--studio)}
+.day .t small{font-size:14px;color:var(--ink-2);font-weight:500}
+.day[aria-selected=true]{background:#FFF6DB;box-shadow:inset 0 -4px 0 var(--sun)}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:20px 22px 22px}
+.detail h3{font:700 32px var(--cond)}
+.detail .sum{color:var(--ink-2);margin-top:4px;font-size:16.5px}
+.inputs{list-style:none;font-size:15.5px}
+.inputs li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #EEF1F5}
+.inputs b{font-weight:600}
+.inputs .w{color:#B4471D}.inputs .g{color:#1D6B3F}
+.adv{grid-column:1/-1;background:var(--map);border-left:4px solid var(--sun);padding:12px 16px;font-size:16.5px}
+.adv b{font-family:var(--cond);font-size:19px;font-weight:600}
+.ticker{background:var(--sun);color:var(--ink);font:600 17px var(--cond);letter-spacing:.02em;white-space:nowrap;overflow:hidden;padding:8px 0}
+.ticker div{display:inline-block;animation:tick 60s linear infinite}
+.ticker span{padding:0 28px 0 16px}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+section{padding:96px 0}
+h2{font-size:clamp(40px,5vw,64px)}
+.lede{color:var(--ink-2);max-width:34em;margin-top:14px;font-size:19px}
+
+/* kış görünümü */
+.outlook{background:#fff}
+.chart{margin-top:40px}
+.chart svg{width:100%;height:auto;display:block}
+.chart .leg{display:flex;gap:24px;flex-wrap:wrap;font-size:15px;color:var(--ink-2);margin-top:12px}
+.chart .leg span::before{content:"";display:inline-block;width:20px;height:4px;margin-right:8px;vertical-align:middle;background:var(--c)}
+.notes3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:36px}
+.notes3 h3{font-size:26px;margin-bottom:6px}
+.notes3 p{color:var(--ink-2);font-size:16.5px}
+
+/* önlem çantası */
+.kit{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin-top:40px;border-top:2px solid var(--ink)}
+.kit div{padding:20px 0 20px 26px;border-bottom:1px solid #C9D3DE;position:relative}
+.kit div::before{content:"";position:absolute;left:0;top:28px;width:12px;height:12px;border-radius:50%;background:var(--c)}
+.kit h3{font-size:24px}
+.kit .when{font:600 15px var(--cond);color:var(--ink-2);letter-spacing:.02em;display:block;margin:4px 0 8px}
+.kit p{font-size:16px;color:var(--ink-2)}
+
+/* gizlilik */
+.priv{background:var(--studio);color:#fff}
+.priv .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.priv .lede{color:#D7E1F3}
+.station{background:var(--studio-2);border-radius:6px;padding:24px 26px}
+.station h3{font-size:24px;margin-bottom:10px}
+.station li{list-style:none;display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #2A4C8F;font-size:16.5px}
+.station li b{color:var(--sun);font-weight:600;white-space:nowrap}
+
+.acc{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;align-items:start}
+.acc .n{font:700 clamp(34px,3.6vw,46px)/1.05 var(--cond);color:var(--ink)}
+.acc p{font-size:18px;color:var(--ink-2);max-width:36em}
+.acc blockquote{margin-top:22px;font:600 clamp(24px,2.6vw,32px)/1.25 var(--cond);color:var(--ink);letter-spacing:.005em}
+.acc cite{display:block;margin-top:10px;font-style:normal;font-size:16px;color:var(--ink-2)}
+
+.buy{display:grid;grid-template-columns:1fr;gap:48px}
+.buy .plan{display:grid;grid-template-columns:1fr 1fr;gap:8px 48px;align-items:center;max-width:900px}
+.buy .plan ul{margin:0}
+.buy > div:last-child{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.buy > div:last-child h2{grid-column:1/-1}
+.plan{background:#fff;border-radius:6px;padding:30px;border-top:6px solid var(--studio)}
+.plan .amt{font:700 60px var(--cond);margin:4px 0}
+.plan .amt small{font:400 16px var(--sans);color:var(--ink-2)}
+.plan ul{list-style:none;margin:14px 0 24px}
+.plan li{padding:8px 0;border-top:1px solid #EEF1F5;font-size:16.5px}
+.plan .btn{color:var(--studio)}
+.plan .btn.sun{background:var(--studio);border-color:var(--studio);color:#fff}
+details{border-bottom:1px solid #C9D3DE;padding:15px 0}
+summary{cursor:pointer;font:600 22px var(--cond)}
+details p{margin-top:6px;color:var(--ink-2);font-size:16.5px}
+
+footer{background:var(--studio-2);color:#C9D6EE;padding:36px 0 30px;font-size:15px}
+footer .credit{margin-top:12px;font-size:13px}
+
+@media (max-width:960px){
+  .hero{grid-template-columns:1fr;gap:30px}
+}
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  nav .r a.t{display:none}
+  .days{grid-template-columns:repeat(7,minmax(0,1fr))}
+  .day{padding:10px 0}
+  .day svg{width:32px;height:32px}
+  .day .dn{font-size:16px}
+  .day .t{font-size:18px}
+  .day .t small{display:none}
+  .day .mw{font-size:11px}
+  .day .en i{width:4px}
+  .chart svg text{font-size:30px}
+  .detail{grid-template-columns:1fr;padding:16px}
+  .notes3,.priv .grid,.buy,.kit,.buy .plan,.buy > div:last-child{grid-template-columns:1fr}
+  .acc{grid-template-columns:1fr;gap:10px}
+  section{padding:70px 0}
+}
+@media (prefers-reduced-motion:reduce){.ticker div{animation:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-sun" viewBox="0 0 48 48"><circle cx="24" cy="24" r="10" fill="#F5C140"/><g stroke="#F5C140" stroke-width="3" stroke-linecap="round"><path d="M24 4v6M24 38v6M4 24h6M38 24h6M10 10l4 4M34 34l4 4M10 38l4-4M34 14l4-4"/></g></symbol>
+    <symbol id="i-part" viewBox="0 0 48 48"><circle cx="18" cy="18" r="9" fill="#F5C140"/><path d="M14 38h22a8 8 0 0 0 0-16 11 11 0 0 0-21 3 6.5 6.5 0 0 0-1 13z" fill="#B7C1CE"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 48 48"><path d="M12 36h24a9 9 0 0 0 0-18 12 12 0 0 0-23 3 7.5 7.5 0 0 0-1 15z" fill="#8C98A8"/></symbol>
+    <symbol id="i-rain" viewBox="0 0 48 48"><path d="M12 30h24a9 9 0 0 0 0-18 12 12 0 0 0-23 3 7.5 7.5 0 0 0-1 15z" fill="#6E7B8D"/><g stroke="#3C78C8" stroke-width="3" stroke-linecap="round"><path d="M16 36l-2 6M24 36l-2 6M32 36l-2 6"/></g></symbol>
+  </defs>
+</svg>
+
+<div class="studio">
+  <div class="wrap">
+    <nav aria-label="Ana menü">
+      <a class="logo" href="#"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-part"/></svg>İklim</a>
+      <div class="r"><a class="t" href="#kis">Kış görünümü</a><a class="t" href="#istasyon">Ölçüm istasyonu</a><a class="btn" href="#al" style="color:#fff;padding:9px 16px">İndir</a></div>
+    </nav>
+    <header class="hero">
+      <div>
+        <h1>Yarın parçalı bulutlu. Şemsiyen hazır.</h1>
+        <p class="lead">İklim uykundan, adımlarından, gün ışığından ve takviminin yoğunluğundan ruh halini hava durumu gibi tahmin eder. Kötü günü engellemez; önceden haber verir ki hazırlıklı olasın.</p>
+        <div class="ctas"><a class="btn sun" href="#al">iPhone için indir</a><a class="btn" href="#al">Android için indir</a></div>
+      </div>
+      <div class="forecast" aria-label="Yedi günlük ruh hali tahmini">
+        <div class="fc-head"><b>Ruh hali tahmini · 7 gün · enerji 1–5</b><span>Güncelleme 21:00 · telefonunda hesaplandı</span></div>
+        <div class="days" role="tablist" id="days"></div>
+        <div class="detail" id="detail" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </header>
+  </div>
+  <div class="ticker" aria-hidden="true"><div><span>Bu akşam gün batımı 16:49 · Gün ışığı 9 sa 52 dk, dünden 2 dk kısa · Hafta sonu güneşli, pazartesi sabahı sis bekleniyor · 21 Aralık'tan sonra günler yeniden uzuyor · Perşembe takvim yoğun, akşamı boş bırakmayı düşün</span><span>Bu akşam gün batımı 16:49 · Gün ışığı 9 sa 52 dk, dünden 2 dk kısa · Hafta sonu güneşli, pazartesi sabahı sis bekleniyor · 21 Aralık'tan sonra günler yeniden uzuyor · Perşembe takvim yoğun, akşamı boş bırakmayı düşün</span></div></div>
+</div>
+
+<section class="outlook" id="kis">
+  <div class="wrap">
+    <h2>Kış görünümü: Kasım'dan Şubat'a.</h2>
+    <p class="lede">Geçen kışın senin verisi ve bu kışın gün ışığı, aynı grafikte. Ocak'ın ilk iki haftası geçen yıl en bulutlu dönemdi. Bu yıl ona Aralık'tan hazırlanıyoruz.</p>
+    <div class="chart">
+      <svg viewBox="0 0 1000 300" role="img" aria-label="Kasım'dan Şubat'a gün ışığı süresi düşüp 21 Aralık'ta en kısa noktaya iniyor, sonra uzuyor. Geçen kışın ruh hali çizgisi Ocak başında en düşük, Şubat'ta toparlanıyor. Bu kışın tahmini daha yüksek seyrediyor.">
+        <g stroke="#E1E7EE"><path d="M0 60h1000M0 140h1000M0 220h1000"/></g>
+        <rect x="500" y="20" width="125" height="240" fill="#E9EEF5"/>
+        <text x="508" y="40" font-family="Sofia Sans" font-size="14" fill="#4A586B">geçen yılın cephesi</text>
+        <path d="M0 90 C150 120 300 165 410 178 S560 172 700 150 S900 105 1000 90" fill="none" stroke="#F5C140" stroke-width="4"/>
+        <path d="M0 120 C120 140 260 160 380 200 S500 250 560 245 S700 200 820 170 S940 140 1000 128" fill="none" stroke="#8C98A8" stroke-width="3" stroke-dasharray="7 6"/>
+        <path d="M0 115 C120 128 260 140 380 168 S500 196 560 192 S700 170 820 150 S940 128 1000 118" fill="none" stroke="#143A86" stroke-width="4"/>
+        <line x1="410" y1="48" x2="410" y2="262" stroke="#122033" stroke-dasharray="3 4"/>
+        <text x="300" y="38" font-family="Sofia Sans" font-size="14" fill="#122033">21 Aralık · en kısa gün</text>
+        <g font-family="Sofia Sans" font-size="14" fill="#4A586B"><text x="0" y="282">Kasım</text><text x="250" y="282">Aralık</text><text x="500" y="282">Ocak</text><text x="750" y="282">Şubat</text></g>
+      </svg>
+      <div class="leg"><span style="--c:#F5C140">gün ışığı süresi</span><span style="--c:#8C98A8">geçen kış ruh halin</span><span style="--c:#143A86">bu kış tahmini, önlemlerle</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Önlem çantası.</h2>
+    <p class="lede">Yağmur bekleniyorsa şemsiye alırsın. Bulutlu bir hafta bekleniyorsa İklim bu dört şeyden birini önerir; hangisinin sana iyi geldiğini zamanla öğrenir.</p>
+    <div class="kit">
+      <div style="--c:var(--sun)"><h3>Öğle ışığı</h3><span class="when">12:30–13:00 · 20 dk</span><p>Kasım'da en değerli saat. Bulutlu bile olsa dışarıdaki ışık iç mekânın on katı.</p></div>
+      <div style="--c:var(--rain)"><h3>Takvimi hafiflet</h3><span class="when">yoğun günden 2 gün önce</span><p>Perşembe %85 dolu. Bir toplantıyı ertelemek ya da akşamı boş bırakmak.</p></div>
+      <div style="--c:var(--cloud)"><h3>Yürüyüş arkadaşı</h3><span class="when">hafta sonu sabahı</span><p>Seçtiğin bir kişiye "cumartesi yürüyelim mi?" taslağı. Göndermek senin elinde.</p></div>
+      <div style="--c:#1D6B3F"><h3>Uyku saati</h3><span class="when">bu gece 23:30</span><p>Kışın ilk düşen şey uyku. Yarım saat erken, tahmini bir kademe açar.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="priv" id="istasyon">
+  <div class="wrap grid">
+    <div>
+      <h2>Ölçüm istasyonu cebinde. Merkezi yok.</h2>
+      <p class="lede">Ruh hali tahmini, bir sigorta şirketinin ya da işverenin en çok isteyeceği veridir. Bu yüzden İklim'in tahmin modeli telefonunun içinde çalışır. Takviminin yalnızca doluluk oranına bakar, toplantı adlarını ya da kimlerle görüştüğünü okumaz.</p>
+      <p class="lede">İnternet olmadan da tahmin yapar. Ne bir hesap ne bir bulut yedeği; yalnızca senin seçtiğin şifreli yerel yedek.</p>
+    </div>
+    <div class="station">
+      <h3>Bu akşamki tahminin girdileri</h3>
+      <ul>
+        <li>Uyku, son 3 gece <b>ortalama 6 sa 05 dk</b></li>
+        <li>Adım, bugün <b>3.240</b></li>
+        <li>Gün ışığına çıkış <b>14 dk</b></li>
+        <li>Takvim doluluğu, perşembe <b>%85</b></li>
+        <li>Akşam kendi notun <b>"yorgun, 3/5"</b></li>
+        <li>Sunucuya giden <b>hiçbiri</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap acc">
+    <p class="n">Geçen kışın isabeti: %71.<br>Kalanında çoğunlukla fazla kötümserdi.</p>
+    <div>
+      <p>İlk kullanıcıların tahminlerinin %71'i bir gün içinde tuttu. Kalan %29'da İklim çoğunlukla güzel bir sürprizi göremedi; bu iş için kabul edilebilir bir hata.</p>
+      <blockquote>"Erzurum'da kış altı ay. İlk kez Ocak'ı önceden gördüm, izin günlerimi oraya koydum. Kötü günler yine geldi ama beni yakalamadı."</blockquote>
+      <cite>Hakan Demirci · Lise matematik öğretmeni · Erzurum</cite>
+    </div>
+  </div>
+</section>
+
+<section id="al" style="padding-top:0">
+  <div class="wrap buy">
+    <div class="plan">
+      <h3 style="font-size:30px">İklim</h3>
+      <p class="amt">₺39 <small>/ ay · ya da kış paketi ₺149 (Kasım–Mart)</small></p>
+      <ul>
+        <li>Yedi günlük tahmin ve önlem çantası</li>
+        <li>Kış görünümü ve geçen yılla karşılaştırma</li>
+        <li>Apple Sağlık, Health Connect, Garmin ve takvim uyumu</li>
+        <li>İlk 14 gün ücretsiz; model önce seni tanır</li>
+      </ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn sun" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+    </div>
+    <div>
+      <h2 style="font-size:40px;margin-bottom:8px">Sorular</h2>
+      <details><summary>Mevsimsel depresyon tanım var, bu tedavi mi?</summary><p>Hayır. İklim bir hazırlık aracıdır. Işık terapisi ya da ilaç gibi tedavileri doktorunla konuş; İklim tahmin verisini istersen ona gösterebileceğin bir sayfaya çevirir.</p></details>
+      <details><summary>Akıllı saatim yok, olur mu?</summary><p>Telefonun adım ve ekran verisiyle de çalışır; uyku için akşam bir dokunuşla saat girersin. Tahmin biraz daha geniş aralıklı olur.</p></details>
+      <details><summary>Kötü tahmin kötü hissettirmez mi?</summary><p>İlk hafta bunu soruyoruz. İstersen yalnızca önlemleri görürsün, tahmin simgelerini kapatırsın.</p></details>
+      <details><summary>Yaz aylarında ne yapıyor?</summary><p>Mart'tan sonra haftalık bir satıra iner. Kış paketinin adı bu yüzden kış paketi.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>İklim · Bir meteoroloji mühendisi ve kışı sevmeyen bir yazılımcı tarafından, Trabzon'da. destek@iklim.app</p>
+    <p class="credit"><a href="../" style="color:#C9D6EE">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var D=[
+    {mw:'ağır',d:'Prş',full:'Perşembe 13 Kasım',i:'cloud',t:'3',sum:'Kapalı. Öğleden sonra hafif açılma ihtimali.',w:'Takvim %85 dolu, uyku 5 sa 40 dk',ins:[['Uyku, son 3 gece','6 sa 05 dk','w'],['Takvim doluluğu','%85','w'],['Gün ışığı','9 sa 50 dk',''],['Hareket, dün','3.240 adım','w']],adv:'Bir toplantıyı ertele ve 12:30\'da 20 dakika dışarı çık.'},
+    {mw:'açılıyor',d:'Cum',full:'Cuma 14 Kasım',i:'part',t:'3',sum:'Parçalı bulutlu, akşam açılıyor.',ins:[['Uyku tahmini','7 sa','g'],['Takvim doluluğu','%50',''],['Gün ışığı','9 sa 48 dk',''],['Akşam planı','arkadaş yemeği','g']],adv:'Akşam yemeğini iptal etme. Tahminin en çok yükseldiği an orası.'},
+    {mw:'enerjik',d:'Cmt',full:'Cumartesi 15 Kasım',i:'sun',t:'4',sum:'Güneşli. Haftanın en açık günü.',ins:[['Uyku tahmini','8 sa','g'],['Takvim doluluğu','%10','g'],['Hava, gerçek','güneşli, 14°','g'],['Hareket hedefi','sabah yürüyüşü','g']],adv:'Sabah 10\'da ışık güçlü. Yürüyüş arkadaşı taslağın hazır.'},
+    {mw:'durgun',d:'Paz',full:'Pazar 16 Kasım',i:'part',t:'3',sum:'Öğleden sonra bulutlanma. Pazar akşamı etkisi.',ins:[['Uyku tahmini','7 sa 30 dk','g'],['Pazartesi takvimi','%70','w'],['Gün ışığı','9 sa 44 dk',''],['Geçen 6 pazar','5\'i akşam düştü','w']],adv:'Pazartesi sabahını akşamdan hazırla, sonra ekranı kapat.'},
+    {mw:'yorgun',d:'Pzt',full:'Pazartesi 17 Kasım',i:'rain',t:'2',sum:'Sabah sağanak geçişleri, öğlene doğru dinecek.',ins:[['Uyku tahmini','6 sa','w'],['Takvim doluluğu','%70','w'],['Hava, gerçek','sis, 7°','w'],['Gün ışığı','9 sa 41 dk','']],adv:'Haftanın en zor sabahı. Öğle ışığını kaçırma; akşam kendine küçük bir şey ayır.'},
+    {mw:'sakin',d:'Sal',full:'Salı 18 Kasım',i:'cloud',t:'3',sum:'Kapalı ama durgun.',ins:[['Uyku tahmini','7 sa','g'],['Takvim doluluğu','%55',''],['Gün ışığı','9 sa 38 dk',''],['Hareket','spor salonu günü','g']],adv:'Spor salonu planın tahmini bir kademe yukarı taşıyor.'},
+    {mw:'belirsiz',d:'Çar',full:'Çarşamba 19 Kasım',i:'part',t:'3',sum:'Parçalı bulutlu, güven aralığı geniş.',ins:[['Uyku tahmini','belirsiz',''],['Takvim doluluğu','%40',''],['Gün ışığı','9 sa 35 dk',''],['Tahmin güveni','%55','w']],adv:'Bu kadar uzak bir gün için tahmin kaba. Pazar akşamı netleşir.'}
+  ];
+  var days=document.getElementById('days'),det=document.getElementById('detail');
+  function show(k){
+    [].forEach.call(days.children,function(b,i){b.setAttribute('aria-selected',i===k);b.tabIndex=i===k?0:-1;});
+    var x=D[k];
+    det.innerHTML='<div><h3>'+x.full+'</h3><p class="sum">'+x.sum+'</p></div><ul class="inputs">'+x.ins.map(function(r){return '<li><span>'+r[0]+'</span><b class="'+r[2]+'">'+r[1]+'</b></li>'}).join('')+'</ul><p class="adv"><b>Önlem:</b> '+x.adv+'</p>';
+  }
+  D.forEach(function(x,i){
+    var b=document.createElement('button');b.className='day';b.type='button';b.setAttribute('role','tab');
+    b.innerHTML='<span class="dn">'+x.d+'</span><svg aria-hidden="true"><use href="#i-'+x.i+'"/></svg><span class="t">'+x.t+'<small>/5</small></span><span class="mw">'+x.mw+'</span><span class="en" aria-hidden="true">'+[1,2,3,4,5].map(function(n){return '<i'+(n<=+x.t?' class="on"':'')+'></i>'}).join('')+'</span>';
+    b.setAttribute('aria-label',x.full+': '+x.sum);
+    b.addEventListener('click',function(){show(i)});
+    b.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){show((i+1)%7);days.children[(i+1)%7].focus();}if(e.key==='ArrowLeft'){show((i+6)%7);days.children[(i+6)%7].focus();}});
+    days.appendChild(b);
+  });
+  show(0);
+})();
+</script>
+</body>
+</html>

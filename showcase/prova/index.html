@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prova — Zor telefon konuşmalarını önce telefonunla prova et</title>
+<meta name="description" content="Prova, sosyal kaygısı olanlar için pizza siparişinden zam istemeye kadar zor konuşmaları cihazda çalışan sesli karakterlerle prova ettirir. Sesin hiçbir yere gitmez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500;62..125,800;62..125,900&family=Nunito:wght@400;600;700;800&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --page:#FFFFFF;      /* metin sayfası */
+  --page-2:#F6F5F1;
+  --ink:#151515;
+  --ink-2:#4F4F4F;
+  --hl:#FFE45C;        /* fosforlu kalem: senin replik */
+  --pen:#D63A22;       /* yönetmenin kırmızı kalemi */
+  --cue:#1E7F52;       /* "oldu" yeşili */
+  --head:"Archivo", system-ui, sans-serif;
+  --body:"Nunito", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--pen);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:var(--head);font-weight:900;font-stretch:112%;line-height:.98;letter-spacing:-.01em}
+mark{background:linear-gradient(transparent 12%,var(--hl) 12% 88%,transparent 88%);color:inherit;padding:0 .08em}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:6px;font:800 16px var(--body);text-decoration:none;cursor:pointer;border:2.5px solid var(--ink);background:var(--page);color:var(--ink)}
+.btn.blk{background:var(--ink);color:#fff}
+.btn:hover{box-shadow:4px 4px 0 var(--hl)}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:2.5px solid var(--ink)}
+.logo{font:900 26px var(--head);font-stretch:125%;text-decoration:none;letter-spacing:-.02em}
+.logo span{color:var(--pen)}
+nav .r{display:flex;gap:24px;align-items:center;font-weight:700;font-size:16px}
+nav .r a.t{text-decoration:none}
+
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:56px;padding:56px 0 80px;align-items:start}
+.hero h1{font-size:clamp(46px,6.2vw,92px);font-stretch:108%;font-weight:800}
+.hero .lead{margin-top:24px;font-size:20px;max-width:26em;color:var(--ink-2)}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero .tiny{margin-top:14px;font-size:15px;color:var(--ink-2)}
+
+/* senaryo */
+.script{border:2.5px solid var(--ink);border-radius:10px;background:var(--page-2);overflow:hidden}
+.script header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;background:var(--ink);color:#fff;font-size:15px}
+.script header b{font-family:var(--head);font-stretch:110%;font-size:17px}
+.script header span{color:#CFCFCF}
+.lines{padding:20px 20px 8px;display:flex;flex-direction:column;gap:12px;min-height:120px}
+.ln{max-width:88%;padding:12px 16px;border-radius:12px;font-size:17px;line-height:1.45}
+.ln small{display:block;font-weight:800;font-size:12.5px;margin-bottom:2px;letter-spacing:.02em}
+.ln.them{background:#fff;border:1.5px solid #DDDBD3;align-self:flex-start}
+.ln.them small{color:var(--ink-2)}
+.ln.me{background:var(--hl);align-self:flex-end}
+.ln.note{align-self:center;max-width:100%;font-size:14.5px;color:var(--pen);font-weight:700;padding:2px 0;font-style:italic}
+.choices{padding:10px 20px 20px;display:flex;flex-direction:column;gap:8px}
+.choices p{font-size:14px;font-weight:700;color:var(--ink-2)}
+.choices button{text-align:left;font:600 16px var(--body);padding:11px 14px;border:2px solid var(--ink);border-radius:8px;background:#fff;cursor:pointer}
+.choices button:hover{background:#FFF7C7}
+.pulse{display:flex;align-items:center;gap:10px;padding:12px 20px;border-top:1.5px solid #DDDBD3;font-size:14.5px;color:var(--ink-2)}
+.pulse .m{flex:1;height:8px;border-radius:4px;background:#E7E5DD;overflow:hidden}
+.pulse .m i{display:block;height:100%;width:72%;background:var(--pen);transition:width .6s,background .6s}
+
+section{padding:96px 0}
+h2{font-size:clamp(38px,5vw,66px)}
+.lede{font-size:19px;max-width:34em;color:var(--ink-2);margin-top:16px}
+
+/* seviye merdiveni */
+.ladder{margin-top:48px;border-top:2.5px solid var(--ink);background:#fff;padding-left:72px;position:relative;background-image:linear-gradient(transparent 0 31px,#E3E8EE 31px 32px);background-size:100% 32px}
+.ladder::before{content:"";position:absolute;left:52px;top:0;bottom:0;width:2px;background:var(--pen);opacity:.55}
+.step{padding-right:20px}
+.step{display:grid;grid-template-columns:110px 1.3fr 1fr 150px;gap:24px;align-items:center;padding:22px 0;border-bottom:1.5px solid #DDDBD3}
+.step .lv{font:900 44px/1 var(--head);font-stretch:125%}
+.step h3{font-size:24px;font-stretch:105%;font-weight:800;line-height:1.1}
+.step p{font-size:16px;color:var(--ink-2)}
+.step .meta{font-size:14.5px;font-weight:700;text-align:right}
+.step .meta span{display:block;font-weight:400;color:var(--ink-2)}
+.step.done .lv{color:var(--cue)}
+.step.now{background:linear-gradient(90deg,#FFF7C7,transparent)}
+.step.now .lv{color:var(--ink)}
+
+/* karakterler */
+.cast{margin-top:40px;background:#fff;border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink)}
+.actor{display:grid;grid-template-columns:200px 1.2fr 1fr;gap:20px;align-items:baseline;padding:20px 0;border-bottom:1px dashed #CFCDC5}
+.actor:last-child{border-bottom:0}
+.actor h3{font:800 20px var(--head);font-stretch:112%;letter-spacing:.04em;grid-row:span 2}
+.actor .role{font-size:16px;color:var(--ink)}
+.actor p{font-size:16px;color:var(--ink-2)}
+.actor q{grid-column:3;grid-row:1 / span 2;font-weight:700;font-size:17px;color:var(--pen);font-style:italic}
+@media (max-width:860px){.actor{grid-template-columns:1fr;gap:4px}.actor h3,.actor q{grid-row:auto;grid-column:auto}}
+/* ayarlar */
+.dials{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.dial{padding:18px 0;border-top:1.5px solid #DDDBD3}
+.dial h3{font-size:20px;font-weight:800;font-stretch:100%}
+.dial p{font-size:16px;color:var(--ink-2);margin-top:4px}
+.track{display:flex;justify-content:space-between;margin-top:10px;font-size:13.5px;font-weight:700}
+.track span{padding:4px 10px;border-radius:999px;border:1.5px solid var(--ink)}
+.track span.on{background:var(--ink);color:#fff}
+
+.priv{background:var(--ink);color:#F1F0EA}
+.priv .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.priv h2{color:#fff}
+.priv .lede{color:#CFCDC5}
+.direction{font:500 italic clamp(20px,2vw,24px)/1.55 var(--body);color:#F1F0EA;border-left:4px solid var(--hl);padding-left:22px}
+.tape{display:none}
+.tape div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed #444}
+.tape div:last-child{border:0}
+.tape b{color:var(--hl);font-weight:800;white-space:nowrap}
+
+.quote{display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:end}
+.quote p{font:800 clamp(28px,3.4vw,44px)/1.15 var(--head);font-stretch:105%}
+.quote cite{font-style:normal;font-size:16px;color:var(--ink-2)}
+.quote p.side{border-left:4px solid var(--hl);padding-left:18px;font:400 16.5px/1.6 var(--body);color:var(--ink-2)}
+
+.buy{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.card{border:2.5px solid var(--ink);border-radius:10px;padding:30px;box-shadow:8px 8px 0 var(--hl)}
+.card .amt{font:900 58px/1 var(--head);font-stretch:118%;margin:8px 0}
+.card .amt small{font:600 16px var(--body);color:var(--ink-2)}
+.card ul{list-style:none;margin:16px 0 24px}
+.card li{padding:8px 0;border-top:1.5px solid #DDDBD3;font-size:16.5px}
+details{border-top:2px solid var(--ink);padding:16px 0}
+summary{cursor:pointer;font:800 18px var(--body)}
+details p{margin-top:8px;color:var(--ink-2);font-size:16.5px}
+
+footer{border-top:2.5px solid var(--ink);padding:40px 0 32px;font-size:15px;color:var(--ink-2)}
+footer .credit{margin-top:14px;font-size:13px}
+
+@media (max-width:960px){
+  .step{grid-template-columns:80px 1fr;gap:6px 16px}
+  .step p,.step .meta{grid-column:2}
+  .step .meta{text-align:left}
+  .step .meta span{display:inline;margin-left:6px}
+}
+@media (max-width:860px){
+  .wrap{padding:0 18px}
+  nav .r a.t{display:none}
+  .hero,.dials,.priv .grid,.quote,.buy{grid-template-columns:1fr}
+  .hero{gap:36px;padding:36px 0 60px}
+  section{padding:70px 0}
+}
+@media (max-width:560px){
+  .step .lv{font-size:34px}
+  .ladder{padding-left:26px}
+  .ladder::before{left:14px}
+  .lines{padding:14px 12px 6px}
+  .ln{max-width:94%}
+  .lines{min-height:200px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="#">Prova<span>.</span></a>
+    <div class="r"><a class="t" href="#seviyeler">Seviyeler</a><a class="t" href="#karakterler">Karakterler</a><a class="btn" href="#al">İndir</a></div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Önce burada söyle. Sonra gerçekten ara.</h1>
+      <p class="lead">Telefonla pizza söylemek, dişçiden randevu almak, bir gün de zam istemek. Prova bu konuşmaları telefonunda yaşayan sesli karakterlerle, istediğin kadar tekrar ettirir. Takılırsan kimse kapatmaz.</p>
+      <div class="ctas"><a class="btn blk" href="#al">iPhone için indir</a><a class="btn" href="#al">Android için indir</a></div>
+      <p class="tiny">İlk üç seviye ücretsiz. Hesap açmak yok, kimseyle eşleşmek yok.</p>
+    </div>
+
+    <div class="script" aria-label="Prova: pizza siparişi, seviye 1">
+      <header><b>Seviye 1 · Pizza siparişi</b><span>Karşında: Nuri Usta</span></header>
+      <div class="lines" id="lines" aria-live="polite">
+        <div class="ln them"><small>NURİ USTA</small>Pizza Sokağı, buyrun?</div>
+        <div class="ln note">Kırmızı kalem: önce selam ver, sonra ne istediğini söyle. Kısa olması yeter.</div>
+      </div>
+      <div class="choices" id="choices">
+        <p>Repliğini seç ya da yüksek sesle kendin söyle:</p>
+        <button type="button" data-i="0">Merhaba, bir orta boy karışık sipariş etmek istiyorum.</button>
+        <button type="button" data-i="1">Iıı… şey, pizza… alabilir miyim?</button>
+        <button type="button" data-i="2">(Sessiz kal, kapatmak istiyorum)</button>
+      </div>
+      <div class="pulse"><span>Nabız</span><div class="m"><i id="pm"></i></div><span id="pv">112</span></div>
+    </div>
+  </header>
+</div>
+
+<section id="seviyeler" style="background:var(--page-2)">
+  <div class="wrap">
+    <h2>Altı basamak. Pizzadan zama.</h2>
+    <p class="lede">Her seviye bir öncekinden biraz daha zor. Bir basamakta istediğin kadar kalabilirsin; geçmek için üç başarılı prova yeter. "Başarılı" demek kusursuz değil, sonuna kadar konuşmuş olmak demek.</p>
+    <div class="ladder">
+      <div class="step done"><span class="lv">1</span><div><h3>Pizza siparişi</h3></div><p>Adres, boy, ödeme şekli. Nuri Usta acelecidir ama nazik.</p><span class="meta">2–3 dk<span>142 kişi bu hafta geçti</span></span></div>
+      <div class="step done"><span class="lv">2</span><div><h3>Kafede ikinci kez istemek</h3></div><p>"Bunu sütsüz istemiştim." Yanlış gelen siparişi düzeltmek.</p><span class="meta">1–2 dk<span>yüz yüze senaryo</span></span></div>
+      <div class="step now"><span class="lv">3</span><div><h3>Dişçiden randevu</h3></div><p>Hande Hanım uygun saati sorar, sen de "o saat olmaz" demeyi denersin.</p><span class="meta">3–4 dk<span>buradasın</span></span></div>
+      <div class="step"><span class="lv">4</span><div><h3>Kargoyu aramak</h3></div><p>Gelmeyen paket, takip numarası, ve bekletilmek.</p><span class="meta">4–5 dk<span>sabır seviyesi</span></span></div>
+      <div class="step"><span class="lv">5</span><div><h3>Hocadan ek süre istemek</h3></div><p>Gerekçeni kısa söylemek, "hayır" cevabına hazır olmak.</p><span class="meta">3–5 dk<span>e-posta provası da var</span></span></div>
+      <div class="step"><span class="lv">6</span><div><h3>Zam istemek</h3></div><p>Kemal Bey'le beş dakika. Rakam söylemek ve sessizliğe dayanmak.</p><span class="meta">5–7 dk<span>en zor basamak</span></span></div>
+    </div>
+  </div>
+</section>
+
+<section id="karakterler">
+  <div class="wrap">
+    <h2>Kişiler, görünüş sırasıyla.</h2>
+    <p class="lede">Her karakterin kendi sesi, temposu ve huyları var. Gerçek gibiler ama sabırlılar. Telefonun içinde konuşuyorlar; internete bağlanmaları gerekmiyor.</p>
+    <div class="cast" role="list">
+      <div class="actor" role="listitem"><h3>NURİ USTA</h3><p class="role">Pizzacı. Elli yaşlarında, arkada fırın sesi. Seviye 1.</p><p>Hızlı konuşur, adresi iki kez sorar.</p><q>Kapı numarası kaçtı abi?</q></div>
+      <div class="actor" role="listitem"><h3>HANDE HANIM</h3><p class="role">Diş kliniği sekreteri. Seviye 3.</p><p>Takvime bakarken susar; o sessizlik provanın parçası.</p><q>Perşembe 15:40 olur mu?</q></div>
+      <div class="actor" role="listitem"><h3>SERKAN</h3><p class="role">Kargo çağrı merkezi. Seviye 4.</p><p>Seni bekletir, müzik çalar, sonra baştan sorar.</p><q>Takip numaranızı alayım.</q></div>
+      <div class="actor" role="listitem"><h3>KEMAL BEY</h3><p class="role">Müdür. Kibar ama kararsız. Seviye 6.</p><p>Önce "bütçe" der, sonra düşünür.</p><q>Bunu biraz düşünmem lazım.</q></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap dials">
+    <div>
+      <h2>Zorluğu sen ayarlarsın.</h2>
+      <p class="lede">Kaygı her gün aynı değil. Kötü bir günde karakteri yavaşlat, iyi bir günde biraz sabırsız yap.</p>
+    </div>
+    <div>
+      <div class="dial"><h3>Karakterin temposu</h3><p>Ne kadar hızlı konuşsun?</p><div class="track"><span>yavaş</span><span class="on">normal</span><span>acelesi var</span></div></div>
+      <div class="dial"><h3>Sessizlik süresi</h3><p>Sen düşünürken ne kadar beklesin?</p><div class="track"><span>sonsuza kadar</span><span class="on">8 saniye</span><span>3 saniye</span></div></div>
+      <div class="dial"><h3>Sürpriz soru</h3><p>Beklenmedik bir şey sorsun mu? ("Kola da ister misiniz?")</p><div class="track"><span class="on">hayır</span><span>bazen</span><span>her seferinde</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="priv">
+  <div class="wrap grid">
+    <div>
+      <h2>Kekelemelerin sende kalır.</h2>
+      <p class="lede">Sustuğun, üç kez baştan aldığın, "ıı" dediğin provalar kimsenin sunucusunda durmaz. Sesini yazıya çeviren de karakteri konuşturan da telefonunun içinde çalışır. Uçak modunda da prova edebilirsin.</p>
+    </div>
+    <p class="direction">(Prova biter. Ses kaydı yoktur. Söylediklerinin metni silinir. Sahnede yalnızca bir not kalır: "Seviye 3, 2/3 başarılı". Ailene, okula, kimseye bir şey gitmez. Işıklar söner.)</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap quote">
+    <div>
+      <p>"Nuri Usta'yla on bir kez konuştum. Cumartesi gerçek pizzacıyı aradım. Sesim titredi ama sonuna kadar konuştum."</p>
+      <cite style="display:block;margin-top:18px">Kaan Yıldız · 17 yaşında, lise 11. sınıf · Mersin</cite>
+    </div>
+    <p class="side">Prova bir terapi uygulaması değil; bir prova odası. Sosyal kaygı hayatını zorlaştırıyorsa bir uzmanla konuşmak iyi gelir. Okul rehber öğretmenleri Prova'yı görüşmelerde birlikte kullanabiliyor.</p>
+  </div>
+</section>
+
+<section id="al" style="background:var(--page-2)">
+  <div class="wrap buy">
+    <div class="card">
+      <h3 style="font-size:26px">Prova, tam sürüm</h3>
+      <p class="amt">₺199 <small>tek seferlik</small></p>
+      <ul>
+        <li>Altı seviye, on dört senaryo, sekiz karakter</li>
+        <li>Kendi senaryonu yaz: "Ev sahibini aramak"</li>
+        <li>İlk üç seviye her zaman ücretsiz</li>
+        <li>Abonelik yok, reklam yok, uygulama içi satın alma yok</li>
+      </ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn blk" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+    </div>
+    <div>
+      <h2 style="font-size:36px;margin-bottom:16px">Sorular</h2>
+      <details><summary>Yüksek sesle konuşmak zorunda mıyım?</summary><p>Hayır. Başta repliklerini seçerek ilerleyebilirsin. Hazır hissettiğinde fısıldayarak, sonra normal sesle dene.</p></details>
+      <details><summary>Odada biri varken kullanabilir miyim?</summary><p>Kulaklıkla ve fısıltıyla olur. Ama çoğu kullanıcı ilk provaları kapıyı kapatıp yapıyor; bu da tamamen normal.</p></details>
+      <details><summary>Kaç yaşından itibaren uygun?</summary><p>13 yaş ve üzeri. Senaryolarda hiçbir kişisel bilgi istenmez; adres provasında uydurma adres kullanılır.</p></details>
+      <details><summary>Gerçek aramayı uygulama mı yapıyor?</summary><p>Hayır, gerçek aramayı sen yaparsın. Prova yalnızca hazırlık odası. İstersen gerçek aramadan önce son bir "ısınma" provası açar.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Prova · İzmir'de, telefon çaldığında hâlâ biraz irkilen bir ekip tarafından. merhaba@prova.app</p>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var lines=document.getElementById('lines'),ch=document.getElementById('choices'),pm=document.getElementById('pm'),pv=document.getElementById('pv');
+  var R=[
+    {me:'Merhaba, bir orta boy karışık sipariş etmek istiyorum.',them:'Tabii, adres neresi?',note:'Oldu. Selam, istek, net. Nabzın düşüyor.',p:46,v:96},
+    {me:'Iıı… şey, pizza… alabilir miyim?',them:'Alabilirsin tabii! Hangisinden olsun, karışık mı?',note:'Bu da oldu. Takılmak siparişi bozmadı; Nuri Usta devam etti.',p:58,v:104},
+    {me:'(…)',them:'Alo? Pizza Sokağı, duyuyor musunuz? Sizi bekliyorum.',note:'Sessizlik de provanın parçası. Kapatmadı, bekliyor. Bir nefes al, ilk repliği dene.',p:80,v:118}
+  ];
+  ch.addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    var r=R[+b.dataset.i];
+    [].slice.call(lines.querySelectorAll('.ln:not(:first-child)')).forEach(function(n){n.remove()});
+    var a=document.createElement('div');a.className='ln me';a.innerHTML='<small>SEN</small>'+r.me;lines.appendChild(a);
+    var t=document.createElement('div');t.className='ln them';t.innerHTML='<small>NURİ USTA</small>'+r.them;lines.appendChild(t);
+    var n=document.createElement('div');n.className='ln note';n.textContent=r.note;lines.appendChild(n);
+    pm.style.width=r.p+'%';pm.style.background=r.p<60?'var(--cue)':'var(--pen)';pv.textContent=r.v;
+  });
+})();
+</script>
+</body>
+</html>

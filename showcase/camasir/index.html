@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Çamaşır Kâhyası — Etiketi okutun, kazak çekmesin</title>
+<meta name="description" content="Çamaşır Kâhyası kıyafet etiketini ve lekeyi kamerayla okur; hangi makine programı, kaç derece, kaç devir ve leke nasıl çıkar, söyler. Fotoğraflar telefonda kalır, bodrumdaki çamaşırhanede çekim olmasa da çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@500;600;700&family=Asap:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --water:#DCE8EC;
+  --water-2:#C9DCE2;
+  --satin:#FFFFFF;
+  --ink:#17222B;
+  --slate:#4A5862;
+  --wool:#A3302B;
+  --wool-soft:#F2E3DF;
+  --glass:#3D7686;
+  --thread:#B8C4C9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--water);color:var(--ink);font-family:"Asap",system-ui,sans-serif;font-size:18px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--wool);outline-offset:3px}
+.cond{font-family:"Asap Condensed",sans-serif}
+h1,h2,h3{font-family:"Asap Condensed",sans-serif;font-weight:700;line-height:.98;letter-spacing:-.005em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 30px}
+
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Asap Condensed";font-weight:700;font-size:24px;text-decoration:none;letter-spacing:.01em}
+.top nav{display:flex;gap:26px;font-size:16px;font-weight:500}
+.top nav a{text-decoration:none;color:var(--slate)}
+.top nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 17px/1 "Asap",sans-serif;padding:15px 24px;border-radius:999px;text-decoration:none;border:2px solid var(--ink);cursor:pointer;background:transparent;color:var(--ink)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:#000}
+.btn:hover{background:rgba(255,255,255,.5)}
+.btn-ink:hover{background:#000}
+
+/* hero */
+.hero{padding:30px 0 90px}
+.hero .wrap{display:grid;grid-template-columns:400px 1fr;gap:70px;align-items:start}
+.label-col{position:relative;padding-top:10px}
+.label{position:relative;background:var(--satin);width:330px;margin:0 auto;padding:46px 30px 34px;box-shadow:0 1px 0 #e7ecee,0 30px 50px -30px rgba(23,34,43,.45);transform:rotate(-3deg);
+  background-image:repeating-linear-gradient(90deg,rgba(23,34,43,.025) 0 1px,transparent 1px 3px)}
+.label::before{content:"";position:absolute;left:14px;right:14px;top:16px;border-top:2px dashed #9aa7ad}
+.label::after{content:"";position:absolute;left:0;right:0;bottom:-14px;height:14px;background:linear-gradient(135deg,var(--satin) 50%,transparent 50%) 0 0/14px 14px repeat-x,linear-gradient(225deg,var(--satin) 50%,transparent 50%) 0 0/14px 14px repeat-x}
+.label .fib{font-family:"Asap Condensed";font-weight:600;font-size:23px;line-height:1.25;letter-spacing:.02em;text-align:center}
+.label .sm{font-size:14px;text-align:center;color:var(--slate);margin-top:8px;letter-spacing:.02em}
+.symbols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 10px;margin:28px 0 22px;justify-items:center}
+.symbols svg{width:62px;height:52px;overflow:visible}
+.sym{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
+.symbols .on .sym{stroke:var(--wool)}
+.scanline{position:absolute;left:-10px;right:-10px;height:3px;background:var(--wool);box-shadow:0 0 18px 2px rgba(163,48,43,.45);top:40%;animation:scan 3.4s ease-in-out infinite alternate;opacity:.85}
+@keyframes scan{from{top:18%}to{top:82%}}
+.made{font-size:13px;text-align:center;color:var(--slate);letter-spacing:.06em}
+.tagnote{margin:34px auto 0;width:330px;font-size:14.5px;color:var(--slate)}
+
+.hero h1{font-size:clamp(50px,6.6vw,92px);text-transform:uppercase;letter-spacing:.005em}
+.hero .lead{font-size:20px;max-width:30em;margin:22px 0 30px}
+.reading{background:var(--satin);border-radius:22px;padding:24px 26px;max-width:560px;border:1px solid #c5d6dc}
+.reading-head{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;color:var(--slate);margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.reading-head b{font-family:"Asap Condensed";font-size:22px;color:var(--ink);font-weight:700}
+.prog{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:2px solid var(--ink);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.prog div{padding:12px 14px;border-right:2px solid var(--ink)}
+.prog div:last-child{border-right:0}
+.prog small{display:block;font-size:13px;color:var(--slate)}
+.prog strong{font-family:"Asap Condensed";font-size:30px;font-weight:700;line-height:1.05}
+.reading ul{list-style:none;display:grid;gap:8px;font-size:16.5px}
+.reading li{display:grid;grid-template-columns:22px 1fr;gap:8px}
+.reading li::before{content:"";width:12px;height:12px;margin-top:6px;border-radius:50%;border:2.5px solid var(--glass)}
+.reading li.no::before{border-color:var(--wool);border-radius:2px;transform:rotate(45deg);width:10px;height:10px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.offline{font-size:15px;color:var(--slate);margin-top:14px}
+
+section{padding:100px 0}
+.h2{font-size:clamp(42px,5.2vw,74px);text-transform:uppercase;max-width:16ch}
+.intro{font-size:19px;max-width:34em;margin-top:16px;color:#26343e}
+
+/* machine */
+.machine{background:var(--satin)}
+.machine .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:50px;align-items:center}
+.picker h3{font-size:24px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px}
+.garments{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.g{font:500 16px/1 "Asap",sans-serif;padding:12px 16px;border-radius:999px;border:2px solid #c3cfd4;background:#fff;color:var(--ink);cursor:pointer}
+.g:hover{border-color:var(--ink)}
+.g[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.out{border-top:2px solid var(--ink);padding-top:18px}
+.out .row{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:9px 0;border-bottom:1px solid #e1e7ea;font-size:16.5px}
+.out .row span:first-child{color:var(--slate);font-size:15px;padding-top:1px}
+.out .warn{margin-top:16px;background:var(--wool-soft);border-left:4px solid var(--wool);padding:14px 16px;font-size:16px;border-radius:0 10px 10px 0}
+.panel{background:linear-gradient(180deg,#F4F7F8,#E6ECEE);border-radius:30px;padding:34px;border:1px solid #cdd8dc;box-shadow:inset 0 2px 0 #fff}
+.panel-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:14px}
+.display{background:#0F1A1F;color:#9FE1EF;font-family:"Asap Condensed";font-weight:600;font-size:34px;padding:8px 18px;border-radius:8px;letter-spacing:.06em;min-width:190px;text-align:center}
+.display small{font-size:15px;letter-spacing:.08em;color:#6FB6C6;margin-left:6px}
+.dial{display:block;width:100%;max-width:420px;height:auto;margin:0 auto}
+#knob{transition:transform .8s cubic-bezier(.4,1.5,.5,1);transform-origin:210px 210px}
+.dial text{font-family:"Asap Condensed";font-weight:600;font-size:15px;fill:var(--slate);letter-spacing:.03em}
+.dial text.act{fill:var(--wool)}
+
+/* stains */
+.stains .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:50px}
+.stain{background:var(--satin);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.swatch{height:120px;position:relative;background:#F5F1EA;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,rgba(0,0,0,.035) 0 1px,transparent 1px 4px)}
+.swatch svg{position:absolute;inset:0;width:100%;height:100%}
+.stain .body{padding:18px 20px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.stain h3{font-size:27px;text-transform:uppercase}
+.stain .time{font-size:14px;color:var(--slate)}
+.stain ol{padding-left:20px;font-size:16px;display:grid;gap:4px}
+.stain .dont{margin-top:auto;font-size:15px;color:var(--wool);font-weight:600}
+.stain .kit{font-size:14px;color:var(--slate)}
+
+/* symbols dictionary */
+.dict{background:var(--ink);color:#EAF1F3}
+.dict .intro{color:#C2CFD4}
+.dict-row{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:50px;border-top:1px solid #3a4852}
+.dict-row div{padding:22px 14px 10px 0;border-right:1px solid #3a4852;margin-right:14px}
+.dict-row div:last-child{border-right:0}
+.dict-row svg{width:56px;height:46px;overflow:visible;margin-bottom:12px}
+.dict-row .sym{stroke:#EAF1F3}
+.dict-row b{display:block;font-family:"Asap Condensed";font-size:21px;letter-spacing:.02em}
+.dict-row span{font-size:15px;color:#C2CFD4}
+
+/* laundry room proof */
+.room .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}
+.basement{background:var(--water-2);border-radius:24px;padding:28px;position:relative}
+.basement .phone{background:var(--satin);border-radius:18px;padding:18px 20px;max-width:360px}
+.basement .sb{display:flex;justify-content:space-between;font-size:13.5px;color:var(--slate);margin-bottom:12px;font-weight:600}
+.basement .sb .no{color:var(--wool)}
+.basement .msg{font-size:16px;line-height:1.5}
+.basement .msg b{font-family:"Asap Condensed";font-size:22px;display:block;margin-bottom:4px}
+.basement .stamp{margin-top:14px;font-size:13.5px;color:var(--slate)}
+.proofs{list-style:none;display:grid;gap:18px;margin-top:28px}
+.proofs li{display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:baseline;border-top:2px solid var(--ink);padding-top:12px}
+.proofs strong{font-family:"Asap Condensed";font-size:34px;line-height:1}
+.proofs span{font-size:16.5px}
+
+/* voice + price */
+.vp{background:var(--satin)}
+.vp .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:start}
+.vp blockquote p{font-family:"Asap Condensed";font-weight:600;font-size:clamp(30px,3.2vw,44px);line-height:1.12;text-transform:none}
+.vp blockquote footer{margin-top:20px;font-size:16px;color:var(--slate)}
+.vp blockquote footer b{color:var(--ink)}
+.plans{display:grid;gap:14px}
+.plan{border:2px solid var(--ink);border-radius:18px;padding:22px 24px;display:grid;grid-template-columns:1fr auto;gap:6px 20px;align-items:baseline}
+.plan h3{font-size:28px;text-transform:uppercase}
+.plan .amt{font-family:"Asap Condensed";font-weight:700;font-size:40px;text-align:right}
+.plan p{grid-column:1/-1;font-size:16px;color:#26343e}
+.plan.pro{background:var(--wool-soft);border-color:var(--wool)}
+
+.faq .list{margin-top:44px;max-width:860px}
+details{border-bottom:2px solid var(--water-2);background:transparent}
+summary{cursor:pointer;list-style:none;padding:20px 40px 20px 0;font-weight:600;font-size:19px;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";position:absolute;right:8px;top:28px;width:12px;height:12px;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(45deg);transition:transform .2s}
+details[open] summary::after{transform:rotate(-135deg);top:33px}
+details p{padding:0 0 22px;font-size:17px;max-width:44em;color:#26343e}
+
+.closing{padding:90px 0 80px;text-align:left}
+.closing .wrap{display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
+.closing h2{font-size:clamp(40px,5vw,66px);text-transform:uppercase;max-width:14ch}
+footer.site{border-top:2px solid var(--water-2);padding:28px 0 36px;font-size:15px;color:var(--slate)}
+footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+footer.site .credit{width:100%;margin-top:10px;font-size:13.5px}
+footer.site .credit a{text-decoration:none;border-bottom:1px dashed var(--thread)}
+
+@media (max-width:1000px){
+  .top nav{display:none}
+  .hero .wrap,.machine .grid,.room .grid,.vp .grid{grid-template-columns:minmax(0,1fr)}
+  .hero .wrap{gap:50px}
+  .label-col{order:2}
+  .stains .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dict-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .dict-row div:nth-child(3){border-right:0}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  body{font-size:17px}
+  .hero{padding:16px 0 60px}
+  section{padding:70px 0}
+  .label{width:290px;padding:42px 22px 30px}
+  .tagnote{width:290px}
+  .symbols svg{width:52px;height:44px}
+  .prog strong{font-size:24px}
+  .prog div{padding:10px}
+  .stains .grid{grid-template-columns:minmax(0,1fr)}
+  .dict-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dict-row div{border-right:0!important}
+  .out .row{grid-template-columns:minmax(0,1fr);gap:2px}
+  .panel{padding:20px}
+  .display{font-size:26px;min-width:0}
+  .proofs li{grid-template-columns:minmax(0,1fr);gap:4px}
+  .plan{grid-template-columns:minmax(0,1fr)}
+  .plan .amt{text-align:left}
+  .top .btn{padding:11px 16px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.scanline{display:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M4 9h22l-3 16H7z" fill="none" stroke="#17222B" stroke-width="2.4" stroke-linejoin="round"/><path d="M4 9c3-3 5 2 8-1s5 2 8-1 4 1 6 1" fill="none" stroke="#A3302B" stroke-width="2.4" stroke-linecap="round"/></svg>Çamaşır Kâhyası</a>
+    <nav aria-label="Ana menü"><a href="#program">Program bulucu</a><a href="#leke">Leke rehberi</a><a href="#semboller">Semboller</a><a href="#fiyat">Fiyat</a></nav>
+    <a class="btn btn-ink" href="#fiyat">İndir</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="label-col">
+      <div class="label" role="img" aria-label="Kazağın bakım etiketi: yüzde 80 merinos yün, yüzde 20 poliamid. Semboller: elde yıkama 30 derece, ağartıcı kullanmayın, kurutma makinesine atmayın, düz serip kurutun, düşük ısıda ütü, kuru temizleme P.">
+        <span class="scanline" aria-hidden="true"></span>
+        <p class="fib">%80 MERİNOS YÜN<br>%20 POLİAMİD</p>
+        <p class="sm">8–9 YAŞ · 128–134 CM</p>
+        <div class="symbols" aria-hidden="true">
+          <span class="on"><svg viewBox="0 0 62 52"><path class="sym" d="M6 14l6 32h38l6-32"/><path class="sym" d="M4 14c5-5 9 3 14-1s9 3 14-1 9 3 14-1 8 2 12 1"/><path class="sym" d="M24 32c0-6 4-9 6-9s3 3 3 6M33 29c0-3 2-5 4-5s3 2 3 5v6c0 5-4 8-9 8s-8-3-8-8" stroke-width="2"/></svg></span>
+          <span><svg viewBox="0 0 62 52"><path class="sym" d="M31 6 56 46H6z"/><path class="sym" d="M12 10l38 38M50 10 12 48"/></svg></span>
+          <span class="on"><svg viewBox="0 0 62 52"><rect class="sym" x="9" y="5" width="44" height="42"/><circle class="sym" cx="31" cy="26" r="15"/><path class="sym" d="M5 3l52 46M57 3 5 49"/></svg></span>
+          <span class="on"><svg viewBox="0 0 62 52"><rect class="sym" x="9" y="5" width="44" height="42"/><path class="sym" d="M17 26h28"/></svg></span>
+          <span><svg viewBox="0 0 62 52"><path class="sym" d="M8 40h46c0-14-6-22-20-22H22l-4-6h22"/><circle cx="31" cy="32" r="2.6" fill="#17222B"/></svg></span>
+          <span><svg viewBox="0 0 62 52"><circle class="sym" cx="31" cy="26" r="20"/><text x="31" y="34" text-anchor="middle" font-family="Asap" font-weight="600" font-size="22" fill="#17222B">P</text></svg></span>
+        </div>
+        <p class="made">TÜRKİYE’DE ÜRETİLMİŞTİR · RN 4821</p>
+      </div>
+      <p class="tagnote">Etiket çok yıkanıp silindiyse ya da kesilip atıldıysa: kumaşın yakın çekimi yeterli. Örgü sıklığından ve tüyünden lifi tahmin eder.</p>
+    </div>
+
+    <div>
+      <h1 id="h1">İlk yün kazak çekti. İkincisi çekmeyecek.</h1>
+      <p class="lead">Etiketi okutun; Çamaşır Kâhyası hangi programı, kaç dereceyi, kaç devri seçeceğinizi ve lekenin nasıl çıkacağını söylesin. Sembolleri ezberlemeniz gerekmez; birkaç haftada yine de ezberlersiniz.</p>
+      <div class="reading" aria-label="Uygulamanın etiket okuma sonucu">
+        <div class="reading-head"><b>Elif’in lacivert kazağı</b><span>etiket okundu · 0,4 sn · telefonda</span></div>
+        <div class="prog">
+          <div><small>Program</small><strong>Yün</strong></div>
+          <div><small>Sıcaklık</small><strong>30°</strong></div>
+          <div><small>Sıkma</small><strong>600</strong></div>
+        </div>
+        <ul>
+          <li>Ters çevirin, file torbaya koyun. Yalnızca yün şampuanı; enzimli deterjan yünü yıpratır.</li>
+          <li>Havluya sarıp bastırarak suyunu alın, düz bir yüzeye serip kurutun.</li>
+          <li class="no">Kurutma makinesi yok. Kalorifer üstü yok. Geçen sefer çekmesinin sebebi bu ikisi.</li>
+        </ul>
+      </div>
+      <div class="ctas"><a class="btn btn-ink" href="#fiyat">iPhone için indir</a><a class="btn" href="#fiyat">Android için indir</a></div>
+      <p class="offline">Bodrumdaki çamaşırhanede çekim yoksa da okur. Fotoğraflar telefondan çıkmaz.</p>
+    </div>
+  </div>
+</section>
+
+<section class="machine" id="program" aria-labelledby="h-prog">
+  <div class="wrap">
+    <h2 class="h2" id="h-prog">Etiketten makinenin düğmesine.</h2>
+    <p class="intro">Makinenizin modelini bir kez fotoğraflayın; Kâhya kendi program adlarınızla konuşur. Aşağıda bir kıyafet seçin ve düğmenin nereye döneceğini görün.</p>
+    <div class="grid">
+      <div class="picker">
+        <h3>Ne yıkıyorsunuz?</h3>
+        <div class="garments" role="group" aria-label="Kıyafet seç">
+          <button class="g" aria-pressed="true" data-k="yun">Merinos kazak</button>
+          <button class="g" aria-pressed="false" data-k="gomlek">Beyaz okul gömleği</button>
+          <button class="g" aria-pressed="false" data-k="kot">Kot pantolon</button>
+          <button class="g" aria-pressed="false" data-k="bebek">Bebek tulumu</button>
+          <button class="g" aria-pressed="false" data-k="spor">Spor tayt</button>
+        </div>
+        <div class="out" aria-live="polite">
+          <div class="row"><span>Program</span><b id="oProg">Yün / Elde yıkama</b></div>
+          <div class="row"><span>Sıcaklık · sıkma</span><span id="oTemp">30° · en fazla 600 devir</span></div>
+          <div class="row"><span>Deterjan</span><span id="oDet">Yün şampuanı, yarım ölçek. Enzimsiz.</span></div>
+          <div class="row"><span>Kurutma</span><span id="oDry">Havluya sarıp sıkın, düz serin.</span></div>
+          <p class="warn" id="oWarn">Kazak ıslakken ağırlaşır; askıya asarsanız boyu uzar, kolları sarkar.</p>
+        </div>
+      </div>
+      <div class="panel" aria-label="Çamaşır makinesi program düğmesi">
+        <div class="panel-top"><span class="cond" style="font-size:18px;font-weight:600;color:#4A5862">Sizin makineniz · 9 kg</span><span class="display" id="disp">30°<small>600</small></span></div>
+        <svg class="dial" viewBox="0 0 420 420" aria-hidden="true">
+          <circle cx="210" cy="210" r="196" fill="#fff" stroke="#cdd8dc" stroke-width="2"/>
+          <g id="labels"></g>
+          <g id="knob">
+            <circle cx="210" cy="210" r="98" fill="#E9EEF0" stroke="#b9c6cb" stroke-width="2"/>
+            <circle cx="210" cy="210" r="82" fill="#F6F8F9"/>
+            <rect x="204" y="120" width="12" height="44" rx="6" fill="#A3302B"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stains" id="leke" aria-labelledby="h-leke">
+  <div class="wrap">
+    <h2 class="h2" id="h-leke">Lekenin ilk on dakikası.</h2>
+    <p class="intro">Lekeyi fotoğraflayın; ne olduğunu, kumaşı ve kaç saattir orada olduğunu tahmin eder. Evdeki malzemeyle başlayacağınız adımları verir. En sık altısı:</p>
+    <div class="grid">
+      <article class="stain"><div class="swatch"><svg viewBox="0 0 300 120" aria-hidden="true"><path d="M120 50c10-20 50-18 60 2s-8 30-28 34-42-14-32-36z" fill="#C24A2C" opacity=".75"/><circle cx="196" cy="40" r="6" fill="#C24A2C" opacity=".6"/></svg></div><div class="body"><h3>Domates sosu</h3><p class="time">Okul yemeği klasiği · beyaz gömlek</p><ol><li>Tersinden soğuk suyla durulayın.</li><li>Bulaşık deterjanı sürün, 10 dk bekletin.</li><li>Güneşte kurutun: turuncu iz solar.</li></ol><p class="kit">Gereken: bulaşık deterjanı</p><p class="dont">Yapmayın: sıcak su, lekeyi sabitler.</p></div></article>
+      <article class="stain"><div class="swatch"><svg viewBox="0 0 300 120" aria-hidden="true"><path d="M60 80c40-10 80-30 180-24" stroke="#4E7A2E" stroke-width="18" stroke-linecap="round" fill="none" opacity=".55"/></svg></div><div class="body"><h3>Çimen</h3><p class="time">Teneffüs dizi · kot, eşofman</p><ol><li>Kolonyalı pamukla tamponlayın (ovmayın).</li><li>Sıvı deterjanla 15 dk bekletin.</li><li>Kumaşın izin verdiği en sıcak suda yıkayın.</li></ol><p class="kit">Gereken: kolonya, sıvı deterjan</p><p class="dont">Yapmayın: yünde alkol, rengi alır.</p></div></article>
+      <article class="stain"><div class="swatch"><svg viewBox="0 0 300 120" aria-hidden="true"><ellipse cx="150" cy="60" rx="40" ry="26" fill="#5B3A27" opacity=".7"/><ellipse cx="200" cy="74" rx="12" ry="8" fill="#5B3A27" opacity=".5"/></svg></div><div class="body"><h3>Kakao, çikolata</h3><p class="time">Kahvaltı · kazak önü</p><ol><li>Kaşığın sırtıyla fazlasını kazıyın.</li><li>Soğuk suyla tersinden akıtın.</li><li>Yünse yün şampuanıyla parmak ucunda ovun.</li></ol><p class="kit">Gereken: yün şampuanı</p><p class="dont">Yapmayın: yünde enzimli leke çıkarıcı.</p></div></article>
+      <article class="stain"><div class="swatch"><svg viewBox="0 0 300 120" aria-hidden="true"><path d="M90 70c30-30 50 10 80-12s40 6 50-4" stroke="#24408E" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div><div class="body"><h3>Tükenmez kalem</h3><p class="time">Okul çantası · gömlek cebi</p><ol><li>Altına katlanmış kâğıt havlu koyun.</li><li>Kolonyayla dışarıdan içe doğru tamponlayın.</li><li>Havlu boyandıkça yerini değiştirin.</li></ol><p class="kit">Gereken: kolonya, kâğıt havlu</p><p class="dont">Yapmayın: ovmak, mürekkebi yayar.</p></div></article>
+      <article class="stain"><div class="swatch"><svg viewBox="0 0 300 120" aria-hidden="true"><path d="M140 40c14-6 30 4 26 20s-26 24-36 12 0-28 10-32z" fill="#8E1C22" opacity=".6"/></svg></div><div class="body"><h3>Kan</h3><p class="time">Düşen diz · çorap, tayt</p><ol><li>Yalnızca soğuk su.</li><li>Bir tutam tuzla ovun, 20 dk bekletin.</li><li>Normal programda yıkayın.</li></ol><p class="kit">Gereken: tuz</p><p class="dont">Yapmayın: ılık ya da sıcak su.</p></div></article>
+      <article class="stain"><div class="swatch"><svg viewBox="0 0 300 120" aria-hidden="true"><ellipse cx="150" cy="62" rx="46" ry="30" fill="#C9A44A" opacity=".35"/></svg></div><div class="body"><h3>Yağ</h3><p class="time">Börek, kızartma · tişört</p><ol><li>Karbonat ya da talk pudrası serpin, 30 dk.</li><li>Fırçalayıp bulaşık deterjanıyla ovun.</li><li>Kurutmadan önce kontrol edin; iz kaldıysa tekrarlayın.</li></ol><p class="kit">Gereken: karbonat, bulaşık deterjanı</p><p class="dont">Yapmayın: lekeyi kurutma makinesine atmak.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="dict" id="semboller" aria-labelledby="h-sem">
+  <div class="wrap">
+    <h2 class="h2" id="h-sem">Altı sembol, artık sizin dilinizde.</h2>
+    <p class="intro">Kâhya her okuttuğunuzda sembolü de söyler. Bir ay sonra çoğu kişi etikete bakıp uygulamayı açmadan karar veriyor.</p>
+    <div class="dict-row">
+      <div><svg viewBox="0 0 62 52" aria-hidden="true"><path class="sym" d="M6 14l6 32h38l6-32"/><path class="sym" d="M4 14c5-5 9 3 14-1s9 3 14-1 9 3 14-1 8 2 12 1"/><text x="31" y="38" text-anchor="middle" font-family="Asap" font-weight="600" font-size="15" fill="#EAF1F3">30</text><path class="sym" d="M14 50h34"/></svg><b>Leğen, 30, tek çizgi</b><span>30°, hassas program. Çizgi arttıkça daha nazik.</span></div>
+      <div><svg viewBox="0 0 62 52" aria-hidden="true"><path class="sym" d="M31 6 56 46H6z"/><path class="sym" d="M12 10l38 38M50 10 12 48"/></svg><b>Çarpılı üçgen</b><span>Çamaşır suyu ve ağartıcı yok.</span></div>
+      <div><svg viewBox="0 0 62 52" aria-hidden="true"><rect class="sym" x="9" y="5" width="44" height="42"/><circle class="sym" cx="31" cy="26" r="15"/><path class="sym" d="M5 3l52 46M57 3 5 49"/></svg><b>Çarpılı kare + daire</b><span>Kurutma makinesine girmez.</span></div>
+      <div><svg viewBox="0 0 62 52" aria-hidden="true"><rect class="sym" x="9" y="5" width="44" height="42"/><path class="sym" d="M17 26h28"/></svg><b>Kare, ortada çizgi</b><span>Düz serip kurutun.</span></div>
+      <div><svg viewBox="0 0 62 52" aria-hidden="true"><path class="sym" d="M8 40h46c0-14-6-22-20-22H22l-4-6h22"/><circle cx="31" cy="32" r="2.6" fill="#EAF1F3"/></svg><b>Ütü, tek nokta</b><span>En düşük ısı, buharsız.</span></div>
+      <div><svg viewBox="0 0 62 52" aria-hidden="true"><circle class="sym" cx="31" cy="26" r="20"/><text x="31" y="34" text-anchor="middle" font-family="Asap" font-weight="600" font-size="22" fill="#EAF1F3">P</text></svg><b>Daire içinde P</b><span>Kuru temizlemeye verilebilir.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="room" aria-labelledby="h-oda">
+  <div class="wrap">
+    <div class="grid">
+      <div class="basement" aria-label="Apartman bodrumundaki çamaşırhanede, sinyal yokken uygulama ekranı">
+        <div class="phone">
+          <div class="sb"><span>21:47</span><span class="no">Şebeke yok · Wi-Fi yok</span></div>
+          <p class="msg"><b>Okul gömleği + beyaz çorap</b>Pamuklu 40°, 1000 devir. Yakaya önce sıvı sabun sürün, 10 dakika bekletin. Kırmızı tişörtü bu makineye koymayın.</p>
+          <p class="stamp">Fotoğraf yalnızca bu telefonda · 7 gün sonra kendiliğinden silinir</p>
+        </div>
+      </div>
+      <div>
+        <h2 class="h2" id="h-oda">Dolabınız sizin, çamaşırhane bodrumda.</h2>
+        <p class="intro">Çocuğunuzun okul gömleği, iç çamaşırları, lekeli pijaması… Bunların fotoğrafları bir sunucuya gitmez. Etiket ve leke telefonun içinde okunur. Apartmanın bodrumunda, sinyalin olmadığı yerde de aynı hızda.</p>
+        <ul class="proofs">
+          <li><strong>0</strong><span>fotoğraf buluta yüklenir; hesap açmazsınız.</span></li>
+          <li><strong>7 gün</strong><span>sonra fotoğraflar silinir. Yalnızca “Elif’in lacivert kazağı: yün, 30°” notu kalır.</span></li>
+          <li><strong>2.300+</strong><span>kumaş ve etiket örneğiyle eğitilmiş model, 38 MB, telefonda.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="vp" id="fiyat" aria-label="Kullanıcı yorumu ve fiyat">
+  <div class="wrap">
+    <div class="grid">
+      <blockquote>
+        <p>“Elif’in ilk yün kazağını kurutma makinesinde 6 yaş bedenine indirdim. Kâhya’dan sonra kazağı ben yıkıyorum, annesi bile soruyor hangi program diye.”</p>
+        <footer><b>Tolga Erdem</b> · Karşıyaka, İzmir · iki çocuk babası, evin yeni çamaşır sorumlusu</footer>
+      </blockquote>
+      <div class="plans">
+        <div class="plan"><h3>Kâhya</h3><span class="amt">0 ₺</span><p>Etiket okuma, program önerisi, sembol sözlüğü. Sınırsız.</p></div>
+        <div class="plan pro"><h3>Kâhya Usta</h3><span class="amt">89 ₺</span><p>Tek seferlik. Leke rehberi (140 leke), makine modelinize göre program adları, aile dolabı: kimin hangi kıyafeti nasıl yıkanır.</p></div>
+        <div class="ctas" style="margin-top:6px"><a class="btn btn-ink" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="h-sss">
+  <div class="wrap">
+    <h2 class="h2" id="h-sss">Sık sorulanlar</h2>
+    <div class="list">
+      <details><summary>Çekmiş kazağı kurtarabilir mi?</summary><p>Bazen. Yünse ılık suya bir kaşık saç kremi koyup 20 dakika bekletin, sonra nazikçe esnetip düz kurutun. Kâhya adım adım anlatır ama söz vermez: keçeleşmiş yün çoğu zaman geri dönmez.</p></details>
+      <details><summary>Etiket yoksa ne olur?</summary><p>Kumaşı yakından çekin. Pamuk, yün, polyester, viskon ve karışımları dokusundan ayırt eder; emin değilse “en nazik program” önerir ve bunu açıkça söyler.</p></details>
+      <details><summary>Makinemin programları farklı adlandırılmış.</summary><p>Makinenin ön panelini bir kez fotoğraflayın. Kâhya program adlarını (ör. “Wool”, “Hand Wash”, “Yünlü”) okur ve önerileri o adlarla verir.</p></details>
+      <details><summary>Renkli ve beyazı ayırmayı da söyler mi?</summary><p>Evet. Sepetin fotoğrafını çekerseniz boya akıtma riski olan parçaları işaretler: “Yeni kırmızı tişört ilk 3 yıkamada ayrı.”</p></details>
+      <details><summary>Leke tavsiyeleri kumaşa zarar verir mi?</summary><p>Her tavsiye önce kumaşa bakar: yünde alkol ve enzim, ipekte sirke önermez. Yine de önce görünmeyen bir köşede denemenizi ister.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="closing" aria-labelledby="h-son">
+  <div class="wrap">
+    <h2 id="h-son">Kazağı bu sefer siz yıkayın.</h2>
+    <div class="ctas" style="margin-top:0"><a class="btn btn-ink" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Çamaşır Kâhyası · İzmir</span>
+    <span>merhaba@camasirkahyasi.app</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var P=['Pamuklu','Pamuklu Eko','Sentetik','Karışık','Yün','Narin','Bebek','Hızlı 15′','Kot','Spor','Durulama','Sıkma'];
+  var lab=document.getElementById('labels'),out='';
+  P.forEach(function(p,i){var a=(i*30-90)*Math.PI/180,r=150,x=210+r*Math.cos(a),y=210+r*Math.sin(a);
+    out+='<circle cx="'+(210+122*Math.cos(a)).toFixed(1)+'" cy="'+(210+122*Math.sin(a)).toFixed(1)+'" r="3" fill="#9aa7ad"/>';
+    out+='<text id="pl'+i+'" x="'+x.toFixed(1)+'" y="'+(y+5).toFixed(1)+'" text-anchor="middle">'+p+'</text>';});
+  lab.innerHTML=out;
+  var G={
+    yun:{i:4,prog:'Yün / Elde yıkama',t:'30° · en fazla 600 devir',d:'Yün şampuanı, yarım ölçek. Enzimsiz.',dry:'Havluya sarıp sıkın, düz serin.',w:'Kazak ıslakken ağırlaşır; askıya asarsanız boyu uzar, kolları sarkar.',disp:['30°','600']},
+    gomlek:{i:0,prog:'Pamuklu',t:'40° · 1000 devir',d:'Toz deterjan; yakaya önceden sıvı sabun.',dry:'Askıda, yaka düzeltilerek. Nemliyken ütü.',w:'Yeni kırmızı ya da lacivert parçalarla aynı makineye koymayın.',disp:['40°','1000']},
+    kot:{i:8,prog:'Kot',t:'30° · 800 devir',d:'Renkliler için sıvı deterjan, az.',dry:'Ters çevrili, askıda. Kurutma makinesi bel lastiğini yorar.',w:'Fermuar ve düğmeler kapalı, ters çevrili: rengi daha geç solar.',disp:['30°','800']},
+    bebek:{i:6,prog:'Bebek + ekstra durulama',t:'60° · 800 devir',d:'Parfümsüz, bebek deterjanı. Yumuşatıcı yok.',dry:'Güneşte ya da düşük ısıda kurutma makinesi.',w:'Çıtçıtları açık bırakın; kapalı kalırsa kumaşı çeker.',disp:['60°','800']},
+    spor:{i:9,prog:'Spor',t:'30° · 800 devir',d:'Sıvı deterjan. Yumuşatıcı yok: kumaşın nefes almasını kapatır.',dry:'Askıda, güneşten uzak. Kurutma makinesi yok.',w:'Ter kokusu kaldıysa yıkamadan önce 30 dk sirkeli suda bekletin.',disp:['30°','800']}
+  };
+  var knob=document.getElementById('knob'),cur=-1;
+  function show(k){var g=G[k];
+    knob.style.transform='rotate('+(g.i*30)+'deg)';
+    document.querySelectorAll('#labels text').forEach(function(t){t.classList.remove('act')});
+    document.getElementById('pl'+g.i).classList.add('act');
+    document.getElementById('oProg').textContent=g.prog;document.getElementById('oTemp').textContent=g.t;
+    document.getElementById('oDet').textContent=g.d;document.getElementById('oDry').textContent=g.dry;document.getElementById('oWarn').textContent=g.w;
+    document.getElementById('disp').innerHTML=g.disp[0]+'<small>'+g.disp[1]+'</small>';}
+  var bs=[].slice.call(document.querySelectorAll('.g'));
+  bs.forEach(function(b){b.addEventListener('click',function(){bs.forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');show(b.dataset.k);});});
+  show('yun');
+})();
+</script>
+</body>
+</html>

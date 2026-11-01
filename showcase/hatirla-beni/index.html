@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hatırla Beni — Kapıyı açtığında kulağına adınızı fısıldar</title>
+<meta name="description" content="Hatırla Beni, erken evre demansı olan yakınınız için kapıdan gelen kişiyi tanır ve kulaklığına nazikçe fısıldar: 'Bu kızın Ayşe, bugün Salı.' Yüzler evden çıkmaz. Asla düzeltmez, asla sınamaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,500&family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#E9E4DE;      /* eski salonun boyalı duvarı */
+  --sheet:#F7F4F0;     /* takvim yaprağı */
+  --ink:#3B2A2F;       /* koyu kahve-mürdüm, ceviz büfe */
+  --soft:#6A5A5E;
+  --red:#B3261E;       /* takvimin kırmızı tarihi */
+  --brass:#7A5C2E;     /* kapı tokmağı pirinci */
+  --rose:#D9C3C0;      /* dantel örtü gölgesi */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--wall);color:var(--ink);font:400 1.2rem/1.7 "Figtree",system-ui,sans-serif;overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+a{color:var(--ink);text-underline-offset:.22em}
+:focus-visible{outline:3px solid var(--ink);outline-offset:4px;border-radius:3px}
+.skip{position:absolute;left:1rem;top:-6rem;background:var(--ink);color:#fff;padding:1rem;z-index:9}
+.skip:focus{top:1rem}
+.wrap{max-width:1120px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+h1,h2,h3{font-family:"Crimson Pro",Georgia,serif;font-weight:400;line-height:1.12}
+h1{font-size:clamp(2.5rem,5vw,4rem);max-width:15ch}
+h2{font-size:clamp(2rem,3.8vw,2.9rem);max-width:20ch}
+h3{font-family:"Figtree";font-weight:700;font-size:1.2rem;line-height:1.3}
+p{max-width:58ch}
+.soft{color:var(--soft)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 1.5rem;border-radius:4px;font:700 1.08rem "Figtree";text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn.d{background:var(--ink);color:var(--sheet)}
+.btn.l{background:transparent;color:var(--ink)}
+
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:88px;flex-wrap:wrap}
+.logo{font:italic 500 1.7rem "Crimson Pro";color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:.6rem}
+.hdr-r{display:flex;align-items:center;gap:1.2rem;font-size:1rem;flex-wrap:wrap}
+.hdr-r a{display:inline-flex;min-height:48px;align-items:center}
+
+/* hero */
+.hero{padding:2.5rem 0 5.5rem}
+.hero .wrap{display:grid;grid-template-columns:.95fr 1.05fr;gap:4.5rem;align-items:center}
+.cal{position:relative;max-width:400px;margin:0 auto;width:100%}
+.cal .ring{display:flex;justify-content:center;gap:5.5rem;margin-bottom:-12px;position:relative;z-index:2}
+.cal .ring span{width:16px;height:30px;border-radius:8px;background:var(--brass)}
+.leaf{background:var(--sheet);box-shadow:0 1px 0 #d8d0c8,0 2px 0 #efe9e3,0 3px 0 #d8d0c8,0 22px 40px -28px rgba(59,42,47,.5);padding:1.8rem 1.6rem 1.6rem;text-align:center;position:relative}
+.leaf .mo{font:700 1rem "Figtree";letter-spacing:.14em;color:var(--red)}
+.leaf .d{font:600 8rem/1 "Crimson Pro";color:var(--red);margin:.1rem 0}
+.leaf .wd{font:500 italic 2rem "Crimson Pro"}
+.leaf .meta{display:flex;justify-content:space-between;border-top:1px solid #d8d0c8;margin-top:1rem;padding-top:.7rem;font-size:.95rem;color:var(--soft)}
+.whisper{margin:1.6rem auto 0;max-width:400px;background:var(--ink);color:var(--sheet);border-radius:28px 28px 28px 6px;padding:1.1rem 1.4rem;display:flex;gap:1rem;align-items:flex-start}
+.whisper svg{flex:none;margin-top:.25rem}
+.whisper p{font:italic 400 1.45rem/1.35 "Crimson Pro";min-height:3.9rem}
+.whisper small{display:block;font:400 .9rem "Figtree";color:var(--rose);margin-top:.4rem;font-style:normal}
+.stages{display:flex;gap:.4rem;justify-content:center;margin-top:1.2rem;flex-wrap:wrap}
+.stages span{font-size:.92rem;padding:.2rem .7rem;border-radius:20px;border:1px solid #c9bfb7;color:var(--soft)}
+.stages span.on{background:var(--sheet);color:var(--ink);border-color:var(--ink)}
+.lede{font-size:1.32rem;margin:1.4rem 0 2rem}
+.ctas{display:flex;gap:.8rem;flex-wrap:wrap}
+.fine{margin-top:1.2rem;font-size:1.02rem;color:var(--soft)}
+.knock{margin-top:1.1rem;display:flex;justify-content:center}
+
+/* rules */
+.rules{background:var(--sheet);padding:6rem 0}
+.rules .two{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:2.8rem;border-top:1px solid var(--ink)}
+.rules .col{padding:2rem 2rem 0 0}
+.rules .col+.col{padding-left:2rem;border-left:1px solid #d8d0c8}
+.rules h3{font:500 italic 1.6rem "Crimson Pro";margin-bottom:1rem}
+.rules ul{list-style:none}
+.rules li{padding:.9rem 0;border-bottom:1px solid #e3dcd4;font-size:1.15rem}
+.rules li q{font:italic 1.3rem "Crimson Pro";display:block;quotes:"“" "”"}
+.rules li span{display:block;color:var(--soft);font-size:1.02rem}
+.rules .never li q{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px;color:var(--soft)}
+
+/* family */
+.family{padding:6rem 0}
+.family .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start}
+.people{list-style:none;background:var(--sheet);border-radius:6px;padding:.5rem 1.4rem}
+.people li{display:grid;grid-template-columns:52px 1fr auto;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid #e3dcd4}
+.people li:last-child{border:0}
+.people .ph{width:52px;height:52px;border-radius:50%;background:var(--rose);display:grid;place-items:center;font:600 1.3rem "Crimson Pro"}
+.people b{display:block}
+.people span{color:var(--soft);font-size:1rem}
+.people .v{font-size:.9rem;color:var(--brass);font-weight:700}
+
+/* home */
+.home{background:var(--ink);color:var(--sheet);padding:6rem 0}
+.home :focus-visible{outline-color:var(--sheet)}
+.home .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:4rem;align-items:center}
+.home p{margin-top:1.2rem;color:#E4DAD6;font-size:1.25rem}
+.home h2{max-width:16ch}
+.home ul{list-style:none;border-top:1px solid #5a474c}
+.home li{padding:1rem 0;border-bottom:1px solid #5a474c;color:#E4DAD6}
+.home li b{color:var(--sheet);display:block;font:500 1.5rem "Crimson Pro"}
+
+/* set */
+.set{padding:6rem 0}
+.set .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.box{background:var(--sheet);padding:2rem;border-radius:6px;border-top:6px solid var(--red)}
+.box .amt{font:600 3rem/1 "Crimson Pro";margin:.6rem 0 .3rem}
+.box ul{margin:1.2rem 0 1.5rem 1.2rem}
+.box li{padding:.3rem 0}
+
+.quote{padding:5rem 0;background:var(--sheet)}
+.quote blockquote{font:italic 400 clamp(1.6rem,3.2vw,2.4rem)/1.35 "Crimson Pro";max-width:30ch}
+.quote figcaption{margin-top:1.2rem;color:var(--soft)}
+
+.faq{padding:5rem 0 6rem}
+.faq .wrap{max-width:860px}
+details{border-bottom:1px solid #c9bfb7}
+summary{cursor:pointer;min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:1rem;font:500 1.4rem "Crimson Pro";padding:.8rem 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:400 1.5rem "Figtree";color:var(--red);flex:none}
+details[open] summary::after{content:"–"}
+details p{padding-bottom:1.4rem;color:var(--soft)}
+
+footer{border-top:1px solid #c9bfb7;padding:3rem 0 2rem;font-size:1rem;color:var(--soft)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+footer .credit{margin-top:2rem;font-size:.92rem}
+footer .credit a{color:var(--soft)}
+
+@media (max-width:900px){
+  .hero .wrap,.family .wrap,.home .wrap,.set .wrap{grid-template-columns:minmax(0,1fr);gap:2.8rem}
+  .hero .cal-col{order:2}
+  .rules .two{grid-template-columns:1fr}
+  .rules .col+.col{padding-left:0;border-left:0}
+}
+@media (max-width:560px){
+  .wrap{padding:0 1rem}
+  .hdr-r .hide-s{display:none}
+  .leaf .d{font-size:6rem}
+  .btn{width:100%}
+  .rules .col{padding:1.4rem 0 0}
+  .people li{grid-template-columns:44px 1fr}
+  .people .v{grid-column:2}
+  .people .ph{width:44px;height:44px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Hatırla Beni ana sayfa">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M8 26V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v20" fill="none" stroke="#3B2A2F" stroke-width="2.4"/><circle cx="19" cy="16" r="1.8" fill="#7A5C2E"/><path d="M4 26h22" stroke="#3B2A2F" stroke-width="2.4"/></svg>
+      Hatırla Beni
+    </a>
+    <div class="hdr-r"><span class="soft hide-s">Ailelerle konuşan danışmanımız:</span><a href="tel:+908500000428"><b>0 850 000 04 28</b></a></div>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="cal-col" role="region" aria-labelledby="ex-h">
+      <h2 id="ex-h" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Örnek: kapıdan kızı geldiğinde annenin duyduğu fısıltı</h2>
+      <div class="cal" aria-hidden="true">
+        <div class="ring"><span></span><span></span></div>
+        <div class="leaf">
+          <div class="mo">KASIM 2026</div>
+          <div class="d">3</div>
+          <div class="wd">Salı</div>
+          <div class="meta"><span>Güneş 07.02</span><span>Akşam 17.11</span></div>
+        </div>
+      </div>
+      <div class="whisper">
+        <svg width="26" height="30" viewBox="0 0 26 30" aria-hidden="true"><path d="M17 3a9 9 0 0 0-9 9v1a4 4 0 0 0 0 8c2 0 3-1 3-3v-6a6 6 0 1 1 12 0c0 4-4 5-4 9 0 4-3 7-7 7" fill="none" stroke="#D9C3C0" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <div aria-live="polite"><p id="wh">“Bu kızın Ayşe. Bugün Salı. Seni görmeye geldi.”</p><small id="whs">Annenin kulaklığında, yalnız onun duyacağı kadar</small></div>
+      </div>
+      <div class="stages" aria-hidden="true"><span id="s0">Kapı çalındı</span><span id="s1">Yüz tanındı</span><span id="s2" class="on">Fısıldandı</span></div>
+      <div class="knock"><button class="btn l" type="button" id="knock">Kapıyı çal, fısıltıyı gör</button></div>
+    </div>
+    <div>
+      <h1 id="h1">Kapıyı açtığında, kulağına sizin adınızı fısıldar.</h1>
+      <p class="lede">Hatırla Beni, erken evre demansla yaşayan yakınınız için kapıdan gelen kişiyi tanır ve kulaklığına sakin bir sesle kim olduğunu, hangi gün olduğunu söyler. O da sizi adınızla karşılar. Kimse kimseyi sınamaz.</p>
+      <div class="ctas"><a class="btn d" href="#set">Seti inceleyin</a><a class="btn l" href="#ilkeler">Ne söyler, ne söylemez</a></div>
+      <p class="fine">Nöroloji ve geriatri hemşireleriyle hazırlandı. Bir tedavi değildir; günlük hayatta onuru korumaya yardım eder.</p>
+    </div>
+  </div>
+</section>
+
+<section class="rules" id="ilkeler" aria-labelledby="ru-h">
+  <div class="wrap">
+    <h2 id="ru-h">Bir yardımın onuru, ne söylemediğinde başlar</h2>
+    <p class="soft" style="margin-top:1rem">Demansla yaşayan biri en çok, yanlış bildiği bir şeyin yüzüne vurulmasından incinir. Hatırla Beni'nin cümleleri bu yüzden bir hemşirenin sabrıyla yazıldı.</p>
+    <div class="two">
+      <div class="col">
+        <h3>Söyler</h3>
+        <ul>
+          <li><q>Bu kızın Ayşe.</q><span>Adını ve yakınlığını, kapı açılmadan önce</span></li>
+          <li><q>Bugün Salı. Öğleden sonra.</q><span>Günü ve vakti, yalnız sorduğunda ya da sabah ilk kalktığında</span></li>
+          <li><q>Seni görmeye geldi, börek getirmiş.</q><span>Ailenin önceden yazdığı küçük bir bağlam</span></li>
+          <li><q>Alt kattan Fatma Hanım.</q><span>Komşular, kapıcı, bakıcı da</span></li>
+        </ul>
+      </div>
+      <div class="col never">
+        <h3>Asla söylemez</h3>
+        <ul>
+          <li><q>Unuttun mu?</q><span>Unutulanı hatırlatmaz, işaret etmez</span></li>
+          <li><q>Bunu az önce sordun.</q><span>Tekrar eden soruya her seferinde ilk kez gibi cevap verir</span></li>
+          <li><q>Hayır, o senin annen değil.</q><span>Düzeltmez, tartışmaz</span></li>
+          <li><q>Bil bakalım bu kim?</q><span>Sınamaz, soru sormaz</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="family" aria-labelledby="fa-h">
+  <div class="wrap">
+    <div>
+      <h2 id="fa-h">Kimin tanınacağına aile karar verir</h2>
+      <p style="margin-top:1.2rem">Kurulumda her yakınınız telefonuna bakıp birkaç saniyelik bir kayıt yapar ve nasıl tanıtılmak istediğini yazar: “kızın Ayşe”, “torunun Can, üniversitede”. İsterseniz fısıltıyı kendi sesinizle okursunuz; annenin kulağına gelen ses sizin sesiniz olur.</p>
+      <p class="soft" style="margin-top:1rem">Listede olmayan biri gelirse hiçbir şey söylemez ve yüzü saklamaz. Bakıcı değişirse bir dokunuşla çıkarılır.</p>
+    </div>
+    <ul class="people" aria-label="Örnek aile listesi">
+      <li><span class="ph" aria-hidden="true">A</span><div><b>Ayşe</b><span>“Bu kızın Ayşe.”</span></div><span class="v">kendi sesiyle</span></li>
+      <li><span class="ph" aria-hidden="true">M</span><div><b>Murat</b><span>“Oğlun Murat, Ankara'dan geldi.”</span></div><span class="v">kendi sesiyle</span></li>
+      <li><span class="ph" aria-hidden="true">C</span><div><b>Can</b><span>“Torunun Can.”</span></div><span class="v">sakin ses</span></li>
+      <li><span class="ph" aria-hidden="true">F</span><div><b>Fatma Hanım</b><span>“Alt kattan Fatma Hanım.”</span></div><span class="v">sakin ses</span></li>
+      <li><span class="ph" aria-hidden="true">G</span><div><b>Gülay</b><span>“Gülay, sana yardıma gelen hanım.”</span></div><span class="v">sakin ses</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="home" aria-labelledby="ho-h">
+  <div class="wrap">
+    <div>
+      <h2 id="ho-h">Annenizin evinde olan, annenizin evinde kalır.</h2>
+      <p>Kapı kamerasının gördüğü yüz, set içindeki küçük cihazda tanınır ve hemen silinir. Görüntü kaydedilmez, internete çıkmaz; evde Wi-Fi olmasa da çalışır. Yüz kayıtları yalnız o cihazda ve sizin telefonunuzda şifreli durur.</p>
+      <p>Annenizin evine kimin geldiğini izlemek için tasarlanmadı. Size giriş-çıkış raporu göndermez; isterseniz yalnızca “bugün kulaklık şarj edilmedi” gibi bir hatırlatma alırsınız.</p>
+    </div>
+    <ul>
+      <li><b>Kaydedilen görüntü</b>Hiç</li>
+      <li><b>Buluta giden yüz</b>Hiç</li>
+      <li><b>Size gelen bildirim</b>Yalnız şarj ve bağlantı</li>
+    </ul>
+  </div>
+</section>
+
+<section class="set" id="set" aria-labelledby="se-h">
+  <div class="wrap">
+    <div>
+      <h2 id="se-h">Bir set, bir kez</h2>
+      <p class="soft" style="margin-top:1.2rem">Kapının iç tarafına yapışan küçük bir kamera, tek kulağa takılan hafif bir kulaklık ve şarj standı. Kurulumu bir yakın 30 dakikada yapar; isterseniz İstanbul, Ankara ve İzmir'de evinize gelip biz kurarız.</p>
+      <p class="soft" style="margin-top:1rem">Kulaklığı takmayı sevmeyenler için kapının yanına konan küçük bir hoparlör de seçilebilir; fısıltı yalnız kapının önünde duyulur.</p>
+    </div>
+    <div class="box">
+      <h3>Hatırla Beni seti</h3>
+      <p class="amt">4.850 ₺</p>
+      <p class="soft">Tek seferlik · abonelik yok · 2 yıl garanti</p>
+      <ul>
+        <li>Kapı kamerası (pilli, 6 ay)</li>
+        <li>Tek kulak kulaklık ve şarj standı</li>
+        <li>Aile uygulaması, 12 kişiye kadar</li>
+        <li>30 gün içinde koşulsuz iade</li>
+      </ul>
+      <div class="ctas"><a class="btn d" href="#">Seti sipariş edin</a><a class="btn l" href="tel:+908500000428">Önce konuşalım</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Bir kızın sözü">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Annem beni bir gün ‘hanımefendi’ diye karşıladı. O gece uyuyamadım. Şimdi kapıyı açınca ‘Ayşe'ciğim, gel kızım’ diyor. Biliyorum, kulağına biri söylüyor. Ama o anda annem, annem gibi.”</blockquote>
+      <figcaption><b style="color:var(--ink)">Ayşe Kocabaş</b>, 49 · annesi Saniye Hanım, 78, iki yıldır Alzheimer · Bursa, Nilüfer</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="sss-h">
+  <div class="wrap">
+    <h2 id="sss-h" style="margin-bottom:1.2rem">Ailelerin sorduğu</h2>
+    <details><summary>Annem kulaklığı takmayı unutursa?</summary><p>Kulaklık şarj standından kalkınca açılır; çoğu aile standı kapının yanındaki konsola koyuyor. Unutulursa kapı yanındaki hoparlör devreye girer. Size yalnız “bugün kulaklık takılmadı” bilgisi gelir.</p></details>
+    <details><summary>Yüzü yanlış tanırsa ne olur?</summary><p>Emin olmadığında hiçbir şey söylemez. Yanlış bir isim söylemektense susmayı seçer; çünkü yanlış bir isim, hiç isim olmamasından daha çok kafa karıştırır.</p></details>
+    <details><summary>Annem bunu bilmeli mi?</summary><p>Evet, ona söylemenizi öneriyoruz. Erken evrede çoğu kişi bunu bir “hafıza yardımcısı” olarak kabul ediyor, gözlük gibi. Kurulumu onunla birlikte yapmak, ona saygının ilk adımı.</p></details>
+    <details><summary>Hastalık ilerlerse işe yarar mı?</summary><p>Erken ve orta evre için tasarlandı. İleri evrede fısıltı kafa karıştırıcı olabilir; o noktada danışmanımız sizinle ve hekiminizle birlikte kapatmayı ya da yalnız gün bilgisine indirmeyi konuşur.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--ink)">Hatırla Beni</b> · İstanbul, Kadıköy<br>aile@hatirlabeni.com.tr · 0 850 000 04 28 (her gün 09.00–21.00)</div>
+    <div><a href="#">Hekiminiz için bilgi notu</a> · <a href="#">KVKK</a> · <a href="#">Erişilebilirlik</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var V=[
+    ['“Bu kızın Ayşe. Bugün Salı. Seni görmeye geldi.”','Annenin kulaklığında, yalnız onun duyacağı kadar'],
+    ['“Alt kattan Fatma Hanım. Pazardan dönmüş.”','Komşu · sakin ses'],
+    ['“Oğlun Murat, Ankara’dan geldi. Akşam yemeğine kalacak.”','Oğlunun kendi sesiyle']
+  ];
+  var n=0,busy=false,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var wh=document.getElementById('wh'),whs=document.getElementById('whs');
+  function st(k){[0,1,2].forEach(function(i){document.getElementById('s'+i).classList.toggle('on',i===k)})}
+  document.getElementById('knock').addEventListener('click',function(){
+    if(busy)return;busy=true;n=(n+1)%V.length;
+    if(reduce){wh.textContent=V[n][0];whs.textContent=V[n][1];st(2);busy=false;return}
+    st(0);wh.textContent='…';whs.textContent='Kapı çalındı';
+    setTimeout(function(){st(1);whs.textContent='Yüz tanındı · cihaz içinde · 0,3 sn'},900);
+    setTimeout(function(){st(2);wh.textContent=V[n][0];whs.textContent=V[n][1];busy=false},1900);
+  });
+})();
+</script>
+</body>
+</html>

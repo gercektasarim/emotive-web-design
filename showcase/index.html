@@ -1,0 +1,1792 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cihazda Kalan Akıl · emotive-web-design</title>
+<meta name="description" content="Cihaz üzerinde çalışan yapay zekâ ile hayatı kolaylaştıran 100 uygulama; her birinin sitesi emotive-web-design skill'iyle, uygulamanın kendi duygusuna göre ayrı ayrı tasarlandı.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#ECECE8;--ink:#141414;--mute:#55554F;--rule:#C9C9C2;--card:#F7F7F4;--focus:#0047FF}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.5 Archivo,system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.wrap{max-width:1440px;margin:0 auto;padding:0 clamp(16px,3vw,40px)}
+header{padding:clamp(40px,7vw,96px) 0 32px;border-bottom:1px solid var(--ink)}
+.kicker{font:500 13px/1.4 "IBM Plex Mono",monospace;color:var(--mute)}
+h1{font-weight:780;font-stretch:72%;font-size:clamp(48px,10.5vw,168px);line-height:.86;letter-spacing:-.01em;margin:18px 0 28px;max-width:12ch}
+.lede{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:end}
+.lede p{font-size:clamp(18px,1.6vw,22px);max-width:56ch}
+.stats{display:flex;gap:clamp(20px,3vw,48px);font:500 13px/1.3 "IBM Plex Mono",monospace;color:var(--mute)}
+.stats b{display:block;font:780 clamp(36px,4vw,56px)/1 Archivo,sans-serif;font-stretch:72%;color:var(--ink)}
+nav.filter{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--rule);padding:12px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav.filter button{flex:none;font:500 13px/1 "IBM Plex Mono",monospace;padding:10px 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;cursor:pointer}
+nav.filter button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.grid{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:clamp(16px,2vw,28px);padding:32px 0 80px}
+.card a{display:flex;flex-direction:column;height:100%;text-decoration:none;background:var(--card);border:1px solid var(--rule)}
+.shot{aspect-ratio:640/450;overflow:hidden;border-bottom:1px solid var(--rule);background:#ddd}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .5s ease}
+.card a:hover .shot img{transform:scale(1.03)}
+.noshot{display:grid;place-items:center;height:100%;font-weight:700}
+.info{padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+.no{font:500 12px/1 "IBM Plex Mono",monospace;color:var(--mute)}
+h3{font-weight:760;font-stretch:80%;font-size:28px;line-height:1}
+.does{font-size:15px;color:#2b2b28}
+dl{display:grid;gap:4px;font-size:13px;border-top:1px solid var(--rule);padding-top:10px}
+dl div{display:grid;grid-template-columns:76px 1fr;gap:8px}
+dt{font:500 11px/1.6 "IBM Plex Mono",monospace;color:var(--mute)}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+.pal{display:flex}.pal i{width:22px;height:22px;border:1px solid rgba(0,0,0,.12);margin-right:-4px;border-radius:50%}
+.score{font:780 26px/1 Archivo,sans-serif;font-stretch:72%}.score small{font-size:13px;color:var(--mute);font-weight:500}
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;border-top:1px solid var(--ink);padding:48px 0}
+.method h2{font-weight:760;font-stretch:72%;font-size:clamp(32px,4vw,52px);line-height:.95;grid-column:1/-1;max-width:20ch}
+.method p{font-size:15px;max-width:40ch}
+.method strong{display:block;font:500 12px/1.4 "IBM Plex Mono",monospace;color:var(--mute);margin-bottom:6px}
+footer{border-top:1px solid var(--rule);padding:24px 0 40px;font:500 13px/1.5 "IBM Plex Mono",monospace;color:var(--mute)}
+[hidden]{display:none!important}
+@media (max-width:720px){.lede{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">emotive-web-design · örnek arşivi</p>
+  <h1>Cihazda kalan akıl, 100 kez.</h1>
+  <div class="lede">
+    <p>Telefonda, saatte, dizüstünde çalışan yapay zekâ ile hayatı biraz kolaylaştıran 100 uygulama. Hiçbirinin sitesi ortak bir şablondan çıkmadı: her biri için skill önce ziyaretçinin hangi halde geldiğini sordu, üç yön taslağı çıkarıp puanladı, seçileni kodladı ve ekran görüntüsünden yeniden puanladı.</p>
+    <div class="stats"><span><b>100</b>site</span><span><b>93</b>font ailesi</span><span><b>26.8</b>ort. uyum / 30</span></div>
+  </div>
+</header>
+<nav class="filter wrap" aria-label="Gruba göre süz">
+  <button type="button" aria-pressed="true" data-g="">Hepsi</button>
+  <button type="button" aria-pressed="false" data-g="Beden ve sağlık">Beden ve sağlık</button>
+  <button type="button" aria-pressed="false" data-g="Zihin ve duygu">Zihin ve duygu</button>
+  <button type="button" aria-pressed="false" data-g="Erişilebilirlik">Erişilebilirlik</button>
+  <button type="button" aria-pressed="false" data-g="Ev ve aile">Ev ve aile</button>
+  <button type="button" aria-pressed="false" data-g="Yaşlı ve bakım">Yaşlı ve bakım</button>
+  <button type="button" aria-pressed="false" data-g="Çocuk ve öğrenme">Çocuk ve öğrenme</button>
+  <button type="button" aria-pressed="false" data-g="İş ve üretkenlik">İş ve üretkenlik</button>
+  <button type="button" aria-pressed="false" data-g="Mutfak ve beslenme">Mutfak ve beslenme</button>
+  <button type="button" aria-pressed="false" data-g="Şehir ve yol">Şehir ve yol</button>
+  <button type="button" aria-pressed="false" data-g="Doğa, para, üretim">Doğa, para, üretim</button>
+</nav>
+<main class="wrap">
+  <ul class="grid">
+<li class="card" data-group="Beden ve sağlık">
+  <a href="nabiz/" aria-label="Nabız sitesini aç">
+    <figure class="shot"><img src="thumbs/nabiz.jpg" alt="Nabız sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">001</p>
+      <h3>Nabız</h3>
+      <p class="does">Akıllı saatin kalp ritmi verisini telefonda yorumlar, düzensiz ritim şüphesini erken fark edip kardiyoloğa götürülecek bir özet hazırlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kardiyoloğa götürülen kâğıt</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Babası bypass geçirmiş, gece telefonu başucunda uyuyan endişeli yetişkin çocuk</dd></div>
+        <div><dt>Çıkış</dt><dd>güvende</dd></div>
+        <div><dt>Font</dt><dd>IBM Plex Sans + IBM Plex Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FBF3F0" title="#FBF3F0"></i><i style="background:#EBC2B8" title="#EBC2B8"></i><i style="background:#1A2130" title="#1A2130"></i><i style="background:#B21E2B" title="#B21E2B"></i><i style="background:#1E2C40" title="#1E2C40"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="gece-pusulasi/" aria-label="Gece Pusulası sitesini aç">
+    <figure class="shot"><img src="thumbs/gece-pusulasi.jpg" alt="Gece Pusulası sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">002</p>
+      <h3>Gece Pusulası</h3>
+      <p class="does">Başucundaki telefon horlama ve nefes duraklamalarını dinler, ses kaydı cihazdan çıkmadan uyku apnesi riskini haftalık rapora döker.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Geceden sabaha</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Eşinin horlamasından uyuyamayan, sabahları yorgun kalkan kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>umutlu, dinlenmiş</dd></div>
+        <div><dt>Font</dt><dd>Literata + Albert Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#141C26" title="#141C26"></i><i style="background:#1E2A38" title="#1E2A38"></i><i style="background:#8FA9BC" title="#8FA9BC"></i><i style="background:#F0A868" title="#F0A868"></i><i style="background:#E9EEF1" title="#E9EEF1"></i><i style="background:#1B2530" title="#1B2530"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="benek/" aria-label="Benek sitesini aç">
+    <figure class="shot"><img src="thumbs/benek.jpg" alt="Benek sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">003</p>
+      <h3>Benek</h3>
+      <p class="does">Vücuttaki benlerin fotoğraflarını aylar boyunca karşılaştırır, değişimi işaretler ve dermatoloğa ne zaman gidileceğini söyler; fotoğraflar telefonun kasasında kalır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Ben atlası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Güneşte çok kalmış, bir benin büyüdüğünü sanan kaygılı yetişkin</dd></div>
+        <div><dt>Çıkış</dt><dd>sakin, kontrol bende</dd></div>
+        <div><dt>Font</dt><dd>Spectral + Public Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F4F4F1" title="#F4F4F1"></i><i style="background:#24262B" title="#24262B"></i><i style="background:#5B3FA0" title="#5B3FA0"></i><i style="background:#EAD7C8" title="#EAD7C8"></i><i style="background:#5E3B2B" title="#5E3B2B"></i><i style="background:#3E6B55" title="#3E6B55"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="doz/" aria-label="Doz sitesini aç">
+    <figure class="shot"><img src="thumbs/doz.jpg" alt="Doz sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">004</p>
+      <h3>Doz</h3>
+      <p class="does">İlaç kutusunu kamerayla tanır, saatini hatırlatır, birlikte kullanılan ilaçlarda etkileşim uyarısı verir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Haftalık ilaç kutusu</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Günde yedi ilaç kullanan kronik hasta ya da onun ilaçlarını düzenleyen kızı</dd></div>
+        <div><dt>Çıkış</dt><dd>düzen, rahatlama</dd></div>
+        <div><dt>Font</dt><dd>Atkinson Hyperlegible + Barlow Semi Condensed</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F4F1EA" title="#F4F1EA"></i><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#16181D" title="#16181D"></i><i style="background:#D63B3B" title="#D63B3B"></i><i style="background:#E3B623" title="#E3B623"></i><i style="background:#2B78C9" title="#2B78C9"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="durus/" aria-label="Duruş sitesini aç">
+    <figure class="shot"><img src="thumbs/durus.jpg" alt="Duruş sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">005</p>
+      <h3>Duruş</h3>
+      <p class="does">Dizüstü kamerası omuz ve boyun açısını izler, görüntü kaydetmeden duruş bozulunca nazikçe uyarır ve mikro esneme önerir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gün boyu boyun (menü çubuğu dürtüsüyle)</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Akşamları boyun ağrısıyla biten masa başı çalışan</dd></div>
+        <div><dt>Çıkış</dt><dd>hafiflemiş</dd></div>
+        <div><dt>Font</dt><dd>Young Serif + Manrope</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E3ECF1" title="#E3ECF1"></i><i style="background:#D6DADF" title="#D6DADF"></i><i style="background:#262B31" title="#262B31"></i><i style="background:#F2C94C" title="#F2C94C"></i><i style="background:#4F7D67" title="#4F7D67"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="adim/" aria-label="Adım sitesini aç">
+    <figure class="shot"><img src="thumbs/adim.jpg" alt="Adım sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">006</p>
+      <h3>Adım</h3>
+      <p class="does">Telefon kamerasıyla koşu formunu analiz eder; diz içe kaçışı, adım sıklığı ve topuk vuruşunu ölçerek sakatlanmadan gelişmeyi sağlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Pist ve kare kare</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>İlk yarı maratonuna hazırlanan, dizinde sızı başlamış hevesli koşucu</dd></div>
+        <div><dt>Çıkış</dt><dd>enerjik, kararlı</dd></div>
+        <div><dt>Font</dt><dd>Big Shoulders Display + Archivo</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1B1C1F" title="#1B1C1F"></i><i style="background:#C8452B" title="#C8452B"></i><i style="background:#F3F1EC" title="#F3F1EC"></i><i style="background:#F4C430" title="#F4C430"></i><i style="background:#ECEDEA" title="#ECEDEA"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="seker-seyir/" aria-label="Şeker Seyir sitesini aç">
+    <figure class="shot"><img src="thumbs/seker-seyir.jpg" alt="Şeker Seyir sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">007</p>
+      <h3>Şeker Seyir</h3>
+      <p class="does">Sürekli glukoz sensörü verisinden önümüzdeki 30 dakikanın tahminini telefonda yapar, gece hipoglisemi riskinde ebeveyni önceden uyandırır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gece lambası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Tip 1 diyabetli 8 yaşında çocuğu olan, gece üç kez kalkan ebeveyn</dd></div>
+        <div><dt>Çıkış</dt><dd>bu gece uyuyabilirim</dd></div>
+        <div><dt>Font</dt><dd>Lexend + Red Hat Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#211823" title="#211823"></i><i style="background:#2C2130" title="#2C2130"></i><i style="background:#FFB547" title="#FFB547"></i><i style="background:#6CC59A" title="#6CC59A"></i><i style="background:#FF8A96" title="#FF8A96"></i><i style="background:#F4EDE6" title="#F4EDE6"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="hale/" aria-label="Hale sitesini aç">
+    <figure class="shot"><img src="thumbs/hale.jpg" alt="Hale sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">008</p>
+      <h3>Hale</h3>
+      <p class="does">Migren günlüğü tutar; uyku, hava basıncı, ekran süresi ve adet döngüsünden kişisel tetikleyici örüntüsünü cihazda çıkarır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Perdesi çekili oda</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Ayda altı gün migrenle karanlık odada yatan, artık bıkmış kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>anlaşılmış</dd></div>
+        <div><dt>Font</dt><dd>Newsreader + Karla</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#DCD6D0" title="#DCD6D0"></i><i style="background:#2A2530" title="#2A2530"></i><i style="background:#4E4386" title="#4E4386"></i><i style="background:#3C6280" title="#3C6280"></i><i style="background:#5F6E4E" title="#5F6E4E"></i><i style="background:#93425D" title="#93425D"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="esnek/" aria-label="Esnek sitesini aç">
+    <figure class="shot"><img src="thumbs/esnek.jpg" alt="Esnek sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">009</p>
+      <h3>Esnek</h3>
+      <p class="does">Evde fizik tedavi egzersizlerini kamera ile iskelet takibi yaparak sayar, açıları ölçer ve fizyoterapiste ilerleme özeti gönderir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gonyometre</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Diz ameliyatı sonrası evde yalnız egzersiz yapan, doğru yapıyor muyum diye düşünen hasta</dd></div>
+        <div><dt>Çıkış</dt><dd>ilerliyorum</dd></div>
+        <div><dt>Font</dt><dd>Rubik + Figtree</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1F5E57" title="#1F5E57"></i><i style="background:#F1F0EC" title="#F1F0EC"></i><i style="background:#C2561A" title="#C2561A"></i><i style="background:#1A2321" title="#1A2321"></i><i style="background:#FFFFFF" title="#FFFFFF"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Beden ve sağlık">
+  <a href="dokuz-ay/" aria-label="Dokuz Ay sitesini aç">
+    <figure class="shot"><img src="thumbs/dokuz-ay.jpg" alt="Dokuz Ay sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">010</p>
+      <h3>Dokuz Ay</h3>
+      <p class="does">Gebelik belirtilerini, tekmeleri ve kasılmaları kaydeder; hangi belirtinin doktoru aramayı gerektirdiğini çevrimdışı söyler, veriler kimseyle paylaşılmaz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gebe izlem kartı (gebelik defterinden evrildi)</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>İlk gebeliğinde her sızıda internette arama yapan anne adayı</dd></div>
+        <div><dt>Çıkış</dt><dd>sakin, hazır</dd></div>
+        <div><dt>Font</dt><dd>Alegreya + Alegreya Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F1E7E3" title="#F1E7E3"></i><i style="background:#FCF1E8" title="#FCF1E8"></i><i style="background:#6B2E5A" title="#6B2E5A"></i><i style="background:#B85F2B" title="#B85F2B"></i><i style="background:#4E7A5B" title="#4E7A5B"></i><i style="background:#33203A" title="#33203A"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="sukut/" aria-label="Sükût sitesini aç">
+    <figure class="shot"><img src="thumbs/sukut.jpg" alt="Sükût sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">011</p>
+      <h3>Sükût</h3>
+      <p class="does">Ses tonundaki ve nabızdaki stres yükselişini fark edip 90 saniyelik nefes rehberi başlatır; hiçbir ses kaydı saklanmaz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Bilekteki dokunuş</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>İş toplantılarında öfkesini tutamamaktan yorulmuş yönetici</dd></div>
+        <div><dt>Çıkış</dt><dd>yatışmış</dd></div>
+        <div><dt>Font</dt><dd>Instrument Serif + Public Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#202326" title="#202326"></i><i style="background:#E3E4E1" title="#E3E4E1"></i><i style="background:#8FA9BA" title="#8FA9BA"></i><i style="background:#C9A86E" title="#C9A86E"></i><i style="background:#D08A63" title="#D08A63"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="gunce/" aria-label="Günce sitesini aç">
+    <figure class="shot"><img src="thumbs/gunce.jpg" alt="Günce sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">012</p>
+      <h3>Günce</h3>
+      <p class="does">Akşamları konuşarak tutulan sesli günlüğü cihazda yazıya döker, aylar içinde duygu haritası çıkarır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kendini yazan defter</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Yazmaya vakti olmayan ama kafasını boşaltmak isteyen genç ebeveyn</dd></div>
+        <div><dt>Çıkış</dt><dd>hafiflemiş, kendini tanıyan</dd></div>
+        <div><dt>Font</dt><dd>Literata + Work Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FBFBF7" title="#FBFBF7"></i><i style="background:#B9CCE0" title="#B9CCE0"></i><i style="background:#D8857E" title="#D8857E"></i><i style="background:#1F2D4D" title="#1F2D4D"></i><i style="background:#3F7E69" title="#3F7E69"></i><i style="background:#B9821F" title="#B9821F"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="odak-tasi/" aria-label="Odak Taşı sitesini aç">
+    <figure class="shot"><img src="thumbs/odak-tasi.jpg" alt="Odak Taşı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">013</p>
+      <h3>Odak Taşı</h3>
+      <p class="does">DEHB'li yetişkinler için ekranda ne yaptığını bağlamından anlayıp yarım kalan işi nazikçe hatırlatır; ceza değil, geri getirme.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Masaüstündeki taş</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Yirmi sekme açık, üç işi yarım, kendine kızan yetişkin</dd></div>
+        <div><dt>Çıkış</dt><dd>kendine şefkatli, toparlanmış</dd></div>
+        <div><dt>Font</dt><dd>Bricolage Grotesque + Atkinson Hyperlegible</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F1F0EB" title="#F1F0EB"></i><i style="background:#2B2E33" title="#2B2E33"></i><i style="background:#8E918A" title="#8E918A"></i><i style="background:#F4D65E" title="#F4D65E"></i><i style="background:#4C6B57" title="#4C6B57"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="dijital-oruc/" aria-label="Dijital Oruç sitesini aç">
+    <figure class="shot"><img src="thumbs/dijital-oruc.jpg" alt="Dijital Oruç sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">014</p>
+      <h3>Dijital Oruç</h3>
+      <p class="does">Telefonu hangi duyguyla açtığını örüntüden anlar, sonsuz kaydırma başlamadan önce küçük bir durak koyar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>02:14'ten 08:00'e</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Gece ikide hâlâ kısa video izleyen, sabah pişman üniversiteli</dd></div>
+        <div><dt>Çıkış</dt><dd>özgür</dd></div>
+        <div><dt>Font</dt><dd>Unbounded + IBM Plex Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#0D141C" title="#0D141C"></i><i style="background:#A9D2F5" title="#A9D2F5"></i><i style="background:#5D6576" title="#5D6576"></i><i style="background:#F08A4B" title="#F08A4B"></i><i style="background:#F6E9DA" title="#F6E9DA"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="terapi-arasi/" aria-label="Terapi Arası sitesini aç">
+    <figure class="shot"><img src="thumbs/terapi-arasi.jpg" alt="Terapi Arası sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">015</p>
+      <h3>Terapi Arası</h3>
+      <p class="does">Seanslar arasında bilişsel davranışçı düşünce kaydı egzersizleri yaptırır; hangi kaydın terapistle paylaşılacağına danışan karar verir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Ödev kâğıdı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Haftada bir terapiye giden, aradaki altı günde zorlanan danışan</dd></div>
+        <div><dt>Çıkış</dt><dd>desteklenmiş</dd></div>
+        <div><dt>Font</dt><dd>Source Serif 4 + Figtree</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F2F2EE" title="#F2F2EE"></i><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#9C4A55" title="#9C4A55"></i><i style="background:#22386A" title="#22386A"></i><i style="background:#2F5D5A" title="#2F5D5A"></i><i style="background:#D9A441" title="#D9A441"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="prova/" aria-label="Prova sitesini aç">
+    <figure class="shot"><img src="thumbs/prova.jpg" alt="Prova sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">016</p>
+      <h3>Prova</h3>
+      <p class="does">Sosyal kaygısı olanlar için zor konuşmaları (zam istemek, telefonla randevu almak) yerel bir sesli karakterle prova ettirir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Prova metni</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Telefonla pizza siparişi vermekten bile kaçınan genç</dd></div>
+        <div><dt>Çıkış</dt><dd>cesur</dd></div>
+        <div><dt>Font</dt><dd>Archivo + Nunito</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#151515" title="#151515"></i><i style="background:#FFE45C" title="#FFE45C"></i><i style="background:#D63A22" title="#D63A22"></i><i style="background:#1E7F52" title="#1E7F52"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="sukran/" aria-label="Şükran sitesini aç">
+    <figure class="shot"><img src="thumbs/sukran.jpg" alt="Şükran sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">017</p>
+      <h3>Şükran</h3>
+      <p class="does">Akşamları günün fotoğraflarından üç güzel anı seçip hatırlatır, kısa bir şükran notu yazdırır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Tahtada üç an</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Günü hep kötü yanlarıyla hatırlayan, yorgun öğretmen</dd></div>
+        <div><dt>Çıkış</dt><dd>yumuşamış, minnettar</dd></div>
+        <div><dt>Font</dt><dd>Lora + Mulish</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#2E4A3E" title="#2E4A3E"></i><i style="background:#F2F1EA" title="#F2F1EA"></i><i style="background:#6E5A43" title="#6E5A43"></i><i style="background:#B87A22" title="#B87A22"></i><i style="background:#E19C86" title="#E19C86"></i><i style="background:#ECEFE9" title="#ECEFE9"></i></span><span class="score">29<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="liman/" aria-label="Liman sitesini aç">
+    <figure class="shot"><img src="thumbs/liman.jpg" alt="Liman sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">018</p>
+      <h3>Liman</h3>
+      <p class="does">Panik atak başladığında bileklikteki nabız artışını fark eder, telefonsuz da çalışan 5-4-3-2-1 topraklanma rehberini başlatır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Fener ve rehber</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Metroda panik atak geçirmiş, bir daha olur diye korkan kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>güvenli bir liman var</dd></div>
+        <div><dt>Font</dt><dd>Lexend + Source Sans 3</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#0F3B3E" title="#0F3B3E"></i><i style="background:#9CCBC3" title="#9CCBC3"></i><i style="background:#F7F5EF" title="#F7F5EF"></i><i style="background:#EFE7D8" title="#EFE7D8"></i><i style="background:#E0602F" title="#E0602F"></i><i style="background:#B4461D" title="#B4461D"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="zihin-bahcesi/" aria-label="Zihin Bahçesi sitesini aç">
+    <figure class="shot"><img src="thumbs/zihin-bahcesi.jpg" alt="Zihin Bahçesi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">019</p>
+      <h3>Zihin Bahçesi</h3>
+      <p class="does">Mikrofonla nefes ritmini algılayan meditasyon; nefes yavaşladıkça ekrandaki bahçe büyür.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Balkon saksısı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Meditasyonu üç kez deneyip bırakmış, sıkılan şehirli</dd></div>
+        <div><dt>Çıkış</dt><dd>sakin, merakla geri gelen</dd></div>
+        <div><dt>Font</dt><dd>Fraunces + Outfit</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#DCE6E6" title="#DCE6E6"></i><i style="background:#E6E3DE" title="#E6E3DE"></i><i style="background:#2C2622" title="#2C2622"></i><i style="background:#4F6B2F" title="#4F6B2F"></i><i style="background:#9DBB52" title="#9DBB52"></i><i style="background:#E49AB0" title="#E49AB0"></i></span><span class="score">24<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Zihin ve duygu">
+  <a href="iklim/" aria-label="İklim sitesini aç">
+    <figure class="shot"><img src="thumbs/iklim.jpg" alt="İklim sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">020</p>
+      <h3>İklim</h3>
+      <p class="does">Ruh halini hava durumu gibi tahmin eder: uyku, hareket ve takvim yoğunluğundan 'yarın bulutlu' der, önlem önerir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Akşam bülteni</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Mevsimsel depresyonu olan, kışı korkuyla bekleyen kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>hazırlıklı</dd></div>
+        <div><dt>Font</dt><dd>Sofia Sans Condensed + Sofia Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#2B3550" title="#2B3550"></i><i style="background:#E8EDF2" title="#E8EDF2"></i><i style="background:#F5C140" title="#F5C140"></i><i style="background:#8C98A8" title="#8C98A8"></i><i style="background:#3C78C8" title="#3C78C8"></i></span><span class="score">24<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="goz-ol/" aria-label="Göz Ol sitesini aç">
+    <figure class="shot"><img src="thumbs/goz-ol.jpg" alt="Göz Ol sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">021</p>
+      <h3>Göz Ol</h3>
+      <p class="does">Görme engelliler için kameranın gördüğü sahneyi internetsiz betimler: 'sağında boş bir sandalye, önünde iki basamak'.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Sarı kılavuz yolu</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Yeni bir şehirde bağımsız dolaşmak isteyen görme engelli genç</dd></div>
+        <div><dt>Çıkış</dt><dd>bağımsız</dd></div>
+        <div><dt>Font</dt><dd>Atkinson Hyperlegible + Archivo Black</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1C1D1A" title="#1C1D1A"></i><i style="background:#2A2B27" title="#2A2B27"></i><i style="background:#F2C200" title="#F2C200"></i><i style="background:#F5F3EC" title="#F5F3EC"></i><i style="background:#C9C8BF" title="#C9C8BF"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="altyazi-cebi/" aria-label="Altyazı Cebi sitesini aç">
+    <figure class="shot"><img src="thumbs/altyazi-cebi.jpg" alt="Altyazı Cebi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">022</p>
+      <h3>Altyazı Cebi</h3>
+      <p class="does">İşitme engelliler için konuşmaları gerçek zamanlı altyazıya çevirir, kimin konuştuğunu ayırır; ses cihazdan çıkmaz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Lamba altındaki sofra</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Aile sofrasında sohbeti kaçıran, işitme cihazı yetmeyen kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>sohbete dahil</dd></div>
+        <div><dt>Font</dt><dd>Red Hat Display + Red Hat Text</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#231915" title="#231915"></i><i style="background:#33241E" title="#33241E"></i><i style="background:#FBF4EA" title="#FBF4EA"></i><i style="background:#F0B44C" title="#F0B44C"></i><i style="background:#8FE3C0" title="#8FE3C0"></i><i style="background:#FFA8B8" title="#FFA8B8"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="isaret/" aria-label="İşaret sitesini aç">
+    <figure class="shot"><img src="thumbs/isaret.jpg" alt="İşaret sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">023</p>
+      <h3>İşaret</h3>
+      <p class="does">Türk İşaret Dili'ni kamerayla yazıya ve sese, sesi de işarete çeviren iki yönlü tercüman.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gişenin iki yanı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Bankada, hastanede derdini anlatamayan Sağır birey</dd></div>
+        <div><dt>Çıkış</dt><dd>duyulmuş</dd></div>
+        <div><dt>Font</dt><dd>Bricolage Grotesque + Public Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#262DB8" title="#262DB8"></i><i style="background:#13142B" title="#13142B"></i><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#E7E8FF" title="#E7E8FF"></i><i style="background:#FF6B4A" title="#FF6B4A"></i><i style="background:#FFD9CF" title="#FFD9CF"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="sesim/" aria-label="Sesim sitesini aç">
+    <figure class="shot"><img src="thumbs/sesim.jpg" alt="Sesim sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">024</p>
+      <h3>Sesim</h3>
+      <p class="does">ALS veya gırtlak kanseri hastaları için sesini kaybetmeden önce kaydedip yerelde kişisel ses modeli oluşturur, yazdıklarını kendi sesiyle okur.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Sesin emanet defteri</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Yeni tanı almış, sesini kaybedecek olan hasta ve eşi</dd></div>
+        <div><dt>Çıkış</dt><dd>kendim kalabileceğim</dd></div>
+        <div><dt>Font</dt><dd>Literata + Nunito Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F4F1F6" title="#F4F1F6"></i><i style="background:#2A2340" title="#2A2340"></i><i style="background:#B8661A" title="#B8661A"></i><i style="background:#E6E0EE" title="#E6E0EE"></i><i style="background:#5A5470" title="#5A5470"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="kolay-oku/" aria-label="Kolay Oku sitesini aç">
+    <figure class="shot"><img src="thumbs/kolay-oku.jpg" alt="Kolay Oku sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">025</p>
+      <h3>Kolay Oku</h3>
+      <p class="does">Disleksili okurlar için metni sadeleştirir, satır cetveli ve hece vurgusu ekler, zor kelimeyi sesli okur.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Defter ve okuma cetveli</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Ödev okurken ağlayan disleksili ortaokullu ve annesi</dd></div>
+        <div><dt>Çıkış</dt><dd>yapabiliyorum</dd></div>
+        <div><dt>Font</dt><dd>Lexend + Andika</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FDFEFF" title="#FDFEFF"></i><i style="background:#BCD3EE" title="#BCD3EE"></i><i style="background:#C8372D" title="#C8372D"></i><i style="background:#FFEE8C" title="#FFEE8C"></i><i style="background:#24262B" title="#24262B"></i><i style="background:#1F5FA8" title="#1F5FA8"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="renk-soyle/" aria-label="Renk Söyle sitesini aç">
+    <figure class="shot"><img src="thumbs/renk-soyle.jpg" alt="Renk Söyle sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">026</p>
+      <h3>Renk Söyle</h3>
+      <p class="does">Renk körleri için kameranın gösterdiği rengi adıyla söyler, olgun meyveyi, kabloyu, haritadaki çizgiyi ayırt eder.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Ölçü aleti</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kıyafet seçerken eşine soran, elektrikçi renk körü</dd></div>
+        <div><dt>Çıkış</dt><dd>emin</dd></div>
+        <div><dt>Font</dt><dd>IBM Plex Sans Condensed + IBM Plex Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E3E4E0" title="#E3E4E0"></i><i style="background:#111214" title="#111214"></i><i style="background:#B9C3A3" title="#B9C3A3"></i><i style="background:#1E2416" title="#1E2416"></i><i style="background:#F26B1D" title="#F26B1D"></i><i style="background:#4A4D50" title="#4A4D50"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="yon-sesi/" aria-label="Yön Sesi sitesini aç">
+    <figure class="shot"><img src="thumbs/yon-sesi.jpg" alt="Yön Sesi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">027</p>
+      <h3>Yön Sesi</h3>
+      <p class="does">Görme engelliler için hastane, AVM gibi iç mekânlarda kapı tabelalarını okuyup 3B sesle yön tarif eder.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Zemin çizgisi ve tabela</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Hastane koridorlarında poliklinik arayan görme engelli emekli</dd></div>
+        <div><dt>Çıkış</dt><dd>yolunu bilen</dd></div>
+        <div><dt>Font</dt><dd>Commissioner + Azeret Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#E6E8E3" title="#E6E8E3"></i><i style="background:#0B2545" title="#0B2545"></i><i style="background:#00875A" title="#00875A"></i><i style="background:#006B47" title="#006B47"></i><i style="background:#FFD23F" title="#FFD23F"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="titrek-el/" aria-label="Sakin El sitesini aç">
+    <figure class="shot"><img src="thumbs/titrek-el.jpg" alt="Sakin El sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">028</p>
+      <h3>Sakin El</h3>
+      <p class="does">Parkinson ve esansiyel tremoru olanlar için dokunmatik ekrandaki titremeyi süzen, yanlış tıklamaları düzelten klavye ve dokunma katmanı.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Öğretmenin mektubu</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Torununa mesaj yazarken harfleri kaçıran emekli öğretmen</dd></div>
+        <div><dt>Çıkış</dt><dd>saygın, rahat</dd></div>
+        <div><dt>Font</dt><dd>Gelasio + Nunito Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#EDF2F1" title="#EDF2F1"></i><i style="background:#0F5260" title="#0F5260"></i><i style="background:#21242C" title="#21242C"></i><i style="background:#3A3F4B" title="#3A3F4B"></i><i style="background:#B42318" title="#B42318"></i><i style="background:#D3E6E6" title="#D3E6E6"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="hatirla-beni/" aria-label="Hatırla Beni sitesini aç">
+    <figure class="shot"><img src="thumbs/hatirla-beni.jpg" alt="Hatırla Beni sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">029</p>
+      <h3>Hatırla Beni</h3>
+      <p class="does">Erken evre demansı olanlar için kapıdan gelen kişiyi tanır ve kulaklığa fısıldar: 'Bu kızın Ayşe, bugün Salı'.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kapı önü fısıltısı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Annesinin kendisini tanımadığı günler başlamış olan kızı</dd></div>
+        <div><dt>Çıkış</dt><dd>onurunu koruyan bir yardım</dd></div>
+        <div><dt>Font</dt><dd>Crimson Pro + Figtree</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E9E4DE" title="#E9E4DE"></i><i style="background:#F7F4F0" title="#F7F4F0"></i><i style="background:#3B2A2F" title="#3B2A2F"></i><i style="background:#B3261E" title="#B3261E"></i><i style="background:#7A5C2E" title="#7A5C2E"></i><i style="background:#D9C3C0" title="#D9C3C0"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Erişilebilirlik">
+  <a href="sade-ekran/" aria-label="Sade Ekran sitesini aç">
+    <figure class="shot"><img src="thumbs/sade-ekran.jpg" alt="Sade Ekran sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">030</p>
+      <h3>Sade Ekran</h3>
+      <p class="does">Telefonu dört büyük düğmeye indirir; yapay zekâ kullanıcının alışkanlığına göre hangi düğmenin nerede duracağını ayarlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>İki ekran: dört düğme ve uzaktan panel</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Annesine akıllı telefon alan, her gün telefonla destek veren oğul</dd></div>
+        <div><dt>Çıkış</dt><dd>rahatlamış</dd></div>
+        <div><dt>Font</dt><dd>Rubik + DM Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F6F7F5" title="#F6F7F5"></i><i style="background:#1D1F21" title="#1D1F21"></i><i style="background:#1E7B45" title="#1E7B45"></i><i style="background:#7A3FB0" title="#7A3FB0"></i><i style="background:#F2B705" title="#F2B705"></i><i style="background:#C62828" title="#C62828"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="bebek-dili/" aria-label="Bebek Dili sitesini aç">
+    <figure class="shot"><img src="thumbs/bebek-dili.jpg" alt="Bebek Dili sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">031</p>
+      <h3>Bebek Dili</h3>
+      <p class="does">Bebeğin ağlamasını açlık, gaz, uyku ve rahatsızlık olarak sınıflandırır; ses telefondan çıkmaz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gece lambası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Gece dörtte ağlayan bebeği neden ağlıyor bilemeyen yeni baba</dd></div>
+        <div><dt>Çıkış</dt><dd>yetkin ebeveyn</dd></div>
+        <div><dt>Font</dt><dd>Young Serif + Lexend</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#13151B" title="#13151B"></i><i style="background:#1C1F27" title="#1C1F27"></i><i style="background:#EDE3D3" title="#EDE3D3"></i><i style="background:#F0B46A" title="#F0B46A"></i><i style="background:#9CC3A0" title="#9CC3A0"></i><i style="background:#E9937E" title="#E9937E"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="evin-hafizasi/" aria-label="Evin Hafızası sitesini aç">
+    <figure class="shot"><img src="thumbs/evin-hafizasi.jpg" alt="Evin Hafızası sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">032</p>
+      <h3>Evin Hafızası</h3>
+      <p class="does">Ev kameralarının gördüğünü cihazda indeksler: 'Anahtarını en son mutfak tezgâhında, 18:42'de bıraktın'.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kat planı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Her sabah anahtar, gözlük, kumanda arayan kalabalık aile</dd></div>
+        <div><dt>Çıkış</dt><dd>zaman kazanmış, gülümseyen</dd></div>
+        <div><dt>Font</dt><dd>Bricolage Grotesque + JetBrains Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F6F6F3" title="#F6F6F3"></i><i style="background:#232528" title="#232528"></i><i style="background:#B57D45" title="#B57D45"></i><i style="background:#EBDCCB" title="#EBDCCB"></i><i style="background:#F4D35E" title="#F4D35E"></i><i style="background:#D8452E" title="#D8452E"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="enerji-bekcisi/" aria-label="Enerji Bekçisi sitesini aç">
+    <figure class="shot"><img src="thumbs/enerji-bekcisi.jpg" alt="Enerji Bekçisi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">033</p>
+      <h3>Enerji Bekçisi</h3>
+      <p class="does">Elektrik sayacının dalga formundan hangi cihazın ne kadar yaktığını ayırır, faturayı düşüren alışkanlık önerir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Fatura söküm</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kış faturasını görüp şok olmuş kiracı</dd></div>
+        <div><dt>Çıkış</dt><dd>kontrolde</dd></div>
+        <div><dt>Font</dt><dd>Chivo + Chivo Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E3E5E0" title="#E3E5E0"></i><i style="background:#1B1E1D" title="#1B1E1D"></i><i style="background:#C5D2B2" title="#C5D2B2"></i><i style="background:#D9531E" title="#D9531E"></i><i style="background:#2F6A4C" title="#2F6A4C"></i><i style="background:#B7832A" title="#B7832A"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="camasir/" aria-label="Çamaşır Kâhyası sitesini aç">
+    <figure class="shot"><img src="thumbs/camasir.jpg" alt="Çamaşır Kâhyası sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">034</p>
+      <h3>Çamaşır Kâhyası</h3>
+      <p class="does">Kıyafet etiketini ve lekeyi kamerayla okur, makine programını ve leke çözümünü söyler.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Bakım etiketi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kızının ilk yün kazağını çektirmiş baba</dd></div>
+        <div><dt>Çıkış</dt><dd>ustalaşmış</dd></div>
+        <div><dt>Font</dt><dd>Asap Condensed + Asap</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#DCE8EC" title="#DCE8EC"></i><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#17222B" title="#17222B"></i><i style="background:#A3302B" title="#A3302B"></i><i style="background:#F2E3DF" title="#F2E3DF"></i><i style="background:#3D7686" title="#3D7686"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="bitki-doktoru/" aria-label="Bitki Doktoru sitesini aç">
+    <figure class="shot"><img src="thumbs/bitki-doktoru.jpg" alt="Bitki Doktoru sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">035</p>
+      <h3>Bitki Doktoru</h3>
+      <p class="does">Ev bitkisinin yaprağını çeker, sararmanın nedenini (fazla su, ışık, zararlı) çevrimdışı teşhis eder ve bakım takvimi kurar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Yaprak ve reçete</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Üçüncü monsterası ölmek üzere olan apartman bahçıvanı</dd></div>
+        <div><dt>Çıkış</dt><dd>yeşil eller</dd></div>
+        <div><dt>Font</dt><dd>Bitter + Karla</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E6EDE7" title="#E6EDE7"></i><i style="background:#1D4A3A" title="#1D4A3A"></i><i style="background:#2F7A55" title="#2F7A55"></i><i style="background:#3A2A21" title="#3A2A21"></i><i style="background:#D7B03F" title="#D7B03F"></i><i style="background:#A55A2A" title="#A55A2A"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="pati-dili/" aria-label="Pati Dili sitesini aç">
+    <figure class="shot"><img src="thumbs/pati-dili.jpg" alt="Pati Dili sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">036</p>
+      <h3>Pati Dili</h3>
+      <p class="does">Köpek ve kedinin videolarından topallama, kaşınma, iştahsızlık gibi değişimleri fark eder, veteriner için zaman çizelgesi hazırlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Adım izi ve veteriner dosyası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Yaşlı köpeğinin yürüyüşünün değiştiğinden şüphelenen sahip</dd></div>
+        <div><dt>Çıkış</dt><dd>dostunu anlayan</dd></div>
+        <div><dt>Font</dt><dd>Rubik + Source Sans 3</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E9E8E3" title="#E9E8E3"></i><i style="background:#4A3428" title="#4A3428"></i><i style="background:#E3A857" title="#E3A857"></i><i style="background:#C0621E" title="#C0621E"></i><i style="background:#D98C8C" title="#D98C8C"></i><i style="background:#B23A36" title="#B23A36"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="masa/" aria-label="Masa sitesini aç">
+    <figure class="shot"><img src="thumbs/masa.jpg" alt="Masa sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">037</p>
+      <h3>Masa</h3>
+      <p class="does">Okul duyurusunun fotoğrafını, WhatsApp mesajını, sesli notu aile takvimine çevirir; kim, ne zaman, ne götürecek.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Mutfak masası + aile paneli</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Üç çocuklu, veli gruplarında boğulan çalışan anne</dd></div>
+        <div><dt>Çıkış</dt><dd>her şey yerli yerinde</dd></div>
+        <div><dt>Font</dt><dd>Manrope + Caveat</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E4D3B8" title="#E4D3B8"></i><i style="background:#F3F2EF" title="#F3F2EF"></i><i style="background:#1F2328" title="#1F2328"></i><i style="background:#D9472F" title="#D9472F"></i><i style="background:#2A62C9" title="#2A62C9"></i><i style="background:#23885A" title="#23885A"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="tamirci-cebi/" aria-label="Tamirci Cebi sitesini aç">
+    <figure class="shot"><img src="thumbs/tamirci-cebi.jpg" alt="Tamirci Cebi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">038</p>
+      <h3>Tamirci Cebi</h3>
+      <p class="does">Kombinin hata kodunu, damlayan musluğun sesini, prizdeki yanığı tanıyıp 'kendin yap mı, usta mı çağır' der.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gece kombi dolabı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kış gecesi kombisi F28 hatası veren ev sahibi</dd></div>
+        <div><dt>Çıkış</dt><dd>elinden iş gelen</dd></div>
+        <div><dt>Font</dt><dd>Hind + Chakra Petch</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#17202A" title="#17202A"></i><i style="background:#EEEFEB" title="#EEEFEB"></i><i style="background:#F2C230" title="#F2C230"></i><i style="background:#D2452F" title="#D2452F"></i><i style="background:#0F2E47" title="#0F2E47"></i><i style="background:#161B20" title="#161B20"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="kiler/" aria-label="Kiler sitesini aç">
+    <figure class="shot"><img src="thumbs/kiler.jpg" alt="Kiler sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">039</p>
+      <h3>Kiler</h3>
+      <p class="does">Buzdolabı kamerası ve market fişinden ne olduğunu, ne zaman bozulacağını takip eder; israfı azaltan menü önerir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Fiş ve raf</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Her hafta çürümüş maydanoz atan, israftan utanan çift</dd></div>
+        <div><dt>Çıkış</dt><dd>tutumlu, vicdanı rahat</dd></div>
+        <div><dt>Font</dt><dd>Alegreya + Courier Prime</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#D6BF98" title="#D6BF98"></i><i style="background:#FCFCF8" title="#FCFCF8"></i><i style="background:#2A2824" title="#2A2824"></i><i style="background:#356F33" title="#356F33"></i><i style="background:#B83A26" title="#B83A26"></i><i style="background:#EBC93E" title="#EBC93E"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Ev ve aile">
+  <a href="ev-guvende/" aria-label="Ev Güvende sitesini aç">
+    <figure class="shot"><img src="thumbs/ev-guvende.jpg" alt="Ev Güvende sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">040</p>
+      <h3>Ev Güvende</h3>
+      <p class="does">Güvenlik kamerası görüntüsünü buluta göndermeden cihazda inceler; kedi, kurye ve yabancıyı ayırır, gereksiz alarm vermez.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Sabah özeti + gece kaydı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kamerası her gece kedi için alarm veren, buluta video göndermekten çekinen ev sahibi</dd></div>
+        <div><dt>Çıkış</dt><dd>huzurlu</dd></div>
+        <div><dt>Font</dt><dd>Chivo + Chivo Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#161B19" title="#161B19"></i><i style="background:#1D2421" title="#1D2421"></i><i style="background:#E2E8E4" title="#E2E8E4"></i><i style="background:#9CC3B2" title="#9CC3B2"></i><i style="background:#D9A55A" title="#D9A55A"></i><i style="background:#F08A7A" title="#F08A7A"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="dusme-bekcisi/" aria-label="Düşme Bekçisi sitesini aç">
+    <figure class="shot"><img src="thumbs/dusme-bekcisi.jpg" alt="Düşme Bekçisi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">041</p>
+      <h3>Düşme Bekçisi</h3>
+      <p class="does">Kamera kullanmadan, odadaki radar sensörüyle yaşlının düşmesini algılar, yerde kaldıysa yakınını arar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Annenin evinden canlı durum satırı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Annesi tek başına yaşayan, işten her saat arayan kızı</dd></div>
+        <div><dt>Çıkış</dt><dd>içi rahat</dd></div>
+        <div><dt>Font</dt><dd>Lexend + IBM Plex Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#EEF1EC" title="#EEF1EC"></i><i style="background:#17252A" title="#17252A"></i><i style="background:#2A7554" title="#2A7554"></i><i style="background:#B04B17" title="#B04B17"></i><i style="background:#9CB4AC" title="#9CB4AC"></i><i style="background:#FFFFFF" title="#FFFFFF"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="sesli-mektup/" aria-label="Sesli Mektup sitesini aç">
+    <figure class="shot"><img src="thumbs/sesli-mektup.jpg" alt="Sesli Mektup sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">042</p>
+      <h3>Sesli Mektup</h3>
+      <p class="does">Torunların yazdığı mesajları büyükannenin anlayacağı sesle okur, onun sesli cevabını yazıya döker.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Uçak postası zarfı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Yurtdışındaki torunuyla konuşamayan, okuma güçlüğü çeken nine</dd></div>
+        <div><dt>Çıkış</dt><dd>yakın</dd></div>
+        <div><dt>Font</dt><dd>Literata + Figtree</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#EAF0F3" title="#EAF0F3"></i><i style="background:#FBFCFC" title="#FBFCFC"></i><i style="background:#1A2330" title="#1A2330"></i><i style="background:#BF2F2A" title="#BF2F2A"></i><i style="background:#1E3A68" title="#1E3A68"></i><i style="background:#3F6E3E" title="#3F6E3E"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="bakici-defteri/" aria-label="Bakıcı Defteri sitesini aç">
+    <figure class="shot"><img src="thumbs/bakici-defteri.jpg" alt="Bakıcı Defteri sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">043</p>
+      <h3>Bakıcı Defteri</h3>
+      <p class="does">Hasta yakını için bakım günlüğü: sesli notları belirti, ilaç ve ruh hali olarak ayırır, doktora tek sayfa özet çıkarır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Hasta dosyası ve tek sayfa doktor özeti</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Babasına bakan, doktora gidince her şeyi unutan yorgun kız</dd></div>
+        <div><dt>Çıkış</dt><dd>yalnız değil</dd></div>
+        <div><dt>Font</dt><dd>Source Serif 4 + Source Sans 3</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E6D3A3" title="#E6D3A3"></i><i style="background:#F3EFE6" title="#F3EFE6"></i><i style="background:#262626" title="#262626"></i><i style="background:#A3352A" title="#A3352A"></i><i style="background:#235C8E" title="#235C8E"></i><i style="background:#3B7240" title="#3B7240"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="hafiza-albumu/" aria-label="Hafıza Albümü sitesini aç">
+    <figure class="shot"><img src="thumbs/hafiza-albumu.jpg" alt="Hafıza Albümü sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">044</p>
+      <h3>Hafıza Albümü</h3>
+      <p class="does">Eski aile fotoğraflarından anı terapisi için sorular üretir, yaşlının anlattıklarını hikâye kitabına dönüştürür.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Siyah kartonlu aile albümü</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Dedesinin hikâyeleri kaybolmadan kaydetmek isteyen torun</dd></div>
+        <div><dt>Çıkış</dt><dd>miras korunmuş</dd></div>
+        <div><dt>Font</dt><dd>Newsreader + Kalam</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#23201D" title="#23201D"></i><i style="background:#E7E1D4" title="#E7E1D4"></i><i style="background:#CDB894" title="#CDB894"></i><i style="background:#EEE7D7" title="#EEE7D7"></i><i style="background:#7E2F2C" title="#7E2F2C"></i><i style="background:#F1EEE7" title="#F1EEE7"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="dolandirici-kalkani/" aria-label="Dolandırıcı Kalkanı sitesini aç">
+    <figure class="shot"><img src="thumbs/dolandirici-kalkani.jpg" alt="Dolandırıcı Kalkanı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">045</p>
+      <h3>Dolandırıcı Kalkanı</h3>
+      <p class="does">Telefon görüşmesini cihazda dinler, 'savcıyım, hesabınızı boşaltın' kalıplarını yakalayıp yaşlıyı ve yakınını uyarır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Görüşmedeki ikinci kulak</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Babası 'polis' diye arayan dolandırıcıya neredeyse para gönderecek olan oğul</dd></div>
+        <div><dt>Çıkış</dt><dd>korunaklı</dd></div>
+        <div><dt>Font</dt><dd>Archivo + Archivo Narrow</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F3F3F0" title="#F3F3F0"></i><i style="background:#25282C" title="#25282C"></i><i style="background:#F2C230" title="#F2C230"></i><i style="background:#AE2620" title="#AE2620"></i><i style="background:#4C535B" title="#4C535B"></i><i style="background:#FFFFFF" title="#FFFFFF"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="isitme-ayari/" aria-label="Duyum sitesini aç">
+    <figure class="shot"><img src="thumbs/isitme-ayari.jpg" alt="Duyum sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">046</p>
+      <h3>Duyum</h3>
+      <p class="does">Sıradan kulaklığı işitme testine göre ayarlanmış yardımcıya çevirir; kalabalık lokantada konuşanın sesini öne alır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Lokanta sofrası, yukarıdan</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>İşitme cihazına para veremeyen, sofrada 'ne dedin' demekten utanan emekli</dd></div>
+        <div><dt>Çıkış</dt><dd>sofraya dönmüş</dd></div>
+        <div><dt>Font</dt><dd>Bricolage Grotesque + Instrument Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#2E1E19" title="#2E1E19"></i><i style="background:#F0B54A" title="#F0B54A"></i><i style="background:#FAF8F4" title="#FAF8F4"></i><i style="background:#5D6B2F" title="#5D6B2F"></i><i style="background:#1F1A17" title="#1F1A17"></i><i style="background:#B5362E" title="#B5362E"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="yuruyus-arkadasi/" aria-label="Yürüyüş Arkadaşı sitesini aç">
+    <figure class="shot"><img src="thumbs/yuruyus-arkadasi.jpg" alt="Yürüyüş Arkadaşı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">047</p>
+      <h3>Yürüyüş Arkadaşı</h3>
+      <p class="does">Cepteki telefonla yürüyüş dengesini ve adım uzunluğunu izler, düşme riski artınca denge egzersizi önerir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Mahalle turu ve sokak tabelası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Geçen kış buzda düşmüş, dışarı çıkmaya korkan 72 yaşında adam</dd></div>
+        <div><dt>Çıkış</dt><dd>yeniden sokakta</dd></div>
+        <div><dt>Font</dt><dd>Encode Sans Condensed + Encode Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E7E5DF" title="#E7E5DF"></i><i style="background:#1D4E89" title="#1D4E89"></i><i style="background:#3E6B3A" title="#3E6B3A"></i><i style="background:#B9501C" title="#B9501C"></i><i style="background:#1C2124" title="#1C2124"></i><i style="background:#DCEAF3" title="#DCEAF3"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="komsu/" aria-label="Komşu sitesini aç">
+    <figure class="shot"><img src="thumbs/komsu.jpg" alt="Komşu sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">048</p>
+      <h3>Komşu</h3>
+      <p class="does">Yalnız yaşayanın günlük rutinini (çaydanlık, kapı, ışık) öğrenir; rutin bozulursa yakına tek mesaj atar, kamera yok.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Bir günün ritmi ve mahalle halkası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>İstanbul'da yaşayan, babası Sivas'ta tek başına kalan oğul</dd></div>
+        <div><dt>Çıkış</dt><dd>yakın hissetmek</dd></div>
+        <div><dt>Font</dt><dd>Nunito</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F5F6F3" title="#F5F6F3"></i><i style="background:#1F6F7A" title="#1F6F7A"></i><i style="background:#9B2C1F" title="#9B2C1F"></i><i style="background:#E3A72F" title="#E3A72F"></i><i style="background:#23262A" title="#23262A"></i><i style="background:#DCEDEE" title="#DCEDEE"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="okuma-gozlugu/" aria-label="Okuma Gözlüğü sitesini aç">
+    <figure class="shot"><img src="thumbs/okuma-gozlugu.jpg" alt="Okuma Gözlüğü sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">049</p>
+      <h3>Okuma Gözlüğü</h3>
+      <p class="does">İlaç prospektüsünü, faturayı, menüyü kamerayla büyütür, sadeleştirir ve sesli okur.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Büyüteç ve fosforlu kalem</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Gözlüğü olsa da prospektüsün minik yazısını okuyamayan teyze</dd></div>
+        <div><dt>Çıkış</dt><dd>bağımsız</dd></div>
+        <div><dt>Font</dt><dd>Atkinson Hyperlegible + Noto Serif</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#111111" title="#111111"></i><i style="background:#FFE04A" title="#FFE04A"></i><i style="background:#1B4FA0" title="#1B4FA0"></i><i style="background:#ECEEF1" title="#ECEEF1"></i><i style="background:#3D3D3D" title="#3D3D3D"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Yaşlı ve bakım">
+  <a href="gun-isigi/" aria-label="Gün Işığı sitesini aç">
+    <figure class="shot"><img src="thumbs/gun-isigi.jpg" alt="Gün Işığı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">050</p>
+      <h3>Gün Işığı</h3>
+      <p class="does">Demanslı yaşlıların akşam huzursuzluğu için evin akıllı ışıklarını günün ritmine göre ayarlar, huzursuzluğu önceden sezer.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Pencereden giren günün eğrisi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Annesi her akşamüstü huzursuzlaşan bakım veren</dd></div>
+        <div><dt>Çıkış</dt><dd>sakin akşamlar</dd></div>
+        <div><dt>Font</dt><dd>Fraunces + Outfit</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F4F2EE" title="#F4F2EE"></i><i style="background:#4A3550" title="#4A3550"></i><i style="background:#A85A1A" title="#A85A1A"></i><i style="background:#F2C14E" title="#F2C14E"></i><i style="background:#2A2329" title="#2A2329"></i><i style="background:#FFFDF9" title="#FFFDF9"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="hece/" aria-label="Hece sitesini aç">
+    <figure class="shot"><img src="thumbs/hece.jpg" alt="Hece sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">051</p>
+      <h3>Hece</h3>
+      <p class="does">Okumayı yeni söken çocuğu sesli okurken dinler, takıldığı heceyi sabırla tekrar ettirir; ses kaydı saklanmaz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kılavuz çizgili okuma defteri</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Birinci sınıftaki çocuğuyla akşam okuma saatinde sabrı tükenen ebeveyn</dd></div>
+        <div><dt>Çıkış</dt><dd>gururlu</dd></div>
+        <div><dt>Font</dt><dd>Andika</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FBFBF7" title="#FBFBF7"></i><i style="background:#9DB8DE" title="#9DB8DE"></i><i style="background:#2B5DA6" title="#2B5DA6"></i><i style="background:#C3343C" title="#C3343C"></i><i style="background:#2C2C31" title="#2C2C31"></i><i style="background:#E9B524" title="#E9B524"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="odev-feneri/" aria-label="Ödev Feneri sitesini aç">
+    <figure class="shot"><img src="thumbs/odev-feneri.jpg" alt="Ödev Feneri sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">052</p>
+      <h3>Ödev Feneri</h3>
+      <p class="does">Matematik sorusunun fotoğrafını çeker ama cevabı vermez; çocuğun takıldığı adımı bulup ipucu verir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kareli defterde fener ışığı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kesirleri anlatmaya çalışırken kendi de unuttuğunu fark eden baba</dd></div>
+        <div><dt>Çıkış</dt><dd>çocuğum kendisi çözdü</dd></div>
+        <div><dt>Font</dt><dd>Bricolage Grotesque + Caveat</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F7F8F4" title="#F7F8F4"></i><i style="background:#D3DEE8" title="#D3DEE8"></i><i style="background:#22379A" title="#22379A"></i><i style="background:#FFD54A" title="#FFD54A"></i><i style="background:#1C2333" title="#1C2333"></i><i style="background:#24704A" title="#24704A"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="masal-makinesi/" aria-label="Masal Makinesi sitesini aç">
+    <figure class="shot"><img src="thumbs/masal-makinesi.jpg" alt="Masal Makinesi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">053</p>
+      <h3>Masal Makinesi</h3>
+      <p class="does">Çocuğun çizdiği resmi tarar, içindeki karakterlerle internetsiz uyku masalı anlatır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gece lambası altında pastel boya resim</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Her gece yeni masal uydurmaktan tükenmiş ebeveyn</dd></div>
+        <div><dt>Çıkış</dt><dd>büyülenmiş</dd></div>
+        <div><dt>Font</dt><dd>Young Serif + Figtree</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#15182A" title="#15182A"></i><i style="background:#1E2238" title="#1E2238"></i><i style="background:#FFC98B" title="#FFC98B"></i><i style="background:#F5EFE2" title="#F5EFE2"></i><i style="background:#F29A38" title="#F29A38"></i><i style="background:#5B86E0" title="#5B86E0"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="dil-oyunu/" aria-label="Konuş Bakalım sitesini aç">
+    <figure class="shot"><img src="thumbs/dil-oyunu.jpg" alt="Konuş Bakalım sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">054</p>
+      <h3>Konuş Bakalım</h3>
+      <p class="does">İngilizce konuşma pratiği için yerel sesli karakter; telaffuzu düzeltir, utanmadan hata yapma alanı açar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Basılı tut, konuş: sesli mesaj sohbeti</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Gramerde iyi ama konuşmaya gelince donan lise öğrencisi</dd></div>
+        <div><dt>Çıkış</dt><dd>dili çözülmüş</dd></div>
+        <div><dt>Font</dt><dd>Unbounded + Onest</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E9EEEB" title="#E9EEEB"></i><i style="background:#111317" title="#111317"></i><i style="background:#E8402A" title="#E8402A"></i><i style="background:#2446D8" title="#2446D8"></i><i style="background:#FFFFFF" title="#FFFFFF"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="akis/" aria-label="Akış sitesini aç">
+    <figure class="shot"><img src="thumbs/akis.jpg" alt="Akış sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">055</p>
+      <h3>Akış</h3>
+      <p class="does">Kekemelik yaşayan çocuk ve gençler için akıcılık egzersizlerini dinler, yumuşak başlangıç ve nefesle ilerlemeyi ölçer.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Nefesle açılan ses eğrisi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Sınıfta söz almaktan kaçan 11 yaşındaki çocuk ve konuşma terapisti</dd></div>
+        <div><dt>Çıkış</dt><dd>sesi var</dd></div>
+        <div><dt>Font</dt><dd>Lexend + Atkinson Hyperlegible</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#EEF3F1" title="#EEF3F1"></i><i style="background:#12302B" title="#12302B"></i><i style="background:#2A8276" title="#2A8276"></i><i style="background:#F2B84B" title="#F2B84B"></i><i style="background:#FFFFFF" title="#FFFFFF"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="ilk-kelimeler/" aria-label="İlk Kelimeler sitesini aç">
+    <figure class="shot"><img src="thumbs/ilk-kelimeler.jpg" alt="İlk Kelimeler sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">056</p>
+      <h3>İlk Kelimeler</h3>
+      <p class="does">1-4 yaş çocuğun kelime dağarcığını günlük sesli anlardan sayar, gelişim aralığına göre ebeveyne bilgi verir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Çocuk doktorunun gelişim eğrisi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>İki yaşındaki çocuğu henüz az konuşan, akrabalardan yorum duyan anne</dd></div>
+        <div><dt>Çıkış</dt><dd>bilgili, sakin</dd></div>
+        <div><dt>Font</dt><dd>Newsreader + Work Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F5F3F7" title="#F5F3F7"></i><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#2A2B3D" title="#2A2B3D"></i><i style="background:#7A3B6B" title="#7A3B6B"></i><i style="background:#DDE7DA" title="#DDE7DA"></i><i style="background:#E9945A" title="#E9945A"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="ekran-dengesi/" aria-label="Ekran Dengesi sitesini aç">
+    <figure class="shot"><img src="thumbs/ekran-dengesi.jpg" alt="Ekran Dengesi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">057</p>
+      <h3>Ekran Dengesi</h3>
+      <p class="does">Çocuğun ekran süresini dakika değil içerik türüne göre ayırır: yaratıcı, öğretici, pasif; kavga değil anlaşma önerir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Buzdolabındaki aile anlaşması</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Tablet yüzünden her akşam kavga eden aile</dd></div>
+        <div><dt>Çıkış</dt><dd>barışmış</dd></div>
+        <div><dt>Font</dt><dd>Schibsted Grotesk + Kalam</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E8EBEC" title="#E8EBEC"></i><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#23211F" title="#23211F"></i><i style="background:#B4541A" title="#B4541A"></i><i style="background:#3F7434" title="#3F7434"></i><i style="background:#77738F" title="#77738F"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="ders-notu/" aria-label="Ders Notu sitesini aç">
+    <figure class="shot"><img src="thumbs/ders-notu.jpg" alt="Ders Notu sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">058</p>
+      <h3>Ders Notu</h3>
+      <p class="does">Üniversite dersini cihazda kaydedip tahtanın fotoğrafıyla birleştirir, sınavdan önce özet ve soru kartı üretir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Amfi kara tahtası ve fosforlu kalem</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Hem çalışan hem okuyan, derslere yetişemeyen öğrenci</dd></div>
+        <div><dt>Çıkış</dt><dd>yetişmiş</dd></div>
+        <div><dt>Font</dt><dd>Archivo + Patrick Hand + IBM Plex Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#21392F" title="#21392F"></i><i style="background:#F1EFE6" title="#F1EFE6"></i><i style="background:#F59BC4" title="#F59BC4"></i><i style="background:#A8CBEA" title="#A8CBEA"></i><i style="background:#F4F2EC" title="#F4F2EC"></i><i style="background:#1D201E" title="#1D201E"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="sinav-ritmi/" aria-label="Sınav Ritmi sitesini aç">
+    <figure class="shot"><img src="thumbs/sinav-ritmi.jpg" alt="Sınav Ritmi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">059</p>
+      <h3>Sınav Ritmi</h3>
+      <p class="does">Unutma eğrisine göre kişisel tekrar planı kurar, hangi konunun bugün tekrar edileceğini söyler; YKS adayına göre.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Optik form ve duvardaki geri sayım</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>YKS'ye 200 gün kalan, panikle her şeye birden çalışan aday</dd></div>
+        <div><dt>Çıkış</dt><dd>planlı, umutlu</dd></div>
+        <div><dt>Font</dt><dd>Saira Condensed + Saira</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FFFDFB" title="#FFFDFB"></i><i style="background:#FBEAEA" title="#FBEAEA"></i><i style="background:#C23A52" title="#C23A52"></i><i style="background:#1C1C21" title="#1C1C21"></i><i style="background:#605E67" title="#605E67"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Çocuk ve öğrenme">
+  <a href="muzik-kulagi/" aria-label="Müzik Kulağı sitesini aç">
+    <figure class="shot"><img src="thumbs/muzik-kulagi.jpg" alt="Müzik Kulağı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">060</p>
+      <h3>Müzik Kulağı</h3>
+      <p class="does">Keman ve piyano çalışan çocuğu dinler, yanlış notayı ve ritim kaymasını öğretmen gibi işaretler.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Nota sehpası ve öğretmenin kurşun kalemi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Evde keman çalışmasının doğru olup olmadığını bilemeyen müzik bilmez ebeveyn</dd></div>
+        <div><dt>Çıkış</dt><dd>ilerlediğini duyan</dd></div>
+        <div><dt>Font</dt><dd>Bodoni Moda + Karla + Noto Music</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#2A1A12" title="#2A1A12"></i><i style="background:#C9802F" title="#C9802F"></i><i style="background:#EED9A4" title="#EED9A4"></i><i style="background:#F6F2E8" title="#F6F2E8"></i><i style="background:#3A3633" title="#3A3633"></i><i style="background:#B3261E" title="#B3261E"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="katip/" aria-label="Kâtip sitesini aç">
+    <figure class="shot"><img src="thumbs/katip.jpg" alt="Kâtip sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">061</p>
+      <h3>Kâtip</h3>
+      <p class="does">Toplantıları dizüstünde yazıya döker, kararları ve görevleri çıkarır; ses ve metin şirket dışına çıkmaz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kapalı oturum tutanağı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Gizli projede not almaktan toplantıya katılamayan proje yöneticisi</dd></div>
+        <div><dt>Çıkış</dt><dd>odaklı, güvende</dd></div>
+        <div><dt>Font</dt><dd>Source Serif 4 + Public Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#22303A" title="#22303A"></i><i style="background:#F6F6F2" title="#F6F6F2"></i><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#2F6B57" title="#2F6B57"></i><i style="background:#A8392A" title="#A8392A"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="posta-sakin/" aria-label="Posta Sakin sitesini aç">
+    <figure class="shot"><img src="thumbs/posta-sakin.jpg" alt="Posta Sakin sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">062</p>
+      <h3>Posta Sakin</h3>
+      <p class="does">Gelen kutusunu cihazda okuyup 'bugün cevap ver / bekleyebilir / sadece bilgi' diye ayırır, taslak cevap hazırlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Üç tepsi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Pazartesi sabahı 214 okunmamış e-postaya bakan satış müdürü</dd></div>
+        <div><dt>Çıkış</dt><dd>ferah</dd></div>
+        <div><dt>Font</dt><dd>Bricolage Grotesque + Figtree</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E9F1F8" title="#E9F1F8"></i><i style="background:#15253B" title="#15253B"></i><i style="background:#E2582F" title="#E2582F"></i><i style="background:#F2C14E" title="#F2C14E"></i><i style="background:#8FB8DE" title="#8FB8DE"></i></span><span class="score">24<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="fis-avcisi/" aria-label="Fiş Avcısı sitesini aç">
+    <figure class="shot"><img src="thumbs/fis-avcisi.jpg" alt="Fiş Avcısı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">063</p>
+      <h3>Fiş Avcısı</h3>
+      <p class="does">Esnafın fiş ve faturalarını fotoğraftan okur, KDV'yi ayırır, ay sonunda mali müşavire hazır dosya gönderir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kraft poşet ve termal fiş</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Ay sonu poşet poşet fişle mali müşavire giden kafe sahibi</dd></div>
+        <div><dt>Çıkış</dt><dd>işi düzende</dd></div>
+        <div><dt>Font</dt><dd>Archivo + Courier Prime</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#D9C4A0" title="#D9C4A0"></i><i style="background:#FCFCF8" title="#FCFCF8"></i><i style="background:#231E19" title="#231E19"></i><i style="background:#4B3BA6" title="#4B3BA6"></i><i style="background:#FFE45C" title="#FFE45C"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="saha-raporu/" aria-label="Saha Raporu sitesini aç">
+    <figure class="shot"><img src="thumbs/saha-raporu.jpg" alt="Saha Raporu sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">064</p>
+      <h3>Saha Raporu</h3>
+      <p class="does">Şantiyede eldivenle konuşarak rapor tutar, internetsiz çalışır; fotoğrafları iş kalemine bağlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>İkaz bandı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Akşam ofise dönüp rapor yazmaktan bıkmış şantiye şefi</dd></div>
+        <div><dt>Çıkış</dt><dd>işi bitmiş, eve erken giden</dd></div>
+        <div><dt>Font</dt><dd>Barlow Condensed + Barlow</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1B1C1A" title="#1B1C1A"></i><i style="background:#F5C400" title="#F5C400"></i><i style="background:#D5D5CF" title="#D5D5CF"></i><i style="background:#E86A1C" title="#E86A1C"></i><i style="background:#F4F4F0" title="#F4F4F0"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="dava-arsivi/" aria-label="Dava Arşivi sitesini aç">
+    <figure class="shot"><img src="thumbs/dava-arsivi.jpg" alt="Dava Arşivi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">065</p>
+      <h3>Dava Arşivi</h3>
+      <p class="does">Hukuk bürosunun dosyalarında sunucu dışına çıkmadan anlamsal arama yapar; emsal, dilekçe, tarih bulur.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Arşiv odası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Müvekkil gizliliği yüzünden bulut yapay zekâ kullanamayan avukat</dd></div>
+        <div><dt>Çıkış</dt><dd>yetkin ve güvende</dd></div>
+        <div><dt>Font</dt><dd>Newsreader + Libre Franklin</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1F3B30" title="#1F3B30"></i><i style="background:#B48A4C" title="#B48A4C"></i><i style="background:#F2EFE7" title="#F2EFE7"></i><i style="background:#1A1A18" title="#1A1A18"></i><i style="background:#6E2A2A" title="#6E2A2A"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="muayene-notu/" aria-label="Muayene Notu sitesini aç">
+    <figure class="shot"><img src="thumbs/muayene-notu.jpg" alt="Muayene Notu sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">066</p>
+      <h3>Muayene Notu</h3>
+      <p class="does">Muayene konuşmasını cihazda dinler, hekim için yapılandırılmış not taslağı çıkarır; hasta verisi klinikten çıkmaz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Göz göze muayene</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Hastaya değil ekrana bakmak zorunda kalan aile hekimi</dd></div>
+        <div><dt>Çıkış</dt><dd>hastasına dönmüş</dd></div>
+        <div><dt>Font</dt><dd>Literata + Atkinson Hyperlegible</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#DCEAE3" title="#DCEAE3"></i><i style="background:#1E4D4A" title="#1E4D4A"></i><i style="background:#E3A33B" title="#E3A33B"></i><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#1F2B2A" title="#1F2B2A"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="esnaf-kasasi/" aria-label="Esnaf Kasası sitesini aç">
+    <figure class="shot"><img src="thumbs/esnaf-kasasi.jpg" alt="Esnaf Kasası sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">067</p>
+      <h3>Esnaf Kasası</h3>
+      <p class="does">Mahalle bakkalının satışlarından hafta sonu ne kadar ekmek, süt, simit alınacağını tahmin eder.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Tente ve sipariş defteri</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Her akşam ya ürün atan ya rafı boş kalan bakkal</dd></div>
+        <div><dt>Çıkış</dt><dd>bereketli</dd></div>
+        <div><dt>Font</dt><dd>Alfa Slab One + Rubik</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#C8222C" title="#C8222C"></i><i style="background:#E9A93B" title="#E9A93B"></i><i style="background:#FFFDF8" title="#FFFDF8"></i><i style="background:#2F5E3A" title="#2F5E3A"></i><i style="background:#2A1E17" title="#2A1E17"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="cevirmen-cebi/" aria-label="Çevirmen Cebi sitesini aç">
+    <figure class="shot"><img src="thumbs/cevirmen-cebi.jpg" alt="Çevirmen Cebi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">068</p>
+      <h3>Çevirmen Cebi</h3>
+      <p class="does">Otel, çarşı ve lokanta çalışanları için internetsiz konuşma çevirisi; 40 dil, cep telefonunda.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Tezgâhta iki yüz</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kapalıçarşı'da turistle el kol işaretleriyle anlaşan halıcı</dd></div>
+        <div><dt>Çıkış</dt><dd>her dilde esnaf</dd></div>
+        <div><dt>Font</dt><dd>Vollkorn + Mulish</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1F2E5C" title="#1F2E5C"></i><i style="background:#9B2C2C" title="#9B2C2C"></i><i style="background:#E0A43A" title="#E0A43A"></i><i style="background:#EDE5D6" title="#EDE5D6"></i><i style="background:#241B16" title="#241B16"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="sunum-provasi/" aria-label="Sunum Provası sitesini aç">
+    <figure class="shot"><img src="thumbs/sunum-provasi.jpg" alt="Sunum Provası sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">069</p>
+      <h3>Sunum Provası</h3>
+      <p class="does">Sunum provasını dinler; dolgu kelimeleri, hızı, göz temasını ve slaytla uyumu ölçer.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gece yarısı provası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Yarın yatırımcı sunumu olan, gece uyuyamayan kurucu</dd></div>
+        <div><dt>Çıkış</dt><dd>hazır</dd></div>
+        <div><dt>Font</dt><dd>Syne + Manrope</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#0E1424" title="#0E1424"></i><i style="background:#F7E6B5" title="#F7E6B5"></i><i style="background:#FF6B5B" title="#FF6B5B"></i><i style="background:#7FD1B9" title="#7FD1B9"></i><i style="background:#A3ABBF" title="#A3ABBF"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="İş ve üretkenlik">
+  <a href="kod-yoldasi/" aria-label="Kod Yoldaşı sitesini aç">
+    <figure class="shot"><img src="thumbs/kod-yoldasi.jpg" alt="Kod Yoldaşı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">070</p>
+      <h3>Kod Yoldaşı</h3>
+      <p class="does">Dizüstünde tamamen çevrimdışı çalışan kod asistanı; şirket kodu hiçbir sunucuya gitmez.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kablo çekili IDE</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Bankada çalışan, bulut yapay zekâ yasak olan yazılımcı</dd></div>
+        <div><dt>Çıkış</dt><dd>hızlı ve uyumlu</dd></div>
+        <div><dt>Font</dt><dd>JetBrains Mono + IBM Plex Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#EEF0F2" title="#EEF0F2"></i><i style="background:#1B1F24" title="#1B1F24"></i><i style="background:#0F3D63" title="#0F3D63"></i><i style="background:#B87503" title="#B87503"></i><i style="background:#1F7A4D" title="#1F7A4D"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="tabak/" aria-label="Tabak sitesini aç">
+    <figure class="shot"><img src="thumbs/tabak.jpg" alt="Tabak sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">071</p>
+      <h3>Tabak</h3>
+      <p class="does">Yemeğin fotoğrafından porsiyonu ve besin değerini tahmin eder; Türk mutfağını tanır (mercimek çorbası, karnıyarık).</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Lokanta vitrini</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Diyetisyenin istediği yemek günlüğünü tutmaktan sıkılan kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>bilinçli ama yasaksız</dd></div>
+        <div><dt>Font</dt><dd>Archivo</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E4E8E8" title="#E4E8E8"></i><i style="background:#1B2528" title="#1B2528"></i><i style="background:#D8941C" title="#D8941C"></i><i style="background:#356230" title="#356230"></i><i style="background:#9BA6A9" title="#9BA6A9"></i><i style="background:#2A3134" title="#2A3134"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="ne-pisirsem/" aria-label="Ne Pişirsem sitesini aç">
+    <figure class="shot"><img src="thumbs/ne-pisirsem.jpg" alt="Ne Pişirsem sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">072</p>
+      <h3>Ne Pişirsem</h3>
+      <p class="does">Buzdolabının fotoğrafından eldeki malzemeyle yapılacak üç yemeği önerir, adım adım sesli anlatır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Buzdolabı ışığı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Akşam 19:00, dolapta yarım patlıcan ve iki yumurta olan yorgun çalışan</dd></div>
+        <div><dt>Çıkış</dt><dd>iştahlı</dd></div>
+        <div><dt>Font</dt><dd>Gabarito + Libre Franklin</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1C1612" title="#1C1612"></i><i style="background:#EEF6FB" title="#EEF6FB"></i><i style="background:#F6B323" title="#F6B323"></i><i style="background:#5B3466" title="#5B3466"></i><i style="background:#E8C79A" title="#E8C79A"></i><i style="background:#2A211B" title="#2A211B"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="alerji-kalkani/" aria-label="Alerji Kalkanı sitesini aç">
+    <figure class="shot"><img src="thumbs/alerji-kalkani.jpg" alt="Alerji Kalkanı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">073</p>
+      <h3>Alerji Kalkanı</h3>
+      <p class="does">Ambalaj içeriğini okuyup çocuğun alerjenini (fıstık, susam, süt) gizli adlarıyla bile yakalar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Etiket ve fosforlu kalem</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Çocuğu fıstık alerjisinden acile kaldırılmış, markette her etiketi okuyan anne</dd></div>
+        <div><dt>Çıkış</dt><dd>güvenle alışveriş</dd></div>
+        <div><dt>Font</dt><dd>Atkinson Hyperlegible + Roboto Condensed</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#131413" title="#131413"></i><i style="background:#F3E24E" title="#F3E24E"></i><i style="background:#A3221A" title="#A3221A"></i><i style="background:#0D6A50" title="#0D6A50"></i><i style="background:#EFF0EC" title="#EFF0EC"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="eksi-maya/" aria-label="Ekşi Maya sitesini aç">
+    <figure class="shot"><img src="thumbs/eksi-maya.jpg" alt="Ekşi Maya sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">074</p>
+      <h3>Ekşi Maya</h3>
+      <p class="does">Kavanozdaki ekşi mayanın kabarmasını kamerayla izler, sıcaklığa göre ne zaman besleneceğini ve hamurun ne zaman fırına gireceğini söyler.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Cam kavanoz ve bant</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>İlk ekşi mayası üç kez ölmüş ev fırıncısı</dd></div>
+        <div><dt>Çıkış</dt><dd>zanaatkâr</dd></div>
+        <div><dt>Font</dt><dd>Instrument Sans + Caveat</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E2E9E5" title="#E2E9E5"></i><i style="background:#2C241E" title="#2C241E"></i><i style="background:#D9CDB8" title="#D9CDB8"></i><i style="background:#C92F2A" title="#C92F2A"></i><i style="background:#E9DCAE" title="#E9DCAE"></i><i style="background:#3E6A57" title="#3E6A57"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="ilk-kasik/" aria-label="İlk Kaşık sitesini aç">
+    <figure class="shot"><img src="thumbs/ilk-kasik.jpg" alt="İlk Kaşık sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">075</p>
+      <h3>İlk Kaşık</h3>
+      <p class="does">Ek gıdaya geçen bebeğin denediği besinleri ve tepkilerini kaydeder, sıradaki besini ve alerji gözlemini planlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Püre paleti ve mama tepsisi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Altı aylık bebeğine ne vereceğini bilemeyen, kaygılı ilk kez ebeveyn</dd></div>
+        <div><dt>Çıkış</dt><dd>keyifli sofralar</dd></div>
+        <div><dt>Font</dt><dd>Baloo 2 + Nunito</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F6E7E2" title="#F6E7E2"></i><i style="background:#1E3328" title="#1E3328"></i><i style="background:#EC7A2C" title="#EC7A2C"></i><i style="background:#78A23A" title="#78A23A"></i><i style="background:#A2264E" title="#A2264E"></i><i style="background:#F1CC45" title="#F1CC45"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="pazar-listesi/" aria-label="Pazar Listesi sitesini aç">
+    <figure class="shot"><img src="thumbs/pazar-listesi.jpg" alt="Pazar Listesi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">076</p>
+      <h3>Pazar Listesi</h3>
+      <p class="does">Sesle tutulan aile alışveriş listesi; semt pazarındaki mevsimi ve geçen haftanın fiyatını hatırlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Branda ve karton fiyat</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Cumartesi semt pazarına giden, listeyi hep evde unutan emekli çift</dd></div>
+        <div><dt>Çıkış</dt><dd>pazarın tadında</dd></div>
+        <div><dt>Font</dt><dd>Rubik + Kalam</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1E57A3" title="#1E57A3"></i><i style="background:#F2F5F8" title="#F2F5F8"></i><i style="background:#CDA772" title="#CDA772"></i><i style="background:#2F8A57" title="#2F8A57"></i><i style="background:#C8322A" title="#C8322A"></i><i style="background:#15202B" title="#15202B"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="demlik/" aria-label="Demlik sitesini aç">
+    <figure class="shot"><img src="thumbs/demlik.jpg" alt="Demlik sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">077</p>
+      <h3>Demlik</h3>
+      <p class="does">Çay ve filtre kahve demlemesini sesle ve sıcaklıkla takip eder; demin rengini kamerayla okur.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Tavşan kanı ve pirinç kadran</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kendi kahvesini mükemmelleştirmek isteyen ev baristası</dd></div>
+        <div><dt>Çıkış</dt><dd>ritüel keyfi</dd></div>
+        <div><dt>Font</dt><dd>Red Hat Display + Red Hat Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#191513" title="#191513"></i><i style="background:#B5321C" title="#B5321C"></i><i style="background:#E0612F" title="#E0612F"></i><i style="background:#C9A15A" title="#C9A15A"></i><i style="background:#EEEAE6" title="#EEEAE6"></i><i style="background:#A3ABAF" title="#A3ABAF"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="sofra-butce/" aria-label="Sofra Bütçe sitesini aç">
+    <figure class="shot"><img src="thumbs/sofra-butce.jpg" alt="Sofra Bütçe sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">078</p>
+      <h3>Sofra Bütçe</h3>
+      <p class="does">Haftalık menüyü aile bütçesine göre kurar, market fişlerinden fiyatları öğrenir ve artan yemeği ertesi güne planlar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kareli defter ve market fişi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Enflasyonla mutfak masrafı ikiye katlanmış dört kişilik aile</dd></div>
+        <div><dt>Çıkış</dt><dd>yetiyor</dd></div>
+        <div><dt>Font</dt><dd>Schibsted Grotesk + Space Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F7F8FB" title="#F7F8FB"></i><i style="background:#DEE4F0" title="#DEE4F0"></i><i style="background:#2B2F8F" title="#2B2F8F"></i><i style="background:#CF4039" title="#CF4039"></i><i style="background:#2E2E2E" title="#2E2E2E"></i><i style="background:#1E6B45" title="#1E6B45"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="su-ic/" aria-label="Yudum sitesini aç">
+    <figure class="shot"><img src="thumbs/su-ic.jpg" alt="Yudum sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">079</p>
+      <h3>Yudum</h3>
+      <p class="does">Bardağın fotoğrafından ne kadar su içildiğini sayar, sıcağa ve harekete göre hedefi ayarlar; böbrek taşı geçirmişler için.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Üroloji broşürü</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Böbrek taşı ağrısını bir daha yaşamak istemeyen, su içmeyi unutan kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>tazelenmiş</dd></div>
+        <div><dt>Font</dt><dd>Lexend + Source Serif 4</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#0C3945" title="#0C3945"></i><i style="background:#8FD0E2" title="#8FD0E2"></i><i style="background:#1F8FB0" title="#1F8FB0"></i><i style="background:#F5EBA6" title="#F5EBA6"></i><i style="background:#C58A26" title="#C58A26"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Mutfak ve beslenme">
+  <a href="sporcu-tabagi/" aria-label="Sporcu Tabağı sitesini aç">
+    <figure class="shot"><img src="thumbs/sporcu-tabagi.jpg" alt="Sporcu Tabağı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">080</p>
+      <h3>Sporcu Tabağı</h3>
+      <p class="does">Antrenman yüküne göre günlük protein ve karbonhidrat ihtiyacını hesaplar, Türk mutfağından öğün önerir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Halter barı ve kauçuk zemin</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Spor salonunda ilerleyemeyen, takviye tozlarından bıkmış amatör sporcu</dd></div>
+        <div><dt>Çıkış</dt><dd>güçlü</dd></div>
+        <div><dt>Font</dt><dd>Big Shoulders Display + Barlow</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#131313" title="#131313"></i><i style="background:#F2F0EA" title="#F2F0EA"></i><i style="background:#D7282F" title="#D7282F"></i><i style="background:#2B63D6" title="#2B63D6"></i><i style="background:#F2C230" title="#F2C230"></i><i style="background:#2E9E4F" title="#2E9E4F"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="yol-arkadasi/" aria-label="Yol Arkadaşı sitesini aç">
+    <figure class="shot"><img src="thumbs/yol-arkadasi.jpg" alt="Yol Arkadaşı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">081</p>
+      <h3>Yol Arkadaşı</h3>
+      <p class="does">Ön camdaki telefon sürücünün göz kapağını izler, uyuklamadan önce uyarır ve en yakın dinlenme tesisini söyler; görüntü kaydedilmez.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Ön camdan gece</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Bayramda gece Ankara'dan Antalya'ya araba süren baba</dd></div>
+        <div><dt>Çıkış</dt><dd>ailesini sağ salim götüren</dd></div>
+        <div><dt>Font</dt><dd>Overpass + Overpass Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#0D1117" title="#0D1117"></i><i style="background:#F2A33A" title="#F2A33A"></i><i style="background:#ECEEEA" title="#ECEEEA"></i><i style="background:#0F6B3B" title="#0F6B3B"></i><i style="background:#1C5FA8" title="#1C5FA8"></i></span><span class="score">26<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="bisiklet-gozu/" aria-label="Arka Göz sitesini aç">
+    <figure class="shot"><img src="thumbs/bisiklet-gozu.jpg" alt="Arka Göz sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">082</p>
+      <h3>Arka Göz</h3>
+      <p class="does">Sele altındaki telefon arkadan yaklaşan aracı ve hızını algılar, gidona titreşim ve ışıkla uyarı verir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gün ışığında şerit</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Şehirde bisikletle işe gitmek isteyen ama arabalardan korkan çalışan</dd></div>
+        <div><dt>Çıkış</dt><dd>cesur ve güvende</dd></div>
+        <div><dt>Font</dt><dd>Fira Sans Condensed + Fira Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F2F3F5" title="#F2F3F5"></i><i style="background:#202328" title="#202328"></i><i style="background:#E0242D" title="#E0242D"></i><i style="background:#2550C8" title="#2550C8"></i><i style="background:#FFB020" title="#FFB020"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="anons/" aria-label="Anons sitesini aç">
+    <figure class="shot"><img src="thumbs/anons.jpg" alt="Anons sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">083</p>
+      <h3>Anons</h3>
+      <p class="does">Metro, tren ve havalimanı anonslarını yazıya döker, ilgili olanı (perona değişikliği, rötar) öne çıkarır; internetsiz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Peron tabelası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Gürültülü istasyonda anonsu kaçırıp yanlış trene binmiş işitme güçlüğü olan yolcu</dd></div>
+        <div><dt>Çıkış</dt><dd>yolunda</dd></div>
+        <div><dt>Font</dt><dd>Atkinson Hyperlegible + IBM Plex Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E9EDF1" title="#E9EDF1"></i><i style="background:#0F2D52" title="#0F2D52"></i><i style="background:#FFD100" title="#FFD100"></i><i style="background:#C8102E" title="#C8102E"></i><i style="background:#101418" title="#101418"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="gezgin-rehber/" aria-label="Taş Anlatır sitesini aç">
+    <figure class="shot"><img src="thumbs/gezgin-rehber.jpg" alt="Taş Anlatır sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">084</p>
+      <h3>Taş Anlatır</h3>
+      <p class="does">Anıta, kitabeye, cami kubbesine kamerayı tutunca hikâyesini anlatan çevrimdışı rehber; Osmanlıca kitabeleri okur.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Mağara ve kitabe, alacakaranlık</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kapadokya'da rehbersiz gezen, taşların ne anlattığını merak eden gezgin</dd></div>
+        <div><dt>Çıkış</dt><dd>büyülenmiş</dd></div>
+        <div><dt>Font</dt><dd>Alegreya + Alegreya Sans + Amiri</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#1A1512" title="#1A1512"></i><i style="background:#D9BFA0" title="#D9BFA0"></i><i style="background:#3A5BA0" title="#3A5BA0"></i><i style="background:#D29A3E" title="#D29A3E"></i><i style="background:#A4432E" title="#A4432E"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="park-yeri/" aria-label="Park Nerede sitesini aç">
+    <figure class="shot"><img src="thumbs/park-yeri.jpg" alt="Park Nerede sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">085</p>
+      <h3>Park Nerede</h3>
+      <p class="does">Arabadan inince park yerini, kat ve sütunu otomatik hatırlar, otoparktan çıkışta yönlendirir.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Boyalı sütun</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>AVM otoparkında 20 dakika arabasını arayan, elinde poşetler olan kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>tek hamlede bulmuş</dd></div>
+        <div><dt>Font</dt><dd>Big Shoulders Display + Public Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#C7C6C1" title="#C7C6C1"></i><i style="background:#F4C400" title="#F4C400"></i><i style="background:#151515" title="#151515"></i><i style="background:#2E8B57" title="#2E8B57"></i><i style="background:#2B6FC2" title="#2B6FC2"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="deprem-cantasi/" aria-label="Artçı sitesini aç">
+    <figure class="shot"><img src="thumbs/deprem-cantasi.jpg" alt="Artçı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">086</p>
+      <h3>Artçı</h3>
+      <p class="does">Deprem ve afet anı için tamamen çevrimdışı asistan: ilk yardım rehberi, toplanma alanı haritası, enkaz altında ses sinyali ve aile buluşma planı.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Mutfak masasındaki plan</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>6 Şubat'tan sonra hazırlıksız yakalanmaktan korkan İstanbullu aile</dd></div>
+        <div><dt>Çıkış</dt><dd>hazırlıklı</dd></div>
+        <div><dt>Font</dt><dd>Merriweather + Merriweather Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F3F4F1" title="#F3F4F1"></i><i style="background:#1D2A2E" title="#1D2A2E"></i><i style="background:#1E6B4A" title="#1E6B4A"></i><i style="background:#DDE6E0" title="#DDE6E0"></i><i style="background:#B9501C" title="#B9501C"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="bavul/" aria-label="Bavul sitesini aç">
+    <figure class="shot"><img src="thumbs/bavul.jpg" alt="Bavul sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">087</p>
+      <h3>Bavul</h3>
+      <p class="does">Gideceğin yerin hava durumu, süre ve plana göre bavul listesi çıkarır, dolaptaki kıyafetleri tanır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Açık valiz ve bagaj etiketi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Her tatilde şarj aletini unutan, fazla bavulla yorulan gezgin</dd></div>
+        <div><dt>Çıkış</dt><dd>hafif yolculuk</dd></div>
+        <div><dt>Font</dt><dd>Bricolage Grotesque + DM Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E8F0EE" title="#E8F0EE"></i><i style="background:#2E8C80" title="#2E8C80"></i><i style="background:#CFE4DF" title="#CFE4DF"></i><i style="background:#F0674C" title="#F0674C"></i><i style="background:#1C2A3A" title="#1C2A3A"></i></span><span class="score">25<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="patika/" aria-label="Patika sitesini aç">
+    <figure class="shot"><img src="thumbs/patika.jpg" alt="Patika sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">088</p>
+      <h3>Patika</h3>
+      <p class="does">Dağda kapsama alanı yokken rotayı, irtifayı ve gün batımına kalan süreyi hesaplar; kaybolma riskinde geri dönüşü söyler.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Topografik harita ve yol boyası</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Likya Yolu'nda tek başına yürümek isteyen ama kaybolmaktan çekinen yürüyüşçü</dd></div>
+        <div><dt>Çıkış</dt><dd>özgür ve güvende</dd></div>
+        <div><dt>Font</dt><dd>Zilla Slab + Work Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#DEDBD2" title="#DEDBD2"></i><i style="background:#C3302A" title="#C3302A"></i><i style="background:#23402E" title="#23402E"></i><i style="background:#1F5373" title="#1F5373"></i><i style="background:#E9A93A" title="#E9A93A"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="engelsiz-rota/" aria-label="Engelsiz Rota sitesini aç">
+    <figure class="shot"><img src="thumbs/engelsiz-rota.jpg" alt="Engelsiz Rota sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">089</p>
+      <h3>Engelsiz Rota</h3>
+      <p class="does">Tekerlekli sandalye kullananlar için kaldırım yüksekliği, rampa ve asansör durumunu kullanıcı fotoğraflarından öğrenip rota çizer.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Harita senin</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kadıköy'de bir kafeye gitmek için yarım saat plan yapan tekerlekli sandalye kullanıcısı</dd></div>
+        <div><dt>Çıkış</dt><dd>şehir benim de</dd></div>
+        <div><dt>Font</dt><dd>Lexend</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#FFFFFF" title="#FFFFFF"></i><i style="background:#E4E1DC" title="#E4E1DC"></i><i style="background:#17151A" title="#17151A"></i><i style="background:#C2255C" title="#C2255C"></i><i style="background:#2457C5" title="#2457C5"></i><i style="background:#1F7A4D" title="#1F7A4D"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Şehir ve yol">
+  <a href="menu-okur/" aria-label="Menü Okur sitesini aç">
+    <figure class="shot"><img src="thumbs/menu-okur.jpg" alt="Menü Okur sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">090</p>
+      <h3>Menü Okur</h3>
+      <p class="does">Yurtdışında menüyü çevirir, yemeğin ne olduğunu açıklar ve diyet/alerji kısıtına göre işaretler.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Noren ve duvar menüsü</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Tokyo'da lokantada ne sipariş edeceğini bilemeyen, helal ve alerji hassasiyeti olan gezgin</dd></div>
+        <div><dt>Çıkış</dt><dd>maceracı ama güvende</dd></div>
+        <div><dt>Font</dt><dd>Instrument Sans + Noto Serif JP</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F3EFE7" title="#F3EFE7"></i><i style="background:#22355A" title="#22355A"></i><i style="background:#C7372F" title="#C7372F"></i><i style="background:#D2AE84" title="#D2AE84"></i><i style="background:#1B1A1D" title="#1B1A1D"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="tarla-gozu/" aria-label="Tarla Gözü sitesini aç">
+    <figure class="shot"><img src="thumbs/tarla-gozu.jpg" alt="Tarla Gözü sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">091</p>
+      <h3>Tarla Gözü</h3>
+      <p class="does">Çiftçinin yaprak fotoğrafından hastalık ve zararlıyı tarlada, internet yokken teşhis eder; ilaçlama zamanını söyler.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Sera içi teşhis fişi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Domates seralarında yaprak kıvrılması gören, ziraat mühendisine ulaşamayan Antalyalı üretici</dd></div>
+        <div><dt>Çıkış</dt><dd>mahsulü kurtarmış</dd></div>
+        <div><dt>Font</dt><dd>PT Sans Narrow + PT Sans</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#EEF1E7" title="#EEF1E7"></i><i style="background:#1E3A1F" title="#1E3A1F"></i><i style="background:#F2D21B" title="#F2D21B"></i><i style="background:#B8321C" title="#B8321C"></i><i style="background:#5E4C33" title="#5E4C33"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="kovan/" aria-label="Kovan sitesini aç">
+    <figure class="shot"><img src="thumbs/kovan.jpg" alt="Kovan sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">092</p>
+      <h3>Kovan</h3>
+      <p class="does">Kovana konan mikrofonla arıların vızıltısından oğul verme, ana arı kaybı ve hastalık işaretlerini duyar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Kovan kapağının altı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Kovanlarını haftada bir açıp arıları rahatsız etmekten çekinen arıcı</dd></div>
+        <div><dt>Çıkış</dt><dd>kovanla konuşan</dd></div>
+        <div><dt>Font</dt><dd>Fraunces + Karla</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E3A22A" title="#E3A22A"></i><i style="background:#2A1A0D" title="#2A1A0D"></i><i style="background:#F5E8C6" title="#F5E8C6"></i><i style="background:#6E97AC" title="#6E97AC"></i><i style="background:#6E8B3D" title="#6E8B3D"></i><i style="background:#B5432B" title="#B5432B"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="kus-sesi/" aria-label="Ötüş sitesini aç">
+    <figure class="shot"><img src="thumbs/kus-sesi.jpg" alt="Ötüş sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">093</p>
+      <h3>Ötüş</h3>
+      <p class="does">Kuş seslerini dinleyip türü internetsiz tanır, kişisel kuş defteri tutar; Türkiye'nin 480 türü.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Saha defteri</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Sabah balkondaki kuşun adını merak eden şehirli</dd></div>
+        <div><dt>Çıkış</dt><dd>doğaya yakın</dd></div>
+        <div><dt>Font</dt><dd>Gentium Book Plus + Patrick Hand</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#DCE4E6" title="#DCE4E6"></i><i style="background:#F1F3EE" title="#F1F3EE"></i><i style="background:#2B3035" title="#2B3035"></i><i style="background:#244A78" title="#244A78"></i><i style="background:#B9522A" title="#B9522A"></i><i style="background:#6A7A4C" title="#6A7A4C"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="cuzdan-akli/" aria-label="Cüzdan Aklı sitesini aç">
+    <figure class="shot"><img src="thumbs/cuzdan-akli.jpg" alt="Cüzdan Aklı sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">094</p>
+      <h3>Cüzdan Aklı</h3>
+      <p class="does">Banka SMS'lerini ve fişleri cihazda okuyup harcamayı kategorize eder; ay sonu nerede kaçtığını sakin bir dille anlatır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Termal fiş ve sakin muhasebeci</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Maaş gününden on gün sonra parası biten, bankaya verilerini vermek istemeyen genç</dd></div>
+        <div><dt>Çıkış</dt><dd>kontrol bende</dd></div>
+        <div><dt>Font</dt><dd>Schibsted Grotesk + IBM Plex Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#ECEDE9" title="#ECEDE9"></i><i style="background:#FAFAF7" title="#FAFAF7"></i><i style="background:#1C1E22" title="#1C1E22"></i><i style="background:#13605F" title="#13605F"></i><i style="background:#B5432F" title="#B5432F"></i><i style="background:#EFE06A" title="#EFE06A"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="eski-fotograf/" aria-label="Sandık sitesini aç">
+    <figure class="shot"><img src="thumbs/eski-fotograf.jpg" alt="Sandık sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">095</p>
+      <h3>Sandık</h3>
+      <p class="does">Sandıktaki eski aile fotoğraflarını tarar, onarır, renklendirir ve yüzlere göre soy ağacına yerleştirir; fotoğraflar evden çıkmaz.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Sandığın içi</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Rahmetli babaannenin sandığını açmış, solmuş fotoğraflarla dolu torun</dd></div>
+        <div><dt>Çıkış</dt><dd>köklerine dokunmuş</dd></div>
+        <div><dt>Font</dt><dd>Bodoni Moda + Jost</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#2A1B12" title="#2A1B12"></i><i style="background:#7A1F2B" title="#7A1F2B"></i><i style="background:#EBDDC3" title="#EBDDC3"></i><i style="background:#B08A5B" title="#B08A5B"></i><i style="background:#C9A06A" title="#C9A06A"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="ilmek/" aria-label="İlmek sitesini aç">
+    <figure class="shot"><img src="thumbs/ilmek.jpg" alt="İlmek sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">096</p>
+      <h3>İlmek</h3>
+      <p class="does">Örgüyü kamerayla izleyip sırayı ve ilmekleri sayar, desen hatasını erken söyler; el işi defteri tutar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Örgü tezgâhı</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Torununa hırka örerken sırayı kaçıran anneanne ve örgüye yeni başlayan genç</dd></div>
+        <div><dt>Çıkış</dt><dd>sabırlı keyif</dd></div>
+        <div><dt>Font</dt><dd>Young Serif + Atkinson Hyperlegible</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#F7EEF0" title="#F7EEF0"></i><i style="background:#A3324F" title="#A3324F"></i><i style="background:#26355E" title="#26355E"></i><i style="background:#D9B98C" title="#D9B98C"></i><i style="background:#33232A" title="#33232A"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="balkon-bahcesi/" aria-label="Balkon Bahçesi sitesini aç">
+    <figure class="shot"><img src="thumbs/balkon-bahcesi.jpg" alt="Balkon Bahçesi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">097</p>
+      <h3>Balkon Bahçesi</h3>
+      <p class="does">Balkonun güneş alma saatlerini kamerayla ölçer, hangi sebzenin ne zaman ekileceğini ve sulanacağını söyler.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Balkon planı ve güneş saati</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Apartmanda yaşayan, kendi domatesini yetiştirmek isteyen şehirli</dd></div>
+        <div><dt>Çıkış</dt><dd>toprağa değmiş</dd></div>
+        <div><dt>Font</dt><dd>Bricolage Grotesque + Literata</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#E1DED6" title="#E1DED6"></i><i style="background:#2F3437" title="#2F3437"></i><i style="background:#B4532E" title="#B4532E"></i><i style="background:#3F6B2F" title="#3F6B2F"></i><i style="background:#3B4762" title="#3B4762"></i><i style="background:#FFD978" title="#FFD978"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="olta/" aria-label="Olta sitesini aç">
+    <figure class="shot"><img src="thumbs/olta.jpg" alt="Olta sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">098</p>
+      <h3>Olta</h3>
+      <p class="does">Tutulan balığı fotoğraftan tanır, boy yasağını ve av sezonunu söyler, kıyıda internet olmadan çalışır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Balık cetveli</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Galata Köprüsü'nde ya da kıyıda olta atan, minik balığı denize geri bırakmak isteyen amatör</dd></div>
+        <div><dt>Çıkış</dt><dd>denize saygılı</dd></div>
+        <div><dt>Font</dt><dd>Archivo + Archivo (geniş kesim)</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#DCE5E8" title="#DCE5E8"></i><i style="background:#0E2F44" title="#0E2F44"></i><i style="background:#A9BAC2" title="#A9BAC2"></i><i style="background:#C93A1F" title="#C93A1F"></i><i style="background:#F7F9F9" title="#F7F9F9"></i><i style="background:#E9DEC6" title="#E9DEC6"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="izin-bekcisi/" aria-label="İzin Bekçisi sitesini aç">
+    <figure class="shot"><img src="thumbs/izin-bekcisi.jpg" alt="İzin Bekçisi sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">099</p>
+      <h3>İzin Bekçisi</h3>
+      <p class="does">Telefondaki uygulamaların arka planda konuma, mikrofona, rehbere ne zaman eriştiğini izler ve sade bir dille anlatır.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Gece nöbet defteri</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Bir uygulamanın kendisini dinlediğinden şüphelenen kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>mahremiyeti geri almış</dd></div>
+        <div><dt>Font</dt><dd>Spline Sans + Spline Sans Mono</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#0F141C" title="#0F141C"></i><i style="background:#E8ECF2" title="#E8ECF2"></i><i style="background:#FF9F0A" title="#FF9F0A"></i><i style="background:#30D158" title="#30D158"></i><i style="background:#5B9BFF" title="#5B9BFF"></i><i style="background:#C49BFF" title="#C49BFF"></i></span><span class="score">27<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+<li class="card" data-group="Doğa, para, üretim">
+  <a href="akor/" aria-label="Akor sitesini aç">
+    <figure class="shot"><img src="thumbs/akor.jpg" alt="Akor sitesinin ilk ekranı" loading="lazy" width="640" height="450"></figure>
+    <div class="info">
+      <p class="no">100</p>
+      <h3>Akor</h3>
+      <p class="does">Gitar ve bağlamada çalınan akoru, perdeyi ve ritmi dinleyip tanır; şarkıyı yavaşlatıp birlikte çalar.</p>
+      <dl>
+        <div><dt>Yorum</dt><dd>Sunburst sahne</dd></div>
+        <div><dt>Ziyaretçi</dt><dd>Gençken bıraktığı gitarı 40 yaşında yeniden eline alan kişi</dd></div>
+        <div><dt>Çıkış</dt><dd>yeniden çalıyor</dd></div>
+        <div><dt>Font</dt><dd>Alfa Slab One + Figtree</dd></div>
+      </dl>
+      <div class="foot"><span class="pal" aria-hidden="true"><i style="background:#3A120B" title="#3A120B"></i><i style="background:#8E3214" title="#8E3214"></i><i style="background:#E39B3A" title="#E39B3A"></i><i style="background:#F2E6D0" title="#F2E6D0"></i><i style="background:#1C1210" title="#1C1210"></i></span><span class="score">28<small>/30</small></span></div>
+    </div>
+  </a>
+</li>
+  </ul>
+  <section class="method" aria-labelledby="m">
+    <h2 id="m">Her site aynı soruyla başladı: bu insan hangi halde geliyor?</h2>
+    <p><strong>1 · Sor</strong>Ziyaretçi kim, siteden çıkarken ne hissetmeli? Gece üçte uyanan diyabetli çocuğun ebeveyni ile şantiye şefi aynı sayfayı istemez.</p>
+    <p><strong>2 · Taslak ve puan</strong>Her uygulama için 2-3 duygusal yorum çıkarıldı, altı ölçütlü uyum kartıyla puanlandı, en uygunu seçildi.</p>
+    <p><strong>3 · Kodla, gör, yeniden puanla</strong>Bitmiş sayfanın masaüstü ve mobil ekran görüntüsü aynı kartla puanlandı; eşik 24/30, hiçbir ölçüt 3'ün altında değil.</p>
+    <p><strong>4 · Ortak tema, ayrı dünyalar</strong>Hepsinde veri cihazda kalıyor; ama bu söz her sitede o konunun diliyle söyleniyor.</p>
+  </section>
+</main>
+<footer class="wrap">Tasarım süreci: <a href="https://github.com/gercektasarim/emotive-web-design">github.com/gercektasarim/emotive-web-design</a> · Uygulamalar kurgusaldır.</footer>
+<script>
+const bs=[...document.querySelectorAll("nav.filter button")],cs=[...document.querySelectorAll(".card")];
+bs.forEach(b=>b.addEventListener("click",()=>{bs.forEach(x=>x.setAttribute("aria-pressed",x===b));cs.forEach(c=>c.hidden=!!b.dataset.g&&c.dataset.group!==b.dataset.g)}));
+</script>
+</body>
+</html>

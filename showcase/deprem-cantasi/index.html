@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artçı — Deprem ve afet için çevrimdışı aile asistanı</title>
+<meta name="description" content="Artçı; ilk yardım rehberi, toplanma alanı haritası, enkaz altı ses sinyali ve aile buluşma planını internetsiz çalıştırır. Ücretsiz. Bir akşamda hazırlanın.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;600&family=Merriweather+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F4F1; --white:#FFFFFF; --ink:#1D2A2E; --muted:#4A5759;
+  --green:#1E6B4A; --green-dark:#14513A; --sage:#DDE6E0; --line:#C9D3CE;
+  --signal:#B9501C;
+  --serif:"Merriweather", Georgia, serif; --sans:"Merriweather Sans", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:19px;line-height:1.6}
+a{color:var(--green-dark)}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:24px;padding-right:24px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:9}
+
+.top{border-bottom:1px solid var(--line);background:var(--paper)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;height:68px}
+.logo{display:flex;gap:10px;align-items:center;font-family:var(--serif);font-weight:600;font-size:24px;color:var(--ink);text-decoration:none}
+.logo svg{width:26px;height:26px}
+.top nav a{color:var(--muted);text-decoration:none;margin-left:22px;font-size:17px}
+.top nav a.dl{color:#fff;background:var(--green);padding:8px 16px;border-radius:6px;font-weight:600}
+.e112{background:var(--ink);color:#E8EEEA;font-size:15px;text-align:center;padding:6px 16px}
+.e112 b{color:#fff}
+
+.hero{padding:72px 0 90px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(38px,4.6vw,60px);line-height:1.1;margin:0 0 22px;letter-spacing:-.01em;max-width:15ch}
+.lede{font-size:21px;color:var(--muted);max-width:40ch;margin:0 0 30px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 22px;border-radius:6px;font-weight:700;text-decoration:none;font-size:17px}
+.btn.g{background:var(--green);color:#fff}
+.btn.g:hover{background:var(--green-dark)}
+.btn.o{border:2px solid var(--ink);color:var(--ink)}
+.note{margin-top:16px;font-size:16px;color:var(--muted)}
+
+.asign{display:flex;align-items:center;gap:14px;background:var(--green);color:#fff;border:3px solid #fff;outline:2px solid var(--green);border-radius:4px;padding:10px 16px;margin:0 0 18px auto;width:max-content;max-width:100%}
+.asign svg{flex:none}
+.asign b{display:block;font-size:17px;line-height:1.2}
+.asign small{font-size:14px;opacity:.95}
+.plan-col{display:flex;flex-direction:column}
+/* family plan paper */
+.plan{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:28px 30px;box-shadow:0 1px 0 var(--line),0 20px 40px rgba(29,42,46,.08);position:relative}
+.plan::before{content:"";position:absolute;left:30px;right:30px;top:-1px;height:4px;background:var(--green)}
+.plan h2{font-family:var(--serif);font-weight:600;font-size:24px;margin:4px 0 2px}
+.plan .sub{font-size:15px;color:var(--muted);margin-bottom:18px}
+.plan dl{margin:0;display:grid;grid-template-columns:150px 1fr;gap:10px 16px;font-size:17px}
+.plan dt{color:var(--muted)}
+.plan dd{margin:0;font-weight:600}
+.plan dd small{display:block;font-weight:400;color:var(--muted);font-size:15px}
+.plan .people{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+.plan .people span{background:var(--sage);border-radius:4px;padding:5px 10px;font-size:15px}
+.plan .progress{margin-top:16px;font-size:15px;color:var(--muted)}
+.plan .bar{height:8px;background:var(--sage);border-radius:4px;margin-top:6px;overflow:hidden}
+.plan .bar i{display:block;height:100%;width:64%;background:var(--green)}
+
+section{padding:96px 0}
+h2.s{font-family:var(--serif);font-weight:600;font-size:clamp(30px,3.4vw,42px);line-height:1.15;margin:0 0 16px;max-width:22ch}
+.lead{font-size:20px;color:var(--muted);max-width:58ch}
+
+/* tonight */
+.tonight{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tn{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:40px}
+.tn .min{font-family:var(--serif);font-size:44px;color:var(--green);line-height:1}
+.tn .min small{font-size:18px;color:var(--muted);font-family:var(--sans)}
+.tn h3{font-size:21px;margin:12px 0 6px}
+.tn p{margin:0;color:var(--muted)}
+
+/* four moments (offline) */
+.moments-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.net{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--muted)}
+.switch{position:relative;width:52px;height:30px;border-radius:15px;background:var(--line);border:0;cursor:pointer;padding:0}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}
+.switch[aria-checked="true"]{background:var(--green)}
+.switch[aria-checked="true"]::after{left:25px}
+.panel{margin-top:30px;display:grid;grid-template-columns:240px 1fr;background:var(--white);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.tabs{display:flex;flex-direction:column;border-right:1px solid var(--line);background:#F8F9F7}
+.tabs button{all:unset;cursor:pointer;padding:18px 20px;border-bottom:1px solid var(--line);font-weight:600}
+.tabs button small{display:block;font-weight:400;color:var(--muted);font-size:15px}
+.tabs button[aria-selected="true"]{background:var(--white);box-shadow:inset 4px 0 0 var(--green)}
+.tabs button:focus-visible{outline:3px solid var(--green);outline-offset:-3px}
+.view{padding:0}
+.status{display:flex;justify-content:space-between;padding:10px 22px;font-size:14px;background:var(--ink);color:#E8EEEA}
+.status b{color:#fff;font-weight:600}
+.pane{padding:24px 26px;display:none}
+.pane.on{display:block}
+.pane h3{font-family:var(--serif);font-weight:600;font-size:26px;margin:0 0 10px}
+.pane ol,.pane ul{margin:0;padding-left:22px}
+.pane li{margin-bottom:8px}
+.map{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:start}
+.map svg{width:100%;height:auto;border:1px solid var(--line);border-radius:4px}
+.signal{display:flex;gap:6px;align-items:end;height:40px;margin:14px 0}
+.signal i{width:10px;background:var(--signal);border-radius:2px}
+.meet{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.meet div{border:1px solid var(--line);border-radius:4px;padding:12px 14px}
+.meet b{display:block}
+.meet .ok{color:var(--green-dark);font-weight:700}
+.meet .wait{color:var(--muted);font-weight:700}
+
+/* bag */
+.bag-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.bag{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:8px 0}
+.bag label{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:10px 22px;border-bottom:1px solid #E7ECE9;cursor:pointer}
+.bag label:last-child{border-bottom:0}
+.bag input{width:20px;height:20px;accent-color:var(--green)}
+.bag small{color:var(--muted);font-size:15px}
+.bag .cnt{font-size:15px;color:var(--muted)}
+
+.trust{background:var(--sage)}
+.trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.trust ul{padding-left:20px;margin:0}
+.trust li{margin-bottom:10px}
+
+.voice blockquote{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.45;margin:0;max-width:40ch}
+.voice cite{display:block;font-style:normal;color:var(--muted);margin-top:16px;font-size:17px}
+
+.free{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.free .box{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:28px}
+.free .amt{font-family:var(--serif);font-size:52px;color:var(--green);line-height:1;margin:0 0 10px}
+
+.faq details{border-top:1px solid var(--line);padding:16px 0}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;font-weight:700;font-size:19px}
+.faq p{margin:10px 0 0;color:var(--muted);max-width:66ch}
+
+footer{background:var(--ink);color:#C6D0CC;padding:40px 0 30px;font-size:16px}
+footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer b{color:#fff}
+footer .made{margin-top:24px;font-size:14px}
+footer .made a{color:#A9B6B1}
+
+@media (max-width:900px){
+  .top nav a:not(.dl){display:none}
+  .hero-grid,.bag-grid,.trust-grid,.free{grid-template-columns:1fr;gap:36px}
+  .tn{grid-template-columns:1fr;gap:28px}
+  .panel{grid-template-columns:1fr}
+  .tabs{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}
+  .tabs button{border-bottom:0;border-right:1px solid var(--line);white-space:nowrap;padding:14px 16px}
+  .tabs button small{display:none}
+  .tabs button[aria-selected="true"]{box-shadow:inset 0 -4px 0 var(--green)}
+  .map,.meet{grid-template-columns:1fr}
+  section{padding:72px 0}
+}
+@media (max-width:480px){
+  .wrap{padding-left:16px;padding-right:16px}
+  .plan{padding:22px 18px}
+  .asign{margin-left:0}
+  .plan dl{grid-template-columns:1fr;gap:2px}
+  .plan dd{margin-bottom:10px}
+  .lede{font-size:19px}
+  .hero{padding:44px 0 64px}
+}
+@media (prefers-reduced-motion:reduce){.switch::after{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe geç</a>
+<div class="e112">Şu an acil bir durum varsa: <b>112</b>'yi arayın.</div>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><svg viewBox="0 0 26 26" aria-hidden="true"><rect x="2" y="2" width="22" height="22" rx="4" fill="#1E6B4A"/><path d="M7 17l6-9 6 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg>Artçı</a>
+    <nav aria-label="Ana menü"><a href="#bu-aksam">Bu akşam</a><a href="#dort-an">Dört an</a><a href="#canta">Çanta</a><a href="#sss">Sorular</a><a class="dl" href="#ucretsiz">Ücretsiz indir</a></nav>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Bir akşam, bir masa, bir aile planı.</h1>
+      <p class="lede">Artçı, deprem ve afet anında ihtiyacınız olacak her şeyi telefonunuzda, internetsiz tutar: ilk yardım adımları, toplanma alanına yol, enkaz altında ses sinyali ve ailenizin buluşma planı. Hazırlık, bir akşam yemeği kadar sürer.</p>
+      <div class="btns"><a class="btn g" href="#ucretsiz">iPhone için indir</a><a class="btn o" href="#ucretsiz">Android için indir</a></div>
+      <p class="note">Ücretsiz. Hesap gerekmez. Bilgileriniz yalnız ailenizin telefonlarında kalır.</p>
+    </div>
+    <div class="plan-col">
+    <div class="asign" role="img" aria-label="Acil durum toplanma alanı tabelası: Yoğurtçu Parkı, 600 metre">
+      <svg width="64" height="40" viewBox="0 0 64 40" aria-hidden="true"><g fill="#fff"><circle cx="10" cy="8" r="4"/><path d="M6 14h8v14H6z"/><circle cx="24" cy="8" r="4"/><path d="M20 14h8v14h-8z"/><circle cx="38" cy="10" r="3.4"/><path d="M35 15h6v11h-6z"/><circle cx="50" cy="10" r="3.4"/><path d="M47 15h6v11h-6z"/></g><path d="M4 34h52l-6-4m6 4-6 4" stroke="#fff" stroke-width="2.4" fill="none"/></svg>
+      <div><b>Acil Durum Toplanma Alanı</b><small>Yoğurtçu Parkı · 600 m</small></div>
+    </div>
+    <article class="plan" aria-label="Örnek aile planı">
+      <h2>Yıldız ailesinin planı</h2>
+      <div class="sub">Kadıköy, Rasimpaşa Mah. · son güncelleme 12 Ekim</div>
+      <dl>
+        <dt>Toplanma alanı</dt><dd>Yoğurtçu Parkı<small>600 m · yürüyerek 8 dakika · yol çevrimdışı kayıtlı</small></dd>
+        <dt>İkinci buluşma</dt><dd>Kalamış Parkı, iskele tarafı<small>Birinci alana ulaşılamazsa</small></dd>
+        <dt>Şehir dışı kişi</dt><dd>Ayşe Yıldız, Eskişehir<small>Herkes durumunu önce ona bildirir</small></dd>
+        <dt>Okul</dt><dd>Kerem: Moda İlkokulu<small>Okulun kendi toplanma alanı: arka bahçe</small></dd>
+      </dl>
+      <div class="people"><span>Elif · ilaç çantası</span><span>Murat · su ve fener</span><span>Kerem (9) · düdük</span><span>Nur nine · gözlük, ilaçlar</span></div>
+      <div class="progress">Deprem çantası: 14 / 22 hazır<div class="bar"><i></i></div></div>
+    </article>
+    </div>
+  </div>
+</section>
+
+<section class="tonight" id="bu-aksam">
+  <div class="wrap">
+    <h2 class="s">Bu akşam yapılacak üç şey.</h2>
+    <p class="lead">Korkunun ilacı bilgi değil, yapılmış bir hazırlıktır. Artçı sizi adım adım götürür; hepsi bir saatten kısa.</p>
+    <div class="tn">
+      <div><div class="min">20 <small>dakika</small></div><h3>Planı birlikte kurun</h3><p>Toplanma alanını, şehir dışındaki irtibat kişisini ve herkesin görevini seçin. Plan ailedeki her telefona yakın mesafeden aktarılır, internet gerekmez.</p></div>
+      <div><div class="min">25 <small>dakika</small></div><h3>Çantayı sayın</h3><p>Evde olanı işaretleyin, eksikleri tek listede görün. Son kullanma tarihi olanları Artçı altı ayda bir hatırlatır.</p></div>
+      <div><div class="min">10 <small>dakika</small></div><h3>Bir kez yürüyün</h3><p>Toplanma alanına bir kez, çocuklarla birlikte yürüyün. Yol telefona kaydedilir; o gün tanıdık bir yol olur.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="dort-an">
+  <div class="wrap">
+    <div class="moments-head">
+      <h2 class="s" style="margin:0">Dört an için dört ekran. Hiçbiri internet istemez.</h2>
+      <div class="net"><span id="netLbl">Şebeke yok</span><button class="switch" id="sw" role="switch" aria-checked="true" aria-labelledby="netLbl" type="button"></button></div>
+    </div>
+    <div class="panel">
+      <div class="tabs" role="tablist" aria-label="Afet anları">
+        <button role="tab" aria-selected="true" aria-controls="p1" id="t1" type="button">Sarsıntı sırasında<small>Çök, kapan, tutun</small></button>
+        <button role="tab" aria-selected="false" aria-controls="p2" id="t2" type="button" tabindex="-1">Sarsıntı bitince<small>Toplanma alanına yol</small></button>
+        <button role="tab" aria-selected="false" aria-controls="p3" id="t3" type="button" tabindex="-1">Enkaz altında<small>Ses sinyali</small></button>
+        <button role="tab" aria-selected="false" aria-controls="p4" id="t4" type="button" tabindex="-1">Buluşma<small>Kim nerede?</small></button>
+      </div>
+      <div class="view">
+        <div class="status"><span id="stTxt"><b>Şebeke yok</b> · Artçı çalışıyor</span><span>Pil %62 · 03:18</span></div>
+        <div class="pane on" id="p1" role="tabpanel" aria-labelledby="t1">
+          <h3>Olduğunuz yerde kalın.</h3>
+          <ol><li>Sağlam bir masanın yanına ya da altına çökün, başınızı ve boynunuzu kollarınızla koruyun.</li><li>Pencere, cam ve devrilebilecek dolaplardan uzak durun.</li><li>Sarsıntı bitene kadar merdivene ve asansöre yönelmeyin.</li></ol>
+          <p style="color:var(--muted);margin:14px 0 0">Ekran büyük harfle ve tek adımla açılır. Telefon titrediğinde sesli okuma başlar.</p>
+        </div>
+        <div class="pane" id="p2" role="tabpanel" aria-labelledby="t2">
+          <div class="map">
+            <svg viewBox="0 0 360 240" role="img" aria-label="Çevrimdışı harita: evden Yoğurtçu Parkı toplanma alanına 600 metrelik yürüme yolu">
+              <rect width="360" height="240" fill="#F8F9F7"/>
+              <g stroke="#DDE3DF" stroke-width="14" stroke-linecap="round"><path d="M0 60 H360"/><path d="M0 170 H360"/><path d="M90 0 V240"/><path d="M250 0 V240"/></g>
+              <rect x="270" y="18" width="78" height="62" rx="6" fill="#CFE3D7"/>
+              <text x="309" y="54" font-family="Merriweather Sans" font-size="13" font-weight="700" fill="#14513A" text-anchor="middle">Yoğurtçu P.</text>
+              <path d="M70 200 H90 V60 H250 V45 H270" fill="none" stroke="#1E6B4A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="70" cy="200" r="8" fill="#1D2A2E"/><text x="60" y="226" font-family="Merriweather Sans" font-size="13" fill="#1D2A2E">Ev</text>
+              <rect x="150" y="62" width="40" height="16" rx="3" fill="#B9501C"/><text x="170" y="74" font-family="Merriweather Sans" font-size="11" fill="#fff" text-anchor="middle">yapı</text>
+            </svg>
+            <div><b>600 m · 8 dakika</b><p style="margin:6px 0 0;color:var(--muted);font-size:17px">Bina önlerinden değil, yolun ortasından yürüyün. İşaretli noktada iskele var; Artçı bu bilgiyi siz eklediğinizde rotaya katar.</p></div>
+          </div>
+        </div>
+        <div class="pane" id="p3" role="tabpanel" aria-labelledby="t3">
+          <h3>Telefon sizin yerinize ses verir.</h3>
+          <p style="margin:0">Hareketsiz kalırsanız ya da düğmeye basarsanız Artçı, kurtarma ekiplerinin dinleme cihazlarının iyi duyduğu yüksek bir tonu kısa aralıklarla çalar. Pil için ekran kapanır; sinyal 3 güne kadar sürebilir.</p>
+          <div class="signal" aria-hidden="true"><i style="height:36px"></i><i style="height:36px"></i><i style="height:36px"></i><i style="height:6px"></i><i style="height:6px"></i><i style="height:36px"></i><i style="height:36px"></i><i style="height:36px"></i><i style="height:6px"></i><i style="height:6px"></i><i style="height:6px"></i><i style="height:6px"></i></div>
+          <p style="margin:0;color:var(--muted);font-size:17px">Her 30 saniyede üç kısa ton, sonra sessizlik. Sessizlikte telefon dışarıdaki sesleri dinler; bir ses duyarsa ekranı açıp size söyler.</p>
+        </div>
+        <div class="pane" id="p4" role="tabpanel" aria-labelledby="t4">
+          <h3>Yakındaki telefonlar birbirini bulur.</h3>
+          <p style="margin:0 0 14px">Şebeke yokken aile telefonları Bluetooth ve Wi-Fi Direct üzerinden kısa mesaj taşır; bir telefondan diğerine atlayarak mahallede 1-2 km'ye kadar ulaşabilir.</p>
+          <div class="meet">
+            <div><b>Elif</b><span class="ok">Toplanma alanında</span><br><small>03:31 · Yoğurtçu P.</small></div>
+            <div><b>Kerem</b><span class="ok">Elif'in yanında</span><br><small>03:31</small></div>
+            <div><b>Murat</b><span class="wait">Yolda, iyiyim</span><br><small>03:24 · 2 telefon üzerinden</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="canta" style="padding-top:20px">
+  <div class="wrap bag-grid">
+    <div>
+      <h2 class="s">Çanta: ne var, ne eksik?</h2>
+      <p class="lead">Kapının yanında duran bir çanta, aile planının ikinci yarısıdır. Artçı listeyi ailenizin büyüklüğüne, bebek, yaşlı ya da evcil hayvan olup olmadığına göre hazırlar.</p>
+      <p class="lead">Kamerayı bir rafa tutun; Artçı gördüğü suyu, feneri, ilk yardım çantasını tanır ve listede işaretler. Fotoğraf telefondan çıkmaz.</p>
+    </div>
+    <fieldset class="bag" style="margin:0">
+      <legend class="wrap" style="position:absolute;left:-9999px">Örnek çanta listesi</legend>
+      <label><input type="checkbox" checked><span>Su <small>· kişi başı 3 gün, 9 L</small></span><span class="cnt">4 / 4 kişi</span></label>
+      <label><input type="checkbox" checked><span>El feneri ve yedek pil</span><span class="cnt">1</span></label>
+      <label><input type="checkbox" checked><span>Düdük <small>· her çocuğun boynunda bir tane</small></span><span class="cnt">2</span></label>
+      <label><input type="checkbox"><span>Nur nine'nin ilaçları <small>· 7 günlük, reçete fotokopisi</small></span><span class="cnt">eksik</span></label>
+      <label><input type="checkbox" checked><span>İlk yardım çantası</span><span class="cnt">1</span></label>
+      <label><input type="checkbox"><span>Powerbank <small>· dolu, 10.000 mAh</small></span><span class="cnt">eksik</span></label>
+      <label><input type="checkbox" checked><span>Kimlik ve tapu fotokopileri <small>· su geçirmez poşette</small></span><span class="cnt">1</span></label>
+      <label><input type="checkbox"><span>Yedek gözlük</span><span class="cnt">eksik</span></label>
+    </fieldset>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="wrap trust-grid">
+    <div>
+      <h2 class="s">Ne söylediğimizi nereden bildiğimizi yazıyoruz.</h2>
+      <p class="lead">İlk yardım ve hazırlık içeriği AFAD'ın ve Türk Kızılay'ın herkese açık rehberleri temel alınarak yazıldı; acil tıp hekimleri ve arama kurtarma gönüllüleri okudu. Her adımın altında kaynağı görünür.</p>
+    </div>
+    <ul>
+      <li><b>Hiçbir veri sunucuya gitmez.</b> Aile planı, adresler ve çanta listesi yalnız telefonlarınızda; telefonlar arasında yakın mesafeden aktarılır.</li>
+      <li><b>Konumunuzu kimse izlemez.</b> Buluşma ekranı yalnız sizin seçtiğiniz aile üyeleriyle, yalnız şebeke yokken paylaşılır.</li>
+      <li><b>Bildirim korkutmaz.</b> Artçı deprem tahmini yapmaz, "büyük deprem" haberi paylaşmaz. Yalnız hazırlık hatırlatması gönderir: altı ayda bir.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="voice">
+  <div class="wrap">
+    <blockquote>"6 Şubat'tan sonra geceleri uyuyamıyordum. Bir pazar akşamı çocuklarla oturup planı kurduk, Kerem düdüğünü kendi seçti. Ertesi hafta parka birlikte yürüdük. Korku tamamen geçmedi ama artık ne yapacağımızı biliyoruz."</blockquote>
+    <cite>Zeynep Yıldız · Kadıköy, İstanbul · iki çocuk annesi, hemşire</cite>
+  </div>
+</section>
+
+<section id="ucretsiz" style="padding-top:20px">
+  <div class="wrap free">
+    <div>
+      <h2 class="s">Ücretsiz. Öyle kalacak.</h2>
+      <p class="lead">Hazırlık, ödeme gücüne bağlı olmamalı. Artçı'yı bireysel destekçiler ayakta tutuyor; reklam göstermez, veri satmaz.</p>
+    </div>
+    <div class="box">
+      <div class="amt">0 ₺</div>
+      <p style="margin:0 0 18px;color:var(--muted)">Tüm özellikler, tüm aile. İsterseniz ayda 30 ₺ ile destekçi olabilirsiniz; uygulamada hiçbir şey değişmez.</p>
+      <div class="btns"><a class="btn g" href="#">iPhone için indir</a><a class="btn o" href="#">Android için indir</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="sss" style="padding-top:20px">
+  <div class="wrap">
+    <h2 class="s">Sorular</h2>
+    <details><summary>Annem babam akıllı telefon kullanmakta zorlanıyor. Onlar için ne yapabilirim?</summary><p>Aile planını tek sayfalık bir kâğıda yazdırabilirsiniz; büyük puntolu, toplanma alanı haritalı. Buzdolabına ya da cüzdana. Telefonlarına da "yalnız büyük düğmeler" görünümüyle kurulur.</p></details>
+    <details><summary>Ses sinyali pili ne kadar tüketir?</summary><p>Ekran kapalıyken, %50 dolu bir telefonda yaklaşık 3 gün aralıklı sinyal. Bu yüzden çantada dolu bir powerbank öneriyoruz.</p></details>
+    <details><summary>Toplanma alanlarının listesi güncel mi?</summary><p>İl ve ilçe belediyelerinin yayımladığı listeler uygulamayla birlikte gelir ve internet olduğunda sessizce güncellenir. Kendi mahallenizdeki alanı yürüyerek doğrulamanızı öneririz.</p></details>
+    <details><summary>Deprem olunca Artçı beni uyarır mı?</summary><p>Hayır. Artçı bir erken uyarı sistemi değildir ve deprem tahmini yapmaz. İşi, sarsıntı başladığında ve sonrasında ne yapacağınızı internetsiz göstermektir.</p></details>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="row"><span><b>Artçı</b> · Acil durumda 112</span><span>iletisim@artci.org · Şeffaflık raporu</span></div>
+    <div class="made"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('[role=tab]'));
+  function sel(t){tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).classList.toggle('on',on)})}
+  tabs.forEach(function(t,i){t.addEventListener('click',function(){sel(t)});t.addEventListener('keydown',function(e){var k=e.key,n=null;if(k==='ArrowDown'||k==='ArrowRight')n=tabs[(i+1)%tabs.length];if(k==='ArrowUp'||k==='ArrowLeft')n=tabs[(i-1+tabs.length)%tabs.length];if(n){e.preventDefault();sel(n);n.focus()}})});
+  var sw=document.getElementById('sw'),lbl=document.getElementById('netLbl'),st=document.getElementById('stTxt');
+  sw.addEventListener('click',function(){var off=sw.getAttribute('aria-checked')!=='true';sw.setAttribute('aria-checked',off);
+    lbl.textContent=off?'Şebeke yok':'Şebeke var';st.innerHTML=off?'<b>Şebeke yok</b> · Artçı çalışıyor':'<b>4G</b> · Artçı aynı şekilde çalışıyor';});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "slug": "zihin-bahcesi",
+  "name": "Zihin Bahçesi",
+  "interpretation": "Balkon saksısı",
+  "world": "Şehirde 4 metrekarelik balkon: beton korkuluk, üç saksı (yosun, eğrelti, kaktüs), apartmanlar arasından görünen açık gri sabah göğü.",
+  "palette": [
+    "#DCE6E6",
+    "#E6E3DE",
+    "#2C2622",
+    "#4F6B2F",
+    "#9DBB52",
+    "#E49AB0"
+  ],
+  "fonts": [
+    "Fraunces",
+    "Outfit"
+  ],
+  "score": 24,
+  "lowest": "Varsayılan kokusu",
+  "moment": "\"Basılı tut, nefes al\": beş yavaş nefeste ortadaki eğreltinin uzayıp yapraklanması ve sardunyanın açması."
+}

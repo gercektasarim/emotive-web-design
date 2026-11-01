@@ -1,0 +1,21 @@
+{
+  "slug": "sofra-butce",
+  "name": "Sofra Bütçe",
+  "interpretation": "Kareli defter ve market fişi",
+  "world": "Mutfak masasında kareli ev hesap defteri, tükenmez kalem ve solmaya başlamış termal market fişleri.",
+  "palette": [
+    "#F7F8FB",
+    "#DEE4F0",
+    "#2B2F8F",
+    "#CF4039",
+    "#2E2E2E",
+    "#1E6B45"
+  ],
+  "fonts": [
+    "Schibsted Grotesk",
+    "Space Mono"
+  ],
+  "score": 25,
+  "lowest": "Tanınabilirlik",
+  "moment": "Haftalık bütçeyi kaydırınca yedi akşamlık menünün gün gün yeniden kurulması, değişen günlerin sarı yanması ve 'Yetiyor · 70 ₺ kaldı' satırı."
+}

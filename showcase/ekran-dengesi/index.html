@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ekran Dengesi — Tablet kavgası yerine aile anlaşması</title>
+<meta name="description" content="Ekran Dengesi çocuğun ekran süresini dakikaya değil içerik türüne göre ayırır: yaratıcı, öğretici, pasif. Kavga yerine birlikte imzalanan bir anlaşma önerir. Veriler tabletten çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;900&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dolap:#E8EBEC;
+  --kagit:#FFFFFF;
+  --murekkep:#23211F;
+  --yaratici:#B4541A;
+  --ogretici:#3F7434;
+  --pasif:#77738F;
+  --soluk:#55524E;
+  --cizgi:#CDD2D4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--dolap);color:var(--murekkep);font-family:"Schibsted Grotesk",system-ui,sans-serif;font-size:18px;line-height:1.55}
+:focus-visible{outline:3px solid var(--murekkep);outline-offset:3px;border-radius:4px}
+a{color:var(--murekkep)}
+.el{font-family:"Kalam",cursive}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+header{max-width:1180px;margin:0 auto;padding:18px 24px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;text-decoration:none;color:var(--murekkep);letter-spacing:-.3px}
+.logo .t{display:flex;width:34px;height:12px;border-radius:3px;overflow:hidden}
+.logo .t i{flex:1}
+header nav a{margin-left:22px;text-decoration:none;font-size:16px;font-weight:500}
+header nav a:hover{text-decoration:underline;text-underline-offset:5px}
+.btn{display:inline-block;font:inherit;font-weight:700;padding:13px 22px;border-radius:10px;background:var(--murekkep);color:#fff;text-decoration:none;border:2px solid var(--murekkep);cursor:pointer}
+.btn:hover{background:#000}
+.btn.acik{background:transparent;color:var(--murekkep)}
+.btn.acik:hover{background:var(--murekkep);color:#fff}
+header nav a.btn{color:#fff;margin-left:22px}
+
+/* hero */
+.hero{padding-top:36px;padding-bottom:84px}
+.hero-ust{display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:end;margin-bottom:44px}
+.hero h1{font-size:clamp(40px,5.8vw,78px);line-height:1;letter-spacing:-2px;margin:0;font-weight:900}
+.hero p{margin:0 0 22px;font-size:19px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+
+.panel{display:grid;grid-template-columns:1fr 330px;gap:28px;align-items:start}
+.bugun{background:var(--kagit);border-radius:18px;padding:26px;border:1px solid var(--cizgi)}
+.bugun .ust{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.bugun h2{margin:0;font-size:20px;font-weight:700}
+.bugun .ust span{color:var(--soluk);font-size:15px}
+.toplam{font-size:15px;color:var(--soluk);margin:14px 0 8px}
+.toplam b{font-size:34px;color:var(--murekkep);font-weight:900;letter-spacing:-1px;margin-right:6px}
+.serit{display:flex;height:54px;border-radius:10px;overflow:hidden;gap:3px}
+.serit div{display:flex;align-items:center;padding:0 14px;color:#fff;font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden}
+.y{background:var(--yaratici)}.o{background:var(--ogretici)}.p{background:var(--pasif)}
+.kalemler{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px}
+.kalem h3{margin:0 0 6px;font-size:16px;display:flex;align-items:center;gap:8px}
+.kalem h3 i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.kalem ul{list-style:none;margin:0;padding:0;font-size:15px;color:var(--soluk)}
+.kalem li{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #EDEFF0}
+.kalem li b{color:var(--murekkep);font-weight:500;font-variant-numeric:tabular-nums}
+.oneri{margin-top:18px;background:#F4F5F1;border-radius:12px;padding:14px 16px;font-size:16px;display:flex;gap:12px;align-items:flex-start}
+.oneri b{white-space:nowrap}
+
+.not{position:relative;background:#FFFEF7;padding:34px 26px 24px;transform:rotate(1.8deg);box-shadow:0 18px 30px -18px rgba(35,33,31,.45);margin-top:16px}
+.miknatis{position:absolute;top:-14px;width:32px;height:32px;border-radius:50%;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.not h3{font-family:Kalam;font-size:26px;margin:0 0 6px;font-weight:700}
+.not ol{font-family:Kalam;font-size:21px;line-height:1.4;padding-left:24px;margin:0 0 14px}
+.not .imzalar{display:flex;justify-content:space-between;font-family:Kalam;font-size:22px;border-top:1px solid #DAD6C6;padding-top:8px;color:#2B4A9B}
+.not small{display:block;font-family:"Schibsted Grotesk";font-size:13px;color:var(--soluk);margin-top:8px}
+
+section{padding:90px 0}
+h2.b{font-size:clamp(30px,3.8vw,50px);line-height:1.04;letter-spacing:-1.2px;font-weight:900;margin:0 0 16px;max-width:20ch}
+.acik-m{max-width:58ch}
+.beyaz{background:var(--kagit)}
+
+/* türler */
+.turler{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:40px;border-top:3px solid var(--murekkep)}
+.tur{padding:24px 26px 6px 0}
+.tur + .tur{padding-left:26px;border-left:1px solid var(--cizgi)}
+.tur .etk{display:inline-block;color:#fff;font-weight:700;padding:4px 12px;border-radius:6px;font-size:15px}
+.tur h3{font-size:24px;margin:12px 0 8px;letter-spacing:-.5px}
+.tur p{margin:0 0 12px;color:var(--soluk);font-size:17px}
+.tur .orn{font-size:15px;border-top:1px dashed var(--cizgi);padding-top:10px}
+.tur .orn b{display:block;margin-bottom:2px}
+
+/* hafta */
+.hafta{display:grid;grid-template-columns:.75fr 1.25fr;gap:50px;align-items:center}
+.grafik{background:var(--kagit);border-radius:18px;padding:26px;border:1px solid var(--cizgi)}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;align-items:end;height:220px;border-bottom:2px solid var(--murekkep)}
+.bar{display:flex;flex-direction:column-reverse;gap:2px;height:100%;justify-content:flex-start}
+.bar i{display:block;border-radius:3px}
+.gunler{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;text-align:center;font-size:14px;color:var(--soluk);margin-top:6px}
+.gunler b{color:var(--murekkep)}
+.cizgi-not{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--soluk);margin-top:14px}
+.cizgi-not span{display:flex;align-items:center;gap:6px}
+.cizgi-not i{width:12px;height:12px;border-radius:3px}
+
+/* anlaşma */
+.anlasma{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.form{background:var(--kagit);border-radius:18px;padding:28px;border:1px solid var(--cizgi)}
+.satir{padding:14px 0;border-bottom:1px solid #EDEFF0}
+.satir:last-of-type{border-bottom:0}
+.satir label{display:flex;justify-content:space-between;gap:12px;font-weight:700}
+.satir output{font-variant-numeric:tabular-nums;color:var(--pasif)}
+.satir input[type=range]{width:100%;accent-color:var(--pasif);margin-top:8px}
+.satir small{color:var(--soluk);font-size:14px;font-weight:400}
+.satir label.anahtar{display:flex;justify-content:flex-start;align-items:center;gap:12px;cursor:pointer;font-weight:700}
+.anahtar input{width:22px;height:22px;accent-color:var(--yaratici)}
+.imza-btn{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.kagit-sonuc{background:#FFFEF7;padding:30px 28px;box-shadow:0 18px 30px -18px rgba(35,33,31,.45);position:relative;transform:rotate(-1deg);min-height:300px}
+.kagit-sonuc h3{font-family:Kalam;font-size:28px;margin:0 0 10px}
+.kagit-sonuc ul{font-family:Kalam;font-size:22px;line-height:1.45;padding-left:22px;margin:0}
+.kagit-sonuc .imzalar{display:flex;justify-content:space-between;margin-top:22px;font-family:Kalam;font-size:24px;border-top:1px solid #DAD6C6;padding-top:8px;gap:10px}
+.kagit-sonuc .imzalar span{color:#B3AFA6}
+.kagit-sonuc .imzalar span.atti{color:#2B4A9B}
+.muhur{position:absolute;right:24px;top:22px;border:3px solid var(--ogretici);color:var(--ogretici);font-weight:900;padding:6px 12px;border-radius:8px;transform:rotate(8deg);font-size:18px;opacity:0;transition:opacity .3s}
+.muhur.var{opacity:1}
+
+.kanit{background:var(--murekkep);color:#E9E7E3}
+.kanit h2.b{color:#fff}
+.kanit .acik-m{color:#C9C5BF}
+.iki{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px}
+.iki div{border:1.5px solid #4A4743;border-radius:14px;padding:22px}
+.iki h3{margin:0 0 10px;font-size:18px;color:#fff}
+.iki ul{margin:0;padding-left:20px;color:#C9C5BF;font-size:16px}
+.iki li{margin-bottom:6px}
+
+.sesler{display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:end}
+.sesler figure{margin:0}
+.sesler blockquote{margin:0;font-size:clamp(22px,2.6vw,32px);line-height:1.3;font-weight:500;letter-spacing:-.5px}
+.sesler figcaption{margin-top:12px;color:var(--soluk);font-size:16px}
+.sesler .cocuk blockquote{font-family:Kalam;font-size:26px;font-weight:400;letter-spacing:0;line-height:1.35}
+
+.fiyat{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.fk{background:var(--kagit);border-radius:18px;padding:28px;border:2px solid var(--murekkep)}
+.fk .t{font-size:48px;font-weight:900;letter-spacing:-1.5px;margin:4px 0 0}
+.fk .t small{font-size:16px;font-weight:400;color:var(--soluk);letter-spacing:0}
+.fk ul{padding-left:20px;margin:12px 0 20px}
+details{border-top:1px solid var(--cizgi);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--cizgi)}
+summary{cursor:pointer;font-weight:700}
+details p{margin:8px 0 0;color:#3A3835}
+footer{padding:36px 0;font-size:15px;color:var(--soluk);border-top:1px solid var(--cizgi)}
+footer .r{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--soluk)}
+.credit{margin-top:16px;font-size:13px}
+
+@media (max-width:960px){
+  header nav a:not(.btn){display:none}
+  .hero-ust,.panel,.hafta,.anlasma,.fiyat,.sesler{grid-template-columns:1fr;gap:30px}
+  .turler{grid-template-columns:1fr}
+  .tur,.tur + .tur{padding:22px 0;border-left:0;border-bottom:1px solid var(--cizgi)}
+  .iki{grid-template-columns:1fr}
+  section{padding:64px 0}
+  .not{max-width:420px}
+}
+@media (max-width:560px){
+  .kalemler{grid-template-columns:1fr;gap:12px}
+  .serit div{padding:0 8px;font-size:14px}
+  .serit .lbl{display:none}
+  .bars,.gunler{gap:6px}
+  .bugun,.form{padding:18px}
+  .hero h1{letter-spacing:-1px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#" aria-label="Ekran Dengesi ana sayfa"><span class="t" aria-hidden="true"><i class="y"></i><i class="o"></i><i class="p"></i></span>Ekran Dengesi</a>
+  <nav aria-label="Ana menü">
+    <a href="#turler">Üç tür</a>
+    <a href="#hafta">Hafta</a>
+    <a href="#anlasma">Anlaşma</a>
+    <a href="#fiyat">Fiyat</a>
+    <a class="btn" href="#fiyat">İndir</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div class="hero-ust">
+    <h1>“Kapat şunu” demeden önce, neye baktığını görün.</h1>
+    <div>
+      <p>Ekran Dengesi süreyi dakikaya değil türe göre ayırır: yaratıcı, öğretici, pasif. Sonra akşam kavgası yerine, çocuğunuzla birlikte imzalayacağınız bir anlaşma önerir.</p>
+      <div class="cta"><a class="btn" href="#fiyat">Tablet ve telefon için indir</a><a class="btn acik" href="#anlasma">Anlaşmayı dene</a></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="bugun" aria-label="Ela'nın bugünkü ekran süresi türlere göre">
+      <div class="ust"><h2>Ela, 9 yaş · bugün</h2><span>Salı · 19.10'a kadar</span></div>
+      <p class="toplam"><b>2 sa 11 dk</b>ama hepsi aynı değil</p>
+      <div class="serit">
+        <div class="y" style="flex:48">48 dk <span class="lbl">&nbsp;yaratıcı</span></div>
+        <div class="o" style="flex:22">22 dk</div>
+        <div class="p" style="flex:61">61 dk <span class="lbl">&nbsp;pasif</span></div>
+      </div>
+      <div class="kalemler">
+        <div class="kalem"><h3><i class="y"></i>Yaratıcı</h3><ul><li>Blok oyununda köprü <b>34 dk</b></li><li>Çizim uygulaması <b>14 dk</b></li></ul></div>
+        <div class="kalem"><h3><i class="o"></i>Öğretici</h3><ul><li>Kesir oyunu <b>12 dk</b></li><li>Uzay belgeseli <b>10 dk</b></li></ul></div>
+        <div class="kalem"><h3><i class="p"></i>Pasif</h3><ul><li>Kısa video akışı <b>43 dk</b></li><li>Otomatik oynayan çizgi film <b>18 dk</b></li></ul></div>
+      </div>
+      <div class="oneri"><b>Bu akşam:</b><span>Pasif süre anlaşmadaki 45 dakikayı 16 dk geçti. Kısa video akışı 20.00'de kapanır; blok oyunu açık kalır.</span></div>
+    </div>
+    <div class="not" aria-label="Buzdolabına asılı aile anlaşması">
+      <span class="miknatis" style="left:28px;background:var(--yaratici)"></span>
+      <span class="miknatis" style="right:34px;background:var(--ogretici)"></span>
+      <h3>Ela ile anlaşmamız</h3>
+      <ol>
+        <li>Pasif ekran günde 45 dk</li>
+        <li>Yaratıcı ekran serbest, 20.30'a kadar</li>
+        <li>Cuma akşamı film gecesi, sayılmaz</li>
+        <li>Yemekte kimsede ekran yok (annem de!)</li>
+      </ol>
+      <div class="imzalar"><span>Ela</span><span>Annem</span><span>Babam</span></div>
+      <small>12 Ekim'de imzalandı · 3 hafta sonra birlikte bakılacak</small>
+    </div>
+  </div>
+</div>
+
+<section class="beyaz" id="turler">
+  <div class="wrap">
+    <h2 class="b">Bir saat bir saat değildir.</h2>
+    <p class="acik-m">Bir saat boyunca blok oyununda köprü yapmakla bir saat boyunca kısa video kaydırmak aynı şey değil. Ekran Dengesi uygulamanın adına değil, içinde ne yapıldığına bakar: aynı oyunun yapı modu yaratıcı, izleme modu pasif sayılır.</p>
+    <div class="turler">
+      <div class="tur"><span class="etk y">Yaratıcı</span><h3>Bir şey yapıyor</h3><p>Çiziyor, kuruyor, kodluyor, müzik yapıyor, video kurguluyor.</p><div class="orn"><b>Örnek</b>blok oyununda yapı modu, çizim, basit kodlama oyunları, fotoğraf düzenleme</div></div>
+      <div class="tur"><span class="etk o">Öğretici</span><h3>Bir şey öğreniyor</h3><p>Ders, dil, belgesel, soru çözme; çoğu zaman kendi seçtiği.</p><div class="orn"><b>Örnek</b>dil uygulaması, matematik oyunu, belgesel, okulun dijital ödevi</div></div>
+      <div class="tur"><span class="etk p">Pasif</span><h3>Akış onu sürüklüyor</h3><p>Bitmeyen akış, otomatik oynatma, seçmeden izleme.</p><div class="orn"><b>Örnek</b>kısa video akışı, otomatik sıradaki bölüm, başkasının oyun izlemesi</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="hafta">
+  <div class="wrap hafta">
+    <div>
+      <h2 class="b">Haftaya birlikte bakın.</h2>
+      <p class="acik-m">Pazar akşamı Ela ile aynı ekrana bakarsınız. Kimse suçlanmaz; sayılar ortadadır. Ela çarşamba pasif sınırı aştı, ama cumartesi üç saat yaratıcı ekran kullanıp bir oyun haritası yaptı. İkisi de konuşulur.</p>
+    </div>
+    <div class="grafik" role="img" aria-label="Haftalık ekran süresi: hafta içi pasif süre 45 dakika civarında, çarşamba 78 dakika; cumartesi yaratıcı süre 3 saat">
+      <div class="bars">
+        <div class="bar"><i class="p" style="height:20%"></i><i class="o" style="height:10%"></i><i class="y" style="height:16%"></i></div>
+        <div class="bar"><i class="p" style="height:27%"></i><i class="o" style="height:10%"></i><i class="y" style="height:21%"></i></div>
+        <div class="bar"><i class="p" style="height:35%"></i><i class="o" style="height:6%"></i><i class="y" style="height:10%"></i></div>
+        <div class="bar"><i class="p" style="height:19%"></i><i class="o" style="height:14%"></i><i class="y" style="height:18%"></i></div>
+        <div class="bar"><i class="p" style="height:42%"></i><i class="o" style="height:4%"></i><i class="y" style="height:8%"></i></div>
+        <div class="bar"><i class="p" style="height:18%"></i><i class="o" style="height:6%"></i><i class="y" style="height:72%"></i></div>
+        <div class="bar"><i class="p" style="height:22%"></i><i class="o" style="height:12%"></i><i class="y" style="height:30%"></i></div>
+      </div>
+      <div class="gunler" aria-hidden="true"><span>Pzt</span><span>Sal</span><b>Çar</b><span>Per</span><span>Cum<br>film</span><b>Cmt</b><span>Paz</span></div>
+      <div class="cizgi-not"><span><i class="y"></i>yaratıcı 7 sa 40 dk</span><span><i class="o"></i>öğretici 2 sa 20 dk</span><span><i class="p"></i>pasif 6 sa 05 dk</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="beyaz" id="anlasma">
+  <div class="wrap anlasma">
+    <div>
+      <h2 class="b">Kuralı siz koymayın. Birlikte yazın.</h2>
+      <p class="acik-m">Ekran Dengesi geçen haftanın verisine bakıp bir başlangıç önerir. Ayarları birlikte değiştirirsiniz; anlaşma ancak çocuk da imzalayınca yürürlüğe girer. Üç hafta sonra uygulama “bakma zamanı” der.</p>
+      <div class="form" style="margin-top:26px">
+        <div class="satir"><label for="pasif">Pasif ekran / gün <output id="po">45 dk</output></label><input id="pasif" type="range" min="15" max="90" step="5" value="45"><small>Geçen haftanın ortalaması: 52 dk</small></div>
+        <div class="satir"><label class="anahtar"><input type="checkbox" id="yar" checked> Yaratıcı ekran serbest (20.30'a kadar)</label></div>
+        <div class="satir"><label class="anahtar"><input type="checkbox" id="film" checked> Cuma film gecesi sayılmaz</label></div>
+        <div class="satir"><label class="anahtar"><input type="checkbox" id="yemek" checked> Yemekte kimsede ekran yok, ebeveynler dahil</label></div>
+        <div class="imza-btn"><button class="btn" type="button" id="i1">Ela imzalasın</button><button class="btn acik" type="button" id="i2">Annesi imzalasın</button></div>
+      </div>
+    </div>
+    <div class="kagit-sonuc" aria-live="polite">
+      <span class="muhur" id="muhur">ANLAŞTIK</span>
+      <h3>Ela ile anlaşmamız</h3>
+      <ul id="maddeler"></ul>
+      <div class="imzalar"><span id="s1">Ela ____</span><span id="s2">Annesi ____</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="kanit">
+  <div class="wrap">
+    <h2 class="b">Ela'nın ekranı Ela'nın tabletinde kalır.</h2>
+    <p class="acik-m">İçerik türünü ayırmak için tablet ekrana bakar; bu iş tamamen cihazın içinde yapılır. Ekran görüntüsü alınmaz, hiçbir yere gönderilmez, internet bağlantısı gerekmez. Ebeveynin telefonuna giden tek şey türlerin dakikalarıdır.</p>
+    <div class="iki">
+      <div><h3>Ebeveyn görür</h3><ul><li>Tür başına dakika</li><li>Hangi uygulamada ne kadar</li><li>Anlaşmanın tutup tutmadığı</li></ul></div>
+      <div><h3>Ebeveyn görmez</h3><ul><li>Mesajlar, aramalar, yazılan metinler</li><li>İzlenen videoların adları</li><li>Ekran görüntüsü ya da kayıt (hiç oluşmaz)</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap sesler">
+    <figure>
+      <blockquote>“Her akşam 20.00'de aynı kavga vardı. Şimdi kavga yerine pazar akşamı on dakikalık bir toplantı yapıyoruz. Kızım çarşambayı kendi açıkladı: ödev yoktu, sıkılmıştı.”</blockquote>
+      <figcaption>Burak Çelik · İstanbul, Kadıköy · yazılım geliştirici, Ela'nın babası</figcaption>
+    </figure>
+    <figure class="cocuk">
+      <blockquote>“Blok oyununda köprü yapmak artık sayılmıyor. Yani sayılıyor ama turuncu.”</blockquote>
+      <figcaption>Ela, 9</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="beyaz" id="fiyat">
+  <div class="wrap fiyat">
+    <div>
+      <h2 class="b">Bütün aile, tek fiyat.</h2>
+      <div class="fk">
+        <p class="t">499 ₺ <small>/ yıl</small></p>
+        <ul><li>4 çocuk cihazına kadar (tablet, telefon)</li><li>2 ebeveyn telefonu</li><li>Anlaşma şablonları ve haftalık özet</li><li>30 gün ücretsiz</li></ul>
+        <div class="cta"><a class="btn" href="#">iPhone ve iPad için</a><a class="btn acik" href="#">Android için</a></div>
+      </div>
+    </div>
+    <div>
+      <details open><summary>Çocuk bunu bir casus uygulaması gibi hissetmez mi?</summary><p>Ekran Dengesi gizli çalışmaz. Çocuk da kendi ekranını, ebeveynin gördüğünün aynısını görür. Anlaşma da onun imzası olmadan başlamaz.</p></details>
+      <details><summary>Yasaklar koyabiliyor muyum?</summary><p>Evet, uygulama ya da tür bazında saat sınırı koyabilirsiniz. Ama ilk önerimiz sınırları anlaşmaya yazmanız; imzaladığı kurala uymak, dayatılana uymaktan kolaydır.</p></details>
+      <details><summary>Bir oyunun yaratıcı mı pasif mi olduğuna nasıl karar veriyor?</summary><p>Ekrandaki etkinliğe bakar: bir şey inşa ediliyor, yazılıyor ya da çiziliyorsa yaratıcı; içerik kendi kendine akıyorsa pasif. Yanlış bulduğunuz bir sınıflandırmayı tek dokunuşla düzeltebilirsiniz.</p></details>
+      <details><summary>Hangi yaşlar için?</summary><p>6–14 yaş. Daha büyük gençler için “öz-takip” modu var: veriler yalnız gencin kendisinde kalır.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="r"><span>Ekran Dengesi · Kavga değil, anlaşma.</span><span>aile@ekrandengesi.app · Gizlilik · KVKK</span></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  let s1=false,s2=false;
+  function draw(){
+    const m=['Pasif ekran günde '+$('pasif').value+' dk'];
+    if($('yar').checked)m.push("Yaratıcı ekran serbest, 20.30'a kadar");
+    if($('film').checked)m.push('Cuma film gecesi sayılmaz');
+    if($('yemek').checked)m.push('Yemekte kimsede ekran yok');
+    $('maddeler').innerHTML=m.map(x=>'<li>'+x+'</li>').join('');
+    $('po').textContent=$('pasif').value+' dk';
+    $('s1').textContent=s1?'Ela':'Ela ____';$('s1').className=s1?'atti':'';
+    $('s2').textContent=s2?'Gül Ç.':'Annesi ____';$('s2').className=s2?'atti':'';
+    $('muhur').classList.toggle('var',s1&&s2);
+  }
+  ['pasif','yar','film','yemek'].forEach(id=>$(id).addEventListener('input',()=>{s1=s2=false;draw()}));
+  $('i1').addEventListener('click',()=>{s1=true;draw()});
+  $('i2').addEventListener('click',()=>{s2=true;draw()});
+  draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "slug": "yuruyus-arkadasi",
+  "name": "Yürüyüş Arkadaşı",
+  "interpretation": "Mahalle turu ve sokak tabelası",
+  "world": "Ankara Kalaba'da kaldırım taşı, lacivert sokak tabelaları, fırına inen gölgeli yokuş, parktaki bank ve kahvehane; kışın buzlanan kaldırım ve bastonun buz ucu.",
+  "palette": [
+    "#E7E5DF",
+    "#1D4E89",
+    "#3E6B3A",
+    "#B9501C",
+    "#1C2124",
+    "#DCEAF3"
+  ],
+  "fonts": [
+    "Encode Sans Condensed",
+    "Encode Sans"
+  ],
+  "score": 27,
+  "lowest": "Tanınabilirlik",
+  "moment": "Günün mahalle turunun haritasında Ev, Fırın, Yokuş, Bank, Kahvehane duraklarına dokununca o bölümün adım özeti çıkıyor; yokuşta adımın 48 cm'ye kısaldığı turuncu çizgiyle işaretli."
+}

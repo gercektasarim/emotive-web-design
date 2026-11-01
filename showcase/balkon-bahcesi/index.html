@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Balkon Bahçesi — Balkonun kaç saat güneş alıyor?</title>
+<meta name="description" content="Balkon Bahçesi balkonunun güneş alma saatlerini kamerayla ölçer; hangi saksıya domates, hangisine nane ekeceğini, ne zaman ekip ne zaman sulayacağını söyler. Ölçüm telefonda yapılır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --beton:#E1DED6;    /* balkon zemini */
+  --beton-2:#D3CFC5;
+  --demir:#2F3437;    /* korkuluk */
+  --saksi:#B4532E;    /* pişmiş toprak saksı */
+  --saksi-2:#8F3F22;
+  --feslegen:#3F6B2F;
+  --golge:#3B4762;    /* karşı binanın gölgesi */
+  --gunes:#FFD978;
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--beton);color:var(--demir);font:400 18px/1.6 "Literata",Georgia,serif;
+  background-image:radial-gradient(rgba(47,52,55,.07) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.35) 1px,transparent 1.2px);background-size:7px 7px,11px 11px;background-position:0 0,3px 5px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--saksi);outline-offset:3px;border-radius:3px}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;line-height:1;margin:0;letter-spacing:-.02em}
+.w{max-width:1200px;margin:0 auto;padding:0 28px}
+.ust{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0}
+.logo{display:flex;align-items:center;gap:10px;font:800 22px/1 "Bricolage Grotesque";text-decoration:none}
+.ust nav{display:flex;gap:24px;font:500 15px "Bricolage Grotesque"}
+.ust nav a{text-decoration:none}
+.ust nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.btn{display:inline-block;font:700 17px/1 "Bricolage Grotesque";padding:15px 22px;border-radius:40px;text-decoration:none;border:2px solid var(--demir)}
+.btn.dolu{background:var(--saksi);border-color:var(--saksi);color:#fff}
+.btn.dolu:hover{background:var(--saksi-2);border-color:var(--saksi-2)}
+.btn.bos:hover{background:var(--beton-2)}
+
+.bas{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:end;padding:30px 0 30px}
+.bas h1{font-size:clamp(46px,6.6vw,92px)}
+.bas p{margin:0 0 18px;font-size:19px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+
+/* balkon planı */
+.balkon{display:grid;grid-template-columns:1fr 330px;gap:24px;align-items:stretch}
+.plan{background:#F2F0EA;border-radius:6px;padding:16px 18px 14px;border:1px solid #C9C5BA}
+.plan .ust2{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font:500 14px "Bricolage Grotesque";color:#5A5F61;margin-bottom:8px}
+.plan svg{display:block;width:100%;height:auto}
+.saat{display:flex;align-items:center;gap:16px;margin-top:10px}
+.saat output{font:800 34px/1 "Bricolage Grotesque";min-width:3.2ch;font-variant-numeric:tabular-nums}
+.saat input{flex:1;accent-color:var(--saksi);height:30px}
+.saat label{font:500 14px "Bricolage Grotesque";color:#5A5F61}
+.saksi-btn{cursor:pointer}
+.saksi-btn:focus{outline:none}
+.saksi-btn:focus-visible .halka{stroke:var(--demir);stroke-width:3}
+.saksi-btn .halka{fill:none;stroke:transparent;stroke-width:3}
+.saksi-btn.secili .halka{stroke:var(--saksi);stroke-dasharray:5 4}
+.etk{font:700 13px "Bricolage Grotesque";fill:var(--demir)}
+
+/* tohum paketi kartı */
+.paket{background:#fff;border-radius:4px;position:relative;display:flex;flex-direction:column;box-shadow:0 14px 28px -20px rgba(0,0,0,.45);overflow:hidden}
+.paket .bant{background:var(--feslegen);color:#fff;padding:18px 20px 16px;position:relative}
+.paket .bant::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:10px;background:radial-gradient(circle at 5px 0,var(--feslegen) 5px,transparent 5.5px) 0 0/10px 10px repeat-x}
+.paket .no{font:500 14px "Bricolage Grotesque";opacity:.85}
+.paket h2{font-size:34px;margin-top:4px}
+.paket .lat{font-style:italic;font-size:15px;opacity:.9}
+.paket .govde{padding:22px 20px 18px;font-size:16px}
+.gunes-sa{display:flex;align-items:baseline;gap:8px;font:800 30px/1 "Bricolage Grotesque";color:var(--saksi-2)}
+.gunes-sa small{font:500 14px "Bricolage Grotesque";color:#5A5F61}
+.paket dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:16px 0 0}
+.paket dt{font:600 14px "Bricolage Grotesque";color:#5A5F61;padding-top:2px}
+.paket dd{margin:0}
+.paket .ipucu{margin-top:auto;padding:14px 20px;background:#F4EEE6;font-size:15px}
+
+section{padding:96px 0}
+.iki{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;align-items:center}
+.iki h2{font-size:clamp(34px,4.2vw,56px)}
+.siluet{background:#F2F0EA;border-radius:6px;padding:18px;border:1px solid #C9C5BA}
+.siluet svg{display:block;width:100%;height:auto}
+.adim{display:grid;grid-template-columns:auto 1fr;gap:14px;margin-top:20px}
+.adim b{font:800 15px "Bricolage Grotesque";background:var(--demir);color:#fff;border-radius:50%;width:30px;height:30px;display:grid;place-items:center}
+.adim p{margin:0}
+
+.ev{background:var(--golge);color:#E8EAF0}
+.ev .w{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.ev h2{font-size:clamp(34px,4.2vw,54px);color:#fff}
+.ev ul{list-style:none;margin:0;padding:0}
+.ev li{padding:16px 0;border-top:1px solid #56628A;display:grid;grid-template-columns:150px 1fr;gap:16px}
+.ev li b{font:700 17px "Bricolage Grotesque";color:var(--gunes)}
+
+.tohumlar{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:34px}
+.tohum{background:#fff;border-radius:4px;overflow:hidden;box-shadow:0 10px 20px -18px rgba(0,0,0,.5)}
+.tohum .ust3{height:92px;position:relative;display:flex;align-items:flex-end;padding:12px 16px;color:#fff;font:800 24px/1 "Bricolage Grotesque"}
+.tohum .ust3 svg{position:absolute;right:10px;top:10px}
+.tohum .ic{padding:14px 16px 18px;font-size:15px}
+.tohum .ic div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed #D8D3C8}
+.tohum .ic span:first-child{font:600 13px "Bricolage Grotesque";color:#5A5F61}
+.tohum .ic span:last-child{text-align:right}
+.tohum .verim{margin-top:10px;font-style:italic;color:var(--saksi-2)}
+
+.soz{display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:center}
+.soz blockquote{margin:0;font:700 clamp(28px,3.2vw,42px)/1.15 "Bricolage Grotesque";letter-spacing:-.02em}
+.soz cite{display:block;margin-top:16px;font-style:normal;font-size:16px;color:#5A5F61}
+.hasat{background:#fff;border-radius:4px;padding:20px 22px;font-size:16px;border-left:6px solid var(--saksi)}
+.hasat div{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #EEE9E0}
+.hasat div:last-child{border:0;font-weight:600}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
+.fp{background:#F2F0EA;border:1px solid #C9C5BA;border-radius:6px;padding:28px}
+.fp.tam{background:#fff;border:2px solid var(--saksi)}
+.fp h3{font-size:26px}
+.fp .tl{font:800 48px/1 "Bricolage Grotesque";margin:14px 0 4px}
+.fp .tl small{font:500 16px "Bricolage Grotesque";color:#5A5F61}
+.fp ul{padding-left:20px;margin:14px 0 22px}
+
+.sss details{border-top:2px solid var(--demir);padding:18px 0}
+.sss summary{cursor:pointer;font:700 22px/1.3 "Bricolage Grotesque"}
+.sss p{margin:8px 0 0;max-width:44em}
+
+footer{background:var(--demir);color:#D9DCDD;padding:52px 0 30px}
+footer .w{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+footer h2{color:#fff;font-size:clamp(30px,3.6vw,44px);max-width:16em}
+footer .imza{width:100%;border-top:1px solid #4A5053;padding-top:16px;font-size:14px}
+
+@media (max-width:980px){
+  .bas,.balkon,.iki,.ev .w,.soz,.fiyat{grid-template-columns:1fr}
+  .tohumlar{grid-template-columns:1fr 1fr}
+  .ust nav{display:none}
+}
+@media (max-width:520px){
+  .w{padding:0 16px}
+  .tohumlar{grid-template-columns:1fr}
+  .ev li{grid-template-columns:1fr;gap:4px}
+  section{padding:64px 0}
+  .plan{padding:12px 10px}
+  .saat output{font-size:28px}
+  .etk{font-size:26px}.etk .s{display:none}
+}
+</style>
+</head>
+<body>
+<div class="w">
+  <header class="ust">
+    <a class="logo" href="#"><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 16h18l-3 14H10Z" fill="#B4532E"/><rect x="5" y="13" width="22" height="4" rx="1" fill="#8F3F22"/><path d="M16 13C16 8 12 5 8 5c0 4 3 8 8 8ZM16 13c0-5 4-9 9-9 0 5-4 9-9 9Z" fill="#3F6B2F"/></svg>Balkon Bahçesi</a>
+    <nav aria-label="Sayfa içi"><a href="#olcum">Nasıl ölçer</a><a href="#tohum">Ne ekilir</a><a href="#fiyat">Fiyat</a><a href="#sss">Sorular</a></nav>
+  </header>
+</div>
+
+<main>
+<div class="w">
+  <div class="bas">
+    <h1>Balkonun günde kaç saat güneş alıyor?</h1>
+    <div>
+      <p>Balkonu telefonla bir kez tara. Balkon Bahçesi güneşin nereden girip nerede kaybolduğunu hesaplar; hangi köşeye domates, hangisine nane koyacağını, ne zaman ekip ne zaman sulayacağını söyler.</p>
+      <div class="cta"><a class="btn dolu" href="#fiyat">Ücretsiz indir</a><a class="btn bos" href="#olcum">Nasıl ölçüyor?</a></div>
+    </div>
+  </div>
+
+  <div class="balkon">
+    <div class="plan">
+      <div class="ust2"><span>Kuşbakışı · Bornova, 4. kat, güneybatı balkonu · 3,2 × 1,5 m</span><span>Saksıya dokun</span></div>
+      <svg id="plan" viewBox="0 0 640 336" role="img" aria-labelledby="planT">
+        <title id="planT">Balkon planı: altı saksı, saat ilerledikçe yan duvarların ve karşı binanın gölgesi balkonda gezinir</title>
+        <defs>
+          <pattern id="karo" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#E9E5DC"/><path d="M40 0H0V40" fill="none" stroke="#D6D1C6" stroke-width="1.5"/></pattern>
+        </defs>
+        <rect x="0" y="0" width="640" height="300" fill="url(#karo)"/>
+        <rect id="gunesAlan" x="12" y="14" width="616" height="276" fill="#FFD978" opacity=".35"/>
+        <g id="golgeler" fill="#3B4762" opacity=".42"></g>
+        <rect x="0" y="0" width="640" height="14" fill="#8F8A80"/><rect x="250" y="0" width="120" height="14" fill="#C9C5BA"/><text x="310" y="11" text-anchor="middle" font-size="10" font-family="Bricolage Grotesque" fill="#2F3437">salon kapısı</text>
+        <rect x="0" y="0" width="12" height="300" fill="#8F8A80"/><rect x="628" y="0" width="12" height="300" fill="#8F8A80"/>
+        <g stroke="#2F3437" stroke-width="3"><line x1="12" y1="296" x2="628" y2="296"/></g>
+        <g stroke="#2F3437" stroke-width="1.5"><path d="M30 290v12M60 290v12M90 290v12M120 290v12M150 290v12M180 290v12M210 290v12M240 290v12M270 290v12M300 290v12M330 290v12M360 290v12M390 290v12M420 290v12M450 290v12M480 290v12M510 290v12M540 290v12M570 290v12M600 290v12"/></g>
+        <g opacity=".75"><rect x="290" y="120" width="56" height="56" rx="28" fill="#C9C5BA"/><circle cx="318" cy="148" r="7" fill="#fff" stroke="#8F8A80"/><text x="318" y="194" text-anchor="middle" font-size="11" font-family="Bricolage Grotesque" fill="#5A5F61">çay masası</text></g>
+        <g id="saksilar"></g>
+        <g id="gunesIsaret"><circle r="13" fill="#FFD978" stroke="#C98A1B" stroke-width="2"/></g>
+      </svg>
+      <div class="saat">
+        <output id="saatOut" for="saat">10:30</output>
+        <input id="saat" type="range" min="6" max="20" step="0.25" value="10.5" aria-label="Günün saati, 06:00 ile 20:00 arası">
+        <label for="saat">Mayıs ortası · saati kaydır</label>
+      </div>
+    </div>
+
+    <article class="paket" aria-live="polite">
+      <div class="bant" id="bant">
+        <div class="no" id="pNo">Saksı 3 · ön, ortada</div>
+        <h2 id="pAd">Çeri domates</h2>
+        <div class="lat" id="pLat">Solanum lycopersicum var. cerasiforme</div>
+      </div>
+      <div class="govde">
+        <div class="gunes-sa"><span id="pSaat">8 sa 10 dk</span><small>güneş, mayıs ortası</small></div>
+        <dl>
+          <dt>Ek</dt><dd id="pEk">Fide dik: 20 Nisan – 15 Mayıs</dd>
+          <dt>Sula</dt><dd id="pSu">Her sabah 1 litre; temmuzda sabah ve akşam</dd>
+          <dt>Hasat</dt><dd id="pHa">Temmuz başı – ekim</dd>
+          <dt>Saksı</dt><dd id="pSk">En az 20 litre, kazık şart</dd>
+        </dl>
+      </div>
+      <div class="ipucu" id="pIp">Öğleden sonra 16:30'da karşı apartman güneşi kesiyor; sulamayı akşam değil sabah yap.</div>
+    </article>
+  </div>
+</div>
+
+<section id="olcum">
+  <div class="w iki">
+    <div>
+      <h2>Bir tarama, bütün yılın güneşi.</h2>
+      <div class="adim"><b>1</b><p>Balkonun ortasında telefonu yavaşça bir tur çevir. Kamera karşı binaları, üst balkonun saçağını ve yan duvarları çıkarır.</p></div>
+      <div class="adim"><b>2</b><p>Pusula ve tarih, güneşin bugün, haziranda ve aralıkta hangi yoldan geçeceğini söyler. Hesap telefonda, 6 saniye.</p></div>
+      <div class="adim"><b>3</b><p>Her köşe için güneş saati ve o köşeye uyan sebze çıkar. Bir haftada bir, "yarın sula" gibi kısa hatırlatmalar gelir.</p></div>
+    </div>
+    <div class="siluet">
+      <svg viewBox="0 0 600 300" role="img" aria-labelledby="siT">
+        <title id="siT">Balkondan görünen ufuk: karşı binaların silüeti ve haziran, mayıs, aralık güneş yolları; aralıkta güneş çoğu gün binaların arkasında kalıyor</title>
+        <rect width="600" height="300" fill="#EEF0F2"/>
+        <path d="M20 250 Q300 -10 580 250" fill="none" stroke="#E0A11B" stroke-width="3"/>
+        <path d="M60 250 Q300 40 540 250" fill="none" stroke="#E0A11B" stroke-width="3" stroke-dasharray="8 6"/>
+        <path d="M150 250 Q300 150 450 250" fill="none" stroke="#E0A11B" stroke-width="3" stroke-dasharray="2 6"/>
+        <path d="M0 300V200h70v-30h60v50h40v-80h90v60h40v40h60v-90h70v30h50v20h60v-10h60v100Z" fill="#9AA1AE"/>
+        
+        <g font-family="Bricolage Grotesque" font-size="13" fill="#2F3437" font-weight="700"><text x="292" y="98">haziran · 9 sa</text><text x="292" y="148">mayıs · 8 sa</text><text x="262" y="196">aralık · 1,5 sa</text></g>
+        <g font-family="Bricolage Grotesque" font-size="12" fill="#2F3437"><text x="20" y="290">doğu</text><text x="290" y="290">güney</text><text x="545" y="290">batı</text></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="ev">
+  <div class="w">
+    <div>
+      <h2>Balkon taraması evini gösterir. O yüzden telefondan çıkmaz.</h2>
+      <p>Taramada salonun bir köşesi, karşı komşunun penceresi, kaçıncı katta oturduğun görünür. Güneş hesabı için bunların hiçbiri bir sunucuya gitmez; hesap telefonda yapılır, internet olmasa da.</p>
+    </div>
+    <ul>
+      <li><b>Tarama görüntüsü</b><span>Silüet çıkarıldıktan sonra silinir; yalnız çizgiler kalır.</span></li>
+      <li><b>Konum</b><span>Yalnız enlem için, ilçe hassasiyetinde, telefonda.</span></li>
+      <li><b>Hesap</b><span>Gerekmez. Uygulamayı açarsın, balkonun oradadır.</span></li>
+      <li><b>Bitki fotoğrafı</b><span>"Yaprak neden sarardı?" diye sorarsan da cevap telefonda.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="tohum">
+  <div class="w">
+    <h2 style="font-size:clamp(34px,4.2vw,56px);max-width:16ch">Kaç saat güneş, hangi sebze.</h2>
+    <div class="tohumlar">
+      <div class="tohum"><div class="ust3" style="background:#B4532E">Domates<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="23" r="14" fill="#E25B3A"/><path d="M20 9l4 5 6-1-4 4M20 9l-4 5-6-1 4 4" stroke="#3F6B2F" stroke-width="2.5" fill="none"/></svg></div><div class="ic"><div><span>Güneş</span><span>6 saat ve üstü</span></div><div><span>Ek</span><span>fide, nisan sonu</span></div><div><span>Saksı</span><span>20 L</span></div><p class="verim">Bir saksıdan 3 kg çeri, temmuz–ekim.</p></div></div>
+      <div class="tohum"><div class="ust3" style="background:#3F6B2F">Fesleğen<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 34V14M20 22c-8 0-12-6-12-12 7 0 12 5 12 12ZM20 18c7 0 11-5 11-11-7 0-11 5-11 11Z" fill="#7FB069" stroke="#E8F0DE" stroke-width="1.5"/></svg></div><div class="ic"><div><span>Güneş</span><span>5–6 saat</span></div><div><span>Ek</span><span>tohum, mayıs</span></div><div><span>Saksı</span><span>5 L</span></div><p class="verim">Çiçeğini kopar, yaz boyu yaprak verir.</p></div></div>
+      <div class="tohum"><div class="ust3" style="background:#6E8B3D">Marul, roka<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 34c-10 0-14-8-12-16 4 2 7 6 8 10-1-8 1-14 4-18 3 4 5 10 4 18 1-4 4-8 8-10 2 8-2 16-12 16Z" fill="#A9CB6E"/></svg></div><div class="ic"><div><span>Güneş</span><span>4–5 saat</span></div><div><span>Ek</span><span>mart ve eylül</span></div><div><span>Saksı</span><span>uzun kasa</span></div><p class="verim">Dıştan kopar, üç hafta salata.</p></div></div>
+      <div class="tohum"><div class="ust3" style="background:#3B4762">Nane<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 34V10M20 16c-6 0-9-3-9-7 5 0 9 3 9 7ZM20 16c6 0 9-3 9-7-5 0-9 3-9 7ZM20 26c-7 0-10-4-10-8 6 0 10 4 10 8ZM20 26c7 0 10-4 10-8-6 0-10 4-10 8Z" fill="#8FC7A0"/></svg></div><div class="ic"><div><span>Güneş</span><span>3 saat yeter</span></div><div><span>Ek</span><span>kök, her zaman</span></div><div><span>Saksı</span><span>ayrı saksı, yayılır</span></div><p class="verim">Gölge köşenin şampiyonu.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w soz">
+    <div>
+      <blockquote>"Domatesi üç yıl hep yanlış köşeye koymuşum. Uygulama 'orası 3 saat' dedi. Saksıyı iki metre kaydırdım, temmuzda ilk kaseyi topladım."</blockquote>
+      <cite>Burak Şen · 34 · muhasebeci, Bornova, 4. kat</cite>
+    </div>
+    <div class="hasat" aria-label="Burak'ın geçen yazki hasat defteri">
+      <div><span>Çeri domates</span><span>3,4 kg</span></div>
+      <div><span>Sivri biber</span><span>41 adet</span></div>
+      <div><span>Fesleğen</span><span>yaz boyu</span></div>
+      <div><span>Nane</span><span>her çaya</span></div>
+      <div><span>Toplam masraf</span><span>612 ₺ saksı + toprak + fide</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:0">
+  <div class="w">
+    <h2 style="font-size:clamp(34px,4.2vw,56px)">Bir balkon ücretsiz.</h2>
+    <div class="fiyat">
+      <div class="fp"><h3>Balkon</h3><div class="tl">0 ₺</div><ul><li>Bir balkon, sınırsız saksı</li><li>Güneş haritası ve sebze önerisi</li><li>Sulama hatırlatması</li></ul><a class="btn bos" href="#">Ücretsiz indir</a></div>
+      <div class="fp tam"><h3>Bahçıvan</h3><div class="tl">149 ₺ <small>bir kere</small></div><ul><li>Balkon, teras, pencere önü: sınırsız alan</li><li>Bütün yılın güneşi, ay ay</li><li>Yaprak fotoğrafından hastalık ve eksiklik</li><li>Hasat defteri</li></ul><a class="btn dolu" href="#">Bahçıvan ol</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sss" id="sss" style="padding-top:0">
+  <div class="w" style="max-width:860px">
+    <h2 style="font-size:40px;margin-bottom:16px">Sorular</h2>
+    <details open><summary>Kuzey balkonda bir şey yetişir mi?</summary><p>Evet: nane, maydanoz, marul ve roka 3–4 saatle idare eder. Domatesi önermez; önerseydi seni yorardı.</p></details>
+    <details><summary>Bulutlu günde ölçebilir miyim?</summary><p>Evet. Güneşi değil, ufku ölçer; güneşin yolunu tarihten ve pusuladan hesaplar. Bulut, sulama hatırlatmasını etkiler, haritayı etkilemez.</p></details>
+    <details><summary>Toprak, gübre de söylüyor mu?</summary><p>Saksı büyüklüğünü ve toprak karışımını söyler (bahçe toprağı değil, torf ve perlit). Gübreyi ayda bir, ne kadar olacağıyla hatırlatır.</p></details>
+    <details><summary>Yazın tatile gidersem?</summary><p>Kaç gün gideceğini yazarsın; hangi saksının kaç gün dayanacağını ve fitilli sulamanın nasıl kurulacağını anlatır.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <h2>Bu bahar ilk domates senin balkonundan.</h2>
+    <a class="btn dolu" href="#fiyat">Ücretsiz indir</a>
+    <div class="imza">Balkon Bahçesi · İzmir · merhaba@balkonbahcesi.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+ const W=640,H=300,K=60;
+ const P=[
+  {x:64,y:250,ad:"Marul ve roka",lat:"Lactuca sativa · Eruca vesicaria",yer:"ön, sol köşe",renk:"#6E8B3D",ek:"Tohum: mart başı ve eylül",su:"İki günde bir, toprak kurudukça",ha:"Ekimden 4 hafta sonra",sk:"Uzun kasa, 15 cm derin",ip:"Öğleden sonra 13:00'te sol duvarın gölgesi geliyor; yaz sıcağında marulun işine yarar."},
+  {x:200,y:258,ad:"Sivri biber",lat:"Capsicum annuum",yer:"ön, sol orta",renk:"#B4532E",ek:"Fide: mayıs başı",su:"Her sabah 0,7 litre",ha:"Temmuz ortası – ekim",sk:"En az 12 litre",ip:"Biber sıcağı sever; bu köşe öğleden sonra en sıcak yer."},
+  {x:440,y:258,ad:"Çeri domates",lat:"Solanum lycopersicum var. cerasiforme",yer:"ön, ortada",renk:"#B4532E",ek:"Fide dik: 20 Nisan – 15 Mayıs",su:"Her sabah 1 litre; temmuzda sabah ve akşam",ha:"Temmuz başı – ekim",sk:"En az 20 litre, kazık şart",ip:"Öğleden sonra 16:30'da karşı apartman güneşi kesiyor; sulamayı akşam değil sabah yap."},
+  {x:578,y:250,ad:"Fesleğen",lat:"Ocimum basilicum",yer:"ön, sağ köşe",renk:"#3F6B2F",ek:"Tohum: mayıs ortası",su:"Gün aşırı, yaprağı ıslatmadan",ha:"Haziran – eylül",sk:"5 litre yeter",ip:"Sabah 11:00'e kadar sağ duvarın gölgesinde; sabah serinliğini sever."},
+  {x:580,y:66,ad:"Nane",lat:"Mentha spicata",yer:"arka, sağ köşe",renk:"#3B4762",ek:"Kök parçası, her mevsim",su:"Toprağı hep nemli",ha:"Bütün yıl",sk:"Ayrı saksı: yayılır",ip:"Bu köşe az güneş alıyor; nane şikâyet etmez."},
+  {x:70,y:66,ad:"Maydanoz",lat:"Petroselinum crispum",yer:"arka, sol köşe",renk:"#6E8B3D",ek:"Tohum: mart; çimlenmesi 3 hafta sürer, sabret",su:"İki günde bir",ha:"Mayıs – kasım",sk:"Derin saksı, 8 litre",ip:"Sabah güneşi alıyor, öğleden sonra gölge; maydanoz için ideal."}
+ ];
+ function golgede(x,y,t){
+  if(t<8||t>=16.5)return true;
+  if(t<12&&x>W-12-K*(12-t))return true;
+  if(t>12&&x<12+K*(t-12))return true;
+  if(y<14+Math.max(0,76-25*Math.abs(t-13)))return true;
+  return false;
+ }
+ P.forEach(p=>{let s=0;for(let t=6;t<20;t+=0.05){if(!golgede(p.x,p.y,t))s+=0.05}p.sa=s;});
+ const fmt=h=>{const sa=Math.floor(h+1e-6),dk=Math.round((h-sa)*60/5)*5;return dk===60?(sa+1)+' sa':(sa+' sa'+(dk?' '+dk+' dk':''));};
+ const g=document.getElementById('saksilar');
+ g.innerHTML=P.map((p,i)=>'<g class="saksi-btn'+(i===2?' secili':'')+'" tabindex="0" role="button" data-i="'+i+'" aria-label="Saksı '+(i+1)+', '+p.yer+': '+fmt(p.sa)+' güneş, '+p.ad+'"><circle class="halka" cx="'+p.x+'" cy="'+p.y+'" r="31"/><circle cx="'+p.x+'" cy="'+p.y+'" r="24" fill="#B4532E"/><circle cx="'+p.x+'" cy="'+p.y+'" r="18" fill="#5B3B25"/><path d="M'+p.x+' '+p.y+'c-12-2-16-12-14-18 8 2 13 8 14 18Zm0 0c10-4 15-12 12-19-8 3-12 10-12 19Zm0 0c-3 8 2 14 10 15 0-8-4-13-10-15Z" fill="'+(p.ad.includes('domates')||p.ad.includes('biber')?'#5E9A3E':'#7FB069')+'"/>'+(p.ad.includes('domates')?'<circle cx="'+(p.x+9)+'" cy="'+(p.y+6)+'" r="4.5" fill="#E25B3A"/><circle cx="'+(p.x-6)+'" cy="'+(p.y+9)+'" r="4" fill="#E25B3A"/>':'')+'<text class="etk" x="'+p.x+'" y="'+(p.y<150?p.y+46:p.y-33)+'" text-anchor="middle"><tspan class="n">'+(i+1)+'</tspan><tspan class="s"> · '+fmt(p.sa)+'</tspan></text></g>').join('');
+ function sec(i){const p=P[i];
+  g.querySelectorAll('.saksi-btn').forEach(e=>e.classList.toggle('secili',+e.dataset.i===i));
+  pNo.textContent='Saksı '+(i+1)+' · '+p.yer;pAd.textContent=p.ad;pLat.textContent=p.lat;pSaat.textContent=fmt(p.sa);
+  pEk.textContent=p.ek;pSu.textContent=p.su;pHa.textContent=p.ha;pSk.textContent=p.sk;pIp.textContent=p.ip;bant.style.background=p.renk;
+  document.querySelector('.paket .bant').style.setProperty('--feslegen',p.renk);}
+ g.addEventListener('click',e=>{const b=e.target.closest('.saksi-btn');if(b)sec(+b.dataset.i)});
+ g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const b=e.target.closest('.saksi-btn');if(b){e.preventDefault();sec(+b.dataset.i)}}});
+ const r=document.getElementById('saat'),o=document.getElementById('saatOut'),gl=document.getElementById('golgeler'),gi=document.getElementById('gunesIsaret');
+ function saat(){const t=+r.value;const sa=Math.floor(t),dk=Math.round((t-sa)*60);o.textContent=String(sa).padStart(2,'0')+':'+String(dk).padStart(2,'0');
+  let s='';
+  if(t<8||t>=16.5){s='<rect x="12" y="14" width="616" height="282"/>';}
+  else{ if(t<12){const w=K*(12-t);s+='<rect x="'+(W-12-w)+'" y="14" width="'+w+'" height="282"/>';}
+        if(t>12){const w=K*(t-12);s+='<rect x="12" y="14" width="'+w+'" height="282"/>';}
+        const d=Math.max(0,76-25*Math.abs(t-13));if(d>0)s+='<rect x="12" y="14" width="616" height="'+d+'"/>'; }
+  gl.innerHTML=s;
+  const a=(t-6)/14;const x=620-a*600;const y=324-Math.sin(a*Math.PI)*6;gi.setAttribute('transform','translate('+x+' '+(y-2)+')');
+  gi.style.opacity=(t<8||t>=16.5)?.35:1;
+ }
+ r.addEventListener("input",saat);saat();sec(2);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adım — Koşu formunu telefon kamerasıyla ölç, dizini koru</title>
+<meta name="description" content="Adım telefon kamerasıyla koşu formunu kare kare analiz eder: diz içe kaçışı, adım sıklığı, topuk vuruşu. Video telefondan çıkmaz. İlk yarı maratonuna sakatlanmadan hazırlan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asphalt:#1B1C1F; --asphalt-2:#26282C; --asphalt-3:#34373C; --tartan:#C8452B; --tartan-dk:#9E3320; --lane:#F3F1EC; --lane-dim:#BDBAB2;
+  --bib:#F4C430; --concrete:#ECEDEA; --ink:#1B1C1F; --ink-2:#4D4F55; --good:#5FBF8A;
+  --disp:"Big Shoulders Display",Impact,sans-serif; --sans:"Archivo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--concrete);color:var(--ink);font:400 17.5px/1.6 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--bib);outline-offset:3px}
+.wrap{max-width:1220px;margin:0 auto;padding:0 32px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px 12px;z-index:9}
+.dark{background:var(--asphalt);color:var(--lane)}
+
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
+.logo{font:900 30px var(--disp);letter-spacing:.02em;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo span{display:inline-block;width:26px;height:14px;background:repeating-linear-gradient(90deg,var(--lane) 0 3px,transparent 3px 8px);transform:skewX(-20deg)}
+header nav{display:flex;gap:26px;align-items:center;font-size:15px;font-weight:500}
+header nav a{text-decoration:none;color:var(--lane-dim)}
+header nav a:hover{color:var(--lane)}
+.btn{display:inline-block;font:800 19px var(--disp);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:13px 24px;border-radius:2px}
+.btn.red{background:var(--tartan);color:#fff}
+.btn.red:hover{background:var(--tartan-dk)}
+.btn.line{box-shadow:inset 0 0 0 2px currentColor}
+header nav .btn{padding:8px 16px;font-size:17px;color:#fff}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:30px 0 0}
+.hero h1{font:900 clamp(56px,9vw,128px)/.98 var(--disp);text-transform:uppercase;margin:0;letter-spacing:-.005em}
+.hero h1 em{font-style:normal;color:var(--tartan)}
+.hero-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;margin-top:30px;align-items:center;position:relative;z-index:1}
+.hero .lede{font-size:19px;color:#D8D5CE;max-width:30em;margin:0 0 24px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.facts{font-size:15.5px;color:var(--lane-dim);margin:0;padding-bottom:40px}
+.facts b{display:block;font:800 30px var(--disp);color:var(--lane);letter-spacing:.02em}
+.track{height:86px;background:var(--tartan);display:grid;grid-template-columns:repeat(8,1fr);border-top:3px solid var(--lane)}
+.track span{border-right:3px solid rgba(243,241,236,.9);display:flex;align-items:center;justify-content:center;font:900 46px/1 var(--disp);color:rgba(243,241,236,.92)}
+.track span:last-child{border-right:0}
+
+.frame{background:var(--asphalt-2);border:1px solid var(--asphalt-3);border-radius:6px;padding:14px;position:relative}
+.frame-top{display:flex;justify-content:space-between;font:600 13px var(--sans);color:var(--lane-dim);margin-bottom:10px;letter-spacing:.02em}
+.frame-top .rec{color:var(--bib)}
+.shot{position:relative;background:linear-gradient(180deg,#2E3136 0,#2E3136 70%,#7A3426 70%,#8D3B2A 100%);border-radius:3px;aspect-ratio:16/10;overflow:hidden}
+.shot svg{position:absolute;inset:0;width:100%;height:100%}
+.tag{position:absolute;background:rgba(27,28,31,.9);border-left:4px solid var(--bib);padding:6px 10px;font-size:13px;color:#E8E5DE;line-height:1.25}
+.tag b{display:block;font:800 26px/1 var(--disp);color:#fff;letter-spacing:.02em}
+.tag.warn{border-color:var(--tartan)}
+.tag.warn b{color:#FF9C85}
+.reels{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:8px}
+.reels svg{display:block;width:100%;height:auto;background:#2E3136;border-radius:2px}
+.reels svg.on{outline:2px solid var(--bib)}
+
+section{padding:96px 0}
+h2{font:900 clamp(40px,5vw,72px)/1 var(--disp);text-transform:uppercase;margin:0 0 18px;letter-spacing:.005em}
+.sub{color:var(--ink-2);max-width:56ch;margin:0 0 40px;font-size:18px}
+.dark .sub{color:#CFCBC3}
+#cekim,#plan,#fiyat{background-image:linear-gradient(90deg,rgba(27,28,31,.05) 1px,transparent 1px);background-size:160px 100%}
+
+/* setup */
+.setup{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:4px solid var(--ink)}
+.setup > div{padding:26px 28px 6px 0;margin-right:28px;border-right:1px solid #D3CFC6}
+.setup > div:last-child{border-right:0}
+.setup .n{font:900 72px/.9 var(--disp);color:var(--tartan)}
+.setup h3{font:800 28px/1 var(--disp);text-transform:uppercase;margin:12px 0 8px;letter-spacing:.02em}
+.setup p{margin:0;color:var(--ink-2)}
+
+/* analysis moment */
+.ana{display:grid;grid-template-columns:1.25fr 1fr;gap:44px;align-items:start}
+.viewer{background:var(--asphalt-2);border-radius:6px;padding:16px;border:1px solid var(--asphalt-3)}
+.viewer .shot{aspect-ratio:4/3}
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}
+.strip button{all:unset;cursor:pointer;background:#2E3136;border-radius:3px;padding:6px 4px;text-align:center;font:700 12.5px var(--sans);color:var(--lane-dim);border:2px solid transparent}
+.strip button[aria-pressed="true"]{border-color:var(--bib);color:#fff}
+.strip button:focus-visible{outline:3px solid var(--bib);outline-offset:2px}
+.strip svg{display:block;width:100%;height:46px;margin-bottom:4px}
+.switch{display:inline-flex;margin-bottom:22px;border:2px solid var(--lane);border-radius:2px}
+.switch button{all:unset;cursor:pointer;padding:9px 16px;font:800 17px var(--disp);letter-spacing:.06em;text-transform:uppercase}
+.switch button[aria-pressed="true"]{background:var(--bib);color:var(--asphalt)}
+.switch button[aria-pressed="true"]::before{content:"● ";}
+.switch button:focus-visible{outline:3px solid var(--bib)}
+.metrics{list-style:none;padding:0;margin:0}
+.metrics li{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:16px 0;border-top:1px solid var(--asphalt-3)}
+.metrics .k{font-weight:600}
+.metrics .v{font:800 34px/1 var(--disp);letter-spacing:.02em;text-align:right}
+.metrics .v.bad{color:#FF9C85}.metrics .v.ok{color:var(--good)}
+.metrics .d{grid-column:1/-1;color:#CFCBC3;font-size:15.5px}
+.cue{margin-top:18px;background:var(--bib);color:var(--ink);padding:14px 16px;border-radius:2px;font-weight:600}
+.cue b{font:900 22px var(--disp);text-transform:uppercase;letter-spacing:.03em;display:block}
+
+/* plan */
+.plan-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.bibmini{font:900 20px var(--disp);background:#fff;border:2px solid var(--ink);padding:6px 14px;letter-spacing:.04em}
+.week{width:100%;border-collapse:collapse;background:#fff;font-size:15.5px}
+.week th,.week td{border:1px solid #D3CFC6;padding:12px 12px;vertical-align:top;text-align:left}
+.week th{font:800 18px var(--disp);letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:var(--lane);border-color:var(--ink)}
+.week td b{display:block;font:800 22px/1.05 var(--disp);letter-spacing:.02em;text-transform:uppercase}
+.week td small{color:var(--ink-2);display:block;margin-top:4px}
+.week td.rest{background:repeating-linear-gradient(135deg,#F7F5F0 0 8px,#EFECE5 8px 16px);color:var(--ink-2)}
+.week td.form{box-shadow:inset 4px 0 0 var(--tartan)}
+.week td.long{background:#FFF6D9}
+.tablewrap{overflow-x:auto}
+.week{min-width:860px}
+.swipe{display:none;font-size:14px;color:var(--ink-2);margin:0 0 8px}
+.legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:12px;font-size:14.5px;color:var(--ink-2)}
+.legend i{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:-2px}
+
+/* privacy */
+.priv{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.priv .big{font:900 clamp(40px,5vw,68px)/1.02 var(--disp);text-transform:uppercase;margin:0}
+.priv ul{list-style:none;padding:0;margin:0}
+.priv li{padding:16px 0;border-top:1px solid var(--asphalt-3);font-size:17px}
+.priv li b{font:800 21px var(--disp);letter-spacing:.03em;text-transform:uppercase;display:block;color:#fff}
+
+.quote{background:var(--tartan);color:#fff;padding:80px 0}
+.quote blockquote{margin:0;font:800 clamp(30px,3.8vw,52px)/1.08 var(--disp);text-transform:uppercase;max-width:22em;letter-spacing:.005em}
+.quote figcaption{margin-top:18px;font-size:16.5px;color:#FFE3DB}
+.quote figure{margin:0}
+
+/* price as bibs */
+.bibs{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:960px}
+.bib{background:#fff;border:2px solid var(--ink);padding:0;position:relative}
+.bib::before,.bib::after{content:"";position:absolute;top:10px;width:10px;height:10px;border-radius:50%;background:var(--lane);box-shadow:inset 0 0 0 2px #9C9A95}
+.bib::before{left:10px}.bib::after{right:10px}
+.bib .band{background:var(--ink);color:var(--lane);font:800 16px var(--disp);letter-spacing:.12em;text-transform:uppercase;padding:8px 30px;text-align:center}
+.bib.go .band{background:var(--tartan)}
+.bib .num{font:900 84px/1 var(--disp);text-align:center;padding:16px 0 4px}
+.bib .num small{font:800 52px var(--disp);margin-left:4px}
+.bib .what{text-align:center;font-weight:600;padding:0 20px 8px}
+.bib ul{margin:6px 24px 18px;padding-left:18px;font-size:16px}
+.bib .cta{padding:0 24px 24px;text-align:center}
+
+.faq{max-width:880px;margin-top:70px}
+.faq h3{font:900 34px var(--disp);text-transform:uppercase;margin:0 0 10px}
+.faq details{border-top:2px solid var(--ink)}
+.faq details:last-child{border-bottom:2px solid var(--ink)}
+.faq summary{cursor:pointer;padding:16px 0;font-weight:700;font-size:18px}
+.faq p{margin:0 0 16px;color:var(--ink-2)}
+
+footer{padding:34px 0 28px;font-size:15px;color:var(--lane-dim)}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .credit{margin-top:18px;font-size:13.5px}
+
+@media (max-width:1000px){
+  header nav a:not(.btn){display:none}
+  .hero-grid,.ana,.priv{grid-template-columns:1fr}
+  .setup{grid-template-columns:1fr}
+  .setup > div{border-right:0;margin-right:0;border-bottom:1px solid #D3CFC6;padding-bottom:22px}
+}
+@media (max-width:560px){
+  .wrap{padding:0 18px}
+  body{font-size:17px}
+  .hero h1{font-size:56px}
+  .facts{gap:18px}
+  .bibs{grid-template-columns:1fr}
+  .swipe{display:block}
+  .track span{font-size:30px}
+  .tag{font-size:11.5px;padding:4px 7px}.tag b{font-size:20px}
+  section{padding:70px 0}
+  .strip button{font-size:11px}
+  .metrics .v{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+<header class="dark">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Adım ana sayfa"><span aria-hidden="true"></span>ADIM</a>
+    <nav aria-label="Bölümler"><a href="#cekim">Nasıl çekilir</a><a href="#analiz">Analiz</a><a href="#plan">21K planı</a><a href="#video">Video nerede</a><a href="#fiyat">Fiyat</a><a class="btn red" href="#fiyat">İndir</a></nav>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="hero dark" aria-labelledby="h1" style="padding-bottom:0">
+  <div class="wrap">
+    <h1 id="h1">Dizindeki sızı bir açı. Ölçelim, düzeltelim.</h1>
+    <div class="hero-grid">
+      <div>
+        <p class="lede">Telefonunu yere koy, 15 saniye koş. Adım formunu kare kare okur: dizin içe kaçıyor mu, adım sıklığın kaç, topuğa mı basıyorsun. Sonra yarı maraton planına o hafta ne eklemen gerektiğini yazar.</p>
+        <div class="ctas"><a class="btn red" href="#fiyat">iPhone için indir</a><a class="btn line" href="#fiyat">Android için indir</a></div>
+        <p class="facts">15 saniyelik video yeter. Video telefonundan çıkmaz, ormanda da çalışır.</p>
+      </div>
+      <div class="frame" aria-label="Analiz ekranı: diz içe kaçış 9 derece, kadans 158, topuk vuruşu yüzde 72">
+        <div class="frame-top"><span>Kordon, İzmir · 06:42 · 240 fps</span><span class="rec">Kare 41 / 360 · temas</span></div>
+        <div class="shot">
+          <svg viewBox="0 0 400 250" aria-hidden="true">
+            <g stroke="rgba(243,241,236,.35)" stroke-width="2"><path d="M0 200 L400 186"/><path d="M0 236 L400 222"/></g>
+            <g id="heroRunner"></g>
+          </svg>
+          <div class="tag warn" style="left:58%;top:52%"><b>9°</b>sol diz içe kaçıyor</div>
+          <div class="tag" style="left:4%;top:8%"><b>158</b>adım / dk</div>
+          <div class="tag" style="left:4%;top:62%"><b>%72</b>topukla iniş</div>
+        </div>
+        <div class="reels" id="reels" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+  <div class="track" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+</section>
+
+<section id="cekim" aria-labelledby="h-cek">
+  <div class="wrap">
+    <h2 id="h-cek">Pist, sahil, koşu bandı. Fark etmez.</h2>
+    <p class="sub">Kurulum yok, aparat yok. Telefonun kamerası ve 15 saniye. Sabah antrenmanının başında bir kere yap, gerisini koşarken düşünme.</p>
+    <div class="setup">
+      <div><span class="n">1</span><h3>Telefonu 3 metreye koy</h3><p>Su şişesine yasla ya da arkadaşına tutturt. Önden çekim dize, yandan çekim inişe bakar; Adım hangisini istediğini söyler.</p></div>
+      <div><span class="n">2</span><h3>Normal temponla koş</h3><p>Kameraya doğru 15 saniye. Gösteriş yapma; yorgun koşu formunu görmek için antrenman sonunda bir kez daha çek.</p></div>
+      <div><span class="n">3</span><h3>Kareleri telefonda oku</h3><p>Yaklaşık 20 saniyede vücudundaki 17 noktayı her karede bulur, açıları çıkarır. İnternet gerekmez.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="analiz" aria-labelledby="h-ana">
+  <div class="wrap">
+    <h2 id="h-ana">Tek adım, altı kare</h2>
+    <p class="sub">Aşağıdaki Ece'nin sol bacağı. Bir kareye dokun, o anki açıyı gör. Sonra “3 hafta sonra”ya geç: kalça çalışmasıyla diz nasıl toparlanmış.</p>
+    <div class="ana">
+      <div class="viewer">
+        <div class="shot">
+          <svg viewBox="0 0 400 300" aria-hidden="true">
+            <g stroke="rgba(243,241,236,.35)" stroke-width="2"><path d="M0 250 L400 238"/><path d="M0 286 L400 274"/></g>
+            <g id="bigRunner"></g>
+          </svg>
+          <div class="tag warn" id="kneeTag" style="left:56%;top:58%"><b id="kneeVal">9°</b>diz içe</div>
+        </div>
+        <div class="strip" id="strip" role="group" aria-label="Adım evreleri"></div>
+      </div>
+      <div>
+        <div class="switch" role="group" aria-label="Karşılaştırma">
+          <button type="button" id="bBefore" aria-pressed="true">2 Eylül</button>
+          <button type="button" id="bAfter" aria-pressed="false">3 hafta sonra</button>
+        </div>
+        <ul class="metrics" aria-live="polite">
+          <li><span class="k">Diz içe kaçış (temas anı)</span><span class="v bad" id="m1">9°</span><span class="d" id="d1">Sol dizin ayak bileğinin içine düşüyor. Dizdeki sızının en olası nedeni.</span></li>
+          <li><span class="k">Kadans</span><span class="v bad" id="m2">158</span><span class="d" id="d2">Dakikada 158 adım. Adımın uzun, ayak gövdenin önüne iniyor.</span></li>
+          <li><span class="k">Topukla iniş</span><span class="v bad" id="m3">%72</span><span class="d" id="d3">Adımların çoğu topukla ve dizin kilitliyken yere değiyor.</span></li>
+        </ul>
+        <div class="cue" id="cue"><b>Bu hafta tek ipucu</b>Adımlarını kısalt: metronomu 166'ya kur, aynı hızda daha sık bas. Salı ve Perşembe 15 dk kalça çalışması eklendi.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plan" aria-labelledby="h-plan">
+  <div class="wrap">
+    <div class="plan-head">
+      <div>
+        <h2 id="h-plan" style="margin-bottom:8px">21K planı, formuna göre</h2>
+        <p class="sub" style="margin:0">Adım bir plan uydurmaz; formunda gördüğünü haftaya ekler. Dizin içe kaçtıkça kalça, kadans düştükçe tempo çalışması gelir.</p>
+      </div>
+      <span class="bibmini">HAFTA 7 / 12 · YARIŞA 38 GÜN</span>
+    </div>
+    <p class="swipe">Haftanın tamamı için yana kaydır →</p>
+    <div class="tablewrap">
+      <table class="week">
+        <thead><tr><th>Pzt</th><th>Sal</th><th>Çar</th><th>Per</th><th>Cum</th><th>Cmt</th><th>Paz</th></tr></thead>
+        <tbody><tr>
+          <td class="rest"><b>Dinlen</b><small>Köpük rulo 10 dk</small></td>
+          <td class="form"><b>6 km kolay</b><small>+ kalça: yan köprü, tek bacak squat 15 dk</small></td>
+          <td><b>Tempo 5 km</b><small>5:40/km, metronom 166</small></td>
+          <td class="form"><b>Form çekimi</b><small>15 sn video + kalça 15 dk</small></td>
+          <td class="rest"><b>Dinlen</b><small>ya da 30 dk yürüyüş</small></td>
+          <td><b>8 × 400 m</b><small>pistte, 90 sn aralık</small></td>
+          <td class="long"><b>Uzun 14 km</b><small>6:30/km, sohbet temposu</small></td>
+        </tr></tbody>
+      </table>
+    </div>
+    <div class="legend"><span><i style="background:var(--tartan)"></i>formuna göre eklenen</span><span><i style="background:#FFF6D9;border:1px solid #D3CFC6"></i>uzun koşu</span><span><i style="background:#EFECE5"></i>dinlenme</span></div>
+  </div>
+</section>
+
+<section class="dark" id="video" aria-labelledby="h-vid">
+  <div class="wrap priv">
+    <p class="big" id="h-vid">Şortla, sabah 06:10'da çekilmiş videon kimsenin sunucusunda değil.</p>
+    <ul>
+      <li><b>Video telefonda kalır</b>Analiz telefonun içinde yapılır. İstersen videoyu sonra silersin, ölçüler kalır.</li>
+      <li><b>Belgrad'da çekmese de çalışır</b>Ormanda, pistte, sinyal yokken; internet gerekmez.</li>
+      <li><b>Paylaşırsan yalnız çizgi gider</b>Antrenörüne video değil, iskelet çizimi ve açılar gider.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı yorumu">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Dizim 10. kilometrede sızlıyordu. Üç hafta kalça ve kadans. Runatolia'yı 2:04'te bitirdim, dizimi hiç düşünmeden.”</blockquote>
+      <figcaption><b>Ece Yalçın</b>, 29 · İzmir, Karşıyaka · mimar, ilk yarı maratonu Mart 2025</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="fiyat" aria-labelledby="h-fiyat">
+  <div class="wrap">
+    <h2 id="h-fiyat">Numaranı al</h2>
+    <p class="sub">Abonelik yok. Üç analiz ücretsiz; 12 haftalık yarı maraton yolu bir kere ödenir.</p>
+    <div class="bibs">
+      <div class="bib"><div class="band">Deneme</div><div class="num">0 <small>₺</small></div><div class="what">3 form analizi</div><ul><li>Diz, kadans, iniş ölçümü</li><li>Her analizde tek ipucu</li></ul><div class="cta"><a class="btn line" href="#">Ücretsiz indir</a></div></div>
+      <div class="bib go"><div class="band">21K · 12 hafta</div><div class="num">349 <small>₺</small></div><div class="what">tek seferlik</div><ul><li>Sınırsız analiz, önce/sonra karşılaştırma</li><li>Formuna göre değişen 12 haftalık plan</li><li>Antrenörle iskelet çizimi paylaşma</li></ul><div class="cta"><a class="btn red" href="#">21K planını al</a></div></div>
+    </div>
+    <div class="faq">
+      <h3>Sorular</h3>
+      <details><summary>Dizim ağrıyor, Adım fizyoterapistin yerine geçer mi?</summary><p>Hayır. Adım formunu ölçer; ağrı koşudan sonra da sürüyorsa, şişlik varsa ya da merdivende artıyorsa bir spor hekimine ya da fizyoterapiste görün. Ölçümleri ona gösterebilirsin.</p></details>
+      <details><summary>Koşu bandında doğru ölçer mi?</summary><p>Evet; önden çekimde bandın tutacakları kadrajda kalabilir, sorun değil. Bantta kadans dışarıdakinden biraz yüksek çıkar, Adım bunu hesaba katar.</p></details>
+      <details><summary>Hangi telefonlar?</summary><p>iPhone XS ve sonrası, Android'de 2021 sonrası orta segment telefonlar. Yüksek kare hızı (120 fps+) varsa daha net okur.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="dark">
+  <div class="wrap">
+    <div class="row"><span><b style="color:var(--lane)">Adım</b> · İzmir. Tıbbi cihaz değildir.</span><a href="mailto:kosu@adim.app" style="color:var(--lane)">kosu@adim.app</a></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // front-view runner: phase p (0..5), valgus v (deg), scale s, offsets
+  function runner(p,v,cx,top,s,col){
+    var L=function(x1,y1,x2,y2,w){return '<line x1="'+(cx+x1*s).toFixed(1)+'" y1="'+(top+y1*s).toFixed(1)+'" x2="'+(cx+x2*s).toFixed(1)+'" y2="'+(top+y2*s).toFixed(1)+'" stroke="'+col+'" stroke-width="'+(w||4)+'" stroke-linecap="round"/>'};
+    var D=function(x,y,r,c){return '<circle cx="'+(cx+x*s).toFixed(1)+'" cy="'+(top+y*s).toFixed(1)+'" r="'+(r*s).toFixed(1)+'" fill="'+(c||col)+'"/>'};
+    var sway=[-3,-2,0,2,3,1][p], lift=[0,0,2,10,22,14][p], arm=[10,6,0,-6,-10,-4][p];
+    var hipL=[-11+sway,70],hipR=[11+sway,70];
+    var vk=v*0.9; // knee inward shift
+    var stK=[-12+sway+vk,108],stA=[-12+sway,146];
+    var swK=[12+sway,104-lift*0.6],swA=[14+sway,140-lift];
+    var h="";
+    h+=D(sway*0.5,10,10);
+    h+=L(sway*0.5,22,sway,70,5);
+    h+=L(-16+sway*0.6,30,16+sway*0.6,30,4);
+    h+=L(-16+sway*0.6,30,-20,48+arm*0.5,3.5)+L(-20,48+arm*0.5,-14,62-arm,3.5);
+    h+=L(16+sway*0.6,30,20,48-arm*0.5,3.5)+L(20,48-arm*0.5,14,62+arm,3.5);
+    h+=L(hipL[0],hipL[1],hipR[0],hipR[1],4);
+    h+=L(hipL[0],hipL[1],stK[0],stK[1],5)+L(stK[0],stK[1],stA[0],stA[1],5);
+    h+=L(hipR[0],hipR[1],swK[0],swK[1],5)+L(swK[0],swK[1],swA[0],swA[1],5);
+    [[hipL[0],hipL[1]],[hipR[0],hipR[1]],[stA[0],stA[1]],[swK[0],swK[1]],[swA[0],swA[1]]].forEach(function(q){h+=D(q[0],q[1],2.6,"#F4C430")});
+    h+=D(stK[0],stK[1],3.6,v>5?"#FF7A5C":"#5FBF8A");
+    // reference line hip->ankle
+    h+='<line x1="'+(cx+hipL[0]*s)+'" y1="'+(top+hipL[1]*s)+'" x2="'+(cx+stA[0]*s)+'" y2="'+(top+stA[1]*s)+'" stroke="#F4C430" stroke-width="1.5" stroke-dasharray="4 4"/>';
+    return h;
+  }
+  document.getElementById("heroRunner").innerHTML=runner(1,9,200,24,1.32,"#F3F1EC");
+  var rh="";for(var r=0;r<6;r++){rh+='<svg viewBox="0 0 60 45" class="'+(r===1?"on":"")+'">'+runner(r,[9,11,7,3,0,2][r],30,2,.27,"#BDBAB2")+'</svg>';}
+  document.getElementById("reels").innerHTML=rh;
+  var phases=["Temas","Yüklenme","Orta duruş","İtiş","Salınım","İniş öncesi"];
+  var data={before:{k:[9,11,7,3,0,2],m:["158","%72"],d:["Sol dizin ayak bileğinin içine düşüyor. Dizdeki sızının en olası nedeni.","Dakikada 158 adım. Adımın uzun, ayak gövdenin önüne iniyor.","Adımların çoğu topukla ve dizin kilitliyken yere değiyor."],cue:"Adımlarını kısalt: metronomu 166'ya kur, aynı hızda daha sık bas. Salı ve Perşembe 15 dk kalça çalışması eklendi."},
+            after:{k:[3,4,2,1,0,1],m:["167","%41"],d:["Diz artık ayak bileğinin üstünde kalıyor. Kalça çalışması işini yapmış.","Dakikada 167 adım. Ayak gövdenin altına iniyor.","İniş orta ayağa kaydı; diz hafif bükülü karşılıyor."],cue:"Kalça çalışmasını haftada bire indir, 16 km uzun koşuya geç. Bir sonraki form çekimi: 2 hafta sonra."}};
+  var mode="before",ph=1,strip=document.getElementById("strip");
+  function draw(){
+    var k=data[mode].k[ph];
+    document.getElementById("bigRunner").innerHTML=runner(ph,k,200,30,1.6,"#F3F1EC");
+    var kv=document.getElementById("kneeVal"),tag=document.getElementById("kneeTag");
+    kv.textContent=k+"°";tag.className="tag"+(k>5?" warn":"");
+    var mx=Math.max.apply(null,data[mode].k);
+    var m1=document.getElementById("m1");m1.textContent=mx+"°";m1.className="v "+(mx>5?"bad":"ok");
+    var m2=document.getElementById("m2");m2.textContent=data[mode].m[0];m2.className="v "+(mode==="before"?"bad":"ok");
+    var m3=document.getElementById("m3");m3.textContent=data[mode].m[1];m3.className="v "+(mode==="before"?"bad":"ok");
+    ["d1","d2","d3"].forEach(function(id,i){document.getElementById(id).textContent=data[mode].d[i]});
+    document.getElementById("cue").innerHTML="<b>Bu hafta tek ipucu</b>"+data[mode].cue;
+    var h="";phases.forEach(function(n,i){h+='<button type="button" aria-pressed="'+(i===ph)+'" data-i="'+i+'"><svg viewBox="0 0 60 46" aria-hidden="true"><g>'+runner(i,data[mode].k[i],30,2,.27,"#BDBAB2")+'</g></svg>'+n+'</button>';});
+    strip.innerHTML=h;
+  }
+  strip.addEventListener("click",function(e){var b=e.target.closest("button");if(b){ph=+b.dataset.i;draw();strip.querySelector('[data-i="'+ph+'"]').focus();}});
+  function setMode(m){mode=m;document.getElementById("bBefore").setAttribute("aria-pressed",m==="before");document.getElementById("bAfter").setAttribute("aria-pressed",m==="after");draw();}
+  document.getElementById("bBefore").addEventListener("click",function(){setMode("before")});
+  document.getElementById("bAfter").addEventListener("click",function(){setMode("after")});
+  draw();
+})();
+</script>
+</body>
+</html>

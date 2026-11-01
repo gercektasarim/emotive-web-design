@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bitki Doktoru — Monsteranız neden sararıyor?</title>
+<meta name="description" content="Bitki Doktoru ev bitkinizin yaprağını fotoğraftan inceler; sararmanın fazla sudan mı, ışıktan mı, zararlıdan mı olduğunu internetsiz teşhis eder ve bitkiye özel bakım takvimi kurar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700;800&family=Karla:wght@400;500;600;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --leaf:#1D4A3A;
+  --leaf-deep:#14362A;
+  --lime:#B6D47C;
+  --window:#EEF3EC;
+  --soil:#3A2A21;
+  --ochre:#D7B03F;
+  --rust:#A55A2A;
+  --ink:#1A2420;
+  --moss:#4D6B5A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--window);color:var(--ink);font-family:"Karla",system-ui,sans-serif;font-size:18px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
+h1,h2,h3{font-family:"Bitter",Georgia,serif;font-weight:700;line-height:1.08;letter-spacing:-.01em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 30px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 16.5px/1 "Karla",sans-serif;padding:15px 24px;border-radius:8px;text-decoration:none;border:2px solid currentColor;cursor:pointer}
+.btn-lime{background:var(--lime);color:var(--leaf-deep);border-color:var(--lime)}
+.btn-lime:hover{background:#c6e08f}
+.btn-out{color:#fff;background:transparent;border-color:rgba(255,255,255,.55)}
+.btn-out:hover{border-color:#fff}
+.btn-leaf{background:var(--leaf);color:#fff;border-color:var(--leaf)}
+
+/* hero */
+.hero{color:var(--ink);position:relative;overflow:hidden;background-color:#E6EDE7;
+  background-image:linear-gradient(90deg,transparent 0 calc(50% - 3px),rgba(29,74,58,.06) calc(50% - 3px) calc(50% + 3px),transparent calc(50% + 3px)),
+  linear-gradient(180deg,transparent 0 46%,rgba(29,74,58,.05) 46% calc(46% + 6px),transparent calc(46% + 6px)),
+  radial-gradient(120% 90% at 85% 10%,#FBFDFB 0,#EEF3EF 45%,#DFE7E1 100%)}
+.nav{display:flex;justify-content:space-between;align-items:center;height:76px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Bitter";font-weight:800;font-size:22px;text-decoration:none}
+.nav nav{display:flex;gap:26px;font-size:16px}
+.nav nav a{text-decoration:none;color:#3C5247}
+.nav nav a:hover{color:var(--leaf-deep)}
+.hero-grid{display:grid;grid-template-columns:.9fr 1.1fr;grid-template-areas:"t1 leaf" "t2 leaf";grid-template-rows:auto 1fr;column-gap:20px;padding:30px 0 0}
+.t1{grid-area:t1;align-self:end;padding-top:60px}.t2{grid-area:t2}.leafbox{grid-area:leaf}
+.hero h1{font-size:clamp(44px,5.6vw,76px);margin-bottom:22px;color:var(--leaf-deep)}
+.hero .lead{font-size:20px;color:#33433b;max-width:28em;margin-bottom:30px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero .small{margin-top:20px;font-size:15px;color:#4D6B5A}
+.leafbox{position:relative;padding:10px 0 50px}
+.leafart{position:relative;width:620px;max-width:100%;margin-left:auto;margin-right:-40px}
+.leafbox svg.leaf{display:block;width:100%;height:auto}
+.spot{position:absolute;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:3px solid #fff;background:rgba(255,255,255,.18);cursor:pointer;display:grid;place-items:center;color:#fff;font:800 16px "Bitter";box-shadow:0 0 0 6px rgba(255,255,255,.12)}
+.spot[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--leaf-deep);box-shadow:0 0 0 7px rgba(255,255,255,.35),0 0 0 9px var(--leaf-deep)}
+.dx{position:absolute;right:-20px;bottom:0;width:320px;background:#fff;border:1px solid #d3ddd5;color:var(--ink);border-radius:14px;padding:20px 22px;box-shadow:0 30px 60px -25px rgba(0,0,0,.55)}
+.dx .lbl{font-size:13.5px;color:var(--moss);font-weight:600;display:flex;justify-content:space-between;gap:10px}
+.dx h3{font-size:24px;margin:6px 0 8px;color:var(--leaf-deep)}
+.conf{height:6px;background:#dfe7de;border-radius:3px;overflow:hidden;margin-bottom:12px}
+.conf i{display:block;height:100%;background:var(--leaf);transition:width .6s}
+.dx p{font-size:15.5px;line-height:1.5}
+.dx .why{margin-top:8px;font-size:14.5px;color:var(--moss)}
+
+section{padding:100px 0}
+.h2{font-size:clamp(36px,4.4vw,58px);max-width:17ch;color:var(--leaf-deep)}
+.intro{font-size:19px;max-width:34em;margin-top:16px;color:#33433b}
+
+/* recipe */
+.recipe .grid{display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:start}
+.card{background:#fff;border-radius:4px;padding:34px 36px;box-shadow:0 1px 0 #d6e0d3,0 24px 40px -30px rgba(29,74,58,.45);position:relative;
+  background-image:linear-gradient(transparent 0 58px,#e6ede4 58px 59px,transparent 59px);}
+.card::before{content:"";position:absolute;left:24px;top:0;bottom:0;border-left:2px solid #E7B9A3;opacity:.7}
+.card .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:14px;color:var(--moss);margin-bottom:28px;padding-left:16px}
+.card .top b{font-family:"Bitter";font-size:21px;color:var(--leaf-deep)}
+.card h3{font-size:17px;text-transform:none;color:var(--rust);margin:0 0 10px 16px;font-family:"Karla";font-weight:700;letter-spacing:.02em}
+.card ul,.card ol{margin:0 0 24px 16px;padding-left:22px;font-size:16.5px;display:grid;gap:6px}
+.card ul{list-style:none;padding-left:0}
+.card ul li{display:grid;grid-template-columns:1fr auto;gap:10px;border-bottom:1px dotted #b9c7bb;padding-bottom:4px}
+.card ul li span:last-child{color:var(--moss);font-size:15px}
+.card .note{margin-left:16px;font-size:15px;background:#F6F3DF;border-radius:6px;padding:12px 14px}
+
+/* week */
+.week{background:#fff}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:46px}
+.day{border:1px solid #d6e0d3;border-radius:10px;padding:14px 12px 16px;min-height:190px;display:flex;flex-direction:column;gap:8px;background:var(--window)}
+.day h3{font-family:"Karla";font-size:15px;font-weight:700;color:var(--moss)}
+.day.today{background:var(--leaf);color:#fff;border-color:var(--leaf)}
+.day.today h3{color:var(--lime)}
+.task{font-size:14.5px;line-height:1.35;padding:8px 9px;border-radius:6px;background:#fff;border-left:4px solid var(--leaf)}
+.day.today .task{background:var(--leaf-deep);color:#EEF3EC}
+.task.w{border-left-color:#3F86A8}
+.task.l{border-left-color:var(--ochre)}
+.task.c{border-left-color:var(--rust)}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;font-size:14.5px;color:var(--moss)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* menu of plants */
+.menu .grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px}
+.plist{list-style:none}
+.plist li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;padding:13px 0;border-bottom:1px solid #d6e0d3}
+.plist .nm{font-family:"Bitter";font-weight:600;font-size:19px}
+.plist .nm small{display:block;font-family:"Karla";font-weight:400;font-size:14px;color:var(--moss);font-style:italic}
+.plist .dots{border-bottom:2px dotted #a9b9ad;transform:translateY(-6px)}
+.plist .val{font-size:15.5px;text-align:right;white-space:nowrap}
+.plist .st{display:inline-block;margin-left:8px;font-size:13px;font-weight:700;padding:2px 8px;border-radius:999px;background:#E0EBD4;color:var(--leaf-deep)}
+.plist .st.warn{background:#F4E6B5;color:#5c4510}
+
+/* offline */
+.balcony{background:var(--soil);color:#EFE7DF}
+.balcony .h2{color:#F3EDE6}
+.balcony .intro{color:#D6CABE}
+.balcony .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.facts{list-style:none;display:grid;gap:16px;margin-top:30px}
+.facts li{display:grid;grid-template-columns:28px 1fr;gap:12px;font-size:17px}
+.facts li::before{content:"";width:14px;height:14px;margin-top:7px;border-radius:50% 0;background:var(--lime)}
+.sheet{background:#F8FBF6;color:var(--ink);border-radius:14px;padding:22px;font-size:15.5px}
+.sheet .bar{display:flex;justify-content:space-between;font-size:13.5px;color:var(--moss);font-weight:600;margin-bottom:12px}
+.sheet .bar .off{color:var(--rust)}
+.sheet b{font-family:"Bitter";font-size:19px;color:var(--leaf-deep);display:block;margin-bottom:6px}
+.sheet .alt{margin-top:12px;padding-top:12px;border-top:1px dashed #c8d4c9;font-size:14.5px;color:var(--moss)}
+
+/* quote / price */
+.qp .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+.qp blockquote p{font-family:"Bitter";font-weight:500;font-size:clamp(24px,2.6vw,34px);line-height:1.3;color:var(--leaf-deep)}
+.qp blockquote footer{margin-top:18px;font-size:16px;color:var(--moss)}
+.qp blockquote footer b{color:var(--ink)}
+.price{background:#fff;border-radius:14px;padding:30px;border:2px solid var(--leaf)}
+.price h2{font-size:28px;color:var(--leaf-deep)}
+.price .row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px 0;border-bottom:1px dotted #a9b9ad;font-size:16.5px}
+.price .row b{font-family:"Bitter";font-size:20px}
+.price .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+
+.faq .acc{margin-top:36px;max-width:860px;border-top:2px solid var(--leaf)}
+.faq details{border-bottom:1px dotted #a9b9ad}
+.faq summary{cursor:pointer;list-style:none;padding:18px 40px 18px 0;font-family:"Bitter";font-weight:600;font-size:20px;color:var(--leaf-deep);position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:6px;top:22px;width:14px;height:14px;border-radius:50% 0;background:var(--lime);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(90deg)}
+.faq details p{padding:0 0 20px;max-width:44em}
+.faq h3{font-size:20px;color:var(--leaf-deep);margin-bottom:6px;line-height:1.3}
+.faq p{font-size:16.5px;color:#33433b}
+
+footer.site{background:var(--leaf-deep);color:#C9DBCD;padding:44px 0 36px;font-size:15px}
+footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center}
+footer.site .end{font-family:"Bitter";font-size:26px;color:#fff;font-weight:700}
+footer.site .credit{width:100%;font-size:13px;margin-top:14px}
+footer.site .credit a{color:#A8C3AF;text-decoration:none}
+footer.site .credit a:hover{color:#fff}
+
+@media (max-width:1000px){
+  .nav nav{display:none}
+  .hero-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"t1" "leaf" "t2";grid-template-rows:auto}
+  .t1{padding-top:10px}
+  .recipe .grid,.menu .grid,.balcony .grid,.qp .grid{grid-template-columns:minmax(0,1fr)}
+  .leafart{margin:0 auto}
+  .days{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .faq .cols{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  body{font-size:17px}
+  section{padding:70px 0}
+  .leafbox{padding-bottom:40px}
+  .leafart{width:92%;max-width:none;margin:0 auto}
+  .hero h1{margin-bottom:6px}
+  .leafbox{padding-bottom:24px}
+  .dx{position:relative;width:auto;right:auto;bottom:auto;margin-top:-20px}
+  .spot{width:38px;height:38px}
+  .days{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .day{min-height:0}
+  .card{padding:26px 20px}
+  .card::before{left:12px}
+  .plist li{grid-template-columns:minmax(0,1fr) auto}
+  .plist .dots{display:none}
+  .nav .btn{padding:10px 14px;font-size:14.5px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="nav">
+      <a class="logo" href="#"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 26C4 22 2 10 8 3c4 6 10 6 14 3 4 10-1 18-8 20z" fill="#2F7A55"/><path d="M14 26c0-8 1-13 5-18" stroke="#E6EDE7" stroke-width="2" fill="none"/></svg>Bitki Doktoru</a>
+      <nav aria-label="Ana menü"><a href="#recete">Reçete</a><a href="#takvim">Bakım takvimi</a><a href="#bitkiler">Bitkileriniz</a><a href="#fiyat">Fiyat</a></nav>
+      <a class="btn btn-leaf" href="#fiyat">İndir</a>
+    </div>
+    <div class="hero-grid">
+      <div class="t1">
+        <h1>Monsteranız ölmüyor. Fazla seviliyor.</h1>
+      </div>
+      <div class="t2">
+        <p class="lead">Sararan yaprağın fotoğrafını çekin. Bitki Doktoru sebebin fazla su mu, ışık mı, zararlı mı olduğunu telefonun içinde teşhis eder; o bitkiye göre bir bakım takvimi kurar.</p>
+        <div class="ctas"><a class="btn btn-leaf" href="#fiyat">iPhone için indir</a><a class="btn" style="color:var(--leaf)" href="#fiyat">Android için indir</a></div>
+        <p class="small">Yaprağa dokunun: üç belirti, üç ayrı teşhis.</p>
+      </div>
+      <div class="leafbox">
+        <div class="leafart">
+        <svg class="leaf" viewBox="0 0 600 600" role="img" aria-label="Monstera yaprağı; alt kenarı sararmış, uçları kahverengileşmiş, alt yüzünde benekler var">
+          <defs>
+            <clipPath id="lc"><path id="leafPath" d="M300 560C140 540 40 430 40 300 40 160 150 60 290 70c40 3 50 30 30 60 70-60 240-20 240 150 0 160-110 270-260 280z"/></clipPath>
+            <radialGradient id="yel" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#D7B03F"/><stop offset=".7" stop-color="#C9A93A" stop-opacity=".85"/><stop offset="1" stop-color="#C9A93A" stop-opacity="0"/></radialGradient>
+            <radialGradient id="brn" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7A4A22"/><stop offset=".6" stop-color="#8E5A2A" stop-opacity=".8"/><stop offset="1" stop-color="#8E5A2A" stop-opacity="0"/></radialGradient>
+          </defs>
+          <g clip-path="url(#lc)">
+            <rect width="600" height="600" fill="#2F7A55"/>
+            <ellipse cx="250" cy="520" rx="170" ry="90" fill="url(#yel)"/>
+            <ellipse cx="520" cy="300" rx="70" ry="90" fill="url(#brn)"/>
+            <g fill="#244F3B" opacity=".75"><circle cx="330" cy="260" r="3"/><circle cx="345" cy="272" r="2.4"/><circle cx="318" cy="281" r="2.6"/><circle cx="352" cy="252" r="2"/><circle cx="338" cy="292" r="2.2"/></g>
+            <path d="M300 120C300 250 300 420 300 560" stroke="#3F9468" stroke-width="7" fill="none"/>
+            <g stroke="#3F9468" stroke-width="3" fill="none">
+              <path d="M300 180C240 160 150 170 80 210"/><path d="M300 260C220 250 130 270 50 330"/><path d="M300 350C230 360 150 400 90 460"/><path d="M300 440C250 460 200 500 170 540"/>
+              <path d="M300 170C380 150 470 170 540 220"/><path d="M300 250C390 250 480 280 560 330"/><path d="M300 340C380 350 460 400 500 450"/><path d="M300 430C360 450 410 490 430 530"/>
+            </g>
+            <g stroke="#E9EFEA" stroke-width="16" stroke-linecap="round" fill="none">
+              <path d="M30 230L140 245"/><path d="M28 350L170 330"/><path d="M80 470L180 420"/>
+              <path d="M580 250L440 255"/><path d="M580 380L430 350"/><path d="M500 500L420 440"/>
+            </g>
+            <g fill="#E9EFEA"><ellipse cx="200" cy="215" rx="12" ry="22" transform="rotate(-70 200 215)"/><ellipse cx="400" cy="210" rx="12" ry="22" transform="rotate(70 400 210)"/><ellipse cx="215" cy="390" rx="11" ry="20" transform="rotate(-50 215 390)"/></g>
+          </g>
+          <path d="M300 560C300 590 290 600 270 620" stroke="#3F9468" stroke-width="10" fill="none"/>
+        </svg>
+        <button class="spot" style="left:41.7%;top:84%" aria-pressed="true" data-k="su" aria-label="Belirti 1: alt yapraklarda sararma">1</button>
+        <button class="spot" style="left:86.7%;top:50%" aria-pressed="false" data-k="kuru" aria-label="Belirti 2: kenarlarda kahverengi kuruma">2</button>
+        <button class="spot" style="left:55.8%;top:45%" aria-pressed="false" data-k="zararli" aria-label="Belirti 3: benekler">3</button>
+        </div>
+        <div class="dx" aria-live="polite">
+          <p class="lbl"><span id="dxSym">Alt yaprak, sarı, yumuşak</span><span id="dxPct">%81</span></p>
+          <h3 id="dxName">Fazla sulama, kök çürümesi başlangıcı</h3>
+          <div class="conf"><i id="dxBar" style="width:81%"></i></div>
+          <p id="dxDo">Sulamayı durdurun; toprağın üst 5 cm’si kuruyana kadar bekleyin (yaklaşık 10 gün). Saksının altında su birikiyorsa boşaltın.</p>
+          <p class="why" id="dxWhy">Neden: sararma alttan başlıyor, yaprak sapı yumuşak, kenarlar kuru değil.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="recipe" id="recete" aria-labelledby="h-rec">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-rec">Teşhisin arkasından bir reçete gelir.</h2>
+        <p class="intro">Bir yemek tarifi gibi: neye ihtiyacınız var, hangi sırayla yapacaksınız, ne kadar sürecek. Malzeme listesi evinizde olabilecek şeylerden kurulur; kenarda, sarı kâğıtta da ustanın notu durur.</p>
+        <p class="intro">Reçete o bitkinin kayıtlı geçmişine bakar: son sulama, saksı boyu, pencerenin yönü. Bu yüzden “haftada bir sulayın” gibi genel bir cümle göremezsiniz.</p>
+      </div>
+      <article class="card" aria-label="Bakım reçetesi kartı">
+        <p class="top"><b>Monstera · salon, kuzey penceresi</b><span>Reçete 3/3 · 12 gün</span></p>
+        <h3>Gerekenler</h3>
+        <ul>
+          <li><span>Aroid karışımı toprak</span><span>5 litre</span></li>
+          <li><span>Perlit</span><span>1 avuç</span></li>
+          <li><span>Drenaj delikli saksı</span><span>24 cm, bir boy büyük değil</span></li>
+          <li><span>Temiz makas, kolonya</span><span>evde var</span></li>
+        </ul>
+        <h3>Yapılışı</h3>
+        <ol>
+          <li>Bitkiyi saksıdan çıkarın, kökleri suyla değil elle temizleyin.</li>
+          <li>Kahverengi, ezilince sulanan kökleri kolonyalı makasla kesin.</li>
+          <li>Yeni toprağı perlitle karıştırıp gevşek doldurun; bastırmayın.</li>
+          <li>İlk sulamayı 5 gün sonra yapın. Sonra takvime bırakın.</li>
+        </ol>
+        <p class="note"><b>Ustanın notu:</b> Sarı yaprak yeşile dönmez. Yeni yaprak açınca eskisini dibinden kesin, bitkinin enerjisini boşa harcatmayın.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="week" id="takvim" aria-labelledby="h-week">
+  <div class="wrap">
+    <h2 class="h2" id="h-week">Bu haftanın bakım menüsü</h2>
+    <p class="intro">Takvim her bitkinin teşhisine, saksısına ve pencere yönüne göre kurulur. Telefon size yalnızca o gün yapılacak olanı söyler; Kadıköy’de dört bitkili bir salon için örnek hafta:</p>
+    <div class="days">
+      <div class="day"><h3>Pzt 9</h3><div class="task w">Pothos · 200 ml</div></div>
+      <div class="day"><h3>Sal 10</h3><div class="task l">Monstera’yı pencereye 50 cm yaklaştır</div></div>
+      <div class="day today"><h3>Çar 11 · bugün</h3><div class="task">Paşa kılıcı · sulama yok, toprak hâlâ nemli</div><div class="task">Monstera · parmak testi</div></div>
+      <div class="day"><h3>Per 12</h3><div class="task c">Fikus · alt yüz kontrolü (örümcek)</div></div>
+      <div class="day"><h3>Cum 13</h3><div class="task w">Fikus · 300 ml, ılık su</div></div>
+      <div class="day"><h3>Cmt 14</h3><div class="task l">Hepsini çeyrek tur döndür</div></div>
+      <div class="day"><h3>Paz 15</h3><div class="task w">Monstera · ilk sulama 350 ml</div></div>
+    </div>
+    <div class="legend"><span><i style="background:#3F86A8"></i>Su</span><span><i style="background:var(--ochre)"></i>Işık</span><span><i style="background:var(--rust)"></i>Kontrol</span></div>
+  </div>
+</section>
+
+<section class="menu" id="bitkiler" aria-labelledby="h-menu">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-menu">Evin bitki listesi, menü gibi okunur.</h2>
+        <p class="intro">Her bitki bir satır: ne sıklıkla, ne kadar ve şu an nasıl. Yeni bir bitki aldığınızda tek fotoğraf yeter; türünü tanır ve satırı kendisi açar. 380 yaygın ev bitkisini tanır.</p>
+      </div>
+      <ul class="plist">
+        <li><span class="nm">Monstera deliciosa<small>salon · kuzey · 3. deneme</small></span><span class="dots"></span><span class="val">9 günde 350 ml<span class="st warn">iyileşiyor</span></span></li>
+        <li><span class="nm">Paşa kılıcı<small>Sansevieria · antre</small></span><span class="dots"></span><span class="val">21 günde 250 ml<span class="st">iyi</span></span></li>
+        <li><span class="nm">Pothos<small>Epipremnum · mutfak rafı</small></span><span class="dots"></span><span class="val">7 günde 200 ml<span class="st">iyi</span></span></li>
+        <li><span class="nm">Keman yapraklı fikus<small>Ficus lyrata · balkon kapısı</small></span><span class="dots"></span><span class="val">10 günde 300 ml<span class="st warn">gözlemde</span></span></li>
+        <li><span class="nm">Barış çiçeği<small>Spathiphyllum · yatak odası</small></span><span class="dots"></span><span class="val">6 günde 250 ml<span class="st">iyi</span></span></li>
+        <li><span class="nm">Kaktüs (Echinopsis)<small>güney pencere pervazı</small></span><span class="dots"></span><span class="val">kışın 30 günde 100 ml<span class="st">uykuda</span></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="balcony" aria-labelledby="h-off">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-off">Eviniz içeride kalır. Teşhis de.</h2>
+        <p class="intro">Bitkinin fotoğrafı aslında salonunuzun fotoğrafıdır: perdeniz, koltuğunuz, çocuğun oyuncağı. Bitki Doktoru bu fotoğrafları hiçbir yere göndermez; teşhis telefonda yapılır. Arka balkonda Wi-Fi çekmese de, fidanlıkta saksı seçerken de aynı cevap gelir.</p>
+        <ul class="facts">
+          <li>Model 52 MB, telefonda; 380 tür, 64 belirti</li>
+          <li>Fotoğraf çekildikten sonra yalnızca yaprak kırpılıp saklanır, odanın geri kalanı silinir</li>
+          <li>Hesap yok, e-posta yok; takvim telefonun kendi hatırlatıcısına yazılır</li>
+        </ul>
+      </div>
+      <div class="sheet" aria-label="Fidanlıkta çevrimdışı tür tanıma ekranı">
+        <p class="bar"><span>Fidanlık · Göztepe</span><span class="off">Çevrimdışı</span></p>
+        <b>Calathea orbifolia</b>
+        <p>Kuzey penceresi için iyi seçim, ama nem ister: salonunuz kışın %35. Banyo penceresi ya da yanına bir su kabı.</p>
+        <p class="alt">Bu saksı 26 cm; mevcut sehpanıza 24 cm daha uygun.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="qp" id="fiyat" aria-label="Kullanıcı yorumu ve fiyat">
+  <div class="wrap">
+    <div class="grid">
+      <blockquote>
+        <p>“İki monsterayı ‘susuz kaldı’ diye daha çok sulayarak öldürmüşüm. Üçüncüsünde uygulama dur dedi. Şimdi yedinci yaprağını açıyor, komşu çeliğini istedi.”</p>
+        <footer><b>Defne Aydoğan</b> · Moda, Kadıköy · 11 bitkili 2+1, kuzey cephe</footer>
+      </blockquote>
+      <div class="price">
+        <h2>Ücretsiz başlar, bir kez ödenir.</h2>
+        <div class="row"><span>Teşhis ve tür tanıma, 3 bitkiye kadar takvim</span><b>0 ₺</b></div>
+        <div class="row"><span>Bütün bitkiler, reçeteler, gelişim günlüğü (tek seferlik)</span><b>119 ₺</b></div>
+        <div class="row"><span>Abonelik</span><b>yok</b></div>
+        <div class="ctas"><a class="btn btn-leaf" href="#">iPhone için indir</a><a class="btn" style="color:var(--leaf)" href="#">Android için indir</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="h-sss">
+  <div class="wrap">
+    <h2 class="h2" id="h-sss">Sık sorulanlar</h2>
+    <div class="acc"><details><summary>Teşhis ne kadar güvenilir?</summary><p>En sık 12 belirtide (fazla su, az ışık, düşük nem, kırmızı örümcek, unlu bit, gübre yanığı…) test fotoğraflarında 10’da 8-9 doğru. Emin değilse iki olasılığı yan yana gösterir ve ayırt etmek için ne yapacağınızı söyler: “Toprağı kokla.”</p></details><details><summary>Bitkim zaten ölmüşse?</summary><p>Dürüstçe söyler. Gövdede sağlam bir boğum varsa çelikle kurtarmanın adımlarını verir; yoksa bir sonraki bitki için o pencereye uygun türleri önerir.</p></details><details><summary>Bahçe ve sebze de olur mu?</summary><p>Balkon domatesi, biber, fesleğen, nane ve maydanozu tanır. Ağaç ve çim için tasarlanmadı.</p></details><details><summary>Zararlı ilacı önerir mi?</summary><p>Önce evdeki yöntemleri önerir: yaprağı ılık sabunlu suyla silmek, neem yağı. Kimyasal ilaç gerekiyorsa etken maddeyi söyler, marka söylemez.</p></details></div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span class="end">Dördüncü monstera sizi bekliyor.</span>
+    <span>Bitki Doktoru · İstanbul · merhaba@bitkidoktoru.app</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var D={
+    su:{s:'Alt yaprak, sarı, yumuşak',p:81,n:'Fazla sulama, kök çürümesi başlangıcı',d:'Sulamayı durdurun; toprağın üst 5 cm’si kuruyana kadar bekleyin (yaklaşık 10 gün). Saksının altında su birikiyorsa boşaltın.',w:'Neden: sararma alttan başlıyor, yaprak sapı yumuşak, kenarlar kuru değil.'},
+    kuru:{s:'Kenar, kahverengi, kıtır',p:74,n:'Düşük nem ve kalorifer havası',d:'Bitkiyi kaloriferden en az 1 metre uzaklaştırın. Yanına su dolu bir kap koyun; yaprakları haftada iki kez nemli bezle silin.',w:'Neden: kuruma yalnızca uçlarda, yaprak sert; pencere kenarında radyatör var.'},
+    zararli:{s:'Yüzeyde ince benekler',p:68,n:'Kırmızı örümcek olasılığı',d:'Yaprağın alt yüzüne beyaz kâğıt tutup hafifçe vurun; hareket eden toz gibi noktalar görürseniz bitkiyi diğerlerinden ayırın ve ılık sabunlu suyla silin.',w:'Neden: noktalar damar aralarında, ışığa karşı soluk; ağ kontrolü önerilir.'}
+  };
+  var spots=[].slice.call(document.querySelectorAll('.spot'));
+  spots.forEach(function(b){b.addEventListener('click',function(){
+    spots.forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');
+    var d=D[b.dataset.k];
+    document.getElementById('dxSym').textContent=d.s;document.getElementById('dxPct').textContent='%'+d.p;
+    document.getElementById('dxName').textContent=d.n;document.getElementById('dxDo').textContent=d.d;document.getElementById('dxWhy').textContent=d.w;
+    document.getElementById('dxBar').style.width=d.p+'%';
+  });});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dolandırıcı Kalkanı — "Savcıyım" diyen aramada babanızın yanında</title>
+<meta name="description" content="Telefon görüşmesini cihazın içinde dinler; sahte savcı, polis, banka ve altın paketleme kalıplarını yakalar, babanızı görüşme sırasında uyarır ve size haber verir. Görüşme kaydedilmez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=Archivo+Narrow:wght@500;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F3F0; --white:#FFFFFF; --graphite:#25282C; --steel:#4C535B; --line:#D3D5D1;
+  --sign:#F2C230; --sign-dk:#8A6A00; --red:#AE2620; --red-soft:#F8E1DF; --ok:#2F6B45;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--graphite);font-family:Archivo,system-ui,sans-serif;font-size:20px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--graphite);outline-offset:3px;box-shadow:0 0 0 6px var(--sign)}
+h1,h2,h3{margin:0;line-height:1.12;font-weight:800;letter-spacing:-.015em}
+p{margin:0}
+.narrow{font-family:"Archivo Narrow",Archivo,sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+.strip{background:var(--graphite);color:#E9E9E6;font-size:16px}
+.strip .wrap{display:flex;gap:10px 26px;flex-wrap:wrap;padding-top:9px;padding-bottom:9px}
+.strip b{color:var(--sign)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;border-bottom:2px solid var(--graphite)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:22px;text-decoration:none;text-transform:none}
+.top nav{display:flex;gap:26px;font-size:18px}
+.top nav a{text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+
+.hero{padding:56px 0 80px}
+.hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.hero h1{font-size:clamp(34px,3.9vw,50px)}
+.hero h1 q{display:block;font-family:"Archivo Narrow",sans-serif;font-weight:700;color:var(--red);quotes:"“" "”";margin-bottom:10px}
+.hero .lead{margin-top:24px;font-size:22px;color:var(--steel);max-width:36ch}
+.actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:10px;font:700 19px Archivo,sans-serif;padding:16px 24px;border:2px solid var(--graphite);text-decoration:none;cursor:pointer;border-radius:2px}
+.btn.y{background:var(--sign);color:var(--graphite)}
+.btn.y:hover{background:#e6b41c}
+.btn.o{background:transparent;color:var(--graphite)}
+.btn.o:hover{background:var(--white)}
+.after{margin-top:18px;font-size:17px;color:var(--steel)}
+
+/* call */
+.call{background:var(--graphite);color:#F1F1EE;border-radius:4px;overflow:hidden}
+.call-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid #3a3e44}
+.call-head .num{font-family:"Archivo Narrow",sans-serif;font-size:22px;font-weight:700}
+.call-head .num small{display:block;font-family:Archivo,sans-serif;font-weight:400;font-size:15px;color:#B9BCC0}
+.call-head .t{font-variant-numeric:tabular-nums;font-size:18px;color:#B9BCC0}
+.lines{list-style:none;margin:0;padding:16px 22px;min-height:300px;font-size:18px}
+.lines li{padding:7px 0;opacity:.28;transition:opacity .35s}
+.lines li.on{opacity:1}
+.lines li b{display:inline-block;min-width:76px;font-family:"Archivo Narrow",sans-serif;font-weight:700;color:#B9BCC0;font-size:15px;text-transform:none}
+.lines mark{background:transparent;color:inherit;border-bottom:3px solid transparent;transition:background .3s}
+.lines li.on mark{background:var(--sign);color:var(--graphite);border-color:var(--sign)}
+.meter{display:flex;align-items:center;gap:14px;padding:14px 22px;border-top:1px solid #3a3e44;font-size:16px}
+.meter .bar{flex:1;height:10px;background:#3a3e44;border-radius:5px;overflow:hidden}
+.meter .bar i{display:block;height:100%;width:0;background:var(--sign);transition:width .5s}
+.warn{margin:0 22px 22px;background:var(--red);color:#fff;padding:18px 20px;border-radius:3px;display:none}
+.warn.show{display:block}
+.playing .warn.show{animation:pop .35s}
+.warn strong{display:block;font-size:24px;font-weight:800}
+.warn p{font-size:18px;margin-top:6px}
+@keyframes pop{from{transform:scale(.97);opacity:0}to{transform:none;opacity:1}}
+.play-row{padding:0 22px 22px}
+.play-row .btn{width:100%;justify-content:center}
+
+section{padding:88px 0}
+.h2{font-size:clamp(30px,3.4vw,44px);max-width:24ch}
+.lede{margin-top:14px;color:var(--steel);max-width:58ch;font-size:21px}
+
+/* ledger */
+.ledger{background:var(--white);border-top:2px solid var(--graphite);border-bottom:2px solid var(--graphite)}
+.tbl{width:100%;border-collapse:collapse;margin-top:36px;font-size:19px}
+.tbl th{font-family:"Archivo Narrow",sans-serif;font-weight:700;text-align:left;font-size:17px;color:var(--steel);padding:10px 16px 10px 0;border-bottom:2px solid var(--graphite)}
+.tbl td{padding:18px 16px 18px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl td:first-child{font-weight:700;width:22%}
+.tbl td:nth-child(2){font-family:"Archivo Narrow",sans-serif;font-size:20px;color:var(--red);width:38%}
+.tbl td:last-child{color:var(--steel)}
+
+/* two screens */
+.two .grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
+.scr{border:2px solid var(--graphite);border-radius:4px;background:var(--white);padding:26px}
+.scr h3{font-size:16px;font-family:"Archivo Narrow",sans-serif;font-weight:700;color:var(--steel);margin-bottom:16px}
+.scr .father{background:var(--red);color:#fff;border-radius:3px;padding:24px}
+.scr .father strong{font-size:32px;display:block;line-height:1.15}
+.scr .father p{font-size:21px;margin-top:10px}
+.scr .father .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.scr .father span{background:#fff;color:var(--graphite);text-align:center;font-weight:800;padding:14px 8px;border-radius:3px;font-size:20px}
+.scr .father span+span{background:transparent;color:#fff;border:2px solid #fff}
+.scr .son{border-left:6px solid var(--sign);background:#FFF8DD;padding:18px 20px}
+.scr .son b{display:block;font-size:15px;color:var(--sign-dk);font-family:"Archivo Narrow",sans-serif}
+.scr .son p{font-size:20px;font-weight:500;margin-top:4px}
+.scr ul{margin:18px 0 0;padding-left:20px;color:var(--steel);font-size:18px}
+.scr li+li{margin-top:6px}
+
+/* proof */
+.proof{background:var(--graphite);color:#ECECEA}
+.proof .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:start}
+.proof .h2{color:#fff}
+.proof .lede{color:#C2C5C9}
+.proof dl{margin:0;border-top:1px solid #4a4f56}
+.proof .r{display:grid;grid-template-columns:1fr auto;gap:16px;padding:16px 0;border-bottom:1px solid #4a4f56;font-size:19px}
+.proof dd{margin:0;font-family:"Archivo Narrow",sans-serif;font-weight:700;font-size:19px}
+.proof dd.no{color:#F0A49F}.proof dd.yes{color:var(--sign)}
+
+/* limits */
+.limits .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:38px}
+.limits h3{font-size:22px;margin-bottom:8px;font-weight:700}
+.limits p{color:var(--steel);font-size:19px}
+
+.quote{padding:76px 0;background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.quote blockquote{margin:0;font-size:clamp(24px,2.6vw,32px);line-height:1.4;font-weight:500;max-width:34em}
+.quote cite{display:block;margin-top:18px;font-style:normal;color:var(--steel);font-size:18px}
+
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.plan{background:var(--white);border:2px solid var(--graphite);border-radius:4px;padding:30px}
+.plan .amt{font-size:58px;font-weight:800;line-height:1;margin:14px 0 6px}
+.plan .amt small{font-size:20px;font-weight:500;color:var(--steel)}
+.plan ul{padding-left:20px;margin:18px 0 24px;font-size:19px}
+.plan li+li{margin-top:6px}
+.plan .btn{width:100%;justify-content:center}
+.help{border-left:6px solid var(--red);padding:6px 0 6px 22px}
+.help h3{font-size:24px;margin-bottom:12px}
+.help p{color:var(--steel);font-size:19px}
+.help p+p{margin-top:12px}
+.help strong{color:var(--graphite)}
+
+.faq .wrap{max-width:900px}
+.faq details{border-bottom:1px solid var(--line);padding:18px 0}
+.faq summary{cursor:pointer;font-weight:700;font-size:21px}
+.faq details p{margin-top:10px;color:var(--steel)}
+.faq .list{margin-top:28px}
+
+footer{background:var(--graphite);color:#C2C5C9;padding:34px 0;font-size:17px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 30px;justify-content:space-between}
+footer .credit{flex-basis:100%;font-size:14px}
+footer .credit a{color:#C2C5C9}
+
+@media (max-width:960px){
+  .top nav{display:none}
+  .hero .wrap,.two .grid,.proof .wrap,.price .wrap{grid-template-columns:1fr;gap:36px}
+  .limits .grid{grid-template-columns:1fr;gap:24px}
+  .tbl thead{display:none}
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:auto!important}
+  .tbl tr{border-bottom:1px solid var(--line);padding:14px 0}
+  .tbl td{border:0;padding:3px 0}
+}
+@media (max-width:520px){
+  body{font-size:19px}
+  .wrap{padding:0 16px}
+  .strip .wrap{font-size:14px}
+  .lines{padding:12px 16px;font-size:17px}
+  .scr{padding:18px}
+  .scr .father strong{font-size:27px}
+  section{padding:62px 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="strip"><div class="wrap"><span><b>Şu an şüpheli bir arama mı aldınız?</b> Kapatın. 155 Polis İmdat · 156 Jandarma.</span><span>Bankanızı yalnızca kartın arkasındaki numaradan arayın.</span></div></div>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">
+      <svg width="28" height="30" viewBox="0 0 28 30" aria-hidden="true"><path d="M14 2l11 4v9c0 7-5 11.5-11 13C8 26.5 3 22 3 15V6z" fill="#F2C230" stroke="#25282C" stroke-width="2.5"/><path d="M9 15l4 4 7-8" fill="none" stroke="#25282C" stroke-width="2.5"/></svg>
+      Dolandırıcı Kalkanı
+    </a>
+    <nav aria-label="Sayfa içi"><a href="#kaliplar">Yakaladığı kalıplar</a><a href="#ekranlar">Kim ne görür</a><a href="#kayit">Kayıt yok</a><a href="#fiyat">Fiyat</a></nav>
+  </header>
+</div>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1><q>Savcıyım, hesabınızı boşaltın.</q>Bu cümle duyulduğu anda babanız uyarılır, siz haberdar olursunuz.</h1>
+      <p class="lead">Dolandırıcı Kalkanı, babanızın telefon görüşmesini telefonun içinde dinler. Sahte savcı, polis, banka ve “altınları paketleyin” kalıplarını görüşme sürerken tanır.</p>
+      <div class="actions">
+        <a class="btn y" href="#fiyat">Babamın telefonuna kurun</a>
+        <a class="btn o" href="#kaliplar">Hangi kalıpları tanır?</a>
+      </div>
+      <p class="after">Görüşme kaydedilmez, hiçbir yere gönderilmez.</p>
+    </div>
+
+    <div class="call" aria-label="Örnek görüşme, Kemal Bey'in telefonunda">
+      <div class="call-head">
+        <p class="num">0212 *** ** 47<small>Kemal Bey'in telefonu · rehberde kayıtlı değil</small></p>
+        <p class="t" id="t">00:00</p>
+      </div>
+      <ol class="lines" id="lines">
+        <li><b>Arayan</b> Kemal Bey'le mi görüşüyorum? Ben <mark>Bakırköy Cumhuriyet Savcısı</mark> Murat Aksoy.</li>
+        <li><b>Arayan</b> Adınıza açılmış bir hesap <mark>terör finansmanında kullanılmış</mark>.</li>
+        <li><b>Kemal Bey</b> Nasıl olur, benim haberim yok…</li>
+        <li><b>Arayan</b> <mark>Bu görüşme gizlidir, ailenize söylemeyin.</mark></li>
+        <li><b>Arayan</b> Paranızı korumak için <mark>hesabınızı boşaltıp bize teslim edin</mark>.</li>
+      </ol>
+      <div class="meter"><span>Kalıp</span><div class="bar"><i id="bar"></i></div><span id="score">0 / 4</span></div>
+      <div class="warn" id="warn" role="alert"><strong>Kapatın. Bu bir dolandırıcılık araması.</strong><p>Gerçek savcı telefonla para istemez. Emre'ye haber verildi.</p></div>
+      <div class="play-row"><button class="btn y" id="play" type="button">Görüşmeyi baştan oynatın</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="ledger" id="kaliplar">
+  <div class="wrap">
+    <h2 class="h2">Dolandırıcının senaryosu değişir, kalıbı değişmez</h2>
+    <p class="lede">Kalkan tek bir kelimeye değil, görüşmenin gidişatına bakar: otorite + korku + gizlilik + para. Dördü bir araya geldiğinde uyarır.</p>
+    <table class="tbl">
+      <thead><tr><th>Kalıp</th><th>Arayanın söylediği</th><th>Gerçekte</th></tr></thead>
+      <tbody>
+        <tr><td>Sahte savcı, polis</td><td>“Adınız bir terör soruşturmasında geçiyor.”</td><td>Savcılık ve emniyet ifadeye telefonla değil, yazılı tebligatla çağırır; para asla istemez.</td></tr>
+        <tr><td>Altın, döviz paketleme</td><td>“Altınları bir poşete koyup kapıya bırakın, memurumuz alacak.”</td><td>Hiçbir resmî kurum evden altın teslim almaz.</td></tr>
+        <tr><td>Banka güvenlik birimi</td><td>“Kartınız kopyalandı, gelen şifreyi okuyun.”</td><td>Banka SMS şifresini, kart şifresini telefonda sormaz.</td></tr>
+        <tr><td>Yakın kazası</td><td>“Oğlunuz kaza yaptı, hastaneye hemen para yatırın.”</td><td>Kalkan bu durumda sizi otomatik arar; babanız sesinizi duyunca anlar.</td></tr>
+        <tr><td>Gizlilik baskısı</td><td>“Kimseye söylemeyin, bankada da konuşmayın.”</td><td>Bu cümle tek başına en güçlü işarettir; dürüst bir kurum gizlilik dayatmaz.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="two" id="ekranlar">
+  <div class="wrap">
+    <h2 class="h2">Babanız kararı kendi verir. Siz yalnız haberdar olursunuz.</h2>
+    <div class="grid">
+      <div class="scr">
+        <h3>Kemal Bey'in telefonunda, görüşme sırasında</h3>
+        <div class="father">
+          <strong>Bu bir dolandırıcılık araması olabilir.</strong>
+          <p>Gerçek savcı telefonla para istemez.</p>
+          <div class="btns"><span>Kapat</span><span>Emre'yi ara</span></div>
+        </div>
+        <ul><li>Ekran büyük, kırmızı, tek cümle.</li><li>Kulağa da kısa bir sesli uyarı gelir; arayan duymaz.</li></ul>
+      </div>
+      <div class="scr">
+        <h3>Emre'nin telefonunda, aynı anda</h3>
+        <div class="son"><b>DOLANDIRICI KALKANI · 14:07</b><p>Babanız şüpheli bir görüşmede: sahte savcı kalıbı, 3 dk 12 sn. Aramak için dokunun.</p></div>
+        <ul><li>Görüşmenin içeriği size gelmez; yalnız saat, süre ve kalıp adı.</li><li>Babanız kapattıktan sonra “her şey yolunda” bildirimi gelir.</li><li>Aynı gün tekrar ararlarsa ikinci uyarı daha erken çıkar.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proof" id="kayit">
+  <div class="wrap">
+    <div>
+      <h2 class="h2">Babanızın telefon konuşmaları, babanızındır</h2>
+      <p class="lede">Dinleme ve tanıma işini telefonun kendi çipi yapar. Konuşma ne kaydedilir, ne yazıya dökülüp saklanır, ne de bir sunucuya gider. Kalkan, köyde zayıf çekimde, internet paketi bitmişken de çalışır.</p>
+    </div>
+    <dl>
+      <div class="r"><dt>Ses kaydı</dt><dd class="no">tutulmaz</dd></div>
+      <div class="r"><dt>Konuşmanın yazısı</dt><dd class="no">saklanmaz</dd></div>
+      <div class="r"><dt>Bize gönderilen</dt><dd class="no">hiçbir şey</dd></div>
+      <div class="r"><dt>Size giden</dt><dd class="yes">saat, süre, kalıp adı</dd></div>
+      <div class="r"><dt>İnternet gerekli mi</dt><dd class="yes">hayır</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="limits">
+  <div class="wrap">
+    <h2 class="h2">Neyi yapmadığını da bilin</h2>
+    <div class="grid">
+      <div><h3>Aramayı kendisi kesmez</h3><p>Kemal Bey yetişkin bir insan. Kalkan uyarır, kapatma kararı onundur.</p></div>
+      <div><h3>Her aramayı yakalamaz</h3><p>Yeni bir senaryo çıkabilir. Kalıp listesi her ay telefon üzerinden güncellenir; yine de sizinle konuşmanın yerini tutmaz.</p></div>
+      <div><h3>Şimdilik normal aramada</h3><p>WhatsApp ve benzeri uygulama aramalarını henüz dinleyemez. Android 10 ve üzeri, iPhone XS ve üzeri.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>“Babam bankaya gitmiş, 410 bin lirayı çekmek üzereymiş. Gişedeki kız durdurdu, şans eseri. Kalkanı ertesi gün kurdum. İki ay sonra yine aradılar; bu sefer telefon kırmızı yandı, babam ‘oğlum bunlar yine aradı’ diye beni aradı.”</blockquote>
+    <cite>Emre Şahin · Bursa, makine mühendisi. Babası Kemal Bey 76 yaşında, emekli öğretmen, Mudanya'da yaşıyor.</cite>
+  </div>
+</section>
+
+<section class="price" id="fiyat">
+  <div class="wrap">
+    <div class="plan">
+      <h2 class="h2" style="font-size:28px">Aile kalkanı</h2>
+      <p class="amt">349 ₺ <small>/ yıl</small></p>
+      <p style="color:var(--steel)">İlk 30 gün ücretsiz. Aylık ödeme yok, gizli ücret yok.</p>
+      <ul><li>2 korunan telefon (anne ve baba)</li><li>3 yakına kadar bildirim</li><li>Aylık kalıp güncellemesi</li><li>Kurulumda telefonla yardım: 0850 455 45 45</li></ul>
+      <a class="btn y" href="#">30 gün ücretsiz başlayın</a>
+    </div>
+    <div class="help">
+      <h3>Dolandırıldığınızı düşünüyorsanız</h3>
+      <p><strong>Hemen bankanızı arayın</strong>, kartın arkasındaki numaradan. Para transferi yeni yapıldıysa durdurulabilir.</p>
+      <p><strong>155 Polis İmdat</strong> ya da <strong>156 Jandarma</strong>'yı arayın, en yakın karakola ya da savcılığa şikâyette bulunun.</p>
+      <p>Utanılacak bir şey yok. Bu aramalar öğretmenleri, hâkimleri, bankacıları da kandırıyor; kurbanı değil, arayanı suçlayın.</p>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+    <h2 class="h2">Sorular</h2>
+    <div class="list">
+      <details><summary>Babamın bütün konuşmalarını dinlemek doğru mu?</summary><p>Kalkan konuşmaları sizin için dinlemez; yalnız telefon içinde, kalıp aramak için duyar ve unutur. Kurmadan önce babanızla konuşmanızı ve ayarları birlikte açmanızı isteriz; kurulumda bu adım atlanamaz.</p></details>
+      <details><summary>Gerçek bir bankadan aranırsa yanlış uyarı verir mi?</summary><p>Banka sizi aradığında hesap boşaltmanızı, şifre okumanızı, gizlilik istemez; bu yüzden olağan bir banka görüşmesi uyarı üretmez. Yanlış uyarı olursa babanız “sorun yok” der, sayaç sıfırlanır.</p></details>
+      <details><summary>Babam yalnızca sabit hat kullanıyor.</summary><p>Kalkan cep telefonunda çalışır. Sabit hattaki aramaları cebe yönlendirmek için operatörünüzün yönlendirme hizmetini kullanabilirsiniz; kurulum rehberinde adım adım anlatılıyor.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Dolandırıcı Kalkanı · Destek 0850 455 45 45 · hafta içi 09:00–21:00</span>
+    <span>KVKK · Şeffaflık raporu</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var lines=[].slice.call(document.querySelectorAll('#lines li')),bar=document.getElementById('bar'),score=document.getElementById('score'),
+      warn=document.getElementById('warn'),t=document.getElementById('t'),btn=document.getElementById('play'),timer=null;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hits=[1,2,2,3,4],times=['00:14','00:41','00:58','01:36','03:12'];
+  function show(i){
+    lines.forEach(function(l,j){l.classList.toggle('on',j<=i)});
+    score.textContent=hits[i]+' / 4';bar.style.width=(hits[i]*25)+'%';t.textContent=times[i];
+    if(i===lines.length-1){warn.classList.add('show');btn.textContent='Baştan oynatın';btn.disabled=false;return}
+    timer=setTimeout(function(){show(i+1)},reduce?0:1300);
+  }
+  btn.addEventListener('click',function(){clearTimeout(timer);warn.classList.remove('show');btn.disabled=true;btn.textContent='Görüşme sürüyor…';show(0)});
+  lines.forEach(function(l){l.classList.add('on')});score.textContent='4 / 4';bar.style.width='100%';t.textContent='03:12';warn.classList.add('show');
+})();
+</script>
+</body>
+</html>

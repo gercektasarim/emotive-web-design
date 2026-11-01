@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Esnek — Diz ameliyatı sonrası evde egzersiz, derece derece</title>
+<meta name="description" content="Esnek evde fizik tedavi egzersizlerinizi kamerayla sayar, diz açınızı ölçer ve fizyoterapistinize haftalık ilerleme özeti gönderir. Görüntü telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Rubik:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#F1F0EC; --wall-2:#E6E8E2; --mat:#1F5E57; --mat-2:#2A746B; --ink:#1A2321; --ink-2:#4A5754; --line:#C9D6D0;
+  --gain:#C2561A; --gain-soft:#FCE6D6; --white:#FFFFFF; --tick:#1A2321;
+  --head:"Rubik",system-ui,sans-serif; --sans:"Figtree",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--wall);color:var(--ink);font:400 18.5px/1.6 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gain);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px 12px;z-index:9}
+h1,h2,h3{font-family:var(--head);font-weight:600;letter-spacing:-.01em}
+
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font:700 23px var(--head);text-decoration:none;color:var(--mat)}
+header{background:var(--wall)}
+.logo svg{width:34px;height:20px}
+header nav{display:flex;gap:26px;align-items:center;font-size:16px}
+header nav a{text-decoration:none;color:var(--ink-2)}
+header nav a:hover{color:var(--ink)}
+.btn{display:inline-block;font:600 17px var(--sans);padding:14px 22px;border-radius:10px;text-decoration:none}
+.btn.mat{background:var(--mat);color:#fff}
+.btn.mat:hover{background:var(--mat-2)}
+.btn.out{box-shadow:inset 0 0 0 2px var(--mat);color:var(--mat)}
+.btn.out:hover{background:var(--wall-2)}
+header nav .btn{padding:9px 16px;font-size:15.5px}
+
+/* hero */
+.hero{position:relative;padding:40px 0 30px;overflow:hidden;background:var(--mat);color:#EEF5F2;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0) 0 10px,rgba(255,255,255,.045) 10px 12px),linear-gradient(180deg,#22665E,#1B5650)}
+.hero .btn.mat{background:#F1F0EC;color:var(--mat)}
+.hero .btn.mat:hover{background:#fff}
+.hero .btn.out{box-shadow:inset 0 0 0 2px #CFE3DD;color:#EEF5F2}
+.hero .btn.out:hover{background:rgba(255,255,255,.08)}
+.hero .wrap{display:grid;grid-template-columns:.95fr 1.05fr;gap:30px;align-items:start}
+.hero h1{font-size:clamp(40px,5.4vw,70px);line-height:1.04;margin:10px 0 18px;color:#fff}
+.hero h1 .l{display:block}
+.hero h1 .deg{display:block;font-size:.46em;color:#CFE3DD;font-weight:500;margin-top:18px;letter-spacing:0;line-height:1.2}
+.hero .lede{color:#D6E7E2;margin:0 0 26px;max-width:30em}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.note{margin-top:26px;font-size:15.5px;color:#BFD6D0}
+.gonio-wrap{position:relative;align-self:center}
+.gonio{display:block;width:100%;height:auto}
+.mat-strip{height:40px;background:var(--mat);margin-top:-2px;background-image:repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.06) 22px 24px)}
+
+/* week slider moment */
+.weeks{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.wk{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.wk-ctrl label{display:flex;justify-content:space-between;font:600 16px var(--sans);margin-bottom:8px}
+.wk-ctrl input{width:100%;accent-color:var(--gain);height:28px}
+.ticks{display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink-2);margin-top:2px}
+.reading{display:flex;align-items:baseline;gap:14px;margin:26px 0 6px}
+.reading b{font:700 84px/1 var(--head);color:var(--gain);letter-spacing:-.03em}
+.reading span{color:var(--ink-2);font-size:17px}
+.mile{background:var(--gain-soft);border-radius:12px;padding:16px 18px;font-size:17px;min-height:84px}
+.mile b{display:block;font:600 19px var(--head);margin-bottom:2px}
+.ladder{list-style:none;margin:0;padding:0}
+.ladder li{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:13px 0;border-top:1px solid var(--line);color:var(--ink-2);transition:color .3s}
+.ladder li b{font:600 20px var(--head)}
+.ladder li.reached{color:var(--ink)}
+.ladder li.reached b{color:var(--mat)}
+.ladder li.reached b::after{content:" ✓";font-size:16px}
+
+section{padding:92px 0}
+h2{font-size:clamp(30px,3.4vw,44px);line-height:1.12;margin:0 0 16px;max-width:22ch}
+.sub{color:var(--ink-2);max-width:58ch;margin:0 0 38px}
+
+/* session */
+.session{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:start}
+.sheet{background:var(--white);border-radius:6px;padding:24px 26px;box-shadow:0 1px 0 var(--line),0 20px 40px -34px rgba(26,35,33,.5)}
+.sheet .hd{display:flex;justify-content:space-between;font-size:14.5px;color:var(--ink-2);border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:6px;gap:10px;flex-wrap:wrap}
+.sheet .hd b{color:var(--ink);font-family:var(--head);font-size:17px}
+.ex{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--line)}
+.ex:last-child{border-bottom:0}
+.ex svg{width:64px;height:40px}
+.ex .n{font-weight:600}
+.ex .n small{display:block;font-weight:400;color:var(--ink-2);font-size:15px}
+.ex .st{font:600 15px var(--sans);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.st.done{background:#DCEFE8;color:var(--mat)}
+.st.now{background:var(--gain);color:#fff}
+.st.todo{background:var(--wall-2);color:var(--ink-2)}
+.cam{margin:0 0 16px}
+.cam svg{display:block;width:100%;height:auto}
+.cues{list-style:none;padding:0;margin:0}
+.cues li{background:var(--white);border-radius:14px;padding:16px 18px;margin-bottom:12px;font-size:17px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.cues li i{font:700 15px var(--head);color:#fff;background:var(--mat);border-radius:8px;padding:4px 8px;font-style:normal;white-space:nowrap}
+.cues li.warn i{background:var(--gain)}
+
+/* physio summary */
+.physio{background:var(--wall-2)}
+.phy{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:start}
+.report{background:var(--white);border-radius:6px;padding:24px 26px;font-size:15.5px}
+.report h3{margin:0;font-size:19px}
+.report .meta{color:var(--ink-2);font-size:14px;margin-bottom:12px}
+.report svg{display:block;width:100%;height:auto;margin:6px 0 10px}
+.report .kv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+.report .kv div{background:var(--wall);border-radius:8px;padding:10px 12px}
+.report .kv b{display:block;font:700 24px var(--head)}
+.phy ul{list-style:none;padding:0;margin:24px 0 0}
+.phy li{padding:12px 0;border-top:1px solid var(--line)}
+
+.quote{background:var(--mat);color:#F2F7F5}
+.quote figure{margin:0;max-width:900px}
+.quote blockquote{margin:0;font:500 clamp(23px,2.6vw,32px)/1.4 var(--head);letter-spacing:-.005em}
+.quote figcaption{margin-top:16px;color:#C3DAD4;font-size:16.5px}
+
+.rx{background:var(--white);border-radius:6px;max-width:820px;border-top:6px solid var(--mat)}
+.rx-main{padding:26px 28px 24px;display:grid;grid-template-columns:1fr auto;gap:6px 20px;align-items:baseline;border-bottom:2px dashed var(--line)}
+.rx-main p{grid-column:1/-1;margin:4px 0 14px;color:var(--ink-2)}
+.rx-main .btn{justify-self:start}
+.rx-k{font:600 20px var(--head)}
+.rx-v{font:700 40px var(--head);white-space:nowrap}
+.rx-v small{font:400 15px var(--sans);color:var(--ink-2)}
+.rx-v.sm{font-size:22px}
+.rx-row{display:grid;grid-template-columns:170px 1fr auto;gap:16px;align-items:baseline;padding:16px 28px;border-bottom:1px solid var(--line);color:var(--ink-2)}
+.rx-row:last-child{border-bottom:0}
+.rx-row .rx-k{color:var(--ink);font-size:17px}
+.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pc{background:var(--white);border-radius:12px;padding:24px 24px;border:2px solid transparent}
+.pc.hl{border-color:var(--mat)}
+.pc h3{margin:0;font-size:20px}
+.pc .amt{font:700 40px var(--head);margin:6px 0}
+.pc .amt small{font:400 15px var(--sans);color:var(--ink-2)}
+.pc p{margin:0 0 18px;color:var(--ink-2);font-size:16.5px}
+.faq{max-width:860px;margin-top:64px}
+.faq details{background:var(--white);border-radius:10px;margin-bottom:10px;padding:0 20px}
+.faq summary{cursor:pointer;padding:16px 0;font:600 18.5px var(--head)}
+.faq p{margin:0 0 16px;color:var(--ink-2)}
+
+footer{padding:34px 0 28px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line)}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .credit{margin-top:16px;font-size:13.5px}
+
+@media (max-width:1000px){
+  header nav a:not(.btn){display:none}
+  .hero .wrap,.wk,.session,.phy{grid-template-columns:1fr;gap:30px}
+  .prices{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  body{font-size:17.5px}
+  .wrap{padding:0 18px}
+  .hero{padding-top:20px}
+  .reading b{font-size:64px}
+  section{padding:66px 0}
+  .ex{grid-template-columns:48px 1fr;gap:10px}
+  .ex svg{width:48px}
+  .ex .st{grid-column:2;justify-self:start}
+  .report .kv{grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .report .kv b{font-size:20px}
+  .report .kv div{font-size:13px;padding:8px}
+  .rx-row{grid-template-columns:1fr auto;padding:14px 18px}
+  .rx-row span:nth-child(2){grid-column:1/-1;order:3;font-size:15px}
+  .rx-main{padding:22px 18px}
+}
+@media (prefers-reduced-motion:reduce){.ladder li{transition:none}#arm,#arc{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Esnek ana sayfa">
+      <svg viewBox="0 0 34 20" aria-hidden="true"><path d="M2 18 A15 15 0 0 1 32 18" fill="none" stroke="#1F5E57" stroke-width="2.5"/><path d="M17 18 L28 6" stroke="#C2561A" stroke-width="3" stroke-linecap="round"/><circle cx="17" cy="18" r="2.5" fill="#1A2321"/></svg>Esnek
+    </a>
+    <nav aria-label="Bölümler"><a href="#haftalar">Haftalar</a><a href="#seans">Bir seans</a><a href="#fizyoterapist">Fizyoterapist</a><a href="#fiyat">Fiyat</a><a class="btn mat" href="#fiyat">İndir</a></nav>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="hero" aria-labelledby="h1" style="padding-bottom:0">
+  <div class="wrap">
+    <div>
+      <h1 id="h1"><span class="l">Dün 88°.</span><span class="l">Bugün 92°.</span><span class="deg">Evde, tek başınıza, ama doğru yaptığınızı bilerek.</span></h1>
+      <p class="lede">Esnek, fizyoterapistinizin verdiği egzersizleri telefon kamerasıyla izler. Tekrarları sayar, dizinizin kaç derece büküldüğünü ölçer, yanlış yaptığınızda o an söyler. Haftanın sonunda fizyoterapistinize sayılar gider.</p>
+      <div class="ctas"><a class="btn mat" href="#fiyat">iPhone için indir</a><a class="btn out" href="#fiyat">Android için indir</a></div>
+      <p class="note">Diz protezi, ön çapraz bağ ve menisküs ameliyatları sonrası programlar. Telefonu yere, 2 metre öteye koymanız yeter.</p>
+    </div>
+    <div class="gonio-wrap">
+      <svg class="gonio" viewBox="0 0 560 330" role="img" aria-label="Gonyometre: diz bükme açısı 92 derece; ilk hafta 64 dereceydi">
+        <path d="M30 300 A250 250 0 0 1 530 300 Z" fill="rgba(241,240,236,.92)" stroke="#fff" stroke-width="2"/>
+        <g id="ticks" stroke="#1A2321"></g>
+        <g id="nums" font-family="Rubik" font-size="14" font-weight="600" fill="#4A5754" text-anchor="middle"></g>
+        <path id="arcW1" fill="none" stroke="#9FB4AD" stroke-width="16" stroke-linecap="round" opacity=".6"/>
+        <path id="arcNow" fill="none" stroke="#C2561A" stroke-width="16" stroke-linecap="round"/>
+        <line x1="280" y1="300" x2="40" y2="300" stroke="#1A2321" stroke-width="10" stroke-linecap="round"/>
+        <line id="armHero" x1="280" y1="300" x2="280" y2="60" stroke="#1F5E57" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="280" cy="300" r="16" fill="#1A2321"/><circle cx="280" cy="300" r="6" fill="#EEF3F0"/>
+        <text x="400" y="236" text-anchor="middle" font-family="Rubik" font-weight="700" font-size="54" fill="#C2561A" id="heroDeg">92°</text>
+        <text x="400" y="262" text-anchor="middle" font-family="Figtree" font-size="14" fill="#4A5754">sağ diz · 6. hafta</text>
+        <text x="400" y="280" text-anchor="middle" font-family="Figtree" font-size="14" fill="#4A5754">ilk hafta 64°</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="weeks" id="haftalar" aria-labelledby="h-wk">
+  <div class="wrap wk">
+    <div class="wk-ctrl">
+      <h2 id="h-wk">Her derece, geri kazanılmış bir şey</h2>
+      <p class="sub" style="margin-bottom:26px">Hülya Hanım'ın diz protezi sonrası 12 haftası. Kaydırın: bükme açısı arttıkça hayatına neyin geri döndüğünü görün.</p>
+      <label for="wkr"><span>Ameliyattan sonra</span><span id="wkLbl">6. hafta</span></label>
+      <input id="wkr" type="range" min="1" max="12" value="6" aria-valuetext="6. hafta, 92 derece">
+      <div class="ticks" aria-hidden="true"><span>1</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+      <div class="reading"><b id="wkDeg">92°</b><span id="wkSub">diz bükme · haftanın en iyi ölçümü</span></div>
+      <div class="mile" id="wkMile" aria-live="polite"><b>Bisiklete yarım tur</b>Sabit bisiklette pedal tam dönmese de ileri-geri sallama başladı.</div>
+    </div>
+    <ol class="ladder" id="ladder" aria-label="Açıya göre geri dönen günlük işler">
+      <li data-d="65"><b>65°</b><span>Yatakta kendi başına dönmek, tuvalete yardımsız gitmek</span></li>
+      <li data-d="75"><b>75°</b><span>Merdivenden tek basamak tek basamak inmek</span></li>
+      <li data-d="90"><b>90°</b><span>Normal yükseklikte sandalyeye oturup kalkmak</span></li>
+      <li data-d="105"><b>105°</b><span>Arabaya binmek, sabit bisikleti tam çevirmek</span></li>
+      <li data-d="115"><b>115°</b><span>Merdiveni ayak ayak çıkmak, alçak koltuktan kalkmak</span></li>
+      <li data-d="120"><b>120°</b><span>Yere eğilip torununu kucağına almak</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="seans" aria-labelledby="h-seans">
+  <div class="wrap session">
+    <div class="sheet" aria-label="Bugünün egzersiz programı">
+      <div class="hd"><b>Bugünün programı · Salı 14 Ekim</b><span>Fzt. Burcu Kaya'nın listesi</span></div>
+      <div class="ex"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 32 H60" stroke="#C9D6D0" stroke-width="2"/><circle cx="10" cy="26" r="4" fill="#1A2321"/><path d="M14 27 L34 29 L46 18 L58 30" fill="none" stroke="#1A2321" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="n">Topuk kaydırma<small>sırtüstü · 3 × 10</small></span><span class="st done">tamam · 30/30</span></div>
+      <div class="ex"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 32 H60" stroke="#C9D6D0" stroke-width="2"/><circle cx="10" cy="26" r="4" fill="#1A2321"/><path d="M14 27 L34 29 L58 14" fill="none" stroke="#1A2321" stroke-width="3" stroke-linecap="round"/></svg><span class="n">Düz bacak kaldırma<small>sırtüstü · 3 × 10</small></span><span class="st done">tamam · 30/30</span></div>
+      <div class="ex"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M20 8 V30 H40" fill="none" stroke="#C9D6D0" stroke-width="3"/><circle cx="28" cy="6" r="4" fill="#1A2321"/><path d="M28 10 V24 H44 L40 38" fill="none" stroke="#1A2321" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="n">Oturarak diz bükme<small>sandalyede · 3 × 10</small></span><span class="st now">şimdi · 8/10</span></div>
+      <div class="ex"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 32 H60" stroke="#C9D6D0" stroke-width="2"/><circle cx="10" cy="26" r="4" fill="#1A2321"/><path d="M14 27 L58 28" stroke="#1A2321" stroke-width="3" stroke-linecap="round"/><path d="M40 22 v-6 M44 22 v-6" stroke="#C2561A" stroke-width="2"/></svg><span class="n">Ön uyluk sıkıştırma<small>dizin altına havlu · 10 × 5 sn</small></span><span class="st todo">sırada</span></div>
+    </div>
+    <div>
+      <h2 id="h-seans">“Doğru mu yapıyorum?” sorusuna o an cevap</h2>
+      <p class="sub" style="margin-bottom:24px">Kliniğe haftada bir gidiyorsunuz; geri kalan altı gün odada yalnızsınız. Esnek her tekrarda bakar ve fizyoterapistinizin söyleyeceği şeyi söyler, sesli ve kısa.</p>
+      <figure class="cam" aria-label="Kameranın gördüğü: sandalyede oturan bacak, eklem noktaları ve 91 derecelik açı">
+        <svg viewBox="0 0 420 200" aria-hidden="true">
+          <rect width="420" height="200" rx="10" fill="#26302D"/>
+          <path d="M0 160 H420" stroke="#3B4743" stroke-width="2"/>
+          <path d="M300 40 v70 M330 40 v70 M296 40 h40" stroke="#3B4743" stroke-width="3"/>
+          <path d="M90 60 V140 H170 M90 140 V170 M170 140 V170" stroke="#56645F" stroke-width="5" fill="none"/>
+          <path d="M120 40 L124 128 L210 132 L206 176" stroke="#EEF5F2" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 0"/>
+          <g fill="#F2C2A2"><circle cx="124" cy="128" r="6"/><circle cx="210" cy="132" r="7"/><circle cx="206" cy="176" r="6"/></g>
+          <path d="M180 131 A30 30 0 0 1 208 158" fill="none" stroke="#E07A3A" stroke-width="4"/>
+          <text x="226" y="160" font-family="Rubik" font-weight="700" font-size="24" fill="#F2C2A2">91°</text>
+          <text x="14" y="24" font-family="Figtree" font-size="12" fill="#AFC2BC">kamera · yalnız eklem noktaları kaydedilir</text>
+          <text x="406" y="24" font-family="Figtree" font-size="12" fill="#AFC2BC" text-anchor="end">tekrar 8 / 10</text>
+        </svg>
+      </figure>
+      <ul class="cues">
+        <li><i>8. tekrar</i>“91°. Hedef 90'dı, geçtiniz. İki tekrar kaldı.”</li>
+        <li><i>düzelt</i>“Kalçanız sandalyeden kalkıyor. Oturun, yalnız dizinizi bükün.”</li>
+        <li class="warn"><i>ağrı 7/10</i>“Bugün iki set yeter. Buz koyun, yarın aynı saatte devam.”</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="physio" id="fizyoterapist" aria-labelledby="h-phy">
+  <div class="wrap phy">
+    <div>
+      <h2 id="h-phy">Fizyoterapistinize video değil, dereceler gider</h2>
+      <p class="sub" style="margin-bottom:0">Ameliyat iziniz, salonunuzun hali, eşofmanınız kamerada görünür ama hiçbir yere gitmez. Esnek görüntüyü telefonun içinde işler, yalnız eklem noktalarını çıkarır ve kareyi siler. Burcu Hanım'a giden özet yalnız sayılardan oluşur; onu da siz onaylayınca.</p>
+      <ul>
+        <li>İnternet olmadan çalışır; özet bağlantı gelince gider.</li>
+        <li>Kliniğin sizi kayıtlı tutması için Esnek'in sunucusuna gerek yok.</li>
+        <li>İstediğiniz an paylaşımı kapatırsınız; ölçümler telefonunuzda kalır.</li>
+      </ul>
+    </div>
+    <div class="report" aria-label="Fizyoterapiste giden haftalık özet örneği">
+      <h3>Haftalık özet · 6. hafta</h3>
+      <div class="meta">Hülya Demir · sağ total diz protezi, 2 Eylül 2025 · Fzt. Burcu Kaya</div>
+      <svg viewBox="0 0 420 130" role="img" aria-label="Günlük en iyi diz bükme açısı, 7 gün: 85, 86, 86, 87, 87, 88, 92 derece">
+        <g stroke="#C9D6D0"><path d="M30 20H410"/><path d="M30 60H410"/><path d="M30 100H410"/></g>
+        <g font-family="Figtree" font-size="12" fill="#4A5754"><text x="24" y="24" text-anchor="end">95°</text><text x="24" y="64" text-anchor="end">90°</text><text x="24" y="104" text-anchor="end">85°</text></g>
+        <polyline points="50,100 108,92 166,92 224,84 282,84 340,76 398,44" fill="none" stroke="#C2561A" stroke-width="3" stroke-linejoin="round"/>
+        <g fill="#C2561A"><circle cx="50" cy="100" r="4"/><circle cx="108" cy="92" r="4"/><circle cx="166" cy="92" r="4"/><circle cx="224" cy="84" r="4"/><circle cx="282" cy="84" r="4"/><circle cx="340" cy="76" r="4"/><circle cx="398" cy="44" r="5"/></g>
+        <g font-family="Figtree" font-size="12" fill="#4A5754" text-anchor="middle"><text x="50" y="124">Çar</text><text x="108" y="124">Per</text><text x="166" y="124">Cum</text><text x="224" y="124">Cmt</text><text x="282" y="124">Paz</text><text x="340" y="124">Pzt</text><text x="398" y="124">Sal</text></g>
+      </svg>
+      <div class="kv"><div><b>19/21</b>seans yapıldı</div><div><b>0°</b>tam düzleşme</div><div><b>3/10</b>ortalama ağrı</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı yorumu">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Ameliyattan sonra evde ağlayarak egzersiz yaptım, çünkü doğru mu yapıyorum bilmiyordum. Esnek her sabah dereceyi söylüyor. Altıncı haftada 92'yi görünce kızımı aradım. Burcu Hanım da ‘sizinle hiç uğraşmıyorum’ dedi.”</blockquote>
+      <figcaption><b style="color:#fff">Hülya Demir</b>, 63 · Bursa, Osmangazi · emekli sınıf öğretmeni, sağ diz protezi</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="fiyat" aria-labelledby="h-fiyat">
+  <div class="wrap">
+    <h2 id="h-fiyat">12 haftalık iyileşme, bir kez ödenir</h2>
+    <p class="sub">Fizyoterapistiniz Esnek kullanıyorsa size verdiği klinik koduyla tüm program ücretsizdir.</p>
+    <div class="rx" aria-label="Fiyatlar">
+      <div class="rx-main"><span class="rx-k">Esnek 12 hafta</span><span class="rx-v">299 ₺ <small>tek seferlik</small></span><p>Tüm program, sesli düzeltme, haftalık fizyoterapist özeti, 12 haftalık derece grafiği.</p><a class="btn mat" href="#">Programı al</a></div>
+      <div class="rx-row"><span class="rx-k">Deneme</span><span>3 egzersiz, sayma ve açı ölçme</span><span class="rx-v sm">0 ₺</span></div>
+      <div class="rx-row"><span class="rx-k">Klinik koduyla</span><span>Fizyoterapistinizin verdiği 6 haneli kod; her şey açılır</span><span class="rx-v sm">0 ₺</span></div>
+    </div>
+    <div class="faq">
+      <details><summary>Telefonu nereye koymalıyım?</summary><p>Yere, yana doğru 2 metre öteye; bacağınız kadrajda tamamen görünsün. Esnek ilk seferde nereye kaydıracağınızı söyler.</p></details>
+      <details><summary>Ağrı artarsa ne yapar?</summary><p>Her seans sonunda ağrınızı sorar. 7/10 ve üstünde seansı kısaltır; dizde kızarıklık, ateş ya da şişlik artışı derseniz doktorunuzu aramanızı söyler ve egzersizi durdurur.</p></details>
+      <details><summary>Hangi ameliyatlar için program var?</summary><p>Total diz protezi, ön çapraz bağ rekonstrüksiyonu ve menisküs onarımı. Program fizyoterapistinizin verdiği listeye göre düzenlenir; Esnek kendi kafasına göre egzersiz eklemez.</p></details>
+      <details><summary>Ölçüm ne kadar doğru?</summary><p>Yandan çekimde fizyoterapistin gonyometresiyle genellikle 3–5 derece içinde. Kesin ölçümü kontrolde fizyoterapistiniz yapar; Esnek eğilimi gösterir.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row"><span><b style="color:var(--ink)">Esnek</b> · Bursa. Tıbbi cihaz değildir; programınızı fizyoterapistiniz belirler.</span><a href="mailto:destek@esnek.app">destek@esnek.app</a></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var CX=280,CY=300,R=250;
+  function pt(deg,r){var a=Math.PI-deg/180*Math.PI;return [CX+r*Math.cos(a),CY-r*Math.sin(a)];}
+  // goniometer reads flexion 0..180 along the half circle (0 at left)
+  var t="",n="";
+  for(var d=0;d<=180;d+=2){var big=d%10===0,a=pt(d,R-2),b=pt(d,R-(big?22:12));t+='<line x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+b[0].toFixed(1)+'" y2="'+b[1].toFixed(1)+'" stroke-width="'+(big?2:1)+'"/>';
+    if(d%30===0&&d>0&&d<180){var c=pt(d,R-40);n+='<text x="'+c[0].toFixed(1)+'" y="'+(c[1]+5).toFixed(1)+'">'+d+'</text>';}}
+  document.getElementById("ticks").innerHTML=t;document.getElementById("nums").innerHTML=n;
+  function arc(deg,r){var a=pt(0,r),b=pt(deg,r);return "M"+a[0].toFixed(1)+" "+a[1].toFixed(1)+" A"+r+" "+r+" 0 0 1 "+b[0].toFixed(1)+" "+b[1].toFixed(1);}
+  document.getElementById("arcW1").setAttribute("d",arc(64,R-62));
+  function setHero(deg){document.getElementById("arcNow").setAttribute("d",arc(deg,R-62));var e=pt(deg,R-58);var arm=document.getElementById("armHero");arm.setAttribute("x2",e[0].toFixed(1));arm.setAttribute("y2",e[1].toFixed(1));}
+  setHero(92);
+  var weeks=[0,64,72,80,85,88,92,98,104,108,112,116,119];
+  var miles={1:["İlk hafta","Dizi bükmek korkutucu. Topuk kaydırma ile başlanır, buz ve yürüteç yanınızda."],2:["Yardımsız tuvalet","Yatakta dönüp kalkmak kolaylaştı."],3:["Tek basamak","Merdiveni tutunarak, tek basamak tek basamak inmek."],4:["Mutfakta ayakta","Merdiven inişi rahatladı; çay demlemek için yürüteç yerine baston."],5:["Sandalyeye iki derece","88°: yemek masasının sandalyesi için 90° gerekiyor, gelecek hafta."],6:["Bisiklete yarım tur","Sabit bisiklette pedal tam dönmese de ileri-geri sallama başladı."],7:["Kısa yürüyüş","Sokağın sonuna kadar bastonla yürümek."],8:["Arabaya binmek","Ön koltuğa dizini çarpmadan oturmak."],9:["Bisiklet tam tur","Sabit bisiklette 10 dakika."],10:["Merdiven ayak ayak","Apartman merdivenini tırabzanla çıkmak."],11:["Alçak koltuk","Salondaki kanepeden elleriyle itmeden kalkmak."],12:["Torun kucakta","Yere eğilip torununu kucağına almak."]};
+  var r=document.getElementById("wkr"),lis=[].slice.call(document.querySelectorAll("#ladder li"));
+  function upd(){var w=+r.value,d=weeks[w];
+    document.getElementById("wkLbl").textContent=w+". hafta";document.getElementById("wkDeg").textContent=d+"°";
+    r.setAttribute("aria-valuetext",w+". hafta, "+d+" derece");
+    document.getElementById("wkMile").innerHTML="<b>"+miles[w][0]+"</b>"+miles[w][1];
+    lis.forEach(function(li){li.classList.toggle("reached",d>=+li.dataset.d)});}
+  r.addEventListener("input",upd);upd();
+})();
+</script>
+</body>
+</html>

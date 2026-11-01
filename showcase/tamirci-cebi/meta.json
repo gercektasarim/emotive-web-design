@@ -1,0 +1,21 @@
+{
+  "slug": "tamirci-cebi",
+  "name": "Tamirci Cebi",
+  "interpretation": "Gece kombi dolabı",
+  "world": "Ocak gecesi mutfak balkonundaki kombi: emaye kasa, mavi LCD'de yanıp sönen F28, basınç saati ve altta sarı kollu gaz vanası.",
+  "palette": [
+    "#17202A",
+    "#EEEFEB",
+    "#F2C230",
+    "#D2452F",
+    "#0F2E47",
+    "#161B20"
+  ],
+  "fonts": [
+    "Hind",
+    "Chakra Petch"
+  ],
+  "score": 27,
+  "lowest": "Varsayılan kokusu",
+  "moment": "Arıza sekmesi değiştikçe 'Kendin yap ↔ Usta çağır' ibresi kayar; prizde kırmızıya, basınçta sarıya döner ve adımlar değişir."
+}

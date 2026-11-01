@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gece Pusulası — Horlamanın bir adı varsa, bir haftada öğrenin</title>
+<meta name="description" content="Gece Pusulası başucundaki telefonla horlamayı ve nefes duraklamalarını dinler, ses kaydı telefondan çıkmadan uyku apnesi riskini haftalık bir rapora döker.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#141C26; --night-2:#1D2835; --night-line:#34445A; --moon:#DCE3EA; --moon-dim:#A9B6C4;
+  --dawn:#F0A868; --dawn-deep:#B4652A; --mist:#E7EDF0; --morning:#F6F8F8; --ink:#1B2530; --ink-2:#4B5966;
+  --teal:#3F6C7A; --serif:"Literata",Georgia,serif; --sans:"Albert Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--morning);color:var(--ink);font:400 18px/1.62 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--dawn);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;color:#000;padding:8px 12px;z-index:9}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.01em}
+
+/* night hero */
+.nightfall{background:var(--night);color:var(--moon)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font:500 20px var(--serif);text-decoration:none;color:var(--moon)}
+.logo svg{width:28px;height:28px}
+.bar nav{display:flex;gap:28px;font-size:15.5px}
+.bar nav a{text-decoration:none;color:var(--moon-dim)}
+.bar nav a:hover{color:#fff}
+.barcta{display:none;font:600 14.5px var(--sans);color:var(--ink);background:#EAF0F4;border-radius:999px;padding:8px 14px;text-decoration:none}
+.hero{padding:54px 0 0}
+.hero-top{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:end}
+.hero h1{font-size:clamp(34px,4.6vw,58px);line-height:1.1;margin:0;color:#F3F5F7;max-width:17ch}
+.hero .lede{color:var(--moon-dim);font-size:19px;margin:0 0 6px;max-width:40ch}
+.hero .lede b{color:var(--moon);font-weight:500}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:22px;background:#EAF0F4;color:var(--ink);font:600 17px var(--sans);padding:15px 22px;border-radius:999px;text-decoration:none;border:1.5px solid #EAF0F4}
+.cta:hover{background:#fff}
+.cta.ghost{background:transparent;color:var(--moon);border:1.5px solid var(--night-line);margin-left:8px}
+.cta.ink{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cta.ink:hover{background:#2C3B4A}
+.cta.line{background:transparent;color:var(--ink);border-color:#B9C6CE}
+.cta.ghost:hover{border-color:var(--moon-dim)}
+
+/* the night strip */
+.night-strip{margin-top:52px;padding-bottom:0}
+.strip-head{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;color:var(--moon-dim);margin-bottom:10px;gap:16px;flex-wrap:wrap}
+.strip-head b{color:var(--moon);font-weight:600}
+.strip{position:relative;height:210px;border-radius:14px 14px 0 0;overflow:hidden;
+  background:linear-gradient(90deg,#141C26 0%,#18222F 55%,#2A3140 78%,#5C4A48 92%,#B07750 100%)}
+.strip svg{position:absolute;inset:0;width:100%;height:100%}
+.strip input[type=range]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.strip input[type=range]:focus-visible + .cursor{outline:3px solid var(--dawn)}
+.cursor{position:absolute;top:0;bottom:0;width:2px;background:#EAF0F4;pointer-events:none;transform:translateX(-1px)}
+.cursor::after{content:"";position:absolute;top:-1px;left:-5px;width:12px;height:12px;border-radius:50%;background:#EAF0F4}
+.hours{position:relative;height:30px;font:500 13px var(--sans);color:var(--moon-dim);background:#18222F}
+.hours span{position:absolute;top:7px;transform:translateX(-50%)}
+.hours span::before{content:"";position:absolute;left:50%;top:-7px;height:5px;width:1px;background:#4A5A6E}
+.readout{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;background:var(--night-2);border-radius:0 0 14px 14px;padding:18px 22px;align-items:baseline;min-height:92px}
+.readout .t{font:600 24px var(--serif);color:#fff}
+.readout .d{color:var(--moon);font-size:17px}
+.readout .k{grid-column:2;font-size:14.5px;color:var(--moon-dim)}
+.readout .night-sum{grid-column:1/-1;border-top:1px solid var(--night-line);margin-top:10px;padding-top:12px;font-size:15.5px;color:var(--moon)}
+.badge{display:inline-block;border:1.5px solid var(--dawn);color:var(--dawn);border-radius:999px;padding:1px 10px;font-weight:600;font-size:13.5px;margin-right:8px}
+.legend{display:flex;gap:22px;flex-wrap:wrap;font-size:14px;color:var(--moon-dim);margin:14px 0 0;padding-bottom:30px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:7px;vertical-align:-1px}
+
+/* morning summary (dawn band) */
+.dawn{background:linear-gradient(180deg,#1E2A38 0,#3A3E4E 80px,#7A6A72 180px,#D6B49C 300px,#E4E3E2 420px,#E9EEF1 520px)}
+.morning-card{background:var(--morning);border-radius:20px;padding:36px 40px;display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr;gap:28px;box-shadow:0 30px 60px -40px rgba(20,28,38,.6);position:relative;top:-0px}
+.morning-card .hello{font:500 23px/1.3 var(--serif);margin:0}
+.morning-card .hello small{display:block;font:400 15px var(--sans);color:var(--ink-2);margin-top:6px}
+.stat{border-left:1px solid #D5DEE3;padding-left:22px}
+.stat .n{font:500 40px/1 var(--serif);color:var(--ink)}
+.stat .n small{font-size:18px;color:var(--ink-2)}
+.stat p{margin:8px 0 0;font-size:15.5px;color:var(--ink-2)}
+.dawn-pad{padding:60px 0 90px}
+
+section{padding:96px 0}
+h2{font-size:clamp(28px,3.2vw,40px);line-height:1.18;margin:0 0 16px;max-width:22ch}
+.sub{color:var(--ink-2);max-width:58ch;margin:0 0 38px}
+
+/* witness */
+.witness{display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:start}
+.three{background:#1E2A38;color:var(--moon);padding-top:40px}
+.three h2{color:#F3F5F7}
+.three .sub{color:#B7C3CF}
+.clock{font:500 15px var(--sans);color:var(--moon-dim);display:block;margin-bottom:10px}
+.note{border:1px solid #3A4B60;border-radius:14px;padding:28px 30px;background:#233142;font-size:17.5px;line-height:1.55}
+.note h3{font:600 15.5px var(--sans);margin:0 0 14px;color:#B7C3CF}
+.note ul{list-style:none;margin:0;padding:0}
+.note li{padding:8px 0 8px 30px;position:relative;font-family:var(--serif);border-top:1px solid #31425A}
+.note li::before{content:"";position:absolute;left:2px;top:15px;width:12px;height:12px;border:1.5px solid #8FA9BC;border-radius:50%}
+.note li.yes::before{background:#8FA9BC}
+.note .tally{margin:14px 0 0;font-size:15.5px;color:var(--moon);line-height:1.5}
+/* week */
+.weekwrap{background:#E9EEF1}
+.paper{background:#FDFDFC;border-radius:3px;padding:0 0 34px;box-shadow:0 1px 0 #C9D4DB,0 24px 50px -40px rgba(20,28,38,.55);
+  background-image:linear-gradient(#EEF2F4 1px,transparent 1px),linear-gradient(90deg,#EEF2F4 1px,transparent 1px);background-size:24px 24px;font-variant-numeric:tabular-nums}
+.paper-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--ink);color:#E6ECF0;padding:12px 26px;font-size:14.5px;border-radius:3px 3px 0 0}
+.paper-head b{font-weight:600}
+.paper-body{padding:34px 34px 0}
+.paper .findings{padding:28px 34px 0;margin-top:34px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;align-items:end;height:250px;border-bottom:1px solid #C8D3D9;padding:0 4px 0 78px;position:relative}
+.week .ref{position:absolute;left:0;right:0;border-top:1.5px dashed var(--dawn-deep);font-size:13px;color:#8A4515;text-align:left;padding-left:0;z-index:0;pointer-events:none}
+.week .ref span{position:relative;top:-22px;left:-2px;background:#FDFDFC;padding:0 4px;font-weight:600}
+.day{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.day .col{width:100%;max-width:64px;border-radius:8px 8px 0 0;background:var(--teal);position:relative}
+.day .col.back{background:linear-gradient(180deg,var(--teal) 0 var(--b),#8FB0BA var(--b) 100%)}
+.day .v{font:600 16px var(--sans);color:#fff;position:relative;z-index:2;margin-bottom:-26px;height:26px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;padding:10px 4px 0 78px;font-size:14.5px;color:var(--ink-2);text-align:center}
+.findings{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:40px;padding-top:28px;border-top:1px solid #D5DEE3}
+.findings h3{font-size:20px;margin:0 0 6px}
+.findings p{margin:0;color:var(--ink-2);font-size:16.5px}
+.risk{display:inline-block;background:#FFF6EE;border:1.5px solid var(--dawn-deep);color:#8A4515;border-radius:999px;padding:4px 14px;font-size:15px;font-weight:600;margin-bottom:12px}
+
+/* privacy */
+.priv{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.wave2dots{background:var(--night);border-radius:16px;padding:28px;color:var(--moon)}
+.wave2dots svg{display:block;width:100%;height:auto}
+.wave2dots p{margin:14px 0 0;font-size:14.5px;color:var(--moon-dim)}
+.kept{list-style:none;padding:0;margin:24px 0 0}
+.kept li{padding:12px 0;border-top:1px solid #D5DEE3;font-size:17px}
+.kept li b{font-weight:600}
+
+/* after */
+.after{background:#F7F9FA}
+.path{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:10px;border-top:2px solid var(--teal)}
+.path div{padding:22px 26px 0 0}
+.path h3{font-size:19px;margin:0 0 6px}
+.path p{margin:0;font-size:16px;color:var(--ink-2)}
+.path .when{font-size:14px;color:var(--teal);font-weight:600;display:block;margin-bottom:6px}
+
+.quote{padding:90px 0;background:#FFFFFF;border-top:1px solid #E1E7EB;border-bottom:1px solid #E1E7EB}
+.quote blockquote{margin:0;font:400 clamp(23px,2.6vw,31px)/1.45 var(--serif);max-width:28em}
+.quote figcaption{margin-top:20px;color:var(--ink-2);font-size:16px}
+
+.price{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:start}
+.ticket{background:#fff;border-radius:18px;padding:32px 34px;box-shadow:0 24px 50px -36px rgba(20,28,38,.5)}
+.ticket .amt{font:500 52px/1 var(--serif)}
+.ticket .amt small{display:block;margin-top:8px;font:400 16px var(--sans);color:var(--ink-2)}
+.ticket ul{padding-left:20px;margin:18px 0 22px}
+.ticket li{margin:5px 0;font-size:16.5px}
+.ticket .cta{margin-top:0}
+.faq details{border-top:1px solid #D5DEE3}
+.faq details:last-child{border-bottom:1px solid #D5DEE3}
+.faq summary{cursor:pointer;padding:18px 0;font:500 19px var(--serif);list-style:none;display:flex}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"›";display:inline-block;flex:0 0 24px;color:var(--teal);transition:transform .2s}
+.faq details[open] summary::before{transform:rotate(90deg)}
+.faq p{margin:0 0 18px 22px;color:var(--ink-2);max-width:62ch}
+
+footer{background:var(--ink);color:#B9C4CE;padding:46px 0 26px;font-size:15px}
+footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer a{color:#E6ECF0}
+footer .credit{margin-top:28px;padding-top:16px;border-top:1px solid #33404D;font-size:13px}
+footer .credit a{color:#B9C4CE}
+
+@media (max-width:960px){
+  .bar nav{display:none}
+  .barcta{display:inline-block}
+  .hero-top,.witness,.priv,.price{grid-template-columns:1fr;gap:28px}
+  .morning-card{grid-template-columns:1fr 1fr;padding:28px}
+  .morning-card .hello{grid-column:1/-1}
+  .findings,.path{grid-template-columns:1fr 1fr;gap:26px}
+}
+@media (max-width:560px){
+  body{font-size:17px}
+  .wrap{padding:0 18px}
+  .hero{padding-top:28px}
+  .cta.ghost{margin-left:0}
+  .strip{height:170px}
+  .hours span:nth-child(even){visibility:hidden}
+  .morning-card{grid-template-columns:1fr;gap:18px}
+  .stat{border-left:0;border-top:1px solid #D5DEE3;padding:14px 0 0}
+  .week{gap:6px;height:200px;padding-left:56px}.days{gap:6px;font-size:13px;padding-left:56px}
+  .day .v{font-size:15px}
+  .findings,.path{grid-template-columns:1fr}
+  section{padding:70px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+<div class="nightfall">
+  <div class="wrap bar">
+    <a class="logo" href="#" aria-label="Gece Pusulası ana sayfa">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="#A9B6C4" stroke-width="1.4"/><path d="M14 4.5l3 9.5-3 9.5-3-9.5z" fill="#F0A868"/><path d="M14 14l3 0-3 9.5-3-9.5z" fill="#DCE3EA"/></svg>
+      Gece Pusulası
+    </a>
+    <nav aria-label="Bölümler">
+      <a href="#tanik">Belirtiler</a><a href="#hafta">Haftalık rapor</a><a href="#ses">Ses nerede kalır</a><a href="#sonra">Sonra ne olur</a><a href="#fiyat">Fiyat</a>
+    </nav>
+    <a class="barcta" href="#fiyat">14 gece ücretsiz</a>
+  </div>
+
+  <section class="hero" id="icerik" aria-labelledby="h1" style="padding-bottom:0">
+    <div class="wrap">
+      <div class="hero-top">
+        <h1 id="h1">O horluyor, siz uyuyamıyorsunuz. Bir hafta dinleyelim, sonra konuşalım.</h1>
+        <div>
+          <p class="lede">Gece Pusulası başucundaki telefonla horlamayı ve nefesin durduğu anları sayar. Sabah size gecenin haritasını, hafta sonunda da <b>bir uyku hekimine götürülecek raporu</b> verir.</p>
+          <a class="cta" href="#fiyat">14 gece ücretsiz dene</a>
+          <a class="cta ghost" href="#hafta">Örnek rapor</a>
+        </div>
+      </div>
+
+      <div class="night-strip">
+        <div class="strip-head">
+          <span><b>Hasan'ın gecesi</b> · Perşembe 23:40 → Cuma 06:55</span>
+          <span>Gecenin üzerinde parmağınızı ya da ok tuşlarını gezdirin</span>
+        </div>
+        <div class="strip" id="strip">
+          <svg id="stripSvg" viewBox="0 0 1000 210" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <input id="scrub" type="range" min="0" max="435" value="217" aria-label="Gece saatinde gezin" aria-describedby="ro-d">
+          <div class="cursor" id="cursor"></div>
+        </div>
+        <div class="hours" aria-hidden="true"><span style="left:4.60%">00:00</span><span style="left:18.39%">01:00</span><span style="left:32.18%">02:00</span><span style="left:45.98%">03:00</span><span style="left:59.77%">04:00</span><span style="left:73.56%">05:00</span><span style="left:87.36%">06:00</span></div>
+        <div class="readout" aria-live="polite">
+          <span class="t" id="ro-t">03:17</span>
+          <span class="d" id="ro-d">Sırtüstü. 22 saniye nefes durdu, ardından güçlü bir horlamayla açıldı.</span>
+          <span class="k" id="ro-k">Bu saatte 9 duraklama</span>
+          <span class="night-sum"><span class="badge">Orta risk</span>Bu gece saatte 18 duraklama: hekimlerin “orta” dediği aralık. Tehlike anı değil, bir hekime gösterme sebebi.</span>
+        </div>
+        <div class="legend">
+          <span><i style="background:#8FA9BC"></i>horlama şiddeti</span>
+          <span><i style="background:#F0A868"></i>nefes duraklaması (10 sn+)</span>
+          <span style="white-space:nowrap"><i style="background:#5E7486;height:4px;vertical-align:3px"></i>sırtüstü yatış</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<main>
+<section class="three" id="tanik" aria-labelledby="h-tanik">
+  <div class="wrap witness">
+    <div>
+      <span class="clock">Saat 04:10. Siz hâlâ uyanıksınız.</span>
+      <h2 id="h-tanik">Horlamayı siz duyuyorsunuz. Nefesin durduğunu o bilmiyor.</h2>
+      <p class="sub">Uyku apnesi olan çoğu kişi gece uyandığını hatırlamaz; sabah yorgun kalkar, toplantıda uyuklar, tansiyonu yükselir. Bunu ilk fark eden neredeyse her zaman yanında yatan kişidir. Gece Pusulası sizin tanıklığınızı sayıya döker, böylece konu “abartıyorsun”la kapanmaz.</p>
+    </div>
+    <div class="note" aria-label="Bir haftalık tanık notları">
+      <h3>Son bir haftada fark ettikleriniz</h3>
+      <ul>
+        <li class="yes">Horlama bir anda kesiliyor, sonra boğulur gibi nefes alıyor</li>
+        <li class="yes">Gece birkaç kez tuvalete kalkıyor</li>
+        <li class="yes">Sabah baş ağrısıyla, ağzı kurumuş uyanıyor</li>
+        <li>Gündüz televizyon karşısında uyuyakalıyor</li>
+        <li class="yes">Yan yatınca horlama azalıyor</li>
+      </ul>
+      <p class="tally">Dört işaret apneye uyuyor. Telefonun bir haftalık sayımı bunu doğrularsa raporu bir uyku hekimine götürmenizi öneririz.</p>
+    </div>
+  </div>
+</section>
+
+<div class="dawn">
+  <div class="wrap dawn-pad">
+    <div class="morning-card" aria-label="Sabah özeti">
+      <p class="hello">Günaydın. Gece 7 saat 15 dakika dinlendi.<small>Cuma, 07:02 · telefon şarjda, uçak modunda</small></p>
+      <div class="stat"><div class="n">18 <small>/ saat</small></div><p>nefes duraklaması. Hekimler 15'in üstünü “orta” sayar.</p></div>
+      <div class="stat"><div class="n">41 <small>sn</small></div><p>en uzun duraklama, 04:52'de, sırtüstü.</p></div>
+      <div class="stat"><div class="n">3 <small>kat</small></div><p>sırtüstü yattığında yana göre daha sık durdu.</p></div>
+    </div>
+  </div>
+</div>
+
+
+<section class="weekwrap" id="hafta" aria-labelledby="h-hafta">
+  <div class="wrap">
+    <h2 id="h-hafta">Bir hafta sonra elinizde bir harita olur</h2>
+    <p class="sub">Her sütun bir gece: saatte kaç kez nefes durdu. Açık kısım, sırtüstü yatarken olanlar. Kesikli çizgi hekimlerin “orta” dediği eşik.</p>
+    <div class="paper">
+    <div class="paper-head"><span><b>Haftalık rapor</b> · Hasan Arı, 55 · horlayan taraf</span><span>6–12 Kasım · 7 gece · 51 saat dinleme</span></div>
+    <div class="paper-body">
+    <div class="week" role="img" aria-label="Yedi gecelik nefes duraklaması: Cuma 14, Cumartesi 22, Pazar 16, Pazartesi 19, Salı 12, Çarşamba 21, Perşembe 18 saatte">
+      <div class="ref" style="bottom:calc(15/26*100%)"><span>15 / saat</span></div>
+      <div class="day"><span class="v">14</span><div class="col back" style="height:calc(14/26*100%);--b:45%"></div></div>
+      <div class="day"><span class="v">22</span><div class="col back" style="height:calc(22/26*100%);--b:30%"></div></div>
+      <div class="day"><span class="v">16</span><div class="col back" style="height:calc(16/26*100%);--b:40%"></div></div>
+      <div class="day"><span class="v">19</span><div class="col back" style="height:calc(19/26*100%);--b:35%"></div></div>
+      <div class="day"><span class="v">12</span><div class="col back" style="height:calc(12/26*100%);--b:58%"></div></div>
+      <div class="day"><span class="v">21</span><div class="col back" style="height:calc(21/26*100%);--b:28%"></div></div>
+      <div class="day"><span class="v">18</span><div class="col back" style="height:calc(18/26*100%);--b:36%"></div></div>
+    </div>
+    <div class="days" aria-hidden="true"><span>Cum</span><span>Cmt</span><span>Paz</span><span>Pzt</span><span>Sal</span><span>Çar</span><span>Per</span></div>
+    </div>
+    <div class="findings">
+      <div><span class="risk">Orta risk</span><h3>Ortalama saatte 17,4 duraklama</h3><p>Yedi gecenin beşinde eşiğin üstünde. Tek gecelik ölçüm değil, bir örüntü.</p></div>
+      <div><h3>Sırtüstü yatışta yoğunlaşıyor</h3><p>Duraklamaların %68'i sırtüstüyken. Bu, hekime “pozisyona bağlı” diye anlatılacak bilgi.</p></div>
+      <div><h3>Alkollü akşam: Cumartesi</h3><p>Notunuza göre o gece iki kadeh rakı içilmiş; duraklama 22'ye çıktı.</p></div>
+    </div>
+    </div>
+</div>
+  </div>
+</section>
+
+<section id="ses" aria-labelledby="h-ses" style="background:#F1F4F6">
+  <div class="wrap priv">
+    <div class="wave2dots">
+      <svg viewBox="0 0 520 120" role="img" aria-label="Ses dalgası telefonda noktalara dönüşüyor, ses dosyası saklanmıyor">
+        <g id="wv" fill="#8FA9BC"></g>
+        <path d="M262 60h26" stroke="#F0A868" stroke-width="2"/><path d="M282 54l8 6-8 6" fill="none" stroke="#F0A868" stroke-width="2"/>
+        <g id="dots"></g>
+      </svg>
+      <p>Solda: telefonun 30 saniyede duyduğu. Sağda: sakladığı. Ses dosyası hiç yazılmaz.</p>
+    </div>
+    <div>
+      <h2 id="h-ses">Yatak odanızın sesi telefonda kalır</h2>
+      <p class="sub" style="margin-bottom:0">Gece konuşmalarınız, uykudaki mırıltılar, çocuğun kapıyı açması kaydedilmez. Telefon sesi anında dinleyip nefesin ritmini çıkarır, sesin kendisini 30 saniye içinde siler. Sunucumuz yok; rapor internet kapalıyken de hazırlanır.</p>
+      <ul class="kept">
+        <li><b>Saklanan:</b> duraklamanın saati, süresi, yatış yönü, horlama desibeli.</li>
+        <li><b>Saklanmayan:</b> ses dosyası, konuşma, isim, konum.</li>
+        <li><b>Paylaşılan:</b> yalnız siz “PDF oluştur” deyince, sizin seçtiğiniz kişiye.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="after" id="sonra" aria-labelledby="h-sonra">
+  <div class="wrap">
+    <h2 id="h-sonra">Rapor bir teşhis değil, bir başlangıç</h2>
+    <p class="sub">Uyku apnesi tedavi edilebilen bir durumdur ve çoğu kişi ilk haftalarda sabahları farkı hisseder. Gece Pusulası'nın işi sizi bu yolun başına getirmek.</p>
+    <div class="path">
+      <div><span class="when">1. hafta</span><h3>Telefonla dinleme</h3><p>7 gece, her sabah bir harita, hafta sonunda PDF rapor.</p></div>
+      <div><span class="when">2–4. hafta</span><h3>Uyku hekimi</h3><p>Göğüs hastalıkları ya da KBB'de uyku polikliniği. Raporu yanınızda götürün.</p></div>
+      <div><span class="when">Hekim isterse</span><h3>Uyku testi</h3><p>Bir gece hastanede ya da evde cihazla polisomnografi. Kesin tanı burada konur.</p></div>
+      <div><span class="when">Sonrası</span><h3>Tedavi ve takip</h3><p>Yan yatış, ağız içi aparat ya da CPAP. Gece Pusulası farkı her sabah gösterir.</p></div>
+    </div>
+  </div>
+</section>
+
+<figure class="quote" style="margin:0">
+  <div class="wrap">
+    <blockquote>“On bir yıl kulağımda tıkaçla uyudum. Raporu görünce Hasan ilk kez ‘tamam, gidelim’ dedi. Üç aydır cihaz takıyor; ben de sabahları alarmdan önce uyanıyorum.”</blockquote>
+    <figcaption><b>Gülşen Arı</b>, 52 · Bursa, Nilüfer · muhasebeci</figcaption>
+  </div>
+</figure>
+
+<section id="fiyat" aria-labelledby="h-fiyat" style="background:#F8F6F1">
+  <div class="wrap price">
+    <div>
+      <h2 id="h-fiyat">İki hafta ücretsiz, sonrası tek ödeme</h2>
+      <p class="sub">İlk 14 gece hiçbir şey ödemeden dinler ve haftalık raporu verir. Takibe devam etmek isterseniz bir kez ödersiniz; abonelik yok.</p>
+      <div class="faq">
+        <details><summary>Telefonu nereye koymalıyım?</summary><p>Horlayan kişinin tarafındaki komodine, ekranı aşağı bakacak şekilde, yastıktan bir kol boyu uzağa. Şarjda kalsın. Telefon kimin olursa olsun çalışır; çoğu zaman uyuyamayan eşin telefonudur.</p></details>
+        <details><summary>İkimizin sesini karıştırmaz mı?</summary><p>İlk gece iki nefesi ayırmayı öğrenir: telefona yakın olanı ölçer. Siz de horluyorsanız rapor bunu ayrı bir satırda belirtir.</p></details>
+        <details><summary>Tanı koyar mı, cihaz yerine geçer mi?</summary><p>Hayır. Tıbbi cihaz değildir ve polisomnografinin yerini tutmaz. Riski gösterir ve hekime gidip gitmemeye karar vermenize yardım eder.</p></details>
+        <details><summary>Gece pil bitirir mi?</summary><p>Şarjdayken çalışmasını öneririz. Şarjsız bir gecede pilin yaklaşık %12'sini kullanır.</p></details>
+      </div>
+    </div>
+    <div class="ticket">
+      <div class="amt">299 ₺ <small>tek&nbsp;seferlik, 14&nbsp;gece&nbsp;sonra</small></div>
+      <ul>
+        <li>Sınırsız gece, her sabah gecenin haritası</li>
+        <li>Haftalık PDF rapor, uyku hekiminin okuduğu düzende</li>
+        <li>Tedavi sonrası önce/sonra karşılaştırması</li>
+        <li>iPhone (iOS 16+) ve Android (10+)</li>
+      </ul>
+      <a class="cta ink" href="#">iPhone için indir</a>
+      <a class="cta line" href="#">Android için indir</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <span><b style="color:#fff">Gece Pusulası</b> · İzmir. Tıbbi cihaz değildir; teşhis ve tedavi için hekiminize başvurun.</span>
+      <span><a href="mailto:merhaba@gecepusulasi.app">merhaba@gecepusulasi.app</a></span>
+    </div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var START=23*60+40, MIN=435; // 23:40 -> 06:55
+  function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  var r=rng(42);
+  // position: supine intervals (minutes from start)
+  var supine=[[70,150],[195,260],[300,345],[380,410]];
+  function isSup(m){return supine.some(function(a){return m>=a[0]&&m<a[1]})}
+  // apnea events (minute)
+  var ap=[], m;
+  for(m=40;m<MIN-10;m+=1){ var p=isSup(m)?.33:.06; if(r()<p){ap.push(m); m+=2;} }
+  var NB=290, w=1000/NB, svg=document.getElementById("stripSvg"), ns="http://www.w3.org/2000/svg", html="";
+  // supine line
+  supine.forEach(function(a){html+='<rect x="'+(a[0]/MIN*1000)+'" y="198" width="'+((a[1]-a[0])/MIN*1000)+'" height="4" fill="#5E7486"/>';});
+  for(var i=0;i<NB;i++){
+    var mm=i/NB*MIN, h;
+    var cyc=.55+.45*Math.sin(mm/90*Math.PI*2-1);
+    h=(isSup(mm)?70:34)*cyc+r()*22;
+    if(mm<18||mm>MIN-12)h=6+r()*6;
+    var near=ap.some(function(a){return Math.abs(a-mm)<1.3});
+    if(near){continue;}
+    html+='<rect x="'+(i*w+.6).toFixed(1)+'" y="'+(100-h/2).toFixed(1)+'" width="'+(w-1.2).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="1.2" fill="#8FA9BC" opacity="'+(.55+.4*cyc).toFixed(2)+'"/>';
+  }
+  ap.forEach(function(a){var x=a/MIN*1000;html+='<rect x="'+(x-2).toFixed(1)+'" y="22" width="4" height="10" rx="2" fill="#F0A868"/><line x1="'+x.toFixed(1)+'" y1="34" x2="'+x.toFixed(1)+'" y2="166" stroke="#F0A868" stroke-opacity=".28" stroke-dasharray="2 3"/>';});
+  svg.innerHTML=html;
+
+  var named={217:["03:17","Sırtüstü. 22 saniye nefes durdu, ardından güçlü bir horlamayla açıldı."],
+             312:["04:52","Sırtüstü. Gecenin en uzun duraklaması: 41 saniye."]};
+  function fmt(mins){var t=(START+mins)%1440;var h=Math.floor(t/60),mi=t%60;return (h<10?"0":"")+h+":"+(mi<10?"0":"")+mi}
+  var scrub=document.getElementById("scrub"),cur=document.getElementById("cursor");
+  function upd(){
+    var v=+scrub.value; cur.style.left=(v/MIN*100)+"%";
+    var hourStart=Math.floor((START+v)/60)*60-START, cnt=ap.filter(function(a){return a>=hourStart&&a<hourStart+60}).length;
+    var nearest=ap.reduce(function(b,a){return Math.abs(a-v)<Math.abs(b-v)?a:b},9999);
+    var t=fmt(v), d;
+    var key=Object.keys(named).filter(function(k){return Math.abs(k-v)<=2})[0];
+    if(key){t=named[key][0];d=named[key][1];}
+    else if(v<18){d="Uykuya dalıyor. Nefes düzenli, horlama yok.";}
+    else if(v>MIN-12){d="Uyanmaya yakın. Hafif uyku, nefes düzenli.";}
+    else if(Math.abs(nearest-v)<=1){d=(isSup(v)?"Sırtüstü. ":"Yan yatış. ")+(12+Math.round(Math.abs(Math.sin(nearest))*16))+" saniye nefes durdu.";}
+    else if(isSup(v)){d="Sırtüstü. Yüksek sesli, düzenli horlama.";}
+    else{d="Yan yatış. Horlama hafif, nefes düzenli.";}
+    document.getElementById("ro-t").textContent=t;
+    document.getElementById("ro-d").textContent=d;
+    document.getElementById("ro-k").textContent="Bu saatte "+cnt+" duraklama"+(isSup(v)?" · sırtüstü":" · yan");
+  }
+  scrub.addEventListener("input",upd); upd();
+
+  // wave -> dots
+  var wv="",dots="";
+  for(var k=0;k<60;k++){var hh=6+Math.abs(Math.sin(k*.7)*38+Math.sin(k*.23)*20)*(k%17<3?0.05:1);wv+='<rect x="'+(k*4)+'" y="'+(60-hh/2)+'" width="2.6" height="'+hh+'" rx="1"/>';}
+  [[316,60,"#8FA9BC"],[352,60,"#8FA9BC"],[388,60,"#F0A868"],[424,60,"#8FA9BC"],[460,60,"#8FA9BC"],[496,60,"#8FA9BC"]].forEach(function(d){dots+='<circle cx="'+d[0]+'" cy="'+d[1]+'" r="6" fill="'+d[2]+'"/>'});
+  dots+='<text x="388" y="100" text-anchor="middle" font-size="24" fill="#A9B6C4" font-family="Albert Sans">03:17 · 22 sn</text>';
+  document.getElementById("wv").innerHTML=wv; document.getElementById("dots").innerHTML=dots;
+})();
+</script>
+</body>
+</html>

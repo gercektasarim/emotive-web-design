@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ne Pişirsem — Dolapta ne varsa, akşam yemeği o</title>
+<meta name="description" content="Buzdolabının fotoğrafını çekin; Ne Pişirsem eldeki malzemeyle yapılacak üç yemeği önerir ve tarifi adım adım sesli anlatır. Fotoğraf telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1C1612; --night-2:#2A211B; --night-3:#433428;
+  --fridge:#EEF6FB; --fridge-2:#CFE1EC; --frost:#A9C3D3;
+  --yolk:#F6B323; --yolk-2:#FFD36B; --aubergine:#5B3466; --aubergine-2:#C9A6D2;
+  --text:#F3EBE2; --muted:#C2B3A5; --ink:#1A1410; --pan:#2E2621; --onion:#E8C79A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--night) radial-gradient(120% 70% at 15% 0%,#3A2A1E 0,transparent 60%) no-repeat;color:var(--text);font-family:"Libre Franklin",system-ui,sans-serif;font-size:17px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yolk);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:"Gabarito",sans-serif;font-optical-sizing:auto;letter-spacing:-.02em}
+
+header.top{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.brand{display:flex;gap:10px;align-items:center;font-family:"Gabarito";font-weight:800;font-size:22px;text-decoration:none}
+.brand .clock{font-family:"Libre Franklin";font-weight:600;font-size:13px;color:var(--night);background:var(--yolk);border-radius:6px;padding:2px 7px;font-variant-numeric:tabular-nums}
+header.top nav{display:flex;gap:24px;align-items:center;font-size:15px}
+header.top nav a{text-decoration:none;color:var(--muted)}
+header.top nav a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--yolk);color:var(--ink)!important;font-weight:700;text-decoration:none;padding:13px 20px;border-radius:12px;font-size:15.5px;border:0;font-family:inherit;cursor:pointer}
+.btn:hover{background:var(--yolk-2)}
+.btn.line{background:transparent;color:var(--text)!important;box-shadow:inset 0 0 0 1.5px #6B5646}
+.btn.line:hover{box-shadow:inset 0 0 0 1.5px var(--text)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start;padding:26px 0 30px}
+.hero>*{min-width:0}
+.hero h1{font-size:clamp(42px,5.4vw,74px);line-height:.95;font-weight:800;margin:30px 0 22px}
+.hero .lede{color:var(--muted);font-size:19px;max-width:28em;margin:0 0 28px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hint{margin-top:34px;display:flex;gap:12px;align-items:flex-start;color:var(--muted);font-size:15px;max-width:26em}
+.hint svg{flex:none;margin-top:2px}
+
+.fridge{position:relative;display:grid;grid-template-columns:1fr 88px;gap:0;filter:drop-shadow(0 40px 60px rgba(0,0,0,.5))}
+.cabinet{background:#DCE4EA;border-radius:18px 0 0 18px;padding:14px}
+.inside{position:relative;border-radius:10px;background:radial-gradient(120% 60% at 50% 0%,#FFFFFF 0,#E4F0F8 45%,#C4D8E5 100%);padding:12px 14px 6px;min-height:430px;box-shadow:inset 0 0 0 2px #B9CCD8,inset 0 18px 40px rgba(255,255,255,.9)}
+.inside::before{content:"";position:absolute;top:6px;left:50%;width:46%;height:6px;transform:translateX(-50%);background:#fff;border-radius:6px;box-shadow:0 0 28px 10px rgba(255,255,255,.95)}
+.shelf{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;padding:16px 0 8px;border-bottom:5px solid rgba(160,190,208,.55);min-height:110px}
+.shelf:last-child{border-bottom:0}
+.door{background:linear-gradient(90deg,#C9D3DA,#E8EEF2);border-radius:0 18px 18px 0;transform:perspective(500px) rotateY(-18deg);transform-origin:left;padding:20px 8px;display:flex;flex-direction:column;gap:16px;align-items:center}
+.door .rack{width:100%;height:56px;border-radius:4px;background:rgba(255,255,255,.55);border-bottom:4px solid #AFC0CB;display:flex;justify-content:center;align-items:flex-end;gap:4px;padding-bottom:3px}
+.item{appearance:none;border:0;background:transparent;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink);font-size:13px;font-weight:600;padding:4px 6px;border-radius:8px;transition:opacity .2s,filter .2s}
+.item svg{display:block;zoom:1.4}
+.item span{background:rgba(255,255,255,.85);padding:1px 7px;border-radius:999px;white-space:nowrap}
+.item[aria-pressed="false"]{opacity:.32;filter:grayscale(1)}
+.item[aria-pressed="false"] span{text-decoration:line-through}
+.item:hover{background:rgba(255,255,255,.5)}
+.fridge-cap{margin-top:12px;font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.fridge-cap b{color:var(--text);font-weight:600}
+
+.picks{padding:34px 0 80px}
+.picks h2{font-size:clamp(24px,2.6vw,32px);margin:0 0 6px}
+.picks .sub{color:var(--muted);margin:0 0 22px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--night-2);border-radius:18px;padding:22px;border:1px solid var(--night-3);border-top:8px solid var(--dish,#6B5646);display:flex;flex-direction:column;gap:10px;min-height:230px}
+.card .top{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--muted)}
+.card .min{background:var(--night-3);color:var(--text);padding:3px 10px;border-radius:999px;font-weight:600;font-variant-numeric:tabular-nums}
+.card h3{margin:0;font-size:26px;line-height:1.05;font-weight:700}
+.card p{margin:0;color:var(--muted);font-size:15.5px}
+.card .uses{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.card .uses i{font-style:normal;font-size:13px;padding:3px 9px;border-radius:999px;background:#3A2D25;color:var(--onion)}
+.card .uses i.miss{background:transparent;box-shadow:inset 0 0 0 1px #6B5646;color:#D9C8B8}
+.card.first{background:var(--yolk);color:var(--ink);border-color:var(--yolk);border-top-color:var(--dish,#C98A10)}
+.card.first .top,.card.first p{color:#3D2E08}
+.card.first .min{background:rgba(0,0,0,.12);color:var(--ink)}
+.card.first .uses i{background:rgba(0,0,0,.12);color:var(--ink)}
+
+/* voice */
+section{padding:90px 0}
+.h2{font-size:clamp(32px,4vw,52px);line-height:1;font-weight:800;margin:0 0 16px;max-width:16em}
+.sub2{color:var(--muted);max-width:38em;margin:0 0 40px}
+.voice{background:#ECE3D8;color:var(--ink);border-radius:28px;padding:56px 0}
+.voice .sub2{color:#4E4036}
+.steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.steps li{background:#FBF8F4;border-radius:16px;padding:20px;box-shadow:0 1px 0 #D6C8B8}
+.steps time{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;color:#55327A}
+.steps .say{font-family:"Gabarito";font-size:21px;line-height:1.2;font-weight:600;margin:8px 0 12px}
+.steps .you{font-size:14px;color:#54463B;border-top:1px dashed #D6C8B8;padding-top:10px}
+.steps .you b{color:var(--ink)}
+.wave{display:flex;gap:3px;align-items:center;height:22px;margin-top:22px}
+.wave span{width:4px;border-radius:2px;background:var(--aubergine);animation:w 1.2s ease-in-out infinite}
+@keyframes w{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+
+/* offline */
+.off{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.off>*{min-width:0}
+.photo{position:relative;background:var(--night-2);border-radius:18px;padding:18px;border:1px solid var(--night-3)}
+.photo .frame{border-radius:10px;aspect-ratio:4/3;background:radial-gradient(90% 60% at 50% 0%,#FFFFFF,#DCEAF2 50%,#B9CEDB);position:relative;overflow:hidden}
+.photo .frame::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 31%,rgba(140,170,190,.6) 31% 33%)}
+.photo .chip{position:absolute;font-size:12.5px;font-weight:700;background:var(--ink);color:#fff;padding:3px 8px;border-radius:6px}
+.photo .log{margin-top:14px;font-size:14px;color:var(--muted);display:grid;gap:6px}
+.photo .log div{display:flex;justify-content:space-between;gap:12px}
+.photo .log b{color:var(--text);font-weight:600}
+
+/* swaps */
+.swaps{display:grid;grid-template-columns:1fr 1.3fr;gap:48px;align-items:start}
+.swaps>*{min-width:0}
+.swaps table{width:100%;border-collapse:collapse;font-size:16.5px}
+.swaps th{text-align:left;font-size:13.5px;color:var(--muted);font-weight:600;padding:0 0 10px;border-bottom:2px solid var(--night-3)}
+.swaps td{padding:13px 0;border-bottom:1px solid var(--night-3);vertical-align:top}
+.swaps td:first-child{font-family:"Gabarito";font-weight:600;font-size:19px;padding-right:16px;white-space:nowrap}
+.swaps td:nth-child(2){color:var(--onion);font-weight:600;padding-right:16px}
+.swaps td:last-child{color:var(--muted);font-size:15px}
+
+blockquote{margin:0;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start;max-width:960px}
+blockquote .mark{font-family:"Gabarito";font-size:120px;line-height:.7;color:var(--yolk)}
+blockquote p{font-family:"Gabarito";font-size:clamp(26px,3vw,38px);line-height:1.15;font-weight:600;margin:0 0 18px}
+blockquote footer{color:var(--muted)}
+blockquote footer b{color:var(--text)}
+
+.price{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:900px}
+.p{border-radius:20px;padding:28px;background:var(--night-2);border:1px solid var(--night-3)}
+.p.full{background:var(--aubergine);border-color:var(--aubergine)}
+.p h3{margin:0;font-size:22px}
+.p .amt{font-family:"Gabarito";font-weight:800;font-size:46px;margin:10px 0 0}
+.p .per{color:var(--muted);font-size:14.5px}
+.p.full .per,.p.full li{color:#E6D6EB}
+.p ul{padding-left:18px;color:var(--muted);margin:16px 0 22px;font-size:15.5px}
+.p li{margin-bottom:6px}
+
+.faq{max-width:820px}
+details{border-bottom:1px solid var(--night-3);padding:18px 0}
+summary{cursor:pointer;font-family:"Gabarito";font-weight:600;font-size:20px}
+details p{color:var(--muted);margin:10px 0 0}
+
+footer.site{border-top:1px solid var(--night-3);padding:40px 0 30px;color:var(--muted);font-size:14.5px}
+footer.site .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer.site .credit{margin-top:26px;font-size:12.5px}
+
+@media (max-width:960px){
+  .hero,.off{grid-template-columns:1fr}
+  .cards,.swaps{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .price{grid-template-columns:1fr}
+  header.top nav a:not(.btn){display:none}
+  .hero h1{margin-top:10px}
+}
+@media (max-width:540px){
+  .wrap{padding:0 16px}
+  body{font-size:16px}
+  .steps{grid-template-columns:1fr}
+  .fridge{grid-template-columns:1fr 46px}
+  .door{padding:14px 4px}
+  .door .rack{height:40px}
+  .door svg{width:16px}
+  .inside{padding:8px 6px 4px;min-height:0}
+  .shelf{gap:2px;min-height:96px}
+  .item{font-size:11.5px;padding:2px}
+  .item svg{zoom:1}
+  blockquote{grid-template-columns:1fr;gap:0}
+  blockquote .mark{font-size:80px}
+  .voice{border-radius:0}
+  section{padding:64px 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="brand" href="#">Ne Pişirsem <span class="clock">19:00</span></a>
+  <nav aria-label="Ana menü">
+    <a href="#sesli">Sesli tarif</a><a href="#fiyat">Fiyat</a><a href="#sss">SSS</a>
+    <a class="btn" href="#fiyat">İndir</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" style="padding-bottom:20px">
+  <div>
+    <h1>Dolapta ne varsa, akşam yemeği o.</h1>
+    <p class="lede">Buzdolabının kapağını açın, bir fotoğraf çekin. Ne Pişirsem yarım patlıcanı, iki yumurtayı, kenarda kalmış yoğurdu görür; eldekiyle yapılacak üç yemeği önerir, sonra tarifi siz doğrarken sesli anlatır.</p>
+    <div class="ctas">
+      <a class="btn" href="#fiyat">iPhone için indir</a>
+      <a class="btn line" href="#fiyat">Android için indir</a>
+    </div>
+    <p class="hint"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12m-5-6 6 6-6 6" stroke="#F6B323" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Dolaptaki malzemelere dokunun. Bitenleri çıkarın, öneriler aşağıda anında değişir.</span></p>
+  </div>
+
+  <div>
+    <div class="fridge" role="group" aria-label="Buzdolabı içi: malzemeleri açıp kapatın">
+      <div class="cabinet">
+        <div class="inside" id="inside">
+          <div class="shelf" data-shelf="0"></div>
+          <div class="shelf" data-shelf="1"></div>
+          <div class="shelf" data-shelf="2"></div>
+        </div>
+      </div>
+      <div class="door" aria-hidden="true">
+        <div class="rack"><svg width="18" height="44" viewBox="0 0 18 44"><rect x="3" y="8" width="12" height="34" rx="3" fill="#F3F6F8" stroke="#A9BAC5"/><rect x="5" y="2" width="8" height="7" rx="1" fill="#2D6BB3"/></svg><svg width="18" height="40" viewBox="0 0 18 40"><rect x="3" y="10" width="12" height="28" rx="3" fill="#C8342B"/><rect x="6" y="3" width="6" height="8" rx="1" fill="#333"/></svg></div>
+        <div class="rack"><svg width="40" height="26" viewBox="0 0 40 26"><ellipse cx="9" cy="16" rx="6" ry="8" fill="#F5E9D7"/><ellipse cx="22" cy="16" rx="6" ry="8" fill="#F1E2CC"/><ellipse cx="34" cy="16" rx="5" ry="8" fill="#F5E9D7" opacity=".35"/></svg></div>
+        <div class="rack"><svg width="22" height="44" viewBox="0 0 22 44"><rect x="4" y="12" width="14" height="30" rx="4" fill="#F7F7F2" stroke="#BCC8CF"/><rect x="7" y="4" width="8" height="9" fill="#7FA34A"/></svg></div>
+      </div>
+    </div>
+    <div class="fridge-cap"><span>Fotoğraf: Salı 19:02 · mutfak, ışık zayıf</span><span><b id="count">9</b> malzeme tanındı</span></div>
+  </div>
+</section>
+
+<section class="picks" aria-labelledby="pk">
+  <h2 id="pk">Bu akşam için üç öneri</h2>
+  <p class="sub">Önce bozulacak olanı kullanan, eksiği en az olan. Hepsi ev mutfağından, hepsi 30 dakikanın altında.</p>
+  <div class="cards" id="cards" aria-live="polite"></div>
+</section>
+</div>
+
+<section id="sesli" aria-labelledby="ss" style="padding:0 0 0">
+  <div class="voice">
+    <div class="wrap">
+      <h2 class="h2" id="ss">Eliniz soğanlıyken ekrana dokunmazsınız. O anlatır.</h2>
+      <p class="sub2">Tarifi seçtikten sonra telefonu tezgâha bırakın. Ne Pişirsem adımları sesli okur, siz “tamam” deyince devam eder, “bir daha” deyince tekrarlar. Zamanlayıcıyı kendisi kurar.</p>
+      <ol class="steps" aria-label="Çılbır tarifinin sesli adımları">
+        <li><time>19:06</time><div class="say">“Bir tencerede su kaynat, bir kaşık sirke ekle.”</div><div class="you">Siz: <b>“Tamam.”</b></div></li>
+        <li><time>19:09</time><div class="say">“Yoğurda bir diş sarımsak rendele, tuzla çırp. Oda sıcaklığında kalsın.”</div><div class="you">Siz: <b>“Sarımsak yok.”</b> → “Sarımsaksız da olur, biraz limon kabuğu rendele.”</div></li>
+        <li><time>19:13</time><div class="say">“Yumurtaları tek tek kır, suyu karıştırıp ortasına bırak. Üç dakika sayıyorum.”</div><div class="you">Zamanlayıcı: <b>3:00</b></div></li>
+        <li><time>19:17</time><div class="say">“Tereyağını köpürene kadar erit, pul biberi şimdi at, hemen ocaktan al.”</div><div class="you">Sofrada: <b>19:20</b></div></li>
+      </ol>
+      <div class="wave" aria-hidden="true"><span style="height:10px"></span><span style="height:18px;animation-delay:.1s"></span><span style="height:22px;animation-delay:.2s"></span><span style="height:14px;animation-delay:.3s"></span><span style="height:20px;animation-delay:.4s"></span><span style="height:12px;animation-delay:.5s"></span><span style="height:18px;animation-delay:.6s"></span><span style="height:9px;animation-delay:.7s"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+<section aria-labelledby="of">
+  <div class="off">
+    <div>
+      <h2 class="h2" id="of">Buzdolabınızın içi, evinizin içidir.</h2>
+      <p class="sub2" style="margin-bottom:0">Ne yediğiniz, ne kadar aldığınız, neyin bozulmak üzere olduğu: bunlar bir market zincirinin reklam verisi olmamalı. Ne Pişirsem fotoğrafı telefonda tanır ve tanıdıktan sonra siler. Sesli komutlar da telefonda çözülür; mutfağın köşesinde Wi-Fi çekmese bile “tamam” dediğinizi duyar.</p>
+    </div>
+    <div class="photo" aria-label="Fotoğrafın telefonda işlendiğini gösteren kayıt">
+      <div class="frame" aria-hidden="true">
+        <span class="chip" style="top:12%;left:8%">patlıcan ½</span>
+        <span class="chip" style="top:14%;left:52%">yoğurt</span>
+        <span class="chip" style="top:46%;left:20%">yumurta ×2</span>
+        <span class="chip" style="top:48%;left:62%">limon ½</span>
+        <span class="chip" style="top:78%;left:38%">pilav (dünden)</span>
+      </div>
+      <div class="log">
+        <div><span>Tanıma</span><b>telefonda · 1,1 sn</b></div>
+        <div><span>Fotoğraf</span><b>tanındıktan sonra silindi</b></div>
+        <div><span>Ağ bağlantısı</span><b>kullanılmadı</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="bl" style="padding-top:0">
+  <div class="swaps">
+    <div>
+      <h2 class="h2" id="bl">Bir malzeme eksik diye yemekten vazgeçmeyin.</h2>
+      <p class="sub2" style="margin-bottom:0">Ne Pişirsem bir ev mutfağı gibi düşünür: dolapta olmayanın yerine olanı koyar, dünden kalanı önce kullanır. Bu akşamki dolaptan örnekler.</p>
+    </div>
+    <table aria-label="Yerine ne konur">
+      <thead><tr><th scope="col">Yok</th><th scope="col">Yerine</th><th scope="col">Hangi yemekte</th></tr></thead>
+      <tbody>
+        <tr><td>Sarımsak</td><td>limon kabuğu rendesi</td><td>Çılbırın yoğurdu</td></tr>
+        <tr><td>Kaşar</td><td>beyaz peynir, ufalanmış</td><td>Maydanozlu omlet</td></tr>
+        <tr><td>Taze nane</td><td>kuru nane, tereyağında</td><td>Yayla çorbası</td></tr>
+        <tr><td>Pirinç</td><td>dünkü pilav</td><td>Yayla çorbası, 10 dk kısalır</td></tr>
+        <tr><td>Domates</td><td>1 kaşık salça + su</td><td>Şakşuka, menemen</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-label="Kullanıcı yorumu" style="padding-top:20px">
+  <blockquote>
+    <span class="mark" aria-hidden="true">“</span>
+    <div>
+      <p>Nöbetten yedide çıkıyorum, markete uğrayacak halim yok. Dolapta üç şey vardı, çılbır çıktı. Telefon anlattı, ben yaptım. Yedi buçukta sofradaydık.</p>
+      <footer><b>Burak Şen</b>, acil servis hemşiresi · İzmir</footer>
+    </div>
+  </blockquote>
+</section>
+
+<section id="fiyat" aria-labelledby="fy">
+  <h2 class="h2" id="fy">Bir kez alın, her akşam kullanın.</h2>
+  <p class="sub2">Abonelik yok. Bir kez alırsınız, telefon değiştirseniz de sizindir.</p>
+  <div class="price">
+    <div class="p">
+      <h3>Ücretsiz</h3><div class="amt">0 ₺</div><div class="per">her zaman</div>
+      <ul><li>Günde 1 dolap fotoğrafı, 3 öneri</li><li>Yazılı tarif</li><li>Malzeme yerine öneri</li></ul>
+      <a class="btn line" href="#">Ücretsiz indir</a>
+    </div>
+    <div class="p full">
+      <h3>Tam sürüm</h3><div class="amt">199 ₺</div><div class="per">tek seferlik · aile paylaşımıyla 6 kişi</div>
+      <ul><li>Sınırsız fotoğraf ve öneri</li><li>Adım adım sesli anlatım, eller serbest</li><li>Haftalık “dolap bitirme” planı</li><li>Çocuk sofrası ve tek tencere modu</li></ul>
+      <a class="btn" href="#">Tam sürümü al</a>
+    </div>
+  </div>
+</section>
+
+<section id="sss" aria-labelledby="sq" style="padding-top:0">
+  <h2 class="h2" id="sq">Sorulanlar</h2>
+  <div class="faq">
+    <details><summary>Buzdolabı karanlık ve dağınık, yine de tanır mı?</summary><p>Çoğu zaman evet. Kapaklı kaplarda ne olduğunu göremez; o zaman “bu mavi kapta ne var?” diye sorar, bir kez söylerseniz hatırlar.</p></details>
+    <details><summary>Sesli anlatım internet ister mi?</summary><p>İstemez. Konuşma tanıma ve okuma telefonda yapılır. Mutfakta Wi-Fi zayıfsa ya da hiç yoksa aynı şekilde çalışır.</p></details>
+    <details><summary>Alerji ya da diyet seçebilir miyim?</summary><p>Evet: vejetaryen, glütensiz, laktozsuz ve tek tek malzeme hariç tutma. Hariç tuttuğunuz malzemeyi içeren tarif hiç önerilmez.</p></details>
+    <details><summary>Dolabın fotoğrafını kimse görüyor mu?</summary><p>Hayır. Fotoğraf telefonda işlenir ve tanındıktan sonra silinir. Bize yalnız, siz izin verirseniz, uygulamanın çöktüğüne dair anonim hata kaydı gelir.</p></details>
+    <details><summary>Tarifler kimin?</summary><p>Ev yemekleri üzerine çalışan iki aşçı ve bir diyetisyenle yazıldı; her tarif en az iki mutfakta denendi.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="row"><span><b style="color:var(--text)">Ne Pişirsem</b> · Dolaptaki malzemeyle üç yemek, sesli tarif</span><span>destek@nepisirsem.app · Gizlilik · KVKK</span></div>
+  <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+</footer>
+</div>
+
+<script>
+const I={
+ patlican:{n:"patlıcan ½",s:0,svg:'<svg width="52" height="40" viewBox="0 0 52 40"><path d="M6 24c0-10 14-14 26-12 10 2 16 8 14 14-2 7-14 10-26 8C12 33 6 30 6 24z" fill="#4E2A58"/><path d="M8 24c4-6 30-8 36 0-6 6-30 7-36 0z" fill="#EFE6C8"/><path d="M40 12c4-4 9-4 10 0-3 1-6 2-8 3z" fill="#5E8C33"/></svg>'},
+ yumurta:{n:"yumurta ×2",s:0,svg:'<svg width="44" height="40" viewBox="0 0 44 40"><ellipse cx="13" cy="22" rx="10" ry="13" fill="#F4E5CF" stroke="#D9C2A0"/><ellipse cx="31" cy="22" rx="10" ry="13" fill="#EFDCC0" stroke="#D9C2A0"/></svg>'},
+ yogurt:{n:"yoğurt",s:0,svg:'<svg width="46" height="46" viewBox="0 0 46 46"><path d="M5 12h36l-4 30H9z" fill="#FBFBF6" stroke="#B9C4CB"/><rect x="3" y="7" width="40" height="7" rx="2" fill="#2F6CB1"/><rect x="12" y="22" width="22" height="10" rx="2" fill="#2F6CB1" opacity=".85"/></svg>'},
+ domates:{n:"domates",s:1,svg:'<svg width="40" height="38" viewBox="0 0 40 38"><circle cx="20" cy="22" r="14" fill="#D63B2A"/><path d="M14 9l6 4 6-4-3 6h-6z" fill="#3E7A2C"/></svg>'},
+ limon:{n:"limon ½",s:1,svg:'<svg width="40" height="34" viewBox="0 0 40 34"><path d="M4 26a16 16 0 0 1 32 0z" fill="#F3D23A"/><path d="M8 26a12 12 0 0 1 24 0z" fill="#FBEE9A"/><path d="M20 26V14M20 26l-8-8M20 26l8-8" stroke="#E9CC3B" stroke-width="1.5"/></svg>'},
+ maydanoz:{n:"maydanoz",s:1,svg:'<svg width="34" height="54" viewBox="0 0 34 54"><path d="M17 52V22M17 34 9 20M17 30l9-12" stroke="#4E8A35" stroke-width="2.5"/><circle cx="17" cy="14" r="8" fill="#5E9C3F"/><circle cx="8" cy="18" r="6" fill="#6BAA48"/><circle cx="26" cy="15" r="6" fill="#4F8D36"/></svg>'},
+ kasar:{n:"kaşar",s:2,svg:'<svg width="46" height="34" viewBox="0 0 46 34"><path d="M4 28 40 10v18z" fill="#F2C94C"/><path d="M4 28 40 10l2 2L6 30z" fill="#E0B23A"/><circle cx="30" cy="22" r="2.5" fill="#E3B43E"/></svg>'},
+ tereyagi:{n:"tereyağı",s:2,svg:'<svg width="46" height="30" viewBox="0 0 46 30"><rect x="4" y="10" width="38" height="16" rx="2" fill="#FBE7A1"/><rect x="4" y="10" width="38" height="5" fill="#F3D97B"/></svg>'},
+ pilav:{n:"pilav (dünden)",s:2,svg:'<svg width="52" height="36" viewBox="0 0 52 36"><rect x="3" y="10" width="46" height="22" rx="5" fill="rgba(255,255,255,.75)" stroke="#9FB3C0"/><rect x="2" y="6" width="48" height="6" rx="2" fill="#E05A3A"/><path d="M8 28c6-10 30-10 36 0z" fill="#F4EEDD"/></svg>'}
+};
+const DC={patlican:'#6A3A75',yumurta:'#F2B01E',yogurt:'#EDE7DC',domates:'#D2402C',pilav:'#E3D3AE',maydanoz:'#5E9C3F',limon:'#F3D23A',kasar:'#E7B93A',tereyagi:'#F5DF93'};
+const R=[
+ {n:"Çılbır",m:12,d:"Poşe yumurta, sarımsaklı yoğurt, pul biberli tereyağı. Yanına bayat ekmek bile yakışır.",u:["yumurta","yogurt","tereyagi"]},
+ {n:"Patlıcanlı şakşuka yumurta",m:22,d:"Küp patlıcan, domatesle sotelenir; yumurtalar üstünde pişer.",u:["patlican","yumurta","domates"]},
+ {n:"Yoğurtlu patlıcan",m:25,d:"Közlenmiş ya da tavada kızarmış patlıcan, limonlu sarımsaklı yoğurtla.",u:["patlican","yogurt","limon"]},
+ {n:"Yayla çorbası",m:25,d:"Dünkü pilav, yoğurt ve yumurta sarısıyla; üstüne tereyağında nane.",u:["pilav","yogurt","yumurta","tereyagi"]},
+ {n:"Kaşarlı maydanozlu omlet",m:8,d:"İki yumurta, avuç dolusu maydanoz, rendelenmiş kaşar. Sekiz dakika.",u:["yumurta","maydanoz","kasar"]},
+ {n:"Yumurtalı pilav",m:10,d:"Dünkü pilav tereyağında çevrilir, yumurta kırılır, maydanozla biter.",u:["pilav","yumurta","tereyagi","maydanoz"]},
+ {n:"Menemen",m:15,d:"Domatesi suyunu çekene kadar pişir, yumurtayı en son kır, karıştırma.",u:["domates","yumurta","tereyagi"]},
+ {n:"Patlıcan kızartma, yoğurt",m:20,d:"İnce dilim patlıcan, sarımsaklı yoğurt, üstüne domates sosu.",u:["patlican","yogurt","domates"]},
+ {n:"Limonlu yoğurt soslu pilav",m:7,d:"Isıtılmış pilav, limonlu maydanozlu yoğurtla. En tembel akşamların yemeği.",u:["pilav","yogurt","limon","maydanoz"]}
+];
+const NM={patlican:"patlıcan",yumurta:"yumurta",yogurt:"yoğurt",domates:"domates",limon:"limon",maydanoz:"maydanoz",kasar:"kaşar",tereyagi:"tereyağı",pilav:"pilav"};
+const have=new Set(Object.keys(I));
+const shelves=document.querySelectorAll('.shelf');
+Object.entries(I).forEach(([k,v])=>{
+  const b=document.createElement('button');b.type='button';b.className='item';b.setAttribute('aria-pressed','true');
+  b.innerHTML=v.svg+'<span>'+v.n+'</span>';b.setAttribute('aria-label',v.n+' dolapta');
+  b.onclick=()=>{if(have.has(k)){have.delete(k)}else{have.add(k)}const on=have.has(k);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',v.n+(on?' dolapta':' bitti'));draw()};
+  shelves[v.s].appendChild(b);
+});
+function draw(){
+  document.getElementById('count').textContent=have.size;
+  const sc=R.map(r=>{const miss=r.u.filter(x=>!have.has(x));const used=r.u.length-miss.length;const fresh=r.u.filter(x=>have.has(x)&&['patlican','pilav','domates'].includes(x)).length;return{r,miss,score:miss.length*10-used*1.5-fresh*3+r.m/20}}).sort((a,b)=>a.score-b.score).slice(0,3);
+  document.getElementById('cards').innerHTML=sc.map((x,i)=>`<article class="card${i===0?' first':''}" style="--dish:${DC[x.r.u[0]]}">
+    <div class="top"><span>${x.miss.length?x.miss.length+' malzeme eksik':'Hepsi dolapta'}</span><span class="min">${x.r.m} dk</span></div>
+    <h3>${x.r.n}</h3><p>${x.r.d}</p>
+    <div class="uses">${x.r.u.map(u=>`<i class="${have.has(u)?'':'miss'}">${have.has(u)?'':'eksik: '}${NM[u]}</i>`).join('')}</div></article>`).join('');
+}
+draw();
+</script>
+</body>
+</html>

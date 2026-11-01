@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masa — Veli grubundaki her mesaj, aile takviminde yerli yerinde</title>
+<meta name="description" content="Masa, okul duyurusunun fotoğrafını, veli grubundaki mesajı ve sesli notu aile takvimine çevirir: kim, ne zaman, ne götürecek. Mesajlar ve çocuk bilgileri telefonunuzdan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@500;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --desk:#F3F2EF;
+  --white:#FFFFFF;
+  --ink:#1F2328;
+  --sub:#59606A;
+  --line:#E2E0DB;
+  --elif:#D9472F;
+  --kaan:#2A62C9;
+  --mira:#23885A;
+  --elif-bg:#FBE7E2;
+  --kaan-bg:#E3ECFA;
+  --mira-bg:#DFF1E7;
+  --bubble:#E3F5D6;
+  --hl:#FFE58A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--desk);color:var(--ink);font-family:"Manrope",system-ui,sans-serif;font-size:17px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--kaan);outline-offset:2px}
+h1,h2,h3{font-weight:800;letter-spacing:-.03em;line-height:1.08}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+.hand{font-family:"Caveat",cursive}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 16px/1 "Manrope",sans-serif;padding:14px 20px;border-radius:10px;text-decoration:none;border:1.5px solid var(--ink);cursor:pointer;background:var(--white);color:var(--ink)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:#000}
+.btn:not(.btn-ink):hover{background:#faf9f6}
+
+.top .wrap{display:flex;justify-content:space-between;align-items:center;height:70px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;text-decoration:none;letter-spacing:-.03em}
+.top nav{display:flex;gap:24px;font-size:15px;font-weight:600}
+.top nav a{text-decoration:none;color:var(--sub)}
+.top nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding:34px 0 120px;background-color:#E4D3B8;background-image:repeating-linear-gradient(178deg,rgba(120,80,30,.07) 0 2px,transparent 2px 9px,rgba(120,80,30,.05) 9px 10px,transparent 10px 23px),linear-gradient(90deg,rgba(255,255,255,.12),rgba(0,0,0,.04));border-bottom:1px solid #cdb895}
+.hero .lead{color:#3f3a33!important}
+.stage{position:relative}
+.paper-note{position:absolute;z-index:2;pointer-events:none;font-family:"Caveat";color:#283a6b;box-shadow:0 10px 18px -10px rgba(0,0,0,.4)}
+.env{left:40px;bottom:-84px;width:210px;height:120px;background:#F6EEDC;transform:rotate(-7deg);padding:16px 18px;font-size:26px;line-height:1.1;border:1px solid #e3d6bb}
+.env::before{content:"";position:absolute;left:0;right:0;top:0;height:50px;background:linear-gradient(160deg,transparent 49%,#e3d6bb 50%,transparent 51%),linear-gradient(200deg,transparent 49%,#e3d6bb 50%,transparent 51%)}
+.env span{position:absolute;left:18px;bottom:14px}
+.sticky{right:60px;bottom:-70px;width:150px;padding:14px 14px 18px;background:#FFE58A;transform:rotate(5deg);font-size:23px;line-height:1.15}
+.app{position:relative;z-index:1}
+.hero-head{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;margin-bottom:30px}
+.hero h1{font-size:clamp(36px,4.6vw,60px);max-width:17ch}
+.hero .lead{font-size:18.5px;color:var(--sub);max-width:34em;margin-top:14px}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+
+.app{background:var(--white);border:1px solid #cdb895;border-radius:16px;box-shadow:0 40px 70px -40px rgba(60,40,10,.55);display:grid;grid-template-columns:230px 1fr 1.45fr;overflow:hidden}
+.inbox{border-right:1px solid var(--line);padding:16px 12px;background:#FBFAF8}
+.inbox h2{font-size:13px;font-weight:700;letter-spacing:0;color:var(--sub);padding:0 8px 10px}
+.src{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:10px 8px;border-radius:10px;cursor:pointer;border:1.5px solid transparent;background:none;text-align:left;width:100%;font:inherit;color:inherit}
+.src:hover{background:#F2F0EC}
+.src[aria-selected="true"]{background:var(--white);border-color:var(--ink)}
+.src .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:#ECEAE5}
+.src b{display:block;font-size:14.5px}
+.src small{display:block;font-size:13px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.src .n{display:inline-block;margin-left:6px;font-size:11.5px;background:var(--elif);color:#fff;border-radius:999px;padding:0 6px;font-weight:700}
+.kids{margin-top:18px;padding:12px 8px 0;border-top:1px solid var(--line);display:grid;gap:8px;font-size:14px}
+.kids span{display:flex;align-items:center;gap:8px}
+.kids i{width:10px;height:10px;border-radius:3px}
+
+.read{padding:20px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:14px}
+.read .meta{font-size:13.5px;color:var(--sub);display:flex;justify-content:space-between;gap:8px}
+.bubble{background:var(--bubble);border-radius:4px 16px 16px 16px;padding:14px 16px;font-size:15px;line-height:1.6;max-width:100%}
+.bubble .from{font-weight:700;font-size:13.5px;color:#2b6b38;display:block;margin-bottom:4px}
+.bubble mark,.note-photo mark,.transcript mark{background:transparent;color:inherit;border-radius:3px;border-bottom:2px dotted #C9A400;transition:background .4s}
+.parsed mark{background:var(--hl)!important}
+.note-photo{background:#fff;border:1px solid #ddd;box-shadow:0 8px 20px -10px rgba(0,0,0,.3);padding:18px 18px 22px;transform:rotate(-2.5deg);font-family:"Caveat";font-size:23px;line-height:1.3;color:#283a6b}
+.note-photo b{font-family:"Manrope";font-size:13px;letter-spacing:.06em;color:#555;display:block;margin-bottom:6px}
+.voice{display:flex;align-items:center;gap:12px;background:#F2F0EC;border-radius:999px;padding:10px 16px}
+.voice .play{width:34px;height:34px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none}
+.voice .bars{display:flex;gap:2px;align-items:center;flex:1}
+.voice .bars i{width:3px;background:#8b9098;border-radius:2px}
+.transcript{font-size:14.5px;color:var(--sub);font-style:italic}
+.go{align-self:flex-start}
+.fields{display:none;gap:6px;font-size:14.5px}
+.parsed .fields{display:grid;animation:drop .5s ease-out}
+.fields div{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.fields span:first-child{color:var(--sub);font-weight:600}
+
+.cal{padding:16px 18px 18px}
+.cal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;gap:8px}
+.cal-head b{font-size:17px}
+.cal-head span{font-size:13.5px;color:var(--sub)}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.day{background:#FBFAF8;border:1px solid var(--line);border-radius:10px;min-height:330px;padding:8px 7px;display:flex;flex-direction:column;gap:6px}
+.day h3{font-size:12.5px;font-weight:700;letter-spacing:0;color:var(--sub);padding:2px 3px 4px}
+.day.today{background:#fff;border-color:var(--ink)}
+.ev{font-size:12.5px;line-height:1.35;border-radius:7px;padding:7px 8px;border-left:4px solid}
+.ev b{display:block;font-size:12.5px}
+.ev.e{background:var(--elif-bg);border-color:var(--elif)}
+.ev.k{background:var(--kaan-bg);border-color:var(--kaan)}
+.ev.m{background:var(--mira-bg);border-color:var(--mira)}
+.ev.p{background:#EEEDEA;border-color:#8b9098}
+.ev.new{animation:drop .6s cubic-bezier(.3,1.4,.5,1)}
+@keyframes drop{from{transform:translateY(-14px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+.ev .bag{display:block;margin-top:3px;color:#3b4048}
+
+section{padding:96px 0}
+.h2{font-size:clamp(32px,3.8vw,50px);max-width:20ch}
+.intro{font-size:18.5px;color:var(--sub);max-width:36em;margin-top:14px}
+
+/* morning */
+.morning .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.lock{background:#1F2328;border-radius:30px;padding:26px 20px 30px;max-width:380px;margin:0 auto;color:#fff}
+.lock .time{text-align:center;font-size:58px;font-weight:300;letter-spacing:-.02em;line-height:1}
+.lock .date{text-align:center;font-size:14px;color:#B9BEC6;margin:6px 0 20px}
+.notif{background:rgba(255,255,255,.95);color:var(--ink);border-radius:18px;padding:14px 16px;font-size:14.5px}
+.notif .h{display:flex;justify-content:space-between;font-size:12.5px;color:var(--sub);margin-bottom:6px;font-weight:600}
+.notif b{display:block;font-size:15.5px;margin-bottom:6px}
+.notif ul{list-style:none;display:grid;gap:5px}
+.notif li{display:grid;grid-template-columns:12px 1fr;gap:8px;align-items:start}
+.notif li i{width:9px;height:9px;border-radius:3px;margin-top:6px}
+
+/* sources */
+.sources .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:46px;border-top:2px solid var(--ink)}
+.sources article{padding:24px 26px 10px 0;margin-right:26px;border-right:1px solid var(--line)}
+.sources article:last-child{border-right:0;margin-right:0}
+.sources h3{font-size:22px;margin-bottom:8px}
+.sources p{color:var(--sub);font-size:16.5px}
+.sources .ex{margin-top:14px;font-size:14.5px;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.sources .ex b{display:block;font-size:12.5px;color:var(--sub);font-weight:700;margin-bottom:4px}
+
+/* split duty */
+.duty{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.duty .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}
+table.who{width:100%;border-collapse:collapse;font-size:15.5px}
+table.who th,table.who td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line)}
+table.who th{font-size:13px;color:var(--sub);font-weight:700}
+table.who td:last-child{font-weight:700}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:2px 8px}
+
+/* privacy */
+.priv .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:start}
+.priv ul{list-style:none;display:grid;gap:16px;margin-top:26px}
+.priv li{display:grid;grid-template-columns:auto 1fr;gap:14px;font-size:16.5px}
+.priv li b{display:block}
+.priv li span{color:var(--sub)}
+.priv li svg{margin-top:3px}
+.stays{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px;font-size:15px}
+.stays h3{font-size:16px;margin-bottom:10px}
+.stays .row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.stays .row span:last-child{font-weight:700}
+
+/* quote + price */
+.qp .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.qp blockquote p{font-size:clamp(23px,2.4vw,31px);font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.qp blockquote footer{margin-top:16px;color:var(--sub);font-size:15.5px}
+.qp blockquote footer b{color:var(--ink)}
+.qp .hand{font-size:28px;color:var(--elif);display:block;margin-top:22px;transform:rotate(-2deg)}
+.plan{background:var(--white);border:1.5px solid var(--ink);border-radius:14px;padding:26px}
+.plan .line{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
+.plan .line b{font-size:18px;white-space:nowrap}
+.plan .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+
+.faq .cols{display:grid;grid-template-columns:1fr 1fr;gap:28px 56px;margin-top:40px}
+.faq h3{font-size:18.5px;letter-spacing:-.01em;margin-bottom:6px;line-height:1.3}
+.faq p{font-size:16px;color:var(--sub)}
+
+footer.site{padding:34px 0 40px;border-top:1px solid var(--line);font-size:14.5px;color:var(--sub)}
+footer.site .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.site .credit{width:100%;margin-top:8px;font-size:13px}
+footer.site .credit a{text-decoration:none;color:var(--sub)}
+footer.site .credit a:hover{color:var(--ink);text-decoration:underline}
+
+@media (max-width:1100px){
+  .app{grid-template-columns:220px 1fr}
+  .cal{grid-column:1/-1;border-top:1px solid var(--line)}
+  .day{min-height:220px}
+}
+@media (max-width:900px){
+  .top nav{display:none}
+  .hero-head{grid-template-columns:minmax(0,1fr)}
+  .app{grid-template-columns:minmax(0,1fr)}
+  .inbox{border-right:0;border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding:10px}
+  .inbox h2,.kids{display:none}
+  .inbox{-webkit-mask-image:linear-gradient(90deg,#000 80%,transparent);mask-image:linear-gradient(90deg,#000 80%,transparent);padding-right:40px}
+  .src{flex:none;width:auto;grid-template-columns:30px auto}
+  .src small{max-width:120px}
+  .read{border-right:0}
+  .paper-note{display:none}
+  .days{grid-template-columns:repeat(5,minmax(150px,1fr));overflow-x:auto}
+  .cal{overflow-x:auto}
+  .morning .grid,.duty .grid,.priv .grid,.qp .grid{grid-template-columns:minmax(0,1fr)}
+  .sources .grid{grid-template-columns:minmax(0,1fr)}
+  .sources article{border-right:0;margin-right:0;border-bottom:1px solid var(--line)}
+  .faq .cols{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px){
+  .wrap{padding:0 14px}
+  section{padding:66px 0}
+  .hero{padding:16px 0 56px}
+  .read{padding:16px}
+  .fields div{grid-template-columns:minmax(0,1fr);gap:0}
+  .top .btn{padding:10px 14px;font-size:14px}
+  table.who{font-size:14px}
+  table.who th,table.who td{padding:10px 6px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="8" width="24" height="5" rx="1.5" fill="#1F2328"/><path d="M5 13v12M23 13v12" stroke="#1F2328" stroke-width="2.6" stroke-linecap="round"/><rect x="6" y="3" width="5" height="5" rx="1" fill="#D9472F"/><rect x="12" y="2" width="5" height="6" rx="1" fill="#2A62C9"/><rect x="18" y="4" width="5" height="4" rx="1" fill="#23885A"/></svg>Masa</a>
+    <nav aria-label="Ana menü"><a href="#sabah">Sabah 07:00</a><a href="#kaynaklar">Ne okur</a><a href="#paylasim">Kim alıyor</a><a href="#gizlilik">Gizlilik</a><a href="#fiyat">Fiyat</a></nav>
+    <a class="btn btn-ink" href="#fiyat">İndir</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="hero-head">
+      <div>
+        <h1 id="h1">47 okunmamış veli mesajı. Takvimde üç satır.</h1>
+        <p class="lead">Okul duyurusunun fotoğrafını, veli grubundaki uzun mesajı ya da arabada kaydettiğiniz sesli notu Masa’ya atın. Kim, ne zaman, ne götürecek: aile takviminde yerli yerinde. Hepsi telefonunuzda, hiçbir sunucuya uğramadan.</p>
+      </div>
+      <div class="ctas"><a class="btn btn-ink" href="#fiyat">iPhone için indir</a><a class="btn" href="#fiyat">Android için indir</a></div>
+    </div>
+
+    <div class="stage">
+    <div class="paper-note env" aria-hidden="true"><span>Kaan · 120 TL<br>gezi parası</span></div>
+    <div class="paper-note sticky" aria-hidden="true">Mira’ya pijama!! cuma</div>
+    <div class="app" id="app" aria-label="Masa uygulama ekranı: gelen kutusu, okunan mesaj ve haftalık aile takvimi">
+      <aside class="inbox">
+        <h2>Gelenler</h2>
+        <div role="tablist" aria-label="Kaynak seç" style="display:contents">
+          <button class="src" role="tab" aria-selected="true" data-k="msg"><span class="ic"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3h12v9H7l-4 3z" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linejoin="round"/></svg></span><span><b>3-C Veliler <span class="n">47</span></b><small>Nuray Öğretmen: Değerli velilerimiz…</small></span></button>
+          <button class="src" role="tab" aria-selected="false" data-k="photo"><span class="ic"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="4" width="14" height="11" rx="2" fill="none" stroke="#1F2328" stroke-width="1.8"/><circle cx="9" cy="9.5" r="2.8" fill="none" stroke="#1F2328" stroke-width="1.8"/></svg></span><span><b>Çantadan çıkan kâğıt</b><small>Fotoğraf · 18:12</small></span></button>
+          <button class="src" role="tab" aria-selected="false" data-k="voice"><span class="ic"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="6" y="2" width="6" height="9" rx="3" fill="none" stroke="#1F2328" stroke-width="1.8"/><path d="M3.5 9a5.5 5.5 0 0 0 11 0M9 14.5V16" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round"/></svg></span><span><b>Sesli not</b><small>Arabada · 0:14</small></span></button>
+        </div>
+        <div class="kids"><span><i style="background:var(--elif)"></i>Elif · 6-A</span><span><i style="background:var(--kaan)"></i>Kaan · 3-C</span><span><i style="background:var(--mira)"></i>Mira · anaokulu</span></div>
+      </aside>
+
+      <div class="read" id="read" aria-live="polite"></div>
+
+      <div class="cal">
+        <div class="cal-head"><b>9–13 Kasım</b><span>Ayşe ve Murat’ın telefonlarında</span></div>
+        <div class="days">
+          <div class="day" id="d1"><h3>Pzt 9</h3><div class="ev e"><b>Elif · yüzme</b>17:30 · Murat alır<span class="bag">Bone, havlu</span></div></div>
+          <div class="day" id="d2"><h3>Sal 10</h3><div class="ev m"><b>Mira · kuru boya</b><span class="bag">12’li, adı yazılı</span></div></div>
+          <div class="day today" id="d3"><h3>Çar 11 · bugün</h3><div class="ev p"><b>6-A veli toplantısı</b>18:00 · Ayşe</div></div>
+          <div class="day" id="d4"><h3>Per 12</h3></div>
+          <div class="day" id="d5"><h3>Cum 13</h3><div class="ev m"><b>Mira · pijama günü</b><span class="bag">Pijama + yastık</span></div><div class="ev k"><b>Kaan · beden eğitimi</b><span class="bag">Eşofman, spor ayakkabı</span></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="morning" id="sabah" aria-labelledby="h-sabah">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-sabah">07:00’de tek bildirim: bugün hangi çantaya ne girecek.</h2>
+        <p class="intro">Grupları açmanıza gerek kalmaz. Masa sabah kahvaltı masasında üç çocuğun gününü tek ekranda söyler. Unutulmuş bir zarf varsa akşamdan haber verir, sabah değil.</p>
+        <p class="intro">Akşam 20:00’de yarının listesi Murat’a da gider. Kim hazırlarsa işaretler; diğeri görür.</p>
+      </div>
+      <div class="lock" aria-label="Kilit ekranında Masa bildirimi">
+        <p class="time">07:00</p>
+        <p class="date">Perşembe, 12 Kasım</p>
+        <div class="notif">
+          <p class="h"><span>MASA</span><span>şimdi</span></p>
+          <b>Bugün çantalara</b>
+          <ul>
+            <li><i style="background:var(--kaan)"></i><span>Kaan: tiyatro gezisi, 08:45 okulda. Beslenme + su.</span></li>
+            <li><i style="background:var(--elif)"></i><span>Elif: Türkçe ödev kâğıdı (dün imzalandı ✓)</span></li>
+            <li><i style="background:var(--mira)"></i><span>Mira: bugün bir şey yok</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sources" id="kaynaklar" aria-labelledby="h-kay">
+  <div class="wrap">
+    <h2 class="h2" id="h-kay">Okulun konuştuğu her dili okur.</h2>
+    <div class="grid">
+      <article><h3>Veli grubu mesajı</h3><p>Uzun bir mesajı paylaş menüsünden Masa’ya gönderin. “Arkadaşlar yarın gelmiyor muyuz?” tipi sohbeti eler, tarihi ve yapılacağı ayırır.</p><p class="ex"><b>Okudu</b>“Cuma kermes var, her öğrenci bir kek getirsin” → Cum 13 · Kaan · kek</p></article>
+      <article><h3>Çantadan çıkan kâğıt</h3><p>Buruşuk duyuru, el yazısı not, ödev çizelgesi. Fotoğrafı çekin; eğri, gölgeli olsa da okur.</p><p class="ex"><b>Okudu</b>“Aşı onam formu 16 Kasım’a kadar” → Pzt 16 · Elif · form imza</p></article>
+      <article><h3>Sesli not</h3><p>Arabada, servisi beklerken: “Mira’nın öğretmeni perşembe veli görüşmesi dedi, öğleden sonra.” Saat belirsizse size sorar.</p><p class="ex"><b>Sordu</b>“Perşembe öğleden sonra kaçta? 13:30 · 14:00 · 15:00”</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="duty" id="paylasim" aria-labelledby="h-duty">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-duty">Kim alıyor, kim götürüyor, artık soru değil.</h2>
+        <p class="intro">Her satırın bir sahibi olur. Masa, ikinizin iş takviminden boş olanı önerir; kimse “ben sanmıştım ki sen” demez.</p>
+      </div>
+      <table class="who" aria-label="Bu haftanın görev paylaşımı">
+        <thead><tr><th>Ne</th><th>Ne zaman</th><th>Kim</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag" style="background:var(--elif-bg);color:#9c2f1c">Elif</span> Yüzmeden alma</td><td>Pzt 18:30</td><td>Murat</td></tr>
+          <tr><td><span class="tag" style="background:var(--kaan-bg);color:#1d4a9c">Kaan</span> 120 ₺ zarf + izin formu</td><td>Sal sabah</td><td>Ayşe</td></tr>
+          <tr><td>6-A veli toplantısı</td><td>Çar 18:00</td><td>Ayşe</td></tr>
+          <tr><td><span class="tag" style="background:var(--mira-bg);color:#17603e">Mira</span> Pijama + yastık</td><td>Cum sabah</td><td>Murat</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="priv" id="gizlilik" aria-labelledby="h-priv">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-priv">Çocuklarınızın okulu, sınıfı, servis saati bir sunucuda durmaz.</h2>
+        <p class="intro">Veli gruplarında çocuk fotoğrafları, telefon numaraları, adresler dolaşır. Masa mesajları telefonun içinde okur; takvim yalnızca sizin ve eşinizin telefonu arasında, uçtan uca şifreli eşitlenir.</p>
+        <ul>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3" fill="#DFF1E7"/><path d="M6.5 10.5 9 13l5-6" stroke="#23885A" stroke-width="2" fill="none"/></svg><span><b>Okuma telefonda</b><span>Mesajı ayrıştıran model 60 MB, uçak modunda da çalışır.</span></span></li>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3" fill="#DFF1E7"/><path d="M6.5 10.5 9 13l5-6" stroke="#23885A" stroke-width="2" fill="none"/></svg><span><b>Mesajın kendisi saklanmaz</b><span>Takvime giren satır kalır; mesaj ve fotoğraf işlendikten sonra silinir.</span></span></li>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3" fill="#DFF1E7"/><path d="M6.5 10.5 9 13l5-6" stroke="#23885A" stroke-width="2" fill="none"/></svg><span><b>Grubun diğer velileri yok</b><span>Masa yalnızca sizin seçip gönderdiğiniz mesajı görür; gruplara bağlanmaz.</span></span></li>
+        </ul>
+      </div>
+      <div class="stays" aria-label="Telefonda saklananlar">
+        <h3>Bu telefonda saklanan</h3>
+        <div class="row"><span>Takvim satırı</span><span>214</span></div>
+        <div class="row"><span>Saklanan mesaj</span><span>0</span></div>
+        <div class="row"><span>Saklanan fotoğraf</span><span>0</span></div>
+        <div class="row"><span>Eşitlenen cihaz</span><span>2 (Ayşe, Murat)</span></div>
+        <div class="row" style="border:0"><span>Bizim sunucumuzda</span><span>hiçbir şey</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="qp" id="fiyat" aria-label="Kullanıcı yorumu ve fiyat">
+  <div class="wrap">
+    <div class="grid">
+      <blockquote>
+        <p>“Üç çocuk, dört veli grubu, bir de iş. Eskiden pazar akşamı bir saat mesaj kaydırıyordum. Şimdi Masa’ya atıyorum, kahvemi içiyorum. Zarfı unuttuğumuz son hafta geçen ay oldu.”</p>
+        <footer><b>Ayşe Demirtaş</b> · Ataşehir, İstanbul · muhasebe müdürü, Elif, Kaan ve Mira’nın annesi</footer>
+        <span class="hand">buzdolabındaki listeyi kaldırdık :)</span>
+      </blockquote>
+      <div class="plan">
+        <div class="line"><span>Tek ebeveyn, sınırsız çocuk</span><b>0 ₺</b></div>
+        <div class="line"><span>Aile: iki ebeveyn eşitleme, görev paylaşımı, akşam listesi</span><b>199 ₺ <small style="font-weight:500;color:var(--sub)">tek seferlik</small></b></div>
+        <div class="line"><span>Büyükanne / bakıcı ekleme</span><b>Aile’ye dahil</b></div>
+        <div class="ctas"><a class="btn btn-ink" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="h-sss">
+  <div class="wrap">
+    <h2 class="h2" id="h-sss">Sık sorulanlar</h2>
+    <div class="cols">
+      <div><h3>Veli gruplarını otomatik okuyor mu?</h3><p>Hayır, bilinçli olarak. Masa yalnızca sizin paylaş menüsünden gönderdiğiniz mesajı okur. Grubun tamamına erişim istemiyoruz.</p></div>
+      <div><h3>Yanlış tarih çıkarırsa?</h3><p>Emin olmadığı her alanı sarıyla işaretler ve size sorar. “Bu cuma mı, gelecek cuma mı?” Siz onaylamadan takvime yazmaz.</p></div>
+      <div><h3>Okulun e-okul / uygulama bildirimlerini okur mu?</h3><p>Bildirimin ekran görüntüsünü ya da metnini paylaşırsanız evet. Okul sistemlerine bağlanmaz, şifre istemez.</p></div>
+      <div><h3>Google ya da iPhone takvimimle çalışır mı?</h3><p>Evet; isterseniz satırlar telefonun kendi takvimine de yazılır. Eşitleme o takvimin ayarlarına göre olur, Masa’nın sunucusu yoktur.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Masa · İstanbul · üç çocuklu iki ebeveyn tarafından yapıldı</span>
+    <span>merhaba@masa.app</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var S={
+    msg:{html:'<p class="meta"><span>3-C Veliler · Nuray Öğretmen</span><span>Bugün 16:47</span></p>'+
+      '<div class="bubble"><span class="from">Nuray Öğretmen</span>Değerli velilerimiz, <mark>12 Kasım Perşembe</mark> günü <mark>Çocuk Tiyatrosu gezimiz</mark> vardır. Öğrencilerimiz <mark>saat 08.45’te okulda</mark> olmalı, servis 09.00’da kalkacaktır. Gezi ücreti <mark>120 TL</mark> olup <mark>Salı gününe kadar zarf içinde</mark> öğretmene teslim edilmelidir. Yanlarında <mark>beslenme ve su</mark> getirmeleri rica olunur. <mark>Veli izin formu</mark> ektedir. Sevgiler.</div>'+
+      '<button class="btn btn-ink go" type="button" id="goBtn">Masaya koy</button>'+
+      '<div class="fields"><div><span>Kim</span><span>Kaan · 3-C</span></div><div><span>Ne</span><span>Çocuk Tiyatrosu gezisi</span></div><div><span>Ne zaman</span><span>Per 12 Kasım, 08:45 okulda</span></div><div><span>Götürecek</span><span>Beslenme, su</span></div><div><span>Önceden</span><span>Sal: 120 ₺ zarf + imzalı izin formu</span></div></div>',
+      ev:[['d2','k','Kaan · 120 ₺ zarf','İzin formu imzalı'],['d4','k','Kaan · tiyatro gezisi','08:45 okulda · beslenme + su']]},
+    photo:{html:'<p class="meta"><span>Elif’in çantasından · fotoğraf</span><span>Dün 18:12</span></p>'+
+      '<div class="note-photo"><b>6-A SINIF ÖĞRETMENLİĞİ</b><mark>Cuma</mark> günü <mark>Fen dersinde deney</mark> yapacağız. Her öğrenci <mark>1 limon, 1 bakır tel</mark> getirsin. — Hakan Bey</div>'+
+      '<button class="btn btn-ink go" type="button" id="goBtn">Masaya koy</button>'+
+      '<div class="fields"><div><span>Kim</span><span>Elif · 6-A</span></div><div><span>Ne</span><span>Fen deneyi</span></div><div><span>Ne zaman</span><span>Cum 13 Kasım</span></div><div><span>Götürecek</span><span>1 limon, 1 bakır tel</span></div><div><span>Önceden</span><span>Per akşam: hırdavattan bakır tel</span></div></div>',
+      ev:[['d4','e','Elif · bakır tel al','Hırdavat, akşam'],['d5','e','Elif · fen deneyi','Limon + bakır tel']]},
+    voice:{html:'<p class="meta"><span>Sesli not · arabada</span><span>Bugün 08:31</span></p>'+
+      '<div class="voice"><span class="play"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 2l7 4-7 4z" fill="#fff"/></svg></span><span class="bars">'+[6,12,18,9,22,14,8,16,20,10,6,14,18,8,12,6,16,10,4,8].map(function(h){return '<i style="height:'+h+'px"></i>'}).join('')+'</span><span style="font-size:13px;color:#59606A">0:14</span></div>'+
+      '<p class="transcript">“<mark>Mira’nın öğretmeni</mark> <mark>perşembe</mark> <mark>veli görüşmesi</mark> dedi, <mark>öğleden sonra</mark>. Bir de <mark>Mira’ya yağmurluk</mark> lazımmış, okulda kalacak.”</p>'+
+      '<button class="btn btn-ink go" type="button" id="goBtn">Masaya koy</button>'+
+      '<div class="fields"><div><span>Kim</span><span>Mira · anaokulu</span></div><div><span>Ne</span><span>Veli görüşmesi</span></div><div><span>Ne zaman</span><span>Per 12 Kasım · saat? → 14:00 seçildi</span></div><div><span>Götürecek</span><span>Yağmurluk (okulda kalacak)</span></div><div><span>Kim gidiyor</span><span>Ayşe (14:00 boş)</span></div></div>',
+      ev:[['d4','m','Mira · veli görüşmesi','14:00 · Ayşe'],['d4','m','Mira · yağmurluk','Okulda kalacak']]}
+  };
+  var read=document.getElementById('read'),done={};
+  function show(k){
+    read.classList.remove('parsed');read.innerHTML=S[k].html;
+    if(done[k])read.classList.add('parsed');
+    var b=document.getElementById('goBtn');
+    if(done[k]){b.textContent='Takvimde ✓';b.disabled=true;}
+    b.addEventListener('click',function(){
+      read.classList.add('parsed');b.textContent='Takvimde ✓';b.disabled=true;done[k]=1;
+      S[k].ev.forEach(function(e,i){setTimeout(function(){var d=document.getElementById(e[0]);var el=document.createElement('div');el.className='ev new '+e[1];el.innerHTML='<b>'+e[2]+'</b><span class="bag">'+e[3]+'</span>';d.appendChild(el);},reduce?0:500+i*350);});
+    });
+  }
+  var tabs=[].slice.call(document.querySelectorAll('.src'));
+  tabs.forEach(function(t){t.addEventListener('click',function(){tabs.forEach(function(x){x.setAttribute('aria-selected','false')});t.setAttribute('aria-selected','true');show(t.dataset.k);});});
+  show('msg');
+})();
+</script>
+</body>
+</html>

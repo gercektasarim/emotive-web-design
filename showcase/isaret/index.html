@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İşaret — Türk İşaret Dili ile gişede, muayenede iki yönlü tercüman</title>
+<meta name="description" content="İşaret, Türk İşaret Dili'ni kamerayla yazıya ve sese, konuşmayı da işarete çevirir. Bankada, hastanede, nüfusta. Görüntü telefondan çıkmaz. Sağır ekip üyeleriyle geliştirildi; bireyler için ücretsiz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ultra:#262DB8;     /* Sağır farkındalık mavisi */
+  --ink:#13142B;
+  --paper:#FFFFFF;
+  --lilac:#E7E8FF;     /* gişe camının yansıması */
+  --tomato:#FF6B4A;    /* el eklem noktaları (yalnız şekil) */
+  --tomato-ink:#B8341E;
+  --slate:#4A4C66;
+  --peach:#FFD9CF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font:400 1.15rem/1.6 "Public Sans",system-ui,sans-serif;overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+a{color:var(--ultra);text-underline-offset:.2em;text-decoration-thickness:2px}
+:focus-visible{outline:4px solid var(--tomato-ink);outline-offset:3px}
+.skip{position:absolute;top:-6rem;left:1rem;background:var(--ink);color:#fff;padding:1rem 1.2rem;z-index:9;font-weight:700}
+.skip:focus{top:1rem}
+.wrap{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;line-height:1.05;letter-spacing:-.02em}
+h1{font-size:clamp(2.4rem,4.6vw,3.7rem);max-width:18ch}
+h2{font-size:clamp(2rem,3.8vw,3rem);max-width:20ch}
+h3{font-weight:600;font-size:1.35rem;line-height:1.2}
+p{max-width:62ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 1.5rem;font:700 1.08rem "Public Sans";text-decoration:none;border-radius:12px;border:3px solid currentColor;cursor:pointer}
+.btn.w{background:#fff;color:var(--ultra);border-color:#fff}
+.btn.o{background:transparent;color:#fff}
+.btn.u{background:var(--ultra);color:#fff;border-color:var(--ultra)}
+
+/* hero */
+.hero{background:var(--ultra);color:#fff;padding:0 0 4rem}
+.hero :focus-visible{outline-color:#fff}
+.hero a{color:#fff}
+.bar{display:flex;justify-content:space-between;align-items:center;min-height:80px;gap:1rem;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:.6rem;font:800 1.5rem "Bricolage Grotesque";text-decoration:none}
+.bar nav a{display:inline-flex;min-height:48px;align-items:center;padding:0 .8rem;font-weight:600;text-decoration:none}
+.bar nav a:hover{text-decoration:underline}
+.hero-head{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;padding:1.2rem 0 1.8rem}
+.hero-head p{font-size:1.28rem;margin-top:1.1rem;color:#E7E8FF;max-width:44ch}
+.queue{background:#fff;color:var(--ink);width:150px;padding:1rem .9rem 1.2rem;border-radius:4px;text-align:center;font-size:.9rem;box-shadow:6px 6px 0 #1b2185;transform:rotate(3deg);border-bottom:3px dashed #c9cbe0}
+.queue b{display:block;font:800 2.6rem/1 "Bricolage Grotesque";margin:.3rem 0}
+
+.counter{display:grid;grid-template-columns:1fr 14px 1fr;background:#fff;color:var(--ink);border-radius:20px;overflow:hidden}
+.side{padding:1.3rem 1.5rem 1.2rem;display:flex;flex-direction:column;gap:.8rem}
+.side .who{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:1rem;color:var(--slate)}
+.glass{background:repeating-linear-gradient(180deg,var(--lilac) 0 10px,#d6d8ff 10px 12px)}
+.cam{background:var(--ink);border-radius:14px;aspect-ratio:16/7.5;position:relative;overflow:hidden}
+.cam svg{position:absolute;inset:0;width:100%;height:100%}
+.cam .rec{position:absolute;left:.8rem;top:.6rem;font-size:.85rem;color:#E7E8FF;display:flex;gap:.4rem;align-items:center}
+.cam .rec i{width:8px;height:8px;border-radius:50%;background:var(--tomato);display:inline-block}
+.gloss{font:600 .95rem "Public Sans";letter-spacing:.06em;color:var(--slate)}
+.out{font:600 1.45rem/1.3 "Bricolage Grotesque";min-height:3.8rem}
+.out small{display:block;font:400 .98rem "Public Sans";color:var(--slate);margin-top:.35rem}
+.wave{display:flex;gap:3px;align-items:center;height:26px}
+.wave span{width:4px;border-radius:2px;background:var(--ultra);height:30%}
+.playing .wave span{animation:w .9s ease-in-out infinite}
+.wave span:nth-child(2n){animation-delay:.15s}.wave span:nth-child(3n){animation-delay:.3s}
+@keyframes w{50%{height:100%}}
+.dir{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem}
+.dir button{min-height:56px;padding:0 1.3rem;border-radius:12px;border:3px solid #fff;background:transparent;color:#fff;font:700 1.05rem "Public Sans";cursor:pointer}
+.dir button[aria-pressed="true"]{background:#fff;color:var(--ultra)}
+.dir-note{margin-top:.8rem;color:#E7E8FF;font-size:1rem}
+
+/* phrasebook */
+.phr{padding:6rem 0}
+.phr-head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap}
+.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:2.2rem 0 1.4rem}
+.tabs button{min-height:52px;padding:0 1.2rem;border-radius:999px;border:2px solid var(--ink);background:#fff;color:var(--ink);font:700 1.02rem "Public Sans";cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:#fff}
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--ink)}
+.pairs div{padding:1.2rem 1.2rem 1.2rem 0;border-bottom:1px solid #d9dae8}
+.pairs div:nth-child(2n){padding-left:1.4rem;border-left:1px solid #d9dae8}
+.pairs .g{display:block;font-weight:600;letter-spacing:.06em;font-size:.9rem;color:var(--slate);margin-bottom:.2rem}
+.pairs .t{font:600 1.2rem/1.35 "Bricolage Grotesque"}
+.colhead{font-weight:700;font-size:.98rem;color:var(--slate);padding:.8rem 0}
+
+/* grammar */
+.gram{background:var(--lilac);padding:6rem 0}
+.gram .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.gram p{margin-top:1.1rem}
+.order{background:#fff;border-radius:18px;padding:1.6rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 1.2rem}
+.row span{padding:.45rem .8rem;border-radius:8px;background:var(--lilac);font-weight:700}
+.row.tid span{background:var(--ink);color:#fff;letter-spacing:.05em}
+
+/* team */
+.team{padding:6rem 0}
+.team .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:4rem}
+.people{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.people li{border:2px solid var(--ink);border-radius:16px;padding:1.2rem}
+.people b{display:block;font:800 1.15rem "Bricolage Grotesque"}
+.people span{color:var(--slate);font-size:1rem}
+
+/* privacy */
+.priv{background:var(--ink);color:#fff;padding:6rem 0}
+.priv :focus-visible{outline-color:#fff}
+.priv .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:start}
+.priv p{color:#D8D9EE;margin-top:1.1rem}
+.priv h2{max-width:16ch}
+.limits{border:2px solid #4a4c66;border-radius:18px;padding:1.6rem}
+.limits ul{list-style:none;margin-top:.8rem}
+.limits li{padding:.6rem 0;border-bottom:1px solid #2f3150;color:#D8D9EE}
+.limits li:last-child{border:0}
+.limits b{color:#fff}
+
+/* price */
+.price{padding:6rem 0}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.4rem}
+.plan{border:3px solid var(--ink);border-radius:20px;padding:2rem}
+.plan.inst{background:var(--peach);border-color:var(--peach)}
+.plan .amt{font:800 3rem/1 "Bricolage Grotesque";margin:.8rem 0 .3rem}
+.plan ul{margin:1.2rem 0 1.6rem 1.2rem}
+.plan li{padding:.25rem 0}
+.plan .s{color:var(--slate)}
+
+.quote{padding:5rem 0;border-top:2px solid var(--ink)}
+.quote blockquote{font:600 clamp(1.6rem,3.2vw,2.4rem)/1.25 "Bricolage Grotesque";max-width:26ch}
+.quote figcaption{margin-top:1.2rem;color:var(--slate)}
+
+.faq{padding:4rem 0 6rem}
+.faq .wrap{max-width:900px}
+details{border-bottom:2px solid var(--ink)}
+details:first-of-type{border-top:2px solid var(--ink)}
+summary{cursor:pointer;list-style:none;min-height:64px;display:flex;justify-content:space-between;align-items:center;gap:1rem;font:600 1.2rem "Bricolage Grotesque";padding:.8rem 0}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"Aç";font:700 .95rem "Public Sans";color:var(--ultra);flex:none}
+details[open] summary::after{content:"Kapat"}
+details p{padding-bottom:1.3rem;color:var(--slate)}
+
+footer{background:var(--ultra);color:#fff;padding:3rem 0 2rem;font-size:1rem}
+footer a{color:#fff}
+footer :focus-visible{outline-color:#fff}
+footer .wrap{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+footer .credit{margin-top:2rem;font-size:.9rem;opacity:.9}
+
+@media (max-width:900px){
+  .counter{grid-template-columns:minmax(0,1fr)}
+  .glass{height:14px}
+  .gram .wrap,.team .wrap,.priv .wrap,.plans{grid-template-columns:minmax(0,1fr);gap:2rem}
+  .hero-head{grid-template-columns:minmax(0,1fr)}
+  .queue{display:none}
+}
+@media (max-width:560px){
+  .wrap{padding:0 1rem}
+  .cam{aspect-ratio:16/10}
+  .bar nav{display:none}
+  .side{padding:1.2rem}
+  .pairs{grid-template-columns:1fr}
+  .pairs div:nth-child(2n){padding-left:0;border-left:0}
+  .pairs .colhead{display:none}
+  .pairs div:nth-child(2n+1):not(.colhead){border-bottom:0;padding-bottom:.2rem}
+  .people{grid-template-columns:1fr}
+  .dir button,.hero .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header class="hero" style="padding:0">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="#" aria-label="İşaret ana sayfa">
+        <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="9" fill="#fff"/><g stroke="#262DB8" stroke-width="2.5" stroke-linecap="round"><path d="M12 27V15M16 27V10M20 27V11M24 27V15"/><path d="M12 22c-2-1-4-3-5-5"/></g><g fill="#FF6B4A"><circle cx="16" cy="10" r="2.4"/><circle cx="20" cy="11" r="2.4"/><circle cx="24" cy="15" r="2.4"/><circle cx="12" cy="15" r="2.4"/><circle cx="7" cy="17" r="2.4"/></g></svg>
+        İşaret
+      </a>
+      <nav aria-label="Ana menü">
+        <a href="#sozluk">Nerelerde</a><a href="#ekip">Ekip</a><a href="#kurumlar">Kurumlar</a><a href="#sss">Sorular</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="hero-head">
+      <div>
+        <h1 id="h1">Gişenin iki yanı aynı dili konuşsun.</h1>
+        <p>İşaret, Türk İşaret Dili'ni kamerayla görür, gişedeki görevliye yazı ve ses olarak iletir. Görevlinin cevabını da size işaretle ve yazıyla gösterir. İnternetsiz; görüntünüz telefondan çıkmaz.</p>
+      </div>
+      <div class="queue" aria-hidden="true">Şube 412 · sıra<b>A-047</b>Gişe 3 · 09:42</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="counter" role="region" aria-labelledby="demo-h">
+      <h2 id="demo-h" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Örnek konuşma: bankada kayıp kart</h2>
+      <div class="side" id="left">
+        <div class="who"><span>Siz · Türk İşaret Dili</span><span id="lstate">kamera açık</span></div>
+        <div class="cam">
+          <span class="rec"><i aria-hidden="true"></i>cihaz içinde işleniyor</span>
+          <svg viewBox="0 0 320 200" aria-hidden="true"><g id="hand" stroke="#E7E8FF" stroke-width="3" stroke-linecap="round" fill="none"></g><g id="joints" fill="#FF6B4A"></g></svg>
+        </div>
+        <p class="gloss" id="lgloss">KART BENİM KAYIP. YENİ İSTEMEK.</p>
+        <p class="out" id="lout">“Kartımı kaybettim, yenisini istiyorum.”<small>Görevliye sesli okundu · 0,6 sn</small></p>
+      </div>
+      <div class="glass" aria-hidden="true"></div>
+      <div class="side" id="right">
+        <div class="who"><span>Gişe görevlisi · konuşma</span><span class="wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></div>
+        <div class="cam" style="background:var(--lilac)">
+          <svg viewBox="0 0 320 200" aria-hidden="true">
+            <circle cx="160" cy="58" r="24" fill="#262DB8"/>
+            <path d="M118 200c0-44 18-70 42-70s42 26 42 70" fill="#262DB8"/>
+            <g id="avatar-arms" stroke="#262DB8" stroke-width="12" stroke-linecap="round" fill="none"><path id="armL" d="M132 150 L110 118 L132 92"/><path id="armR" d="M188 150 L212 120 L190 96"/></g>
+            <circle id="palmL" cx="132" cy="92" r="9" fill="#FF6B4A"/><circle id="palmR" cx="190" cy="96" r="9" fill="#FF6B4A"/>
+          </svg>
+        </div>
+        <p class="gloss" id="rgloss">KİMLİK SİZ VERMEK, LÜTFEN.</p>
+        <p class="out" id="rout">“Kimliğinizi alabilir miyim?”<small>Size işaret ve yazıyla gösterildi</small></p>
+      </div>
+    </div>
+    <div class="dir" role="group" aria-label="Konuşmanın adımları">
+      <button type="button" id="next" aria-describedby="dir-note">Sonraki cümle</button>
+      <a class="btn w" href="#fiyat">Ücretsiz indir</a>
+    </div>
+    <p class="dir-note" id="dir-note" aria-live="polite">Adım 1 / 4 · Kayıp kart, banka şubesi</p>
+  </div>
+</section>
+<section class="phr" id="sozluk" aria-labelledby="phr-h">
+  <div class="wrap">
+    <div class="phr-head">
+      <h2 id="phr-h">Derdinizi anlatmanız gereken yerler için ayrı sözlükler</h2>
+      <p style="max-width:38ch;color:var(--slate)">Genel sözlük 4.200 işaret. Her alan için o yerin kelimeleri ayrıca eğitildi: IBAN, tansiyon, tapu, reçete.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Alanlar">
+      <button role="tab" aria-selected="true" aria-controls="pp" id="t-banka" data-k="banka">Banka</button>
+      <button role="tab" aria-selected="false" aria-controls="pp" id="t-hastane" data-k="hastane" tabindex="-1">Hastane</button>
+      <button role="tab" aria-selected="false" aria-controls="pp" id="t-nufus" data-k="nufus" tabindex="-1">Nüfus müdürlüğü</button>
+      <button role="tab" aria-selected="false" aria-controls="pp" id="t-eczane" data-k="eczane" tabindex="-1">Eczane</button>
+    </div>
+    <div class="pairs" id="pp" role="tabpanel" aria-labelledby="t-banka"></div>
+  </div>
+</section>
+
+<section class="gram" aria-labelledby="gram-h">
+  <div class="wrap">
+    <div>
+      <h2 id="gram-h">Kelime kelime değil, dilden dile</h2>
+      <p>TİD, Türkçenin elle yazılmış hali değildir; kendi dil bilgisi, kendi söz dizimi vardır. Yüz ifadesi soruyu, kaş olumsuzluğu taşır. İşaret, işaretleri tek tek sözcüğe çevirmez; cümleyi anlar ve Türkçede nasıl söylenirse öyle kurar.</p>
+      <p>Ters yönde de aynısı: görevlinin uzun Türkçe cümlesi, TİD söz dizimine göre kısaltılır ve yüz ifadesiyle gösterilir.</p>
+    </div>
+    <div class="order" role="group" aria-label="Söz dizimi örneği">
+      <p class="colhead" style="padding-top:0">Türkçe</p>
+      <div class="row"><span>Yarın</span><span>saat</span><span>onda</span><span>tekrar</span><span>gelebilir</span><span>misiniz?</span></div>
+      <p class="colhead">TİD (işaret sırası)</p>
+      <div class="row tid"><span>YARIN</span><span>SAAT 10</span><span>SİZ</span><span>GELMEK</span><span>TEKRAR</span><span>+ kaş kalkık (soru)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="team" id="ekip" aria-labelledby="team-h">
+  <div class="wrap">
+    <div>
+      <h2 id="team-h">Sağır ekiple, Sağırlar için</h2>
+      <p style="margin-top:1.1rem">Ekibimizin dörtte biri Sağır. Sözlüğe giren her işaret, iki Sağır dil danışmanının onayından geçer. Bölgesel işaretler (İzmir'de, Diyarbakır'da farklı yapılanlar) ayrı ayrı kaydedildi.</p>
+      <p style="margin-top:1rem;color:var(--slate)">Model 11 ilde, 1.300 gönüllünün 62.000 kısa videosuyla eğitildi. Gönüllülerin her biri izin formunu TİD videosuyla verdi.</p>
+    </div>
+    <ul class="people">
+      <li><b>Derya Kılınç</b><span>Sağır · TİD dil danışmanı, 14 yıl tercümanlık eğitmenliği</span></li>
+      <li><b>Mert Sarı</b><span>Sağır · ürün tasarımcısı, uygulamanın her ekranını ilk o dener</span></li>
+      <li><b>Hatice Durmaz</b><span>CODA · TİD tercümanı, sağlık terimleri sözlüğü</span></li>
+      <li><b>Onur Bekdemir</b><span>Görüntü işleme mühendisi, cihaz içi model</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="priv" aria-labelledby="priv-h">
+  <div class="wrap">
+    <div>
+      <h2 id="priv-h">Muayenede ne anlattığınız muayenede kalır.</h2>
+      <p>İşaret dili yüzle ve elle konuşulur; yani görüntünüz sizin sesinizdir. Bu yüzden kamera görüntüsü hiçbir sunucuya gitmez, kaydedilmez. Tanınan cümle ekranda durur, siz kapatınca silinir.</p>
+      <p>Hastane bodrumundaki laboratuvarda, kapsama olmayan nüfus müdürlüğü koridorunda da aynı hızla çalışır.</p>
+    </div>
+    <div class="limits">
+      <h3>Dürüst olalım: neyi yapamaz</h3>
+      <ul>
+        <li><b>Mahkeme, ameliyat onamı, noter:</b> burada profesyonel TİD tercümanı isteyin. Kurumun size tercüman sağlaması yasal hakkınız.</li>
+        <li><b>Çok hızlı, uzun anlatım:</b> cümle aralarında kısa duraklarla daha doğru çevirir.</li>
+        <li><b>Karanlık ortam:</b> elleriniz ve yüzünüz görünür olmalı; ışık azsa uyarır.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="price" id="fiyat" aria-labelledby="fi-h">
+  <div class="wrap" id="kurumlar">
+    <h2 id="fi-h">Sizin için ücretsiz. Gişe için de hazır.</h2>
+    <div class="plans">
+      <article class="plan" aria-labelledby="pl1">
+        <h3 id="pl1">Bireysel</h3>
+        <p class="amt">0 ₺</p>
+        <p class="s">Sağır ve işitme engelli herkes için, süresiz.</p>
+        <ul><li>İki yönlü çeviri, 4 alan sözlüğü</li><li>Görevliye göstermek için büyük yazı ekranı</li><li>Android 11+, iPhone 12+</li></ul>
+        <a class="btn u" href="#">Telefonuma indir</a>
+      </article>
+      <article class="plan inst" aria-labelledby="pl2">
+        <h3 id="pl2">Kurumlar: gişe tableti</h3>
+        <p class="amt">1.450 ₺ <span style="font-size:1.1rem;font-weight:600">/ gişe, yıllık</span></p>
+        <p class="s" style="color:var(--ink)">Banka şubesi, hastane danışma, belediye. Sağır vatandaş gişeye geldiğinde tablet hazır bekler.</p>
+        <ul><li>Tablet standı ve kurulum</li><li>Personele 45 dakikalık TİD farkındalık eğitimi</li><li>Bireysel ücretsiz sürümün maliyetini bu gelir karşılar</li></ul>
+        <a class="btn u" href="#">Kurum teklifi iste</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı sözü">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Yıllarca bankaya annemle gittim. Geçen ay kredi kartımın limitini kendim konuştum. Görevli bana baktı, anneme değil.”</blockquote>
+      <figcaption><b>Gülşen Er</b>, 34 · Sağır, muhasebe elemanı · Bursa</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="faq" id="sss" aria-labelledby="sss-h">
+  <div class="wrap">
+    <h2 id="sss-h" style="margin-bottom:1.6rem">Sorular</h2>
+    <details><summary>Telefonu nasıl tutmam gerekiyor?</summary><p>Telefonu gişeye ya da masaya, size dönük yaslayın; kamera beliniz ile başınızın üstü arasını görmeli. Uygulama çerçeveyi kontrol eder ve “biraz geri çekilin” gibi uyarıları ekranda gösterir.</p></details>
+    <details><summary>Bölgesel işaretleri anlıyor mu?</summary><p>11 ilin yaygın bölgesel varyantları sözlükte. Anlamadığı bir işaret olursa “tekrar eder misiniz” der ya da parmak alfabesiyle yazmanızı ister.</p></details>
+    <details><summary>Görevli konuşurken ne görüyorum?</summary><p>Ekranın üstünde bir işaretçi figürü cümleyi TİD ile gösterir, altında Türkçe yazısı durur. İsterseniz yalnız yazıyı da seçebilirsiniz.</p></details>
+    <details><summary>İşitme cihazı kullanan ama işaret bilmeyenler için uygun mu?</summary><p>Onlar için “yalnız yazı” modu var: görevlinin konuşması altyazı olarak akar, siz yazarak ya da konuşarak cevap verirsiniz.</p></details>
+    <details><summary>Verilerim kimseyle paylaşılıyor mu?</summary><p>Hayır. Görüntü ve ses telefonunuzda işlenir, kaydedilmez. Hesap açmanız da gerekmez.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b>İşaret</b> · Ankara Teknokent<br>Görüntülü TİD destek hattı: hafta içi 09.00–18.00 · destek@isaret.app</div>
+    <div><a href="#">Erişilebilirlik beyanı</a> · <a href="#">KVKK</a> · <a href="#kurumlar">Kurumlar</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  /* el eklem noktaları: bilek + 5 parmak × 4 */
+  var P=[
+    [[160,180],[128,160],[108,140],[96,122],[88,106],[140,120],[136,92],[134,72],[132,56],[160,116],[160,84],[160,62],[160,44],[180,120],[184,92],[186,72],[188,58],[198,128],[206,106],[210,92],[214,80]],
+    [[160,180],[126,156],[112,132],[118,116],[132,110],[142,122],[150,104],[150,120],[146,132],[160,118],[160,84],[160,62],[160,44],[178,122],[176,104],[172,120],[170,132],[194,130],[190,114],[184,126],[182,136]],
+    [[150,180],[120,166],[100,150],[90,134],[84,118],[136,124],[126,100],[118,82],[112,68],[156,118],[150,92],[146,72],[142,56],[176,120],[174,96],[172,78],[170,64],[194,126],[196,106],[198,92],[200,80]]
+  ];
+  var F=[[0,1,2,3,4],[0,5,6,7,8],[0,9,10,11,12],[0,13,14,15,16],[0,17,18,19,20]];
+  var hand=document.getElementById('hand'),joints=document.getElementById('joints'),cur=P[0].map(function(p){return p.slice()});
+  function draw(pts){
+    hand.innerHTML=F.map(function(f){return '<path d="M'+f.map(function(i){return pts[i].join(' ')}).join(' L')+'"/>'}).join('');
+    joints.innerHTML=pts.map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5"/>'}).join('');
+  }
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function morph(to){
+    if(reduce){cur=to.map(function(p){return p.slice()});draw(cur);return}
+    var from=cur.map(function(p){return p.slice()}),t0=null;
+    function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/500);k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      cur=from.map(function(p,i){return [p[0]+(to[i][0]-p[0])*k,p[1]+(to[i][1]-p[1])*k]});draw(cur);if(k<1)requestAnimationFrame(step)}
+    requestAnimationFrame(step);
+  }
+  draw(cur);
+  var steps=[
+    {lg:'KART BENİM KAYIP. YENİ İSTEMEK.',lo:'“Kartımı kaybettim, yenisini istiyorum.”',ls:'Görevliye sesli okundu · 0,6 sn',rg:'KİMLİK SİZ VERMEK, LÜTFEN.',ro:'“Kimliğinizi alabilir miyim?”',rs:'Size işaret ve yazıyla gösterildi',p:0,talk:'r'},
+    {lg:'BURADA. KART ESKİ İPTAL OLMAK?',lo:'“Buyurun. Eski kart iptal edildi mi?”',ls:'Görevliye sesli okundu · 0,5 sn',rg:'EVET. ŞİMDİ İPTAL. YENİ KART 5 GÜN, EV ADRES GELMEK.',ro:'“Evet, şu an iptal ettim. Yeni kartınız beş iş günü içinde evinize gelir.”',rs:'Size işaret ve yazıyla gösterildi',p:1,talk:'r'},
+    {lg:'ADRES DEĞİŞMEK. YENİ ADRES YAZMAK İSTEMEK.',lo:'“Adresim değişti, yeni adresimi yazdırmak istiyorum.”',ls:'Görevliye sesli okundu · 0,7 sn',rg:'TAMAM. ADRES SÖYLEMEK.',ro:'“Tabii, yeni adresinizi söyler misiniz?”',rs:'Size işaret ve yazıyla gösterildi',p:2,talk:'r'},
+    {lg:'(parmak alfabesi) N-İ-L-Ü-F-E-R  MAHALLE, 14 NUMARA',lo:'“Nilüfer Mahallesi, Gül Sokak, 14 numara.”',ls:'Parmak alfabesi tanındı · 0,9 sn',rg:'TEŞEKKÜR. İYİ GÜNLER.',ro:'“Kaydettim. İyi günler dilerim.”',rs:'Size işaret ve yazıyla gösterildi',p:1,talk:'r'}
+  ];
+  var i=0,ids=['lgloss','lout','rgloss','rout'];
+  function set(id,h){document.getElementById(id).innerHTML=h}
+  document.getElementById('next').addEventListener('click',function(){
+    i=(i+1)%steps.length;var s=steps[i];
+    set('lgloss',s.lg);set('lout',s.lo+'<small>'+s.ls+'</small>');set('rgloss',s.rg);set('rout',s.ro+'<small>'+s.rs+'</small>');
+    morph(P[s.p]);
+    var arms=[['M132 150 L110 118 L132 92','M188 150 L212 120 L190 96',132,92,190,96],['M132 150 L104 128 L120 100','M188 150 L224 132 L236 104',120,100,236,104],['M132 150 L118 112 L150 92','M188 150 L200 112 L168 92',150,92,168,92],['M132 150 L100 136 L96 112','M188 150 L214 122 L200 98',96,112,200,98]][i];
+    document.getElementById('armL').setAttribute('d',arms[0]);document.getElementById('armR').setAttribute('d',arms[1]);
+    var pl=document.getElementById('palmL'),pr=document.getElementById('palmR');pl.setAttribute('cx',arms[2]);pl.setAttribute('cy',arms[3]);pr.setAttribute('cx',arms[4]);pr.setAttribute('cy',arms[5]);
+    var r=document.getElementById('right');r.classList.add('playing');setTimeout(function(){r.classList.remove('playing')},1800);
+    document.getElementById('dir-note').textContent='Adım '+(i+1)+' / 4 · '+['Kayıp kart','İptal ve yeni kart','Adres değişikliği','Adres, parmak alfabesiyle'][i];
+    this.textContent=i===3?'Baştan başla':'Sonraki cümle';
+  });
+
+  var D={
+    banka:[['HESAP BENİM PARA YOK. NEDEN?','“Hesabımdan para çekilmiş, nedenini öğrenmek istiyorum.”'],['IBAN YAZMAK, LÜTFEN.','“IBAN numarasını yazar mısınız?”'],['KREDİ FAİZ KAÇ?','“Kredinin faiz oranı ne kadar?”']],
+    hastane:[['GÖĞÜS AĞRI 2 GÜN. NEFES ZOR.','“İki gündür göğsümde ağrı var, nefes almakta zorlanıyorum.”'],['İLAÇ ALERJİ VAR, PENİSİLİN.','“Penisiline alerjim var.”'],['SONUÇ NE ZAMAN?','“Tahlil sonuçları ne zaman çıkar?”']],
+    nufus:[['KİMLİK YENİLEMEK. RANDEVU VAR.','“Kimliğimi yenileyecektim, randevum var.”'],['FOTOĞRAF YANIMDA.','“Biyometrik fotoğrafım yanımda.”'],['ÜCRET NEREDE ÖDEMEK?','“Ücreti nereye ödüyorum?”']],
+    eczane:[['REÇETE E-NABIZ. TC NUMARA.','“Reçetem e-Nabız'+"'"+'da, T.C. numaramı vereyim.”'],['GÜNDE KAÇ KERE?','“Günde kaç kere kullanacağım?”'],['AÇ KARNINA MI?','“Aç karnına mı içmeliyim?”']]
+  };
+  var pp=document.getElementById('pp');
+  function fill(k){pp.innerHTML='<p class="colhead">Sizin işaretiniz</p><p class="colhead" style="padding-left:1.4rem;border-left:1px solid #d9dae8">Görevlinin duyduğu</p>'+D[k].map(function(r){return '<div><span class="g">'+r[0]+'</span></div><div><span class="t">'+r[1]+'</span></div>'}).join('');pp.setAttribute('aria-labelledby','t-'+k)}
+  var tabs=[].slice.call(document.querySelectorAll('[role=tab]'));
+  tabs.forEach(function(t,n){
+    t.addEventListener('click',function(){sel(n)});
+    t.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){sel((n+1)%tabs.length);tabs[(n+1)%tabs.length].focus()}if(e.key==='ArrowLeft'){var m=(n-1+tabs.length)%tabs.length;sel(m);tabs[m].focus()}});
+  });
+  function sel(n){tabs.forEach(function(t,j){t.setAttribute('aria-selected',j===n);t.tabIndex=j===n?0:-1});fill(tabs[n].dataset.k)}
+  fill('banka');
+})();
+</script>
+</body>
+</html>

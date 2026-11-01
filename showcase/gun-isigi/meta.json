@@ -1,0 +1,21 @@
+{
+  "slug": "gun-isigi",
+  "name": "Gün Işığı",
+  "interpretation": "Pencereden giren günün eğrisi",
+  "world": "Antalya'da bir salon: perdeli pencereden giren akşamüstü ışığı, abajurlu lamba, mor kadife koltuk; 17:21'de batan güneş ve her akşam beşte çantasını alıp 'eve gideceğim' diyen bir anne.",
+  "palette": [
+    "#F4F2EE",
+    "#4A3550",
+    "#A85A1A",
+    "#F2C14E",
+    "#2A2329",
+    "#FFFDF9"
+  ],
+  "fonts": [
+    "Fraunces",
+    "Outfit"
+  ],
+  "score": 26,
+  "lowest": "Tanınabilirlik",
+  "moment": "Saat kaydırıcısı 06:00'dan 23:00'e çekildikçe salon çizimindeki pencere gökyüzü, lamba parıltısı ve sayfanın üst zemini günün ışığına göre değişir; her saat için lamba sıcaklığı ve evde ne olduğu yazılır."
+}

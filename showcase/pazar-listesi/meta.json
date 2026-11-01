@@ -1,0 +1,21 @@
+{
+  "slug": "pazar-listesi",
+  "name": "Pazar Listesi",
+  "interpretation": "Branda ve karton fiyat",
+  "world": "Cumartesi semt pazarında mavi-beyaz branda altında yeşil kasalar ve keçeli kalemle yazılmış kraft karton fiyatlar.",
+  "palette": [
+    "#1E57A3",
+    "#F2F5F8",
+    "#CDA772",
+    "#2F8A57",
+    "#C8322A",
+    "#15202B"
+  ],
+  "fonts": [
+    "Rubik",
+    "Kalam"
+  ],
+  "score": 27,
+  "lowest": "Palet/doku",
+  "moment": "Büyük kırmızı mikrofona basınca söylenen kalemlerin listeye tek tek düşmesi; her birinin yanında geçen haftanın fiyatı ve mevsim etiketi."
+}

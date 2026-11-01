@@ -1,0 +1,20 @@
+{
+  "slug": "dijital-oruc",
+  "name": "Dijital Oruç",
+  "interpretation": "02:14'ten 08:00'e",
+  "world": "Işığı kapalı yurt odası, 02:14, yüze vuran ekran mavisi ve %6 pil; sabah perdeden sızan ışık.",
+  "palette": [
+    "#0D141C",
+    "#A9D2F5",
+    "#5D6576",
+    "#F08A4B",
+    "#F6E9DA"
+  ],
+  "fonts": [
+    "Unbounded",
+    "IBM Plex Sans"
+  ],
+  "score": 26,
+  "lowest": "Geliş haline cevap",
+  "moment": "Hero telefonunda videoları kaydırınca gelen \"Neden açtın?\" durağı ve dört cevaba göre değişen öneri."
+}

@@ -1,0 +1,20 @@
+{
+  "slug": "sukut",
+  "name": "Sükût",
+  "interpretation": "Bilekteki dokunuş",
+  "world": "Toplantı odası: koyu yün takım, mat gri masa, kolda bronz kuronlu saat; bir saatlik toplantının içindeki kırk saniye.",
+  "palette": [
+    "#202326",
+    "#E3E4E1",
+    "#8FA9BA",
+    "#C9A86E",
+    "#D08A63"
+  ],
+  "fonts": [
+    "Instrument Serif",
+    "Public Sans"
+  ],
+  "score": 26,
+  "lowest": "Tanınabilirlik",
+  "moment": "Hero'daki saat kadranında 90 saniyelik nefes halkasını denemek; nabız ve ton yatışıyor."
+}

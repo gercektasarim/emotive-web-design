@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Günce — Yazmaya vaktin yoksa anlat, defter kendini yazsın</title>
+<meta name="description" content="Günce, akşamları üç dakika konuşarak tuttuğun sesli günlüğü telefonda yazıya döker ve aylar içinde duygu haritanı çıkarır. Ses de yazı da telefonundan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Work+Sans:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --desk:#E6E8E1;      /* mutfak tezgâhı, akşam ışığında */
+  --paper:#FBFBF7;     /* okul defteri sayfası */
+  --rule:#B9CCE0;      /* defter çizgisi */
+  --margin:#D8857E;    /* kırmızı kenar çizgisi */
+  --ink:#1F2D4D;       /* dolma kalem lacivert-siyahı */
+  --ink-2:#4A5672;
+  /* duygu mürekkepleri */
+  --m-yorgun:#6E819C; --m-kizgin:#B5473F; --m-sevinc:#B9821F; --m-huzur:#3F7E69; --m-kaygi:#7A5C93;
+  --serif:"Literata", Georgia, serif;
+  --sans:"Work Sans", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--desk);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:2.5px solid var(--m-sevinc);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:8px;font:600 15px var(--sans);text-decoration:none;border:1.5px solid var(--ink);cursor:pointer}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:#2c3d63}
+.btn-line{background:transparent;color:var(--ink)}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:24px 0}
+.logo{font-family:var(--serif);font-size:26px;font-style:italic;text-decoration:none}
+nav .r{display:flex;gap:22px;align-items:center;font-size:15px}
+nav .r a.t{text-decoration:none;color:var(--ink-2)}
+
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;padding:36px 0 40px}
+.intro h1{font-size:clamp(38px,5vw,62px)}
+.intro p{color:var(--ink-2);font-size:18px;max-width:30em}
+.intro .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+
+/* defter */
+.notebook{position:relative;background:var(--paper);border-radius:4px 10px 10px 4px;box-shadow:0 1px 0 #d5d8cf,0 20px 40px -24px rgba(31,45,77,.35);
+  background-image:linear-gradient(transparent 0 35px,var(--rule) 35px 36px);background-size:100% 36px;background-position:0 18px;padding:18px 40px 36px 108px;min-height:460px}
+.notebook::before{content:"";position:absolute;left:84px;top:0;bottom:0;width:1.5px;background:var(--margin)}
+.holes{position:absolute;left:24px;top:40px;bottom:40px;display:flex;flex-direction:column;justify-content:space-between}
+.holes i{width:16px;height:16px;border-radius:50%;background:var(--desk);box-shadow:inset 0 2px 3px rgba(0,0,0,.12)}
+.entry-head{display:flex;justify-content:space-between;align-items:center;gap:16px;height:72px;flex-wrap:wrap}
+.entry-head .d{font-family:var(--serif);font-style:italic;font-size:19px}
+.player{display:flex;align-items:center;gap:14px;flex:1;min-width:260px;max-width:460px}
+.play{width:44px;height:44px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);cursor:pointer;flex:none;display:grid;place-items:center}
+.play svg{width:16px;height:16px}
+.wave{flex:1;height:36px;display:flex;align-items:center;gap:2px}
+.wave i{flex:1;background:var(--ink-2);opacity:.35;border-radius:2px;transition:opacity .2s}
+.wave i.on{opacity:1;background:var(--ink)}
+.dur{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.entry{font-family:var(--serif);font-size:19px;line-height:36px;max-width:40em}
+.entry p{margin:0;display:inline}.entry p::after{content:" "}
+.entry .ln{opacity:.12;transition:opacity .5s}
+.entry .ln.on{opacity:1}
+mark{background:none;color:inherit;border-bottom:2.5px solid;padding:0 1px;transition:color .4s}
+mark[data-m="yorgun"]{border-color:var(--m-yorgun)} mark[data-m="kizgin"]{border-color:var(--m-kizgin)}
+mark[data-m="sevinc"]{border-color:var(--m-sevinc)} mark[data-m="huzur"]{border-color:var(--m-huzur)} mark[data-m="kaygi"]{border-color:var(--m-kaygi)}
+.tags{display:flex;gap:4px 16px;flex-wrap:wrap;margin-top:36px;font-size:14px;color:var(--ink-2);line-height:32px}
+.tags span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--c)}
+.hint{margin:0;font-size:14px;line-height:36px;color:var(--ink-2);text-align:right}
+
+/* bölümler */
+section{padding:100px 0}
+.lede{max-width:34em;color:var(--ink-2);font-size:18px;margin-top:16px}
+h2{font-size:clamp(30px,3.6vw,44px)}
+
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:44px;border-top:1.5px solid var(--ink);padding-top:28px}
+.how h3{font-size:22px;margin-bottom:8px}
+.how p{color:var(--ink-2);font-size:16px}
+.how .time{font-size:13px;font-weight:600;color:var(--m-huzur);display:block;margin-bottom:8px}
+
+/* harita */
+.map-wrap{background:var(--paper);border-radius:10px;padding:34px;margin-top:40px;box-shadow:0 1px 0 #d5d8cf}
+.map{display:grid;grid-template-columns:64px repeat(31,1fr);gap:4px;align-items:center}
+.map .mo{font-size:13px;color:var(--ink-2);font-family:var(--serif);font-style:italic}
+.map i{aspect-ratio:1;border-radius:50%;background:var(--c,#E5E7E0)}
+.map-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:22px;font-size:14px;color:var(--ink-2)}
+.map-legend span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;background:var(--c);vertical-align:-1px}
+.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:30px}
+.insights p{font-family:var(--serif);font-size:18px;line-height:1.5;border-left:3px solid var(--c);padding-left:16px}
+
+.voices{margin-top:34px;border-top:1.5px solid var(--ink);background-image:linear-gradient(transparent 0 35px,var(--rule) 35px 36px);background-size:100% 36px}
+.voices p{font-size:14px;color:var(--ink-2);line-height:36px;margin:0}
+.voices p span{display:block;font-family:var(--serif);font-size:17px;color:var(--ink)}
+/* gizlilik */
+.secret{background:var(--ink);color:#E9ECF3}
+.secret .grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.secret h2{color:#fff}
+.secret p{color:#C5CCDB;margin-top:16px}
+.fold{background:var(--paper);color:var(--ink);border-radius:4px;padding:18px 28px 18px 60px;font-size:15px;position:relative;background-image:linear-gradient(transparent 0 35px,var(--rule) 35px 36px);background-size:100% 36px;line-height:36px}
+.fold::before{content:"";position:absolute;left:40px;top:0;bottom:0;width:1.5px;background:var(--margin)}
+.fold dl{display:grid;grid-template-columns:auto 1fr;gap:0 20px}
+.fold dt{color:var(--ink-2)}
+.fold dd{color:var(--ink);font-family:var(--serif);font-style:italic}
+.fold .stamp{color:var(--ink-2);font-size:14px;margin:0}
+
+/* sayfalar */
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.page{background:var(--paper);border-radius:6px;padding:24px 24px 26px;background-image:linear-gradient(transparent 0 31px,#E1E9F2 31px 32px);background-size:100% 32px;background-position:0 64px}
+.page time{font-size:13px;color:var(--ink-2);display:block;margin-bottom:16px}
+.page p{font-family:var(--serif);font-size:17px;line-height:32px}
+.page .who{margin-top:16px;font-family:var(--sans);font-size:13.5px;line-height:1.4;color:var(--ink-2)}
+
+/* fiyat */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px;max-width:none}
+.plan{border:1.5px solid var(--ink);border-radius:10px;padding:28px;background:var(--paper)}
+.plan.alt{background:transparent;border-style:dashed}
+.plan .p{font-family:var(--serif);font-size:40px;margin:6px 0 2px}
+.plan .p small{font-family:var(--sans);font-size:15px;color:var(--ink-2)}
+.plan ul{list-style:none;margin:16px 0 22px;font-size:15.5px}
+.plan li{padding:6px 0;border-top:1px solid #DDE3EA}
+
+details{border-bottom:1px solid #C9CFC4;padding:16px 0;max-width:760px}
+summary{cursor:pointer;font-family:var(--serif);font-size:19px}
+details p{margin-top:8px;color:var(--ink-2);max-width:40em}
+
+footer{padding:50px 0 36px;border-top:1.5px solid var(--ink);font-size:14px;color:var(--ink-2)}
+footer .credit{margin-top:22px;font-size:12.5px}
+footer .credit a{color:var(--ink-2)}
+
+@media (max-width:860px){
+  .wrap{padding:0 18px}
+  nav .r a.t{display:none}
+  .intro,.secret .grid,.plans{grid-template-columns:1fr}
+  .intro{gap:20px}
+  .notebook{padding:14px 18px 28px 52px}
+  .notebook::before{left:38px}
+  .holes{left:12px}.holes i{width:12px;height:12px}
+  .entry-head{height:auto;padding:4px 0 14px}
+  .entry{font-size:17px}
+  .how,.pages,.insights{grid-template-columns:1fr}
+  .map-wrap{padding:18px 14px;overflow:hidden}
+  .map{grid-template-columns:30px repeat(31,1fr);gap:2px}
+  .map .mo{font-size:11px}
+  section{padding:72px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="#">Günce</a>
+    <div class="r">
+      <a class="t" href="#harita">Duygu haritası</a>
+      <a class="t" href="#sir">Sır kalır mı?</a>
+      <a class="btn btn-line" href="#fiyat">İndir</a>
+    </div>
+  </nav>
+
+  <header class="intro">
+    <h1>Yazmaya vaktin yoksa anlat. Defter kendini yazsın.</h1>
+    <div>
+      <p>Çocuklar uyuduktan sonra telefona üç dakika konuş. Günce sesini telefonun içinde yazıya döker, sayfaya geçirir ve aylar içinde neyin seni yorduğunu, neyin hafiflettiğini gösterir.</p>
+      <div class="ctas">
+        <a class="btn btn-ink" href="#fiyat">iPhone için indir</a>
+        <a class="btn btn-line" href="#fiyat">Android için indir</a>
+      </div>
+    </div>
+  </header>
+
+  <article class="notebook" aria-label="Örnek günlük sayfası">
+    <div class="holes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="entry-head">
+      <span class="d">Salı, 4 Kasım · 22:41</span>
+      <div class="player">
+        <button class="play" id="play" type="button" aria-label="Kaydı dinle ve yazıya dökülüşünü izle">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path id="pIcon" d="M4 2l10 6-10 6z" fill="currentColor"/></svg>
+        </button>
+        <div class="wave" id="wave" aria-hidden="true"></div>
+        <span class="dur" id="dur">3:12</span>
+      </div>
+    </div>
+    <div class="entry" id="entry" aria-live="polite">
+      <p class="ln on">Bugün Defne servise bindiğinde ağlamadı, ilk kez. Kapının önünde öylece durdum,</p>
+      <p class="ln on">sonra arabada biraz <mark data-m="sevinc">sevindim</mark>, biraz da <mark data-m="kaygi">içim burkuldu</mark> galiba.</p>
+      <p class="ln on">Öğleden sonra toplantı uzadı, Can'ı kreşten yine son alan bendim. Öğretmenin bakışı…</p>
+      <p class="ln on">Eve gelince Mert'e bağırdım, aslında kızdığım şey o değildi. <mark data-m="kizgin">Kendime kızgınım</mark>.</p>
+      <p class="ln on">Yatmadan önce ikisi de koltukta uyuyakaldı. Biraz <mark data-m="yorgun">tükendim</mark> ama şu an mutfak sessiz,</p>
+      <p class="ln on">çay sıcak. Yarın servise ben bindireyim, toplantıyı on buçuğa aldım. <mark data-m="huzur">Bu iyi geldi</mark>.</p>
+    </div>
+    <div class="tags" aria-label="Bu sayfanın duyguları">
+      <span style="--c:var(--m-sevinc)">sevinç</span><span style="--c:var(--m-kaygi)">burukluk</span><span style="--c:var(--m-kizgin)">kendine kızgınlık</span><span style="--c:var(--m-yorgun)">yorgunluk</span><span style="--c:var(--m-huzur)">huzur</span>
+    </div>
+    <p class="hint">Bu sayfa telefonda, uçak modunda yazıya döküldü.</p>
+  </article>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Bir akşam, üç dakika.</h2>
+    <p class="lede">Kalem aramak, deftere oturmak, ne yazacağını düşünmek yok. Bulaşık makinesi çalışırken bile olur.</p>
+    <div class="how">
+      <div><span class="time">22:30 civarı</span><h3>Telefon seni yoklar</h3><p>Seçtiğin saatte tek bir sessiz bildirim: "Bugün nasıldı?" Bebek uyanırsa erteler, ısrar etmez.</p></div>
+      <div><span class="time">3 dakika</span><h3>Fısıldayarak konuş</h3><p>Model alçak sesi de anlar; uyuyan çocukları uyandırmana gerek yok. Durup düşünmen sorun değil, sessizlikleri kesmez.</p></div>
+      <div><span class="time">Sen çayını bitirmeden</span><h3>Sayfa yazılır</h3><p>Noktalama, paragraf, isimler yerinde. Duygu kelimelerinin altını çizer, sayfayı tarihle defterine koyar.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="harita" style="padding-top:20px">
+  <div class="wrap">
+    <h2>Sekiz ayın duygu haritası.</h2>
+    <p class="lede">Her nokta bir akşam; rengi o gecenin baskın duygusu. Boş noktalar konuşmadığın günler, onlar da yolunda. Bu harita bir kullanıcının; Mart'tan Ekim'e açıldığını görebilirsin.</p>
+    <div class="map-wrap">
+      <div class="map" id="map" role="img" aria-label="Mart'tan Ekim'e her günün baskın duygusunu gösteren nokta haritası. Pazar akşamları çoğunlukla yorgunluk, Ağustos'ta huzur yoğun."></div>
+      <div class="map-legend">
+        <span style="--c:var(--m-yorgun)">yorgun</span><span style="--c:var(--m-kizgin)">kızgın</span><span style="--c:var(--m-kaygi)">kaygılı</span><span style="--c:var(--m-sevinc)">sevinçli</span><span style="--c:var(--m-huzur)">huzurlu</span><span style="--c:#E5E7E0">konuşmadın</span>
+      </div>
+      <div class="insights">
+        <p style="--c:var(--m-yorgun)">Pazar akşamları on dokuz kez "yorgun" dedin. Pazartesi değil, Pazar.</p>
+        <p style="--c:var(--m-huzur)">Annenle telefonda konuştuğun günlerin çoğu huzurla bitiyor.</p>
+        <p style="--c:var(--m-sevinc)">Ağustos, izinden sonra da üç hafta açık renkli kaldı.</p>
+      </div>
+      <div class="voices">
+        <p><span>"Haritada pazarların gri olduğunu görünce, pazar akşamı yemeği annemlere taşıdık."</span> Burak Şen · test uzmanı, 8 aylık kızı var · Eskişehir</p>
+        <p><span>"Yazmayı hiç beceremedim. Konuşunca oluyormuş. Altı ayda 140 sayfa."</span> Zeynep Aral · öğretmen, ikiz annesi · Kayseri</p>
+        <p><span>"Üç aydır ilk kez kendi sesimi dinledim. Bu kadar hızlı konuştuğumu bilmiyordum."</span> Elif Doğan · hemşire, iki çocuk annesi · İzmir</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secret" id="sir">
+  <div class="wrap grid">
+    <div>
+      <h2>Mutfakta söylediğin, mutfakta kalır.</h2>
+      <p>Eşine kızdığın akşamlar, annene söyleyemediklerin, arka planda ağlayan bebeğin sesi. Bunların hiçbiri bir sunucuya gitmez. Yazıya döken model telefonun içinde, internet kapalıyken de çalışır.</p>
+      <p>Ses dosyası sayfa yazılınca silinir; istersen tutarsın. Defter, Face ID ya da parmak izi olmadan açılmaz.</p>
+    </div>
+    <div class="fold" aria-label="Bir kaydın telefonundaki izi">
+      <dl>
+        <dt>Ses dosyası</dt><dd>sayfa yazıldı, 22:45'te silindi</dd>
+        <dt>Yazılan sayfa</dt><dd>telefonda, şifreli</dd>
+        <dt>Duygu etiketleri</dt><dd>telefonda hesaplandı</dd>
+        <dt>İnternet</dt><dd>hiç gerekmedi</dd>
+      </dl>
+      <p class="stamp">Telefonu değiştirirken defteri yalnızca kendi yedeğinle, şifreli tek bir dosya olarak taşırsın.</p>
+    </div>
+  </div>
+</section>
+
+<section id="fiyat">
+  <div class="wrap">
+    <h2>Önce bir hafta konuş.</h2>
+    <div class="plans">
+      <div class="plan alt">
+        <h3>Günce</h3>
+        <p class="p">Ücretsiz</p>
+        <ul><li>Günde bir kayıt, en fazla 3 dakika</li><li>Yazıya döküm ve altı çizili duygular</li><li>Son 30 günün haritası</li></ul>
+        <a class="btn btn-line" href="#">Ücretsiz indir</a>
+      </div>
+      <div class="plan">
+        <h3>Günce Defter</h3>
+        <p class="p">₺349 <small>/ yıl · ya da ₺39 / ay</small></p>
+        <ul><li>Süre sınırı yok, günde istediğin kadar</li><li>Tüm zamanların duygu haritası</li><li>Aylık "bu ay ne öğrendim" sayfası</li><li>Defteri PDF olarak yazdırma</li></ul>
+        <a class="btn btn-ink" href="#">iPhone için indir</a>
+      </div>
+    </div>
+    <div style="margin-top:64px">
+      <h2 style="font-size:32px;margin-bottom:10px">Akla gelenler</h2>
+      <details><summary>Çocuklar uyurken fısıldasam anlar mı?</summary><p>Evet. Model alçak sesle konuşmaya göre eğitildi. Arkada çalışan bulaşık makinesi ya da bebek telsizi cızırtısı da sorun olmaz.</p></details>
+      <details><summary>Türkçe dışında konuşursam?</summary><p>Türkçe ve İngilizce sayfalar destekleniyor; cümle ortasında dil değiştirsen de yazar. Kürtçe ve Arapça 2027 baharında geliyor.</p></details>
+      <details><summary>Duygu etiketleri yanlış olursa?</summary><p>Altı çizili kelimeye dokunup değiştirirsin. Harita senin düzeltmelerini öğrenir. Teşhis koymaz, yalnızca senin kelimelerini sayar.</p></details>
+      <details><summary>Eşim telefonuma bakarsa görür mü?</summary><p>Defter ayrıca kilitlidir; bildirimlerde sayfa içeriği görünmez. Uygulamanın simgesini sade bir defter simgesiyle de değiştirebilirsin.</p></details>
+      <details><summary>Bu bir terapi uygulaması mı?</summary><p>Hayır, bir günlük. Haftalarca sürekli "kaygılı" görünürsen haritanın altında bir satır belirir ve bir uzmanla konuşmayı önerir; o kadar.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Günce · Ankara'da iki ebeveyn tarafından, akşamları yapıldı. merhaba@gunce.app</p>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* dalga */
+  var wave=document.getElementById('wave'),bars=[];
+  var seed=7;function rnd(){seed=(seed*9301+49297)%233280;return seed/233280;}
+  for(var i=0;i<56;i++){var b=document.createElement('i');var h=8+Math.round((Math.sin(i/3)*.5+.5)*18+rnd()*10);b.style.height=h+'px';wave.appendChild(b);bars.push(b);}
+  /* harita */
+  var map=document.getElementById('map');
+  var months=[['Mart',31],['Nisan',30],['Mayıs',31],['Haziran',30],['Temmuz',31],['Ağustos',31],['Eylül',30],['Ekim',31]];
+  var C={y:'var(--m-yorgun)',k:'var(--m-kizgin)',q:'var(--m-kaygi)',s:'var(--m-sevinc)',h:'var(--m-huzur)'};
+  var dow=6; /* 1 Mart 2026 Pazar → 0 = Pzt, 6 = Paz */
+  seed=11;
+  months.forEach(function(m,mi){
+    var l=document.createElement('span');l.className='mo';l.textContent=window.innerWidth<600?m[0].slice(0,3):m[0];map.appendChild(l);
+    for(var d=0;d<31;d++){
+      var dot=document.createElement('i');
+      if(d<m[1]){
+        var r=rnd(),c=null,light=mi/7; /* aylar geçtikçe harita açılıyor */
+        if(r<.22)c=null;
+        else if(dow===6)c=r<.85?'y':'q';
+        else if(mi===5)c=r<.7?'h':'s';
+        else{var x=rnd();
+          if(x<.45-light*.3)c=(rnd()<.6?'y':'q');
+          else if(x<.52-light*.3)c='k';
+          else c=(rnd()<.55?'h':'s');}
+        if(c)dot.style.setProperty('--c',C[c]);
+        dow=(dow+1)%7;
+      }else{dot.style.visibility='hidden';}
+      map.appendChild(dot);
+    }
+  });
+  /* oynatma */
+  var play=document.getElementById('play'),icon=document.getElementById('pIcon'),dur=document.getElementById('dur');
+  var lines=[].slice.call(document.querySelectorAll('#entry .ln'));
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,t=null,running=false;
+  function fmt(s){return Math.floor(s/60)+':'+('0'+Math.floor(s%60)).slice(-2);}
+  play.addEventListener('click',function(){
+    if(running){running=false;clearInterval(t);icon.setAttribute('d','M4 2l10 6-10 6z');return;}
+    running=true;icon.setAttribute('d','M3 2h4v12H3zM9 2h4v12H9z');
+    lines.forEach(function(l){l.classList.remove('on')});bars.forEach(function(b){b.classList.remove('on')});
+    var k=0,steps=reduce?1:60;
+    t=setInterval(function(){
+      k++;var f=k/steps;
+      var nb=Math.round(f*bars.length);for(var i=0;i<nb;i++)bars[i].classList.add('on');
+      var nl=Math.ceil(f*lines.length);for(var j=0;j<nl;j++)lines[j].classList.add('on');
+      dur.textContent=fmt(f*192);
+      if(k>=steps){clearInterval(t);running=false;icon.setAttribute('d','M4 2l10 6-10 6z');dur.textContent='3:12 · yazıldı';}
+    },120);
+  });
+})();
+</script>
+</body>
+</html>

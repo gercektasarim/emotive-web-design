@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ders Notu — Kaçırdığın dersi tahtasıyla birlikte geri getiren uygulama</title>
+<meta name="description" content="Ders Notu üniversite dersini telefonunda kaydeder, tahtanın fotoğrafıyla birleştirir ve sınavdan önce özet ile soru kartı üretir. Kayıt telefondan çıkmaz, amfide internet gerekmez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Patrick+Hand&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tahta:#21392F;
+  --tahta2:#1A2E26;
+  --tebesir:#F1EFE6;
+  --tebesir-soluk:#BFC8BE;
+  --fosfor:#F59BC4;
+  --mavi-tebesir:#A8CBEA;
+  --kagit:#F4F2EC;
+  --murekkep:#1D201E;
+  --soluk:#555A55;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--kagit);color:var(--murekkep);font-family:"Archivo",system-ui,sans-serif;font-size:18px;line-height:1.55}
+:focus-visible{outline:3px solid var(--fosfor);outline-offset:3px;border-radius:4px}
+a{color:inherit}
+.mono{font-family:"IBM Plex Mono",monospace}
+.el{font-family:"Patrick Hand",cursive}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* tahta hero */
+.tahta{background:var(--tahta);color:var(--tebesir);position:relative;overflow:hidden;
+  background-image:radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.06), transparent 60%),radial-gradient(ellipse at 80% 70%, rgba(255,255,255,.04), transparent 55%);
+  border-bottom:14px solid #6B4E2E}
+.tahta::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(100deg, rgba(255,255,255,.018) 0 2px, transparent 2px 9px)}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 0;position:relative;z-index:1}
+.logo{font-family:"Patrick Hand";font-size:28px;color:var(--tebesir);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo span{background:var(--fosfor);color:var(--tahta);padding:0 8px;border-radius:2px;transform:rotate(-2deg);display:inline-block}
+header nav a{color:var(--tebesir-soluk);text-decoration:none;margin-left:22px;font-size:16px}
+header nav a:hover{color:var(--tebesir)}
+.btn{display:inline-block;font:inherit;font-weight:600;padding:13px 22px;border-radius:6px;background:var(--fosfor);color:var(--tahta2);text-decoration:none;border:2px solid var(--fosfor);cursor:pointer}
+.btn:hover{background:var(--tebesir);border-color:var(--tebesir)}
+.btn.cizgi{background:transparent;color:var(--tebesir);border-color:var(--tebesir-soluk)}
+.btn.cizgi:hover{border-color:var(--tebesir);background:rgba(255,255,255,.06)}
+.btn.koyu{background:var(--murekkep);color:#fff;border-color:var(--murekkep)}
+.btn.koyu:hover{background:var(--tahta);border-color:var(--tahta)}
+header nav a.btn{color:var(--tebesir);margin-left:22px}
+
+.hero{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;padding:30px 0 0}
+.hero h1{font-family:"Patrick Hand";font-weight:400;font-size:clamp(44px,6vw,82px);line-height:1.05;margin:0 0 26px;letter-spacing:.5px}
+.hero h1 u{text-decoration:underline;text-decoration-color:var(--fosfor);text-decoration-thickness:4px;text-underline-offset:10px;text-decoration-skip-ink:none}
+.hero p{font-size:19px;color:#DCE2D9;max-width:40ch;margin:0 0 26px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.tebesir-yazi{font-family:"Patrick Hand";color:var(--tebesir);font-size:24px;line-height:1.4;padding-top:10px}
+.tebesir-yazi .baslik{font-size:28px;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+.tebesir-yazi .mavi{color:var(--mavi-tebesir)}
+.tebesir-yazi svg{width:100%;max-width:360px;height:auto;display:block;margin-top:8px}
+.tebesir-yazi .daire{border:2px solid var(--fosfor);border-radius:50%;padding:2px 10px}
+
+.kagit-panel{position:relative;z-index:1;margin-top:46px;background:var(--kagit);color:var(--murekkep);border-radius:8px 8px 0 0;padding:20px 24px;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;box-shadow:0 -10px 30px rgba(0,0,0,.25)}
+.kagit-panel .ders{font-weight:800;font-size:16px;line-height:1.3}
+.kagit-panel .ders small{display:block;font-weight:400;color:var(--soluk);font-size:14px}
+.satirlar{display:grid;gap:4px;font-size:16px}
+.satirlar div{display:grid;grid-template-columns:60px 1fr;gap:10px}
+.satirlar time{font-family:"IBM Plex Mono";color:var(--soluk);font-size:14px;padding-top:2px}
+.satirlar mark{background:rgba(245,155,196,.45);padding:0 3px}
+.bayrak{font-family:"IBM Plex Mono";font-size:13px;background:var(--murekkep);color:#fff;padding:6px 10px;border-radius:4px;white-space:nowrap}
+
+section{padding:90px 0}
+h2{font-size:clamp(30px,3.8vw,48px);line-height:1.06;letter-spacing:-1px;margin:0 0 14px;font-weight:800;max-width:20ch}
+.acik{max-width:58ch;color:#2E322F}
+
+/* zaman çizelgesi */
+.ders-kaydi{background:#fff;border:1.5px solid #D8D5CC;border-radius:10px;margin-top:36px;overflow:hidden}
+.ders-ust{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 22px;border-bottom:1.5px solid #D8D5CC;font-size:15px}
+.ders-ust b{font-size:17px}
+.ders-ust span{color:var(--soluk)}
+.zaman{position:relative;height:64px;margin:0 22px;border-bottom:2px solid var(--murekkep)}
+.zaman .dalga{position:absolute;inset:8px 0 0 0;display:flex;align-items:flex-end;gap:2px}
+.zaman .dalga i{flex:1;background:#D4D8D2;border-radius:1px}
+.isaret{position:absolute;bottom:-11px;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;border:3px solid var(--murekkep);background:#fff;cursor:pointer;padding:0}
+.isaret.sinav{background:var(--fosfor)}
+.isaret[aria-pressed="true"]{background:var(--murekkep);box-shadow:0 0 0 4px rgba(29,32,30,.15)}
+.isaret.sinav[aria-pressed="true"]{background:var(--fosfor);box-shadow:0 0 0 4px rgba(245,155,196,.5)}
+.dakikalar{display:flex;justify-content:space-between;margin:16px 22px 0;font-family:"IBM Plex Mono";font-size:13px;color:var(--soluk)}
+.an{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:18px;border-top:1.5px solid #D8D5CC}
+.an-tahta{background:var(--tahta);color:var(--tebesir);font-family:"Patrick Hand";font-size:24px;line-height:1.4;padding:24px 26px;min-height:240px}
+.an-tahta small{display:block;font-family:"IBM Plex Mono";font-size:12px;color:var(--tebesir-soluk);margin-bottom:10px}
+.an-metin{padding:24px 26px}
+.an-metin small{font-family:"IBM Plex Mono";font-size:12px;color:var(--soluk);display:block;margin-bottom:8px}
+.an-metin blockquote{margin:0 0 14px;font-size:18px;border-left:3px solid var(--murekkep);padding-left:14px}
+.an-metin .ozet{font-size:16px;background:var(--kagit);padding:12px 14px;border-radius:6px}
+.an-metin .ozet b{display:block;margin-bottom:2px}
+
+/* soru kartları */
+.kartlar{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+.kart{background:#fff;border:1.5px solid #D8D5CC;border-radius:4px;padding:22px 22px 18px;position:relative;
+  background-image:linear-gradient(transparent 46px, #E9A3A3 46px, #E9A3A3 47px, transparent 47px),repeating-linear-gradient(transparent 0 27px, #DDE6EE 27px 28px);background-position:0 0, 0 20px}
+.kart .ust{font-family:"IBM Plex Mono";font-size:12px;color:var(--soluk);height:30px}
+.kart p{margin:14px 0 10px;font-size:18px;line-height:28px;font-weight:600}
+.kart details summary{cursor:pointer;font-family:"IBM Plex Mono";font-size:13px;color:var(--soluk)}
+.kart details p{font-weight:400;font-family:"Patrick Hand";font-size:21px;line-height:28px;margin:6px 0 0;color:#1F3E7A}
+.kart .zor{position:absolute;top:18px;right:18px;font-family:"IBM Plex Mono";font-size:11px;background:var(--fosfor);padding:2px 6px;border-radius:3px}
+
+/* kimin için */
+.vardiya{background:var(--murekkep);color:#E9E7E1}
+.vardiya h2{color:#fff}
+.vardiya .acik{color:#BDBBB4}
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.gunluk{font-family:"IBM Plex Mono";font-size:15px;border-left:2px solid var(--fosfor);padding-left:20px}
+.gunluk div{padding:8px 0;display:grid;grid-template-columns:62px 1fr;gap:12px}
+.gunluk time{color:var(--fosfor)}
+.gunluk span{color:#D7D5CE}
+.gizli{margin-top:46px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.gizli div{border-top:1px solid #4C4F4B;padding-top:14px}
+.gizli b{display:block;color:#fff;margin-bottom:4px}
+.gizli span{color:#BDBBB4;font-size:16px}
+
+.alinti{display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:start;max-width:960px}
+.alinti .not-kagidi{font-family:"Patrick Hand";font-size:56px;line-height:1;background:var(--fosfor);padding:8px 16px;transform:rotate(-3deg)}
+.alinti blockquote{margin:0;font-size:clamp(22px,2.6vw,30px);line-height:1.35;font-weight:600;letter-spacing:-.3px}
+.alinti p{color:var(--soluk);font-size:16px;margin:14px 0 0}
+
+.fiyat{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:30px;border:2px solid var(--murekkep);background:#fff}
+.f{padding:26px;border-right:1px solid #D8D5CC}
+.f:last-child{border-right:0}
+.f.on{background:var(--tahta);color:var(--tebesir)}
+.f.on .t small,.f.on li{color:#DCE2D9}
+.f h3{margin:0;font-size:18px}
+.f .t{font-size:42px;font-weight:800;letter-spacing:-1px;margin:6px 0 0}
+.f .t small{font-size:15px;font-weight:400;color:var(--soluk);letter-spacing:0}
+.f ul{padding-left:18px;margin:12px 0 0;font-size:16px}
+.sss{max-width:860px;margin-top:50px}
+details.s{border-bottom:1px solid #D0CDC4;padding:16px 0}
+details.s summary{cursor:pointer;font-weight:600}
+details.s p{margin:8px 0 0;color:#2E322F}
+footer{background:var(--tahta2);color:var(--tebesir-soluk);padding:36px 0;font-size:15px}
+footer .r{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--tebesir-soluk)}
+.credit{margin-top:16px;font-size:13px}
+
+@media (max-width:920px){
+  header nav a:not(.btn){display:none}
+  .hero,.vgrid,.an{grid-template-columns:1fr}
+  .kagit-panel{grid-template-columns:1fr;gap:12px}
+  .kartlar,.gizli{grid-template-columns:1fr}
+  .fiyat{grid-template-columns:1fr}
+  .f{border-right:0;border-bottom:1px solid #D8D5CC}
+  section{padding:64px 0}
+  .alinti{grid-template-columns:1fr;gap:16px}
+  .alinti .not-kagidi{justify-self:start;font-size:40px}
+}
+@media (max-width:480px){
+  .tebesir-yazi{font-size:21px}
+  .an-tahta,.an-metin{padding:18px}
+  .ders-ust{padding:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="tahta">
+  <div class="wrap">
+    <header>
+      <a class="logo" href="#" aria-label="Ders Notu ana sayfa">Ders <span>Notu</span></a>
+      <nav aria-label="Ana menü">
+        <a href="#kayit">Bir ders</a>
+        <a href="#kartlar">Soru kartları</a>
+        <a href="#vardiya">Çalışanlar için</a>
+        <a href="#fiyat">Fiyat</a>
+        <a class="btn cizgi" href="#fiyat">İndir</a>
+      </nav>
+    </header>
+    <div class="hero">
+      <div>
+        <h1>İşten çıktın, ders çoktan bitti. <u>Notlar hazır.</u></h1>
+        <p>Ders Notu dersi telefonunda kaydeder, tahtanın fotoğrafını konuşmanın doğru dakikasına yerleştirir ve vizeden önce özet ile soru kartı çıkarır. Arkadaşından fotokopi beklemek yok.</p>
+        <div class="cta"><a class="btn" href="#fiyat">iPhone için indir</a><a class="btn cizgi" href="#fiyat">Android için indir</a></div>
+      </div>
+      <div class="tebesir-yazi" aria-label="Tahta fotoğrafı: talep esnekliği formülü ve talep eğrisi">
+        <div class="baslik">5. hafta · Talep esnekliği</div>
+        <div>ε = <span class="mavi">%ΔQ</span> / <span class="mavi">%ΔP</span></div>
+        <div>|ε| &gt; 1 → <span class="daire">esnek</span> (lüks mal)</div>
+        <svg viewBox="0 0 360 170" aria-hidden="true">
+          <path d="M30 10 V150 H340" fill="none" stroke="#F1EFE6" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M50 30 C120 60 200 100 320 140" fill="none" stroke="#A8CBEA" stroke-width="3" stroke-linecap="round"/>
+          <path d="M60 22 C140 70 210 120 300 146" fill="none" stroke="#F59BC4" stroke-width="3" stroke-linecap="round" stroke-dasharray="7 6"/>
+          <text x="8" y="22" fill="#F1EFE6" font-family="Patrick Hand" font-size="20">P</text>
+          <text x="330" y="166" fill="#F1EFE6" font-family="Patrick Hand" font-size="20">Q</text>
+          <text x="232" y="100" fill="#A8CBEA" font-family="Patrick Hand" font-size="18">D₁</text>
+        </svg>
+      </div>
+    </div>
+    <div class="kagit-panel" aria-label="Uygulamadan ders dökümü örneği">
+      <div class="ders">İKT 201 · Mikro İktisat<small>Çarş. 13.30 · 74 dk · B-104</small></div>
+      <div class="satirlar">
+        <div><time>14:21</time><span>“Esneklik birden büyükse fiyat artınca toplam gelir düşer.”</span></div>
+        <div><time>14:32</time><span>“Bu grafiği <mark>vizede kesin soruyorum</mark>, iki eğri arasındaki farkı yorumlayın.”</span></div>
+      </div>
+      <span class="bayrak">⚑ sınav ipucu · 3</span>
+    </div>
+  </div>
+</div>
+<main>
+
+<section id="kayit">
+  <div class="wrap">
+    <h2>74 dakikalık ders, 6 dakikalık özet. Ama ders de orada.</h2>
+    <p class="acik">Ders Notu konuşmayı yazıya döker, hocanın vurguladığı yerleri işaretler ve tahtanın fotoğrafını tam o dakikaya iğneler. Özetten bir cümleye dokunursun, ders o saniyeden açılır. İşaretlere tıkla:</p>
+    <div class="ders-kaydi">
+      <div class="ders-ust"><b>İKT 201 · 5. hafta · Talep esnekliği</b><span class="mono">13:30–14:44 · 3 tahta fotoğrafı · telefonda işlendi</span></div>
+      <div class="zaman" id="zaman">
+        <div class="dalga" id="dalga" aria-hidden="true"></div>
+        <button class="isaret" style="left:8%" data-i="0" aria-pressed="false" aria-label="13:36, esnekliğin tanımı"></button>
+        <button class="isaret" style="left:41%" data-i="1" aria-pressed="false" aria-label="14:00, tahta fotoğrafı: formül"></button>
+        <button class="isaret sinav" style="left:83%" data-i="2" aria-pressed="true" aria-label="14:32, sınav ipucu"></button>
+      </div>
+      <div class="dakikalar" aria-hidden="true"><span>13:30</span><span>13:55</span><span>14:20</span><span>14:44</span></div>
+      <div class="an" aria-live="polite">
+        <div class="an-tahta" id="anTahta"></div>
+        <div class="an-metin" id="anMetin"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kartlar" style="padding-top:20px">
+  <div class="wrap">
+    <h2>Vizeden önceki gece, kartlar seni bekliyor.</h2>
+    <p class="acik">Her dersten 8–12 soru kartı çıkar. Hocanın “bu çıkar” dediği yerler önce gelir. Cevaplar kendi notlarından ve tahtadan; internetten değil.</p>
+    <div class="kartlar">
+      <div class="kart"><div class="ust">İKT 201 · 5. hafta · 14:32</div><span class="zor">hoca: çıkar</span><p>Esnekliği 1'den büyük bir malda fiyat %10 artarsa toplam gelire ne olur? Neden?</p><details><summary>cevabı göster</summary><p>Düşer. Talep edilen miktar %10'dan fazla azalır, fiyat artışını telafi etmez.</p></details></div>
+      <div class="kart"><div class="ust">İKT 201 · 5. hafta · 14:00</div><p>Tahtadaki D₁ ve kesikli eğri arasındaki fark ne anlatıyor?</p><details><summary>cevabı göster</summary><p>Kesikli eğri daha dik: aynı fiyat değişiminde miktar daha az değişir, yani daha az esnek.</p></details></div>
+      <div class="kart"><div class="ust">İKT 201 · 4. hafta · 13:52</div><p>Tamamlayıcı mallarda çapraz esnekliğin işareti nedir? Bir örnek ver.</p><details><summary>cevabı göster</summary><p>Negatif. Yazıcı ve kartuş: kartuşun fiyatı artınca yazıcı talebi düşer.</p></details></div>
+    </div>
+  </div>
+</section>
+
+<section class="vardiya" id="vardiya">
+  <div class="wrap">
+    <div class="vgrid">
+      <div>
+        <h2>Derse yetişemeyenler için yapıldı.</h2>
+        <p class="acik">Sabah depoda, öğlen derste, akşam kasada. Bazı derslere hiç giremiyorsun; bazılarına son sırada, yorgun yetişiyorsun. Telefonunu masaya bırakman yeter. Giremediğin derse giren arkadaşın kaydı paylaşabilir; notlar senin telefonunda oluşur.</p>
+      </div>
+      <div class="gunluk" aria-label="Bir öğrencinin günü">
+        <div><time>07:30</time><span>Kargo deposunda vardiya</span></div>
+        <div><time>13:30</time><span>İKT 201'e 15 dk geç girdin · kayıt baştan açık (arkadaşın başlattı)</span></div>
+        <div><time>15:00</time><span>Ders bitti · özet hazır, 3 sınav ipucu</span></div>
+        <div><time>18:00</time><span>Kafede ikinci iş</span></div>
+        <div><time>23:10</time><span>Metroda, sinyal yok · 12 soru kartı, 9 doğru</span></div>
+      </div>
+    </div>
+    <div class="gizli">
+      <div><b>Kayıt telefonda kalır</b><span>Ses, yazıya döküm ve tahta fotoğrafları hiçbir sunucuya gitmez. Amfide internet yokken de çalışır.</span></div>
+      <div><b>Hocadan izin iste</b><span>Uygulama ilk kayıtta hatırlatır. Kayıt kişisel çalışma içindir; paylaşma düğmesi yalnız aynı dersi alan arkadaşına.</span></div>
+      <div><b>Sınıf arkadaşlarının sesi</b><span>Soru soran öğrencilerin adı dökümde geçmez; “Öğrenci:” olarak yazılır.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap alinti">
+    <span class="not-kagidi" aria-hidden="true">BB→BA</span>
+    <div>
+      <blockquote>“Geçen dönem mikroyu BB ile zor geçmiştim, derslerin yarısına girememiştim. Bu dönem yine yarısına giremedim ama hepsini dinledim. Final BA geldi.”</blockquote>
+      <p>Seda Korkmaz · İstanbul · İktisat 3. sınıf, haftada 30 saat barista</p>
+    </div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:20px">
+  <div class="wrap">
+    <h2>Bir dönemlik ders kitabından ucuz.</h2>
+    <div class="fiyat">
+      <div class="f"><h3>Ücretsiz</h3><p class="t">0 ₺</p><ul><li>Haftada 2 ders kaydı</li><li>Döküm ve tahta fotoğrafı</li><li>Soru kartı yok</li></ul></div>
+      <div class="f on"><h3>Dönemlik</h3><p class="t">249 ₺ <small>/ dönem</small></p><ul><li>Sınırsız ders</li><li>Özet ve soru kartları</li><li>Sınav ipucu işaretleri</li><li>Arkadaşla kayıt paylaşma</li></ul></div>
+      <div class="f"><h3>Yıllık</h3><p class="t">399 ₺ <small>/ yıl</small></p><ul><li>Dönemlik planın tümü</li><li>Yaz okulu dahil</li><li>Öğrenci belgesiyle</li></ul></div>
+    </div>
+    <div class="sss">
+      <details class="s"><summary>Arka sırada, kalabalık amfide de anlıyor mu?</summary><p>Hocanın sesini öne alır, uğultuyu ve sandalye seslerini bastırır. 200 kişilik amfide arka sıradan yapılan kayıtlarda bile dökümün büyük kısmı okunur; emin olmadığı kelimeleri gri gösterir.</p></details>
+      <details class="s"><summary>Bataryayı bitirir mi?</summary><p>Ders boyunca yalnız ses kaydedilir; yazıya döküm telefon şarjdayken ya da dersten sonra yapılır. 75 dakikalık kayıt ortalama %6 batarya harcar.</p></details>
+      <details class="s"><summary>Formülleri, grafikleri okuyabiliyor mu?</summary><p>Tahta fotoğrafındaki formüller yazıya, grafikler görsel olarak nota eklenir. El yazısı çok karışıksa fotoğrafı olduğu gibi bırakır.</p></details>
+      <details class="s"><summary>Hangi telefonlarda?</summary><p>iOS 17+ iPhone, Android 11+ ve en az 6 GB bellekli telefonlar. Eski telefonlarda döküm daha yavaş ama aynı kalitede.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="wrap">
+    <div class="r"><span>Ders Notu · Yetiştin.</span><span>destek@dersnotu.app · Gizlilik · KVKK</span></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  const dalga=document.getElementById('dalga');
+  let h='';for(let i=0;i<120;i++){const v=20+Math.abs(Math.sin(i*1.7)*30+Math.sin(i*.31)*20);h+='<i style="height:'+Math.min(100,v)+'%"></i>'}dalga.innerHTML=h;
+  const A=[
+    {t:'<small>13:36 · konuşma, tahta yok</small>Esneklik: fiyat %1 değişince<br>miktar yüzde kaç değişir?',m:'<small>13:36 · döküm</small><blockquote>“Esnekliği bir oran olarak düşünün; birimden bağımsız, o yüzden kilo ile litreyi karşılaştırabiliyoruz.”</blockquote><div class="ozet"><b>Özet</b>Esneklik birimsiz bir orandır; farklı malları karşılaştırmaya yarar.</div>'},
+    {t:'<small>14:00 · tahta fotoğrafı 1/3</small>ε = %ΔQ / %ΔP<br>|ε| &gt; 1 → esnek<br>|ε| &lt; 1 → inelastik (ekmek, ilaç)',m:'<small>14:00 · döküm</small><blockquote>“İlaç inelastiktir, fiyat iki katına çıksa da alırsınız. Kahve dükkânındaki tatlı ise esnektir.”</blockquote><div class="ozet"><b>Özet</b>Zorunlu mallar inelastik, ikamesi bol mallar esnek.</div>'},
+    {t:'<small>14:32 · tahta fotoğrafı 3/3</small>D₁ ve kesikli eğri<br>→ aynı ΔP, farklı ΔQ<br>→ hangisi daha esnek?',m:'<small>14:32 · döküm · ⚑ sınav ipucu</small><blockquote>“Bu grafiği vizede kesin soruyorum, iki eğri arasındaki farkı yorumlayın.”</blockquote><div class="ozet"><b>Soru kartına eklendi</b>Daha yatık eğri daha esnek talebi gösterir.</div>'}
+  ];
+  const btns=[...document.querySelectorAll('.isaret')];
+  function show(i){btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.i==i));document.getElementById('anTahta').innerHTML=A[i].t;document.getElementById('anMetin').innerHTML=A[i].m}
+  btns.forEach(b=>b.addEventListener('click',()=>show(+b.dataset.i)));
+  show(2);
+})();
+</script>
+</body>
+</html>

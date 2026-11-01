@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiş Avcısı — Poşetteki fişler ay sonunda mali müşavirinizde, KDV'si ayrılmış</title>
+<meta name="description" content="Fiş Avcısı esnafın fiş ve faturalarını telefon kamerasıyla okur, KDV oranlarını ayırır ve ay sonunda mali müşavire hazır dosya gönderir. Fişler telefonda okunur, internet şart değil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400;62..125,600;62..125,800;62..125,900&family=Courier+Prime:wght@400;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --kraft:#D9C4A0; --kraft-d:#C7AE84; --thermal:#FCFCF8; --ink:#231E19; --soft:#4E4438;
+  --stamp:#4B3BA6; --hi:#FFE45C; --line:#B79E74;
+  --head:"Archivo", "Arial Narrow", sans-serif; --mono:"Courier Prime", "Courier New", monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:400 17px/1.55 var(--head);font-stretch:100%;
+  background:var(--kraft);
+  background-image:repeating-linear-gradient(92deg,rgba(255,255,255,.05) 0 2px,transparent 2px 7px),repeating-linear-gradient(-3deg,rgba(80,50,20,.035) 0 1px,transparent 1px 5px)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--stamp);outline-offset:3px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+header .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:20px;padding-bottom:20px;gap:18px}
+.logo{font:900 22px/1 var(--head);font-stretch:125%;text-decoration:none;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.logo i{display:inline-block;width:20px;height:26px;background:var(--thermal);clip-path:polygon(0 0,100% 0,100% 88%,83% 100%,66% 88%,50% 100%,33% 88%,16% 100%,0 88%);box-shadow:inset 0 -2px 0 #ddd}
+nav{display:flex;gap:22px;font-weight:600;font-size:15px}
+nav a{text-decoration:none}
+.btn{display:inline-block;font:800 16px/1 var(--head);font-stretch:110%;padding:15px 22px;text-decoration:none;border:2.5px solid var(--ink);background:var(--ink);color:var(--thermal)}
+.btn.alt{background:transparent;color:var(--ink)}
+.btn:hover{background:var(--stamp);border-color:var(--stamp);color:#fff}
+/* hero */
+.hero{padding:40px 0 90px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;align-items:start}
+h1{font:900 clamp(40px,5.6vw,76px)/.95 var(--head);font-stretch:72%;letter-spacing:-.01em;margin:20px 0 22px;text-transform:none}
+h1 span{background:var(--hi);padding:0 .08em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.lede{font-size:20px;max-width:30em;color:var(--soft)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 14px}
+.fine{font-size:14.5px;color:var(--soft)}
+.bag{font:700 14px var(--mono);display:inline-block;background:var(--ink);color:var(--kraft);padding:6px 10px}
+/* receipt stage */
+.stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.receipt{background:var(--thermal);font:400 13.5px/1.45 var(--mono);color:#2b2722;padding:20px 18px 34px;transform:rotate(-2deg);box-shadow:0 14px 30px -18px rgba(40,25,10,.6);position:relative;overflow:hidden;
+  -webkit-mask:linear-gradient(#000 0 0) top/100% calc(100% - 10px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/16px 10px repeat-x;
+  mask:linear-gradient(#000 0 0) top/100% calc(100% - 10px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/16px 10px repeat-x}
+.receipt .c{text-align:center}
+.receipt hr{border:0;border-top:1px dashed #9a9288;margin:8px 0}
+.r{display:flex;justify-content:space-between;gap:8px}
+.r.hl{background:var(--hi)}
+.scan{position:absolute;left:0;right:0;height:3px;background:var(--stamp);box-shadow:0 0 14px 4px rgba(75,59,166,.45);top:0;animation:scan 3.2s ease-in-out infinite}
+@keyframes scan{0%{top:6%}50%{top:92%}100%{top:6%}}
+.card{background:#fff;border:2.5px solid var(--ink);padding:16px 16px 12px;font-size:14.5px}
+.card h2{font:800 15px/1.2 var(--head);font-stretch:110%;margin:0 0 10px;display:flex;justify-content:space-between}
+.card h2 span{color:var(--stamp)}
+.f{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;padding:6px 0;border-bottom:1px solid #e3dccf}
+.f dt{color:#5d5346;font-size:13px}
+.f dd{margin:0;text-align:right;font:700 14px var(--mono)}
+.kdv{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
+.kdv th{font-weight:600;text-align:right;color:#5d5346;font-size:12.5px;padding:4px 0}
+.kdv th:first-child,.kdv td:first-child{text-align:left}
+.kdv td{text-align:right;font-family:var(--mono);padding:5px 0;border-top:1px solid #e3dccf}
+.tagk{display:inline-block;margin-top:10px;font:800 13px var(--head);color:var(--stamp);border:2px solid var(--stamp);padding:4px 8px;transform:rotate(-3deg)}
+.reveal{opacity:0;transition:opacity .4s}
+.reveal.on{opacity:1}
+/* steps */
+section{padding:88px 0}
+h2.big{font:900 clamp(32px,4vw,54px)/1 var(--head);font-stretch:75%;margin:0 0 18px;max-width:18em}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:36px;border-top:2.5px solid var(--ink)}
+.steps div{padding:22px 24px 6px 0;border-right:1px dashed var(--line);margin-right:24px}
+.steps div:last-child{border-right:0}
+.steps b{font:900 52px/1 var(--head);font-stretch:62%;display:block;margin-bottom:8px}
+.steps h3{font:800 21px/1.2 var(--head);margin:0 0 6px}
+.steps p{margin:0;color:var(--soft)}
+/* folder */
+.folder{background:var(--thermal)}
+.folder .wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:56px;align-items:start}
+.binder{border:2.5px solid var(--ink);background:#fff;position:relative}
+.binder .tab{position:absolute;top:-34px;left:22px;background:var(--stamp);color:#fff;font:800 14px var(--head);padding:8px 16px}
+.binder table{width:100%;border-collapse:collapse;font-size:15.5px}
+.binder th,.binder td{padding:13px 18px;text-align:right;border-bottom:1px solid #e3dccf}
+.binder th:first-child,.binder td:first-child{text-align:left}
+.binder thead th{font-size:13px;color:#5d5346;font-weight:600}
+.binder td{font-family:var(--mono)}
+.binder tfoot td{font-weight:700;border-top:2.5px solid var(--ink);border-bottom:0}
+.binder .files{display:flex;flex-wrap:wrap;gap:10px;padding:16px 18px;border-top:1px solid #e3dccf;font:700 13px var(--mono)}
+.binder .files span{border:1.5px solid var(--ink);padding:6px 10px}
+.binder .send{background:var(--hi);padding:14px 18px;font-weight:700;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+/* back room */
+.room{background:var(--ink);color:#EFE6D6}
+.room .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.room h2.big{color:var(--hi)}
+.room p{color:#D9CDB8;max-width:32em}
+.status{font:400 15px/1.9 var(--mono);border:1.5px dashed #8b7d68;padding:22px 24px}
+.status b{color:var(--hi);font-weight:700}
+/* mm */
+.mm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;margin-top:30px}
+.note{background:var(--thermal);padding:26px 28px;border-left:6px solid var(--stamp)}
+.note p{margin:0 0 12px;font-size:18px}
+.note small{font-size:14.5px;color:var(--soft)}
+/* price */
+.prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px}
+.p{background:var(--thermal);padding:24px;border:2.5px solid transparent;display:flex;flex-direction:column}
+.p.on{border-color:var(--ink)}
+.p h3{margin:0;font:800 19px var(--head)}
+.p .a{font:900 46px/1 var(--head);font-stretch:70%;margin:12px 0 4px}
+.p ul{padding-left:18px;color:var(--soft);font-size:15.5px;margin:12px 0 20px}
+.p .btn{margin-top:auto;text-align:center}
+details{border-top:2.5px solid var(--ink);padding:16px 0}
+summary{font:800 19px var(--head);cursor:pointer}
+details p{color:var(--soft);max-width:44em;margin:8px 0 0}
+footer{padding:36px 0;border-top:2.5px solid var(--ink);font-size:14.5px}
+footer .credit{margin-top:10px;font:400 12px var(--mono)}
+@media (max-width:960px){
+  .hero .wrap,.folder .wrap,.room .wrap,.mm{grid-template-columns:1fr}
+  .prices,.steps{grid-template-columns:1fr}
+  .steps div{border-right:0;border-bottom:1px dashed var(--line);margin-right:0}
+  nav{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .stage{grid-template-columns:1fr}
+  .receipt{transform:rotate(-1deg);max-width:330px}
+  .binder th,.binder td{padding:10px 8px;font-size:13.5px}
+  section{padding:64px 0}
+}
+@media (prefers-reduced-motion:reduce){.scan{animation:none;display:none}.reveal{opacity:1;transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#"><i aria-hidden="true"></i>Fiş Avcısı</a>
+    <nav aria-label="Ana menü"><a href="#nasil">Nasıl</a><a href="#klasor">Ay sonu</a><a href="#musavir">Mali müşavir</a><a href="#fiyat">Fiyat</a></nav>
+    <a class="btn alt" href="#fiyat">Telefona indir</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" style="padding-top:30px">
+  <div class="wrap">
+    <div>
+      <span class="bag">Ekim 2026 · poşetteki fiş: 312</span>
+      <h1>Fişi çek, poşete atma. <span>Ay sonu klasörü kendini hazırlar.</span></h1>
+      <p class="lede">Toptancı fişi, yazar kasa fişi, el yazısı fatura… Fiş Avcısı telefon kamerasıyla okur, KDV’yi oran oran ayırır, ay sonunda mali müşavirinize düzgün bir dosya yollar.</p>
+      <div class="cta"><a class="btn" href="#fiyat">30 gün ücretsiz dene</a><a class="btn alt" href="#klasor">Ay sonu dosyasını gör</a></div>
+      <p class="fine">Kafe, lokanta, kuaför, bakkal, butik. iPhone ve Android. İnternet yokken de okur.</p>
+    </div>
+
+    <div class="stage" aria-label="Örnek: toptancı fişi okunuyor ve KDV oranlarına ayrılıyor">
+      <div class="receipt" aria-hidden="true">
+        <div class="scan"></div>
+        <div class="c"><b>ANADOLU TOPTAN GIDA</b><br>Hasanpaşa Mh. Kadıköy/İST<br>VKN 0681234559</div>
+        <hr>
+        <div class="r"><span>TARİH 27.10.2026</span><span>14:52</span></div>
+        <div class="r"><span>FİŞ NO 0418</span><span></span></div>
+        <hr>
+        <div class="r hl" id="r1"><span>SÜT 1L x24 %01</span><span>*924,00</span></div>
+        <div class="r" id="r2"><span>FİLTRE KAHVE 1KG x2 %10</span><span>*1.280,00</span></div>
+        <div class="r" id="r3"><span>KARTON BARDAK 8OZ x500 %20</span><span>*950,00</span></div>
+        <div class="r" id="r4"><span>PEÇETE KOLİ x1 %20</span><span>*285,00</span></div>
+        <hr>
+        <div class="r"><span>TOPKDV</span><span>*331,34</span></div>
+        <div class="r"><b>TOPLAM</b><b>*3.439,00</b></div>
+        <hr>
+        <div class="c">KREDİ KARTI ****4417<br>MALİ DEĞERİ VARDIR</div>
+      </div>
+      <div class="card">
+        <h2>Okunan fiş <span id="pct">%0</span></h2>
+        <dl style="margin:0">
+          <div class="f reveal"><dt>Satıcı</dt><dd>Anadolu Toptan Gıda</dd></div>
+          <div class="f reveal"><dt>VKN</dt><dd>0681234559</dd></div>
+          <div class="f reveal"><dt>Tarih</dt><dd>27.10.2026</dd></div>
+          <div class="f reveal"><dt>Gider türü</dt><dd>Mutfak · ambalaj</dd></div>
+        </dl>
+        <table class="kdv reveal">
+          <thead><tr><th>Oran</th><th>Matrah</th><th>KDV</th></tr></thead>
+          <tbody>
+            <tr><td>%1</td><td>914,85</td><td>9,15</td></tr>
+            <tr><td>%10</td><td>1.163,64</td><td>116,36</td></tr>
+            <tr><td>%20</td><td>1.029,17</td><td>205,83</td></tr>
+            <tr><td><b>Toplam</b></td><td>3.107,66</td><td><b>331,34</b></td></tr>
+          </tbody>
+        </table>
+        <span class="tagk reveal">Ekim klasörüne eklendi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nasil" style="padding-top:20px">
+  <div class="wrap">
+    <h2 class="big">Fişin yolu: tezgâhtan klasöre, üç adım.</h2>
+    <div class="steps">
+      <div><b>1</b><h3>Tezgâhta çek</h3><p>Toptancıdan dönünce fişi tezgâha koy, telefonu tut. Buruşuk, solmuş, yarısı yırtık olsa da dener; okuyamazsa ne eksik diye söyler.</p></div>
+      <div><b>2</b><h3>KDV kendi ayrılır</h3><p>%1, %10, %20 kalem kalem ayrılır. Satıcının vergi numarası, tarih ve gider türü doldurulur. Siz yalnız yanlışsa düzeltirsiniz.</p></div>
+      <div><b>3</b><h3>Ay sonu tek dosya</h3><p>Ayın son günü Excel, PDF ve fiş fotoğrafları tek pakette mali müşavirinize gider. Poşet yok, “şu fiş nerede” telefonu yok.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="folder" id="klasor">
+  <div class="wrap">
+    <div>
+      <h2 class="big">Ekim klasörü, 31 Ekim akşamı.</h2>
+      <p style="color:var(--soft);font-size:18px">Bir kafenin bir aylık alışı böyle görünür. Rakamları elle toplamadınız; her satırın arkasında fişin fotoğrafı durur, mali müşaviriniz tıklayıp bakabilir.</p>
+      <p class="fine">Okunamayan 4 fiş kırmızı işaretli bekler: elle girersiniz ya da yeniden çekersiniz.</p>
+    </div>
+    <div class="binder">
+      <span class="tab">Kafe Lale · Ekim 2026</span>
+      <table>
+        <thead><tr><th>KDV oranı</th><th>Matrah (₺)</th><th>KDV (₺)</th></tr></thead>
+        <tbody>
+          <tr><td>%1 · süt, ekmek, un</td><td>41.380,20</td><td>413,80</td></tr>
+          <tr><td>%10 · kahve, şeker, gıda</td><td>28.904,55</td><td>2.890,45</td></tr>
+          <tr><td>%20 · ambalaj, temizlik, tamir</td><td>36.120,00</td><td>7.224,00</td></tr>
+        </tbody>
+        <tfoot><tr><td>312 belge</td><td>106.404,75</td><td>10.528,25</td></tr></tfoot>
+      </table>
+      <div class="files"><span>kafe-lale-2026-10.xlsx</span><span>fisler-2026-10.pdf</span><span>312 fotoğraf</span></div>
+      <div class="send"><span>Alıcı: Ercan Yüce, SMMM</span><span>Gönder → 31 Ekim 19:00</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="room">
+  <div class="wrap">
+    <div>
+      <h2 class="big">Fişler arka odada okunur. Telefonun içinde.</h2>
+      <p>Kimden ne kadar mal aldığınız, ayda ne kadar ciro yaptığınız sizin işinizdir. Fiş Avcısı fişi okumak için fotoğrafı bir sunucuya yollamaz; okuma telefonun kendi işlemcisinde yapılır.</p>
+      <p>Bodrum katta depo, çekmeyen arka oda, toptancı otoparkı: fark etmez. Dosya yalnız siz “gönder” deyince ve yalnız mali müşavirinize gider.</p>
+    </div>
+    <div class="status" role="img" aria-label="Telefon durumu: uçak modu açık, 14 fiş okundu, internet kullanılmadı">
+      Uçak modu .............. <b>açık</b><br>
+      Bugün okunan fiş ....... <b>14</b><br>
+      Ortalama okuma ......... <b>2,1 sn</b><br>
+      Sunucuya giden fotoğraf  <b>0</b><br>
+      Ekim klasörü ........... <b>312 belge</b>
+    </div>
+  </div>
+</section>
+
+<section id="musavir">
+  <div class="wrap">
+    <h2 class="big">Mali müşaviriniz de rahatlar.</h2>
+    <div class="mm">
+      <div class="note"><p>“Eskiden ayın 3’ünde poşet gelirdi, 12’sinde hâlâ eksik fiş arardık. Şimdi Excel dosyası 1’inde geliyor, fişin fotoğrafı satırın yanında. Beyanname günü gerilmiyoruz.”</p><small>Ercan Yüce — Serbest Muhasebeci Mali Müşavir, Kadıköy · 46 esnaf müşterisi</small></div>
+      <div class="note" style="border-color:var(--hi)"><p>“Kafeyi kapatınca bir saat fiş ayırıyordum, yarısı da çantada kayboluyordu. Şimdi toptancıdan çıkarken arabada çekiyorum, bitti.”</p><small>Lale Aksoy — Kafe Lale sahibi, Moda / İstanbul</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:20px">
+  <div class="wrap">
+    <h2 class="big">Fiyat</h2>
+    <div class="prices">
+      <div class="p"><h3>Deneme</h3><div class="a">0 ₺</div><ul><li>30 gün, sınırsız fiş</li><li>Bir ay sonu dosyası</li></ul><a class="btn alt" href="#">iPhone için indir</a></div>
+      <div class="p on"><h3>Esnaf</h3><div class="a">149 ₺ / ay</div><ul><li>Sınırsız fiş ve fatura</li><li>Her ay mali müşavire otomatik dosya</li><li>Yıllık ödemede 1.290 ₺</li></ul><a class="btn" href="#">Android için indir</a></div>
+      <div class="p"><h3>Mali müşavir</h3><div class="a">Ücretsiz</div><ul><li>Müşterilerinizin dosyaları tek ekranda</li><li>Luca ve Logo’ya aktarım biçimi</li></ul><a class="btn alt" href="#">Müşavir başvurusu</a></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:10px">
+  <div class="wrap">
+    <h2 class="big">Esnafın sorduğu</h2>
+    <details open><summary>e-Arşiv ve e-Fatura’lar ne olacak?</summary><p>E-postanıza gelen e-Arşiv PDF’lerini de okur; QR kodlu faturalarda bilgileri koddan alır. GİB portalındaki faturalar için “paylaş → Fiş Avcısı” yeterli.</p></details>
+    <details><summary>Elle yazılmış faturayı okur mu?</summary><p>Okunaklıysa evet. Emin olmadığı rakamı sarıyla işaretler ve size sorar; tahmin edip geçmez.</p></details>
+    <details><summary>Fişin aslını atabilir miyim?</summary><p>Hayır. Vergi Usul Kanunu’na göre asıl belgeleri 5 yıl saklamanız gerekir. Fiş Avcısı poşeti düzenler, ortadan kaldırmaz; fişleri ay ay bir zarfa koymanızı öneririz.</p></details>
+    <details><summary>Telefonum kaybolursa?</summary><p>Ay sonu dosyaları mali müşavirinize gitmiş olur. İsterseniz şifreli yedeği kendi iCloud ya da Google Drive hesabınıza alırsınız; biz göremeyiz.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Fiş Avcısı · Kadıköy, İstanbul · destek@fisavcisi.app · Bu sitedeki fiş ve rakamlar örnektir.
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  var els=[].slice.call(document.querySelectorAll('.reveal')),pct=document.getElementById('pct');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){els.forEach(function(e){e.classList.add('on')});pct.textContent='%100';return;}
+  var rows=['r1','r2','r3','r4'].map(function(id){return document.getElementById(id)});
+  function run(){
+    els.forEach(function(e){e.classList.remove('on')});
+    els.forEach(function(e,i){setTimeout(function(){e.classList.add('on');pct.textContent='%'+Math.round((i+1)/els.length*100);
+      rows.forEach(function(r,j){r.classList.toggle('hl',j===i%4)})},350+i*380)});
+  }
+  run();setInterval(run,9000);
+})();
+</script>
+</body>
+</html>

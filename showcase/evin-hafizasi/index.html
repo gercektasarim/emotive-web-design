@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evin Hafızası — Anahtar nerede? Ev hatırlıyor.</title>
+<meta name="description" content="Evin Hafızası ev kameralarının gördüğünü evdeki cihazda indeksler: anahtar, gözlük, kumanda en son nerede bırakıldı, saatiyle söyler. Görüntü evden çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F6F3;
+  --sheet:#FFFFFF;
+  --graphite:#232528;
+  --pencil:#5E6166;
+  --rule:#D9D8D2;
+  --oak:#B57D45;
+  --oak-soft:#EBDCCB;
+  --note:#F4D35E;
+  --pin:#D8452E;
+  --room:#EFEEEA;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--paper);color:var(--graphite);font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:18px;line-height:1.55;overflow-x:hidden}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--pin);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+h1,h2,h3{font-weight:800;letter-spacing:-.025em;line-height:1.02}
+
+/* top */
+.top{border-bottom:1px solid var(--rule);background:var(--paper)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;height:64px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none;letter-spacing:-.02em}
+.top nav{display:flex;gap:28px;font-size:15.5px}
+.top nav a{text-decoration:none;color:var(--pencil)}
+.top nav a:hover{color:var(--graphite)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 16px/1 "Bricolage Grotesque",sans-serif;padding:14px 22px;border-radius:10px;text-decoration:none;border:2px solid var(--graphite);cursor:pointer}
+.btn-dark{background:var(--graphite);color:#fff}
+.btn-dark:hover{background:#000}
+.btn-line{background:transparent;color:var(--graphite)}
+.btn-line:hover{background:#fff}
+
+/* hero */
+.hero{padding:54px 0 0}
+.hero-top{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;margin-bottom:30px}
+.hero h1{font-size:clamp(54px,8.6vw,122px)}
+.hero h1 .q{color:var(--pin)}
+.hero .lead{font-size:20px;max-width:27em;color:#3b3e43;margin-top:18px}
+.hero .side{display:grid;gap:10px;justify-items:start;padding-bottom:10px}
+.hero .side small{font-size:14px;color:var(--pencil)}
+
+.finder{background:var(--sheet);border:1px solid var(--rule);border-radius:18px;box-shadow:0 1px 0 var(--rule),0 30px 60px -40px rgba(35,37,40,.35);overflow:hidden}
+.finder-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:16px 18px;border-bottom:1px solid var(--rule)}
+.ask{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500;margin-right:8px}
+.ask svg{flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 15px/1 "Bricolage Grotesque",sans-serif;padding:9px 14px;border-radius:999px;border:1px solid var(--rule);background:var(--paper);color:var(--graphite);cursor:pointer}
+.chip:hover{border-color:var(--graphite)}
+.chip[aria-pressed="true"]{background:var(--note);border-color:#d9b63a}
+.finder-body{display:grid;grid-template-columns:1fr 330px}
+.plan-wrap{padding:18px;border-right:1px solid var(--rule);background:
+  linear-gradient(var(--paper) 0 0) padding-box,
+  repeating-linear-gradient(0deg,transparent 0 23px,#ececE6 23px 24px),
+  repeating-linear-gradient(90deg,transparent 0 23px,#ececE6 23px 24px);background-blend-mode:normal}
+.plan-wrap{background:#FAFAF8;background-image:repeating-linear-gradient(0deg,transparent 0 23px,#EEEDE8 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,#EEEDE8 23px 24px)}
+#plan{width:100%;height:auto;display:block}
+#plan .room{fill:#fff}
+#plan .wall{fill:none;stroke:var(--graphite);stroke-width:6;stroke-linejoin:miter}
+#plan .iw{stroke:var(--graphite);stroke-width:3.5}
+#plan .door{fill:none;stroke:#8a8d92;stroke-width:1.2;stroke-dasharray:3 3}
+#plan .furn{fill:var(--oak-soft);stroke:#9a7a58;stroke-width:1.2}
+#plan .furn2{fill:#e9e8e3;stroke:#a5a6a8;stroke-width:1.2}
+#plan .lbl{font:600 11px "JetBrains Mono",monospace;fill:var(--pencil);letter-spacing:.04em}
+#plan .cam{fill:var(--graphite)}
+#plan .camfov{fill:rgba(35,37,40,.05)}
+#plan .hl{fill:rgba(244,211,94,.38);transition:opacity .3s}
+#pin{transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+.pulse{transform-origin:center;transform-box:fill-box;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{opacity:.6;transform:scale(.4)}100%{opacity:0;transform:scale(1.6)}}
+
+.result{padding:22px 22px 24px;display:flex;flex-direction:column;gap:16px}
+.result .say{font-size:22px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+.result .say mark{background:var(--note);padding:0 3px;border-radius:3px}
+.frame{border-radius:10px;overflow:hidden;border:1px solid var(--rule);position:relative;background:#2b2d30}
+.frame svg{display:block;width:100%;height:auto}
+.frame .stamp{position:absolute;left:8px;top:8px;font:600 11px "JetBrains Mono",monospace;color:#fff;background:rgba(0,0,0,.55);padding:3px 6px;border-radius:4px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.kv dt{color:var(--pencil);font-family:"JetBrains Mono",monospace;font-size:12.5px;padding-top:2px}
+.kv dd{font-weight:500}
+
+section{padding:110px 0}
+.h2{font-size:clamp(38px,5vw,68px);max-width:14em}
+.intro{font-size:19px;color:#3b3e43;max-width:34em;margin-top:18px}
+
+/* morning */
+.morning{padding-top:120px}
+.rush{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;border-top:2px solid var(--graphite)}
+.rush article{padding:22px 22px 26px 0;border-right:1px solid var(--rule);margin-right:22px}
+.rush article:last-child{border-right:0;margin-right:0}
+.rush .t{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--pencil)}
+.rush .who{font-weight:700;font-size:19px;margin:6px 0 12px}
+.rush .q{font-size:17px;margin-bottom:12px;color:#3b3e43}
+.rush .a{font-size:16px;background:var(--sheet);border:1px solid var(--rule);border-left:4px solid var(--note);padding:12px 14px;border-radius:4px 10px 10px 4px}
+.saved{margin-top:40px;display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+.saved strong{font-size:clamp(56px,7vw,92px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.saved span{font-size:18px;max-width:26em;color:#3b3e43}
+
+/* index / proof */
+.index{background:var(--graphite);color:#ECEBE6}
+.index .intro{color:#C9C8C2}
+.index .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:56px;margin-top:56px;align-items:start}
+.ledger{background:#1A1C1E;border:1px solid #3a3d41;border-radius:14px;overflow:hidden;font-family:"JetBrains Mono",monospace;font-size:13.5px}
+.ledger .hd{display:flex;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid #3a3d41;color:#A9A9A2;font-size:12.5px}
+.ledger table{width:100%;border-collapse:collapse}
+.ledger td,.ledger th{padding:10px 16px;text-align:left;border-bottom:1px solid #2c2f33;white-space:nowrap}
+.ledger th{color:#A9A9A2;font-weight:400;font-size:12px}
+.ledger tr.hit td{background:rgba(244,211,94,.12);color:#F7E39A}
+.ledger .scroll{overflow-x:auto}
+.never{list-style:none;display:grid;gap:22px}
+.never li{border-top:1px solid #45484d;padding-top:16px}
+.never b{display:block;font-size:20px;margin-bottom:4px;color:#fff}
+.never span{color:#C9C8C2;font-size:16.5px}
+
+/* setup */
+.setup .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.step{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:26px}
+.step .n{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--pin);font-weight:600}
+.step h3{font-size:26px;margin:10px 0 10px;letter-spacing:-.02em}
+.step p{font-size:16.5px;color:#3b3e43}
+.step .min{display:inline-block;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:var(--room);padding:4px 8px;border-radius:4px}
+.zones{margin-top:28px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;background:var(--oak-soft);border-radius:16px;padding:22px 26px}
+.zones p{font-size:17px}
+
+/* quote */
+.quote{padding:100px 0}
+.quote .wrap{display:grid;grid-template-columns:.7fr 1.3fr;gap:50px;align-items:start}
+.sticky{background:var(--note);padding:26px 24px 30px;transform:rotate(-2deg);box-shadow:0 18px 30px -18px rgba(0,0,0,.35);font-size:17px;max-width:300px}
+.sticky b{display:block;font-size:22px;margin-bottom:6px}
+.quote blockquote p{font-size:clamp(26px,3vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.18}
+.quote blockquote footer{margin-top:22px;font-size:16px;color:var(--pencil)}
+.quote blockquote footer b{color:var(--graphite)}
+
+/* price */
+.price{background:var(--sheet);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);margin-top:56px;border:2px solid var(--graphite);border-radius:16px;overflow:hidden}
+.tier{padding:30px 28px;border-right:1px solid var(--rule)}
+.tier:last-child{border-right:0}
+.tier.pick{background:#FFF8DA}
+.tier h3{font-size:24px;letter-spacing:-.01em}
+.tier .amt{font-size:46px;font-weight:800;letter-spacing:-.03em;margin:12px 0 2px}
+.tier .per{font-size:14px;color:var(--pencil)}
+.tier ul{list-style:none;margin:20px 0 24px;display:grid;gap:9px;font-size:16px}
+.tier li::before{content:"— ";color:var(--oak)}
+
+/* faq */
+.faq .cols{display:grid;grid-template-columns:repeat(2,1fr);gap:34px 56px;margin-top:50px}
+.faq h3{font-size:21px;letter-spacing:-.01em;margin-bottom:8px;line-height:1.25}
+.faq p{font-size:16.5px;color:#3b3e43}
+
+.close{padding:110px 0 90px}
+.close .wrap{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap}
+.close h2{font-size:clamp(44px,6vw,84px)}
+.close .ctas{display:flex;gap:12px;flex-wrap:wrap}
+footer.site{border-top:1px solid var(--rule);padding:30px 0 38px;font-size:14.5px;color:var(--pencil)}
+footer.site .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.site .credit{width:100%;font-family:"JetBrains Mono",monospace;font-size:12px;margin-top:10px}
+footer.site .credit a{text-decoration:none}
+footer.site .credit a:hover{text-decoration:underline}
+
+@media (max-width:1000px){
+  .top nav{display:none}
+  .hero-top{grid-template-columns:minmax(0,1fr)}
+  .finder-body{grid-template-columns:minmax(0,1fr)}
+  .plan-wrap{border-right:0;border-bottom:1px solid var(--rule)}
+  .rush{grid-template-columns:1fr 1fr}
+  .rush article:nth-child(2){border-right:0;margin-right:0}
+  .index .grid,.quote .wrap{grid-template-columns:minmax(0,1fr)}
+  .setup .steps,.tiers{grid-template-columns:minmax(0,1fr)}
+  .tier{border-right:0;border-bottom:1px solid var(--rule)}
+  .faq .cols{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  body{font-size:17px}
+  .hero{padding-top:34px}
+  section{padding:76px 0}
+  .rush{grid-template-columns:minmax(0,1fr)}
+  .rush article{border-right:0;margin-right:0;border-bottom:1px solid var(--rule);padding-right:0}
+  .ask{font-size:16px;width:100%}
+  .chip{font-size:14px;padding:8px 12px}
+  .plan-wrap{padding:8px;overflow-x:auto}
+  #plan{min-width:640px}
+  .plan-hint{display:block!important}
+  .result .say{font-size:19px}
+  .zones{grid-template-columns:1fr}
+  .top .btn{padding:10px 14px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M3 12 13 3l10 9v11H3z" fill="none" stroke="#232528" stroke-width="2.6" stroke-linejoin="round"/><circle cx="13" cy="15" r="3.2" fill="#D8452E"/></svg>
+      Evin Hafızası
+    </a>
+    <nav aria-label="Ana menü"><a href="#sabah">Sabah 07:40</a><a href="#defter">Ne kaydeder</a><a href="#kurulum">Kurulum</a><a href="#fiyat">Fiyat</a><a href="#sorular">Sorular</a></nav>
+    <a class="btn btn-dark" href="#fiyat">İndir</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h1" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <h1 id="h1">Anahtar nerede<span class="q">?</span></h1>
+        <p class="lead">Ev hatırlıyor. Evin Hafızası, salondaki ve mutfaktaki kameraların gördüğünü evdeki cihazda not eder; sorduğunuzda en son nerede, saat kaçta bırakıldığını söyler.</p>
+      </div>
+      <div class="side">
+        <a class="btn btn-dark" href="#fiyat">iPhone için indir</a>
+        <a class="btn btn-line" href="#fiyat">Android için indir</a>
+        <small>Görüntü evden çıkmaz · internet kesikken de bulur</small>
+      </div>
+    </div>
+
+    <div class="finder" aria-label="Uygulama ekranı: evin kat planı üzerinde aranan eşyanın son görüldüğü yer">
+      <div class="finder-bar">
+        <span class="ask"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="9.5" cy="9.5" r="6.5" fill="none" stroke="#232528" stroke-width="2.4"/><path d="m14.5 14.5 5 5" stroke="#232528" stroke-width="2.4" stroke-linecap="round"/></svg>Ne arıyorsunuz?</span>
+        <div class="chips" role="group" aria-label="Eşya seç">
+          <button class="chip" aria-pressed="true" data-k="anahtar">Anahtar</button>
+          <button class="chip" aria-pressed="false" data-k="gozluk">Babamın gözlüğü</button>
+          <button class="chip" aria-pressed="false" data-k="kumanda">Kumanda</button>
+          <button class="chip" aria-pressed="false" data-k="kart">Deniz’in okul kartı</button>
+          <button class="chip" aria-pressed="false" data-k="cuzdan">Cüzdan</button>
+        </div>
+      </div>
+      <div class="finder-body">
+        <div class="plan-wrap">
+          <p class="plan-hint mono" style="display:none;position:sticky;left:4px;width:max-content;font-size:12px;color:#5E6166;margin:2px 4px 8px">← planı kaydırın →</p>
+          <svg id="plan" viewBox="0 0 1000 470" role="img" aria-label="3+1 dairenin kat planı: antre, salon, mutfak, yatak odası, çocuk odası, banyo, balkon">
+            <!-- room fills -->
+            <rect class="room" x="20" y="20" width="420" height="270"/>
+            <rect class="room" x="440" y="20" width="250" height="200"/>
+            <rect class="room" x="690" y="20" width="290" height="200"/>
+            <rect class="room" x="690" y="220" width="290" height="230"/>
+            <rect class="room" x="440" y="220" width="250" height="110"/>
+            <rect class="room" x="440" y="330" width="250" height="120"/>
+            <rect class="room" x="20" y="290" width="420" height="160"/>
+            <!-- highlight -->
+            <rect id="hl" class="hl" x="440" y="20" width="250" height="200"/>
+            <!-- furniture -->
+            <!-- salon -->
+            <rect class="furn" x="50" y="200" width="220" height="62" rx="10"/>
+            <rect class="furn2" x="62" y="208" width="64" height="44" rx="6"/>
+            <rect class="furn2" x="132" y="208" width="64" height="44" rx="6"/>
+            <rect class="furn2" x="202" y="208" width="58" height="44" rx="6"/>
+            <rect class="furn" x="110" y="120" width="110" height="52" rx="6"/>
+            <rect class="furn2" x="70" y="34" width="220" height="16" rx="3"/>
+            <rect class="furn" x="330" y="160" width="80" height="100" rx="40"/>
+            <!-- kitchen L counter -->
+            <path class="furn" d="M450 30h230v40H490v140h-40z"/>
+            <rect class="furn2" x="590" y="34" width="40" height="32" rx="4"/>
+            <rect class="furn" x="540" y="120" width="110" height="64" rx="4"/>
+            <!-- bedroom -->
+            <rect class="furn" x="780" y="40" width="150" height="130" rx="8"/>
+            <rect class="furn2" x="792" y="48" width="58" height="30" rx="6"/>
+            <rect class="furn2" x="860" y="48" width="58" height="30" rx="6"/>
+            <rect class="furn" x="940" y="44" width="30" height="34" rx="3"/>
+            <!-- kid room -->
+            <rect class="furn" x="880" y="320" width="90" height="120" rx="6"/>
+            <rect class="furn" x="710" y="240" width="140" height="44" rx="4"/>
+            <rect class="furn2" x="760" y="292" width="40" height="36" rx="18"/>
+            <!-- bath -->
+            <rect class="furn2" x="600" y="230" width="80" height="90" rx="20"/>
+            <circle class="furn2" cx="470" cy="300" r="16"/>
+            <!-- antre -->
+            <rect class="furn" x="455" y="340" width="26" height="100" rx="3"/>
+            <rect class="furn2" x="560" y="420" width="90" height="22" rx="3"/>
+            <!-- balcony -->
+            <rect class="furn2" x="60" y="330" width="60" height="60" rx="30"/>
+            <rect class="furn" x="150" y="320" width="18" height="18" rx="9"/><rect class="furn" x="180" y="350" width="18" height="18" rx="9"/>
+            <!-- walls -->
+            <rect class="wall" x="20" y="20" width="960" height="430"/>
+            <path class="iw" d="M440 20v140M440 230v220M690 20v170M690 280v170M440 220h70M590 220h100M690 220h120M900 220h80M440 330h120M650 330h40M20 290h170M310 290h130"/>
+            <!-- doors -->
+            <path class="door" d="M440 160a70 70 0 0 1 70 70M510 220h80M690 190v90M810 220a90 90 0 0 0 90 0M560 330a90 90 0 0 0 90 0M190 290h120"/>
+            <path d="M560 450h90" stroke="#fff" stroke-width="8"/><path class="door" d="M560 450a90 90 0 0 1 90-90"/>
+            <!-- cameras -->
+            <path class="camfov" d="M28 28 L300 120 L120 280z"/>
+            <rect class="cam" x="24" y="24" width="14" height="10" rx="2"/>
+            <path class="camfov" d="M682 28 L460 110 L620 210z"/>
+            <rect class="cam" x="672" y="24" width="14" height="10" rx="2"/>
+            <path class="camfov" d="M684 444 L470 360 L560 340z"/>
+            <rect class="cam" x="672" y="436" width="14" height="10" rx="2"/>
+            <!-- labels -->
+            <text class="lbl" x="44" y="80">SALON · 24 m²</text>
+            <text class="lbl" x="510" y="104">MUTFAK</text>
+            <text class="lbl" x="712" y="200">YATAK ODASI</text>
+            <text class="lbl" x="712" y="430">ÇOCUK ODASI</text>
+            <text class="lbl" x="512" y="272">BANYO</text>
+            <text class="lbl" x="496" y="400">ANTRE</text>
+            <text class="lbl" x="44" y="430">BALKON</text>
+            <text class="lbl" x="44" y="104" style="font-size:9.5px;fill:#8a8d92">KAMERA 1</text>
+            <text class="lbl" x="600" y="104" style="font-size:9.5px;fill:#8a8d92">KAMERA 2</text>
+            <text class="lbl" x="600" y="438" style="font-size:9.5px;fill:#8a8d92">KAMERA 3</text>
+            <!-- pin -->
+            <g id="pin" transform="translate(468 70)">
+              <circle class="pulse" r="26" fill="#D8452E"/>
+              <circle r="11" fill="#D8452E" stroke="#fff" stroke-width="3"/>
+            </g>
+          </svg>
+        </div>
+        <div class="result" aria-live="polite">
+          <p class="say" id="say">Anahtarı en son <mark>mutfak tezgâhında</mark>, 18:42’de bıraktın.</p>
+          <div class="frame">
+            <span class="stamp" id="stamp">KAMERA 2 · 18:42:07</span>
+            <svg id="snap" viewBox="0 0 300 150" aria-hidden="true"></svg>
+          </div>
+          <dl class="kv">
+            <dt>kim</dt><dd id="who">Kerem (iş dönüşü)</dd>
+            <dt>yer</dt><dd id="where">Mutfak · tezgâhın sol ucu, ekmek kutusunun yanı</dd>
+            <dt>sonra</dt><dd id="after">Kimse dokunmadı · 13 saattir orada</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="morning" id="sabah" aria-labelledby="h-sabah">
+  <div class="wrap">
+    <h2 class="h2" id="h-sabah">Sabah 07:40. Dört kişi, dört soru, bir kapı.</h2>
+    <p class="intro">Servis 07:55’te kapıda. Bu evde herkes bir şeyini arıyor ve artık kimse “sen en son nereye koydun” diye bağırmıyor.</p>
+    <div class="rush">
+      <article><p class="t">07:38</p><p class="who">Deniz, 9</p><p class="q">“Okul kartım yok!”</p><p class="a">Çalışma masasında, matematik defterinin altında. Dün 16:20.</p></article>
+      <article><p class="t">07:41</p><p class="who">Hüseyin dede</p><p class="q">“Gözlüğümü gören?”</p><p class="a">Salonda, kanepenin sağ kolçağında. Dün 22:15.</p></article>
+      <article><p class="t">07:46</p><p class="who">Kerem</p><p class="q">“Anahtar?”</p><p class="a">Mutfak tezgâhı, ekmek kutusunun yanı. Dün 18:42.</p></article>
+      <article><p class="t">07:49</p><p class="who">Aslı</p><p class="q">“Kumanda yine nerede?”</p><p class="a">Kanepe minderinin altında. 21:58’den beri görünmüyor.</p></article>
+    </div>
+    <p class="intro" style="margin-top:34px"><b>07:55.</b> Herkes kapıda, anahtar Kerem’in cebinde, kumanda yerinde. Servis korna çalmadan.</p>
+    <div class="saved"><strong>11 dk</strong><span>Bursa’da 12 ailenin 4 haftalık denemesinde, sabah çıkışından önce aramaya harcanan ortalama süredeki düşüş.</span></div>
+  </div>
+</section>
+
+<section class="index" id="defter" aria-labelledby="h-defter">
+  <div class="wrap">
+    <h2 class="h2" id="h-defter">Ev görüntü saklamaz. Bir defter tutar.</h2>
+    <p class="intro">Kameraların gördüğü, evinizdeki telefonda ya da tablette anında çözülür ve tek satıra iner: ne, nerede, saat kaç. Görüntü 24 saat içinde silinir; defter evde kalır. İnternet kesilse de anahtarınızı bulur.</p>
+    <div class="grid">
+      <div class="ledger">
+        <div class="hd"><span>evin-defteri · bu tablette · 2.143 satır</span><span>bugün</span></div>
+        <div class="scroll">
+        <table>
+          <thead><tr><th>saat</th><th>eşya</th><th>yer</th><th>kamera</th></tr></thead>
+          <tbody>
+            <tr><td>16:20:31</td><td>okul kartı</td><td>çocuk odası · masa</td><td>—*</td></tr>
+            <tr><td>18:41:55</td><td>çanta (Kerem)</td><td>antre · portmanto</td><td>3</td></tr>
+            <tr class="hit"><td>18:42:07</td><td>anahtar</td><td>mutfak · tezgâh sol</td><td>2</td></tr>
+            <tr><td>19:05:12</td><td>cüzdan</td><td>antre · ayakkabılık üstü</td><td>3</td></tr>
+            <tr><td>21:58:40</td><td>kumanda</td><td>salon · minder altı</td><td>1</td></tr>
+            <tr><td>22:15:03</td><td>gözlük</td><td>salon · kanepe sağ kol</td><td>1</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="hd" style="border-top:1px solid #3a3d41;border-bottom:0"><span>* çocuk odasında kamera yok; Deniz kartı fotoğrafla işaretledi</span></div>
+      </div>
+      <ul class="never">
+        <li><b>Buluta tek kare gitmez</b><span>Çözümleme evdeki cihazda yapılır. Sunucumuz yok; olsa da gönderecek bir şey yok.</span></li>
+        <li><b>Yatak odası ve banyo kapalı bölge</b><span>Kat planında boyadığınız odalarda kamera açık olsa bile hiçbir şey not edilmez.</span></li>
+        <li><b>Misafiri tanımaz</b><span>Yalnızca ailenin kendini tanıttığı kişileri adıyla yazar; geri kalanı “biri” olarak geçer.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="setup" id="kurulum" aria-labelledby="h-kur">
+  <div class="wrap">
+    <h2 class="h2" id="h-kur">Bir cumartesi öğleden sonrası kurulur.</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1 · kameralar</span><h3>Var olanları bağlayın</h3><p>Evdeki Wi-Fi kameraların çoğu (RTSP ya da ONVIF destekleyenler) aynı ağdan eklenir. Yeni kamera almanız gerekmez.</p><span class="min">~10 dk</span></div>
+      <div class="step"><span class="n">2 · kat planı</span><h3>Evin planını çizin</h3><p>Odaları parmağınızla dikdörtgen olarak çizip adlandırın. Tezgâh, kanepe, portmanto gibi “bırakma yerleri”ni işaretleyin.</p><span class="min">~15 dk</span></div>
+      <div class="step"><span class="n">3 · eşyalar</span><h3>Eşyaları tanıtın</h3><p>Anahtarlığınızı kameraya 5 saniye gösterin. Gözlük, kumanda, cüzdan gibi 40 yaygın eşyayı zaten tanır.</p><span class="min">~2 dk / eşya</span></div>
+    </div>
+    <div class="zones">
+      <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true"><rect x="4" y="4" width="38" height="38" fill="none" stroke="#232528" stroke-width="3"/><path d="M4 18h38M24 18v24" stroke="#232528" stroke-width="2"/><path d="M5 19h18v22H5z" fill="#232528" opacity=".18"/><path d="M5 19 23 41M23 19 5 41" stroke="#232528" stroke-width="1.5"/></svg>
+      <p><b>Kapalı bölgeleri planda boyarsınız.</b> Taralı odada ne görülürse görülsün deftere yazılmaz. Çocuk odası varsayılan olarak kapalıdır; açmak için iki ebeveyn onayı gerekir.</p>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı yorumu">
+  <div class="wrap">
+    <div class="sticky"><b>Buzdolabındaki not</b>“Anahtarı aramadan önce SOR!” — evde 3 hafta asılı kaldı, sonra gerek kalmadı.</div>
+    <blockquote>
+      <p>“Eskiden sabahlarımız ‘kim aldı’ kavgasıyla başlıyordu. Şimdi babam kumandayı uygulamaya soruyor ve cevabı yüksek sesle okuyup gülüyor.”</p>
+      <footer><b>Aslı Karaca</b> · Nilüfer, Bursa · üç kuşak, beş kişi, bir anahtarlık</footer>
+    </blockquote>
+  </div>
+</section>
+
+<section class="price" id="fiyat" aria-labelledby="h-fiyat">
+  <div class="wrap">
+    <h2 class="h2" id="h-fiyat">Bir kez alınır, evle birlikte yaşar.</h2>
+    <p class="intro">Aylık ücret yok, çünkü bizim tarafta çalışan bir sunucu yok.</p>
+    <div class="tiers">
+      <div class="tier"><h3>Tek oda</h3><p class="amt">0 ₺</p><p class="per">1 kamera · 10 eşya</p><ul><li>Kat planı ve arama</li><li>Son görülme ve saat</li><li>Kapalı bölgeler</li></ul><a class="btn btn-line" href="#">iPhone için indir</a></div>
+      <div class="tier pick"><h3>Bütün ev</h3><p class="amt">449 ₺</p><p class="per">tek seferlik · 6 kameraya kadar</p><ul><li>Sınırsız eşya</li><li>6 aile üyesi, her biri kendi telefonundan sorar</li><li>Sesli soru: “Gözlüğüm nerede?”</li><li>Eşya kaybolursa akşam hatırlatması</li></ul><a class="btn btn-dark" href="#">Android için indir</a></div>
+      <div class="tier"><h3>Ev + yazlık</h3><p class="amt">699 ₺</p><p class="per">tek seferlik · iki ayrı plan</p><ul><li>İki evin defteri ayrı tutulur</li><li>“Şarj aletini yazlıkta mı unuttum?”</li><li>12 kameraya kadar</li></ul><a class="btn btn-line" href="#">iPhone için indir</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="sorular" aria-labelledby="h-sss">
+  <div class="wrap">
+    <h2 class="h2" id="h-sss">Evde sorulanlar</h2>
+    <div class="cols">
+      <div><h3>Hangi cihazda çalışıyor?</h3><p>Evde sürekli prizde duran bir telefon ya da tablet yeterli: iPhone XS ve sonrası, Android’de 6 GB bellekli ve 2020 sonrası cihazlar. Eski telefonunuzu “evin hafızası” yapabilirsiniz.</p></div>
+      <div><h3>Kameranın görmediği yerdeki eşyayı bulur mu?</h3><p>Bulamaz ama dürüstçe söyler: “Kumanda 21:58’de kamera 1’in görüş alanından çıktı, en son kanepeye doğru gidiyordu.” Çoğu zaman bu kadarı yeter.</p></div>
+      <div><h3>Kayıtlarımı kim görebilir?</h3><p>Görüntüleri kimse; 24 saat sonra silinir. Defteri yalnızca evin ağına bağlı ve sizin eklediğiniz aile telefonları okuyabilir. Dışarıdan erişim isterseniz kendi ev ağınıza VPN ile bağlanırsınız; biz aracılık etmeyiz.</p></div>
+      <div><h3>Çocuklar telefonsuz nasıl soracak?</h3><p>Mutfağa koyduğunuz tablete “Okul kartım nerede?” diye sesli sorabilirler. Ses tanıma da cihazda çalışır.</p></div>
+      <div><h3>Kiracıyım, kamera takamam.</h3><p>Yapıştırma ayaklı, prize takılan iki kamera çoğu 2+1 evin salon ve antresini görür. Ayrılırken iz kalmaz.</p></div>
+      <div><h3>Ya yanlış yer söylerse?</h3><p>Her cevabın yanında o anın küçük karesi durur; bir bakışta doğrulayıp “burada değil” diyebilirsiniz. Uygulama bu düzeltmeden öğrenir.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="close" aria-labelledby="h-son">
+  <div class="wrap">
+    <h2 id="h-son">Yarın sabah<br>kimse aramasın.</h2>
+    <div class="ctas"><a class="btn btn-dark" href="#">iPhone için indir</a><a class="btn btn-line" href="#">Android için indir</a></div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Evin Hafızası · İstanbul ve Bursa’da evlerde denendi</span>
+    <span>Destek: yardim@evinhafizasi.app · KVKK</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var I={
+    anahtar:{x:468,y:70,hl:[440,20,250,200],cam:'KAMERA 2 · 18:42:07',say:'Anahtarı en son <mark>mutfak tezgâhında</mark>, 18:42’de bıraktın.',who:'Kerem (iş dönüşü)',where:'Mutfak · tezgâhın sol ucu, ekmek kutusunun yanı',after:'Kimse dokunmadı · 13 saattir orada',scene:'counter'},
+    gozluk:{x:262,y:214,hl:[20,20,420,270],cam:'KAMERA 1 · 22:15:03',say:'Gözlük <mark>kanepenin sağ kolçağında</mark>, dün 22:15’ten beri.',who:'Hüseyin dede (haberleri izlerken)',where:'Salon · kanepe, sağ kolçak',after:'Üstüne bir yastık kondu · 22:31',scene:'sofa'},
+    kumanda:{x:165,y:232,hl:[20,20,420,270],cam:'KAMERA 1 · 21:58:40',say:'Kumanda <mark>kanepe minderinin altına</mark> kaydı, 21:58.',who:'Aslı (dizi bitince)',where:'Salon · kanepe, orta minderin altı',after:'21:58’den beri görünmüyor; son hareketi aşağı doğru',scene:'sofa'},
+    kart:{x:780,y:258,hl:[690,220,290,230],cam:'FOTOĞRAF · 16:20:31',say:'Okul kartı <mark>çalışma masasında</mark>, defterin altında.',who:'Deniz (ödev başlarken)',where:'Çocuk odası · çalışma masası',after:'Çocuk odası kapalı bölge; Deniz fotoğrafla işaretledi',scene:'desk'},
+    cuzdan:{x:604,y:430,hl:[440,330,250,120],cam:'KAMERA 3 · 19:05:12',say:'Cüzdan <mark>antrede, ayakkabılığın üstünde</mark>, 19:05.',who:'Kerem (market dönüşü)',where:'Antre · ayakkabılık üstü, sağ köşe',after:'Kimse dokunmadı',scene:'shelf'}
+  };
+  function scene(t){
+    var s='<rect width="300" height="150" fill="#3a3c40"/>';
+    if(t==='counter') s+='<rect y="92" width="300" height="58" fill="#8b6a4a"/><rect y="88" width="300" height="8" fill="#a07d58"/><rect x="186" y="44" width="70" height="46" rx="6" fill="#d9d4ca"/><rect x="40" y="30" width="44" height="58" rx="4" fill="#5c5f63"/><g transform="translate(120 98)"><circle r="7" fill="none" stroke="#F4D35E" stroke-width="3"/><rect x="5" y="-2" width="22" height="5" rx="2" fill="#c9c6bd"/></g><rect x="104" y="84" width="40" height="28" fill="none" stroke="#F4D35E" stroke-width="2" stroke-dasharray="4 3"/>';
+    if(t==='sofa') s+='<rect x="20" y="60" width="260" height="70" rx="12" fill="#6d7f86"/><rect x="34" y="70" width="74" height="40" rx="8" fill="#7f9299"/><rect x="113" y="70" width="74" height="40" rx="8" fill="#7f9299"/><rect x="192" y="70" width="74" height="40" rx="8" fill="#7f9299"/><rect x="250" y="44" width="30" height="40" rx="8" fill="#5d6e75"/><rect x="240" y="38" width="48" height="34" fill="none" stroke="#F4D35E" stroke-width="2" stroke-dasharray="4 3"/><rect y="130" width="300" height="20" fill="#4b4c4f"/>';
+    if(t==='desk') s+='<rect y="96" width="300" height="12" fill="#c9a77d"/><rect x="20" y="108" width="10" height="42" fill="#a5835c"/><rect x="270" y="108" width="10" height="42" fill="#a5835c"/><rect x="70" y="70" width="90" height="26" fill="#e9e5dc" transform="rotate(-4 115 83)"/><rect x="96" y="80" width="54" height="16" rx="2" fill="#4a90a4"/><rect x="88" y="62" width="70" height="40" fill="none" stroke="#F4D35E" stroke-width="2" stroke-dasharray="4 3"/>';
+    if(t==='shelf') s+='<rect x="40" y="70" width="220" height="80" fill="#8b6a4a"/><rect x="40" y="66" width="220" height="8" fill="#a07d58"/><rect x="196" y="56" width="36" height="12" rx="2" fill="#3b2a20"/><rect x="186" y="46" width="56" height="30" fill="none" stroke="#F4D35E" stroke-width="2" stroke-dasharray="4 3"/><rect x="60" y="20" width="16" height="50" fill="#5c5f63"/>';
+    return s;
+  }
+  var pin=document.getElementById('pin'),hl=document.getElementById('hl'),snap=document.getElementById('snap');
+  function show(k){var d=I[k];
+    pin.setAttribute('transform','translate('+d.x+' '+d.y+')');
+    hl.setAttribute('x',d.hl[0]);hl.setAttribute('y',d.hl[1]);hl.setAttribute('width',d.hl[2]);hl.setAttribute('height',d.hl[3]);
+    document.getElementById('say').innerHTML=d.say;document.getElementById('stamp').textContent=d.cam;
+    document.getElementById('who').textContent=d.who;document.getElementById('where').textContent=d.where;document.getElementById('after').textContent=d.after;
+    snap.innerHTML=scene(d.scene);
+    var w=pin.ownerSVGElement.parentNode;if(w.scrollWidth>w.clientWidth){var sc=pin.ownerSVGElement.getBoundingClientRect().width/1000;w.scrollTo({left:Math.max(0,d.x*sc-w.clientWidth/2),behavior:'smooth'});}
+  }
+  var chips=[].slice.call(document.querySelectorAll('.chip'));
+  chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(x){x.setAttribute('aria-pressed','false')});c.setAttribute('aria-pressed','true');show(c.dataset.k);});});
+  show('anahtar');
+})();
+</script>
+</body>
+</html>

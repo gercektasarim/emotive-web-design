@@ -1,0 +1,21 @@
+{
+  "slug": "liman",
+  "name": "Liman",
+  "interpretation": "Fener ve rehber",
+  "world": "M2 metrosunda kalabalık vagon ve sinyalsiz tünel; karşılığında akşam liman suyu, fener beyazı, şamandıra turuncusu.",
+  "palette": [
+    "#0F3B3E",
+    "#9CCBC3",
+    "#F7F5EF",
+    "#EFE7D8",
+    "#E0602F",
+    "#B4461D"
+  ],
+  "fonts": [
+    "Lexend",
+    "Source Sans 3"
+  ],
+  "score": 28,
+  "lowest": "Tanınabilirlik",
+  "moment": "Hero'da gerçekten kullanılabilen 5-4-3-2-1 topraklanma rehberi (mobilde başlıktan önce)."
+}

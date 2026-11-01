@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liman — Panik atak başladığında bilekliğinde, telefonsuz bile yanında</title>
+<meta name="description" content="Liman, bilekliğindeki nabız artışından panik atağı erkenden fark eder ve 5-4-3-2-1 topraklanma rehberini başlatır. Tünelde, sinyalsiz, telefon cebindeyken de çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Source+Sans+3:wght@400;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --sea:#0F3B3E;      /* liman suyu, akşam */
+  --sea-2:#14494D;
+  --foam:#9CCBC3;     /* dalga köpüğü */
+  --light:#F7F5EF;    /* fener beyazı */
+  --sand:#EFE7D8;     /* rıhtım taşı */
+  --buoy:#E0602F;     /* şamandıra turuncusu (yalnız işaret) */
+  --buoy-d:#B4461D;   /* metin/düğme için koyu şamandıra */
+  --ink:#16302F;
+  --ink-2:#4B5E5C;
+  --head:"Lexend", system-ui, sans-serif;
+  --body:"Source Sans 3", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--light);color:var(--ink);font-family:var(--body);font-size:19px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--buoy);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:var(--head);font-weight:500;line-height:1.15;letter-spacing:-.01em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 24px;border-radius:14px;font:500 17px var(--head);text-decoration:none;cursor:pointer;border:2px solid currentColor;background:transparent}
+.btn.buoy{background:var(--buoy-d);border-color:var(--buoy-d);color:#fff}
+
+.top{background:var(--sea);color:var(--light);position:relative}
+.water{height:56px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='28'%3E%3Cpath d='M0 14c15-8 30-8 45 0s30 8 45 0 22-6 30-4' fill='none' stroke='%239CCBC3' stroke-opacity='.35' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:repeat;background-size:120px 28px;border-top:1px solid rgba(156,203,195,.18)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{display:flex;align-items:center;gap:10px;font:600 22px var(--head);text-decoration:none}
+.logo svg{width:22px;height:30px}
+nav .r{display:flex;gap:22px;align-items:center;font:400 16px var(--head)}
+nav .r a.t{text-decoration:none;color:var(--foam)}
+
+.hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;padding:30px 0 64px;align-items:center}
+.hero h1{font-size:clamp(36px,4.4vw,56px);font-weight:400}
+.hero .lead{margin-top:20px;color:#D5E6E2;max-width:28em}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.hero .ctas .btn{color:var(--light)}
+.hero .meta{margin-top:18px;font-size:16px;color:var(--foam)}
+
+/* topraklanma rehberi */
+.guide{background:var(--light);color:var(--ink);border-radius:26px;padding:26px 28px 28px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.alert{display:flex;align-items:center;gap:12px;background:var(--sand);border-radius:14px;padding:12px 14px;font-size:16px;line-height:1.35}
+.alert .dot{width:12px;height:12px;border-radius:50%;background:var(--buoy);flex:none;box-shadow:0 0 0 0 rgba(224,96,47,.5);animation:ping 2.4s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(224,96,47,.45)}70%{box-shadow:0 0 0 12px rgba(224,96,47,0)}100%{box-shadow:0 0 0 0 rgba(224,96,47,0)}}
+.alert b{font-family:var(--head);font-weight:500}
+.steps{display:flex;gap:8px;margin:22px 0 8px}
+.steps span{flex:1;height:44px;border-radius:12px;background:#E3E9E6;display:grid;place-items:center;font:500 18px var(--head);color:var(--ink-2);transition:background .3s,color .3s}
+.steps span.done{background:var(--foam);color:var(--ink)}
+.steps span.now{background:var(--sea);color:#fff}
+.prompt{min-height:170px;padding:16px 2px 8px}
+.prompt h2{font-size:clamp(30px,3.2vw,40px);font-weight:400}
+.prompt p{color:var(--ink-2);margin-top:10px;font-size:18px}
+.dots{display:flex;gap:10px;margin-top:16px}
+.dots i{width:22px;height:22px;border-radius:50%;border:2px solid var(--sea);transition:background .3s}
+.dots i.on{background:var(--sea)}
+.g-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.g-acts button{font:500 18px var(--head);padding:16px 26px;border-radius:14px;cursor:pointer;border:2px solid var(--sea)}
+.g-acts .yes{background:var(--sea);color:#fff;flex:1;min-width:180px}
+.g-acts .re{background:transparent;color:var(--sea)}
+.g-foot{margin-top:16px;font-size:15px;color:var(--ink-2)}
+
+section{padding:96px 0}
+h2.sec{font-size:clamp(30px,3.6vw,46px);max-width:18em}
+.lede{color:var(--ink-2);max-width:34em;margin-top:14px}
+
+/* metro */
+.metro{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:start}
+.line{position:relative;list-style:none;margin-top:6px}
+.line::before{content:"";position:absolute;left:15px;top:10px;bottom:10px;width:4px;background:var(--sea);border-radius:2px}
+.line li{position:relative;padding:0 0 28px 52px}
+.line li::before{content:"";position:absolute;left:5px;top:4px;width:24px;height:24px;border-radius:50%;background:var(--light);border:4px solid var(--sea)}
+.line li.hot::before{border-color:var(--buoy)}
+.line li.calm::before{background:var(--foam)}
+.line time{font:500 17px var(--head)}
+.line .stn{font-size:15px;color:var(--ink-2);margin-left:8px}
+.line p{color:var(--ink-2);font-size:17.5px;margin-top:2px}
+.pulse-chip{display:inline-block;font:500 14px var(--head);padding:2px 10px;border-radius:999px;background:var(--sand);margin-left:6px}
+
+/* tünel */
+.tunnel{background:var(--sea);color:var(--light)}
+.tunnel .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.tunnel .lede{color:#CFE2DE}
+.signal{background:var(--sea-2);border-radius:20px;padding:28px}
+.signal .bars{display:flex;align-items:flex-end;gap:5px;height:34px}
+.signal .bars i{width:9px;border-radius:2px;background:#2B6267}
+.signal .bars i:nth-child(1){height:25%}.signal .bars i:nth-child(2){height:50%}.signal .bars i:nth-child(3){height:75%}.signal .bars i:nth-child(4){height:100%}
+.signal .row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #2B6267;font-size:17px}
+.signal .row:last-child{border:0}
+.signal .row b{font-family:var(--head);font-weight:500;color:var(--foam);white-space:nowrap}
+
+/* geçti */
+.passed{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.log{background:var(--sand);border-radius:20px;padding:28px}
+.log h3{font-size:22px;font-weight:400;margin-bottom:14px}
+.waves{display:grid;grid-template-columns:repeat(7,1fr);row-gap:26px}
+.waves span{position:relative;padding-top:24px;text-align:center;font:400 12.5px/1.3 var(--head);color:var(--ink)}
+.waves span::after{content:"";position:absolute;left:0;right:0;top:7px;height:4px;background:var(--sea)}
+.waves span::before{content:"";position:absolute;left:50%;top:0;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--light);border:4px solid var(--sea);box-sizing:border-box;z-index:1}
+.waves span:last-child::before{background:var(--foam)}
+.waves span b{display:block;font-weight:500;font-size:14px}
+.log p{margin-top:16px;color:var(--ink-2);font-size:17px}
+.big{font:300 clamp(64px,8vw,104px)/1 var(--head);color:var(--sea)}
+
+.safety{border:2px solid var(--buoy-d);border-radius:18px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+.safety svg{width:44px;height:44px}
+.safety h3{font-size:21px;font-weight:500;margin-bottom:4px}
+.safety p{color:var(--ink-2);font-size:17.5px}
+
+.voice{display:grid;grid-template-columns:1fr;gap:28px;margin-top:36px;max-width:760px}
+.voice figure{background:#fff;border-radius:18px;padding:28px;border:1px solid #E1DFD6}
+.voice blockquote{font:300 21px/1.5 var(--head)}
+.voice figcaption{margin-top:14px;font-size:16px;color:var(--ink-2)}
+
+.buy{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.plan{background:#fff;border-radius:20px;padding:30px;border:1px solid #E1DFD6}
+.plan .amt{font:400 46px var(--head);margin:6px 0;color:var(--sea)}
+.plan ul{list-style:none;margin:14px 0 24px}
+.plan li{padding:9px 0;border-top:1px solid #ECEAE2;font-size:17.5px}
+details{border-bottom:1px solid #DCD9CF;padding:16px 0}
+summary{cursor:pointer;font:500 18px var(--head)}
+details p{margin-top:8px;color:var(--ink-2);font-size:17.5px}
+
+footer{background:var(--sea);color:#CFE2DE;padding:40px 0 32px;font-size:16px}
+footer .credit{margin-top:14px;font-size:13px}
+footer a{color:#CFE2DE}
+
+@media (max-width:900px){
+  .wrap{padding:0 18px}
+  nav .r a.t{display:none}
+  .hero,.metro,.tunnel .grid,.passed,.voice,.buy{grid-template-columns:1fr}
+  .hero{gap:28px;padding:10px 0 64px}
+  .hero .copy{order:2}
+  .waves{grid-template-columns:repeat(4,1fr)}
+  .guide{padding:20px 18px 22px}
+  section{padding:70px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <nav aria-label="Ana menü">
+      <a class="logo" href="#"><svg viewBox="0 0 22 30" aria-hidden="true"><path d="M8 4h6l2 22H6z" fill="#F7F5EF"/><rect x="7" y="9" width="8" height="3" fill="#E0602F"/><rect x="6.5" y="16" width="9" height="3" fill="#E0602F"/><path d="M11 0l4 4H7z" fill="#9CCBC3"/></svg>Liman</a>
+      <div class="r"><a class="t" href="#metro">Metroda bir akşam</a><a class="t" href="#tunel">Sinyal yokken</a><a class="btn" href="#al" style="color:var(--light);padding:10px 18px;font-size:15px">İndir</a></div>
+    </nav>
+
+    <header class="hero">
+      <div class="copy">
+        <h1>Bir dahaki sefere yalnız değilsin.</h1>
+        <p class="lead">Liman, bilekliğindeki nabız artışını erkenden fark eder ve 5-4-3-2-1 topraklanma rehberini başlatır. Telefon cebindeyken, tünelde, sinyal yokken de. Buradaki rehber şu an da çalışıyor; ihtiyacın varsa hemen dene.</p>
+        <div class="ctas"><a class="btn buoy" href="#al">iPhone için indir</a><a class="btn" href="#al">Android için indir</a></div>
+        <p class="meta">Ücretsiz · Apple Watch, Galaxy Watch, Mi Band 8 ve sonrası</p>
+      </div>
+
+      <div class="guide" aria-label="5-4-3-2-1 topraklanma rehberi, şimdi kullanılabilir">
+        <div class="alert"><span class="dot" aria-hidden="true"></span><span><b>Nabzın 128.</b> Buradayım. Bu his geçecek; birlikte bakalım.</span></div>
+        <div class="steps" aria-hidden="true" id="steps"><span class="now">5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+        <div class="prompt" aria-live="polite">
+          <h2 id="pTitle">Etrafında gördüğün 5 şey.</h2>
+          <p id="pText">Acele yok. Bir tanesine bak, adını içinden söyle. Bir direk, bir ayakkabı, bir reklam panosu.</p>
+          <div class="dots" id="dots" aria-hidden="true"></div>
+        </div>
+        <div class="g-acts">
+          <button class="yes" type="button" id="yes">Bir tane gördüm</button>
+          <button class="re" type="button" id="re">Baştan</button>
+        </div>
+        <p class="g-foot" id="foot">Ekrana bakamıyorsan bileklik aynı adımları titreşimle sayar.</p>
+      </div>
+    </header>
+  </div>
+  <div class="water" aria-hidden="true"></div>
+</div>
+
+<section id="metro">
+  <div class="wrap metro">
+    <div>
+      <h2 class="sec">M2'de bir salı akşamı, dakika dakika.</h2>
+      <p class="lede">Bir kullanıcının izniyle, bilekliğinin kaydından. Atak geldi; ama bu sefer neyin olduğunu biliyordu ve elinde bir şey vardı.</p>
+    </div>
+    <ol class="line">
+      <li><time>18:41</time><span class="stn">Şişhane</span><p>Vagon dolu. Nabız 84'ten 104'e, oturuyor olmasına rağmen.</p></li>
+      <li class="hot"><time>18:42</time><span class="stn">Taksim</span><span class="pulse-chip">128</span><p>Bileklik iki uzun titreşim verdi: "Buradayım." Ekran kendiliğinden rehberi açtı.</p></li>
+      <li class="hot"><time>18:43</time><span class="stn">Osmanbey</span><p>Kulaklıkta sakin bir ses: "Gördüğün beş şey." Telefon cepte kaldı.</p></li>
+      <li><time>18:47</time><span class="stn">Şişli</span><span class="pulse-chip">109</span><p>Dokunduğu dört şey: tutamak, ceketin fermuarı, çantanın sapı, kendi bileği.</p></li>
+      <li class="calm"><time>18:51</time><span class="stn">Gayrettepe</span><span class="pulse-chip">92</span><p>İnmedi. Bir durak daha bekledi, sonra kendi durağında indi.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="tunnel" id="tunel">
+  <div class="wrap grid">
+    <div>
+      <h2 class="sec">Tünelde sinyal yok. Liman'ın ihtiyacı da yok.</h2>
+      <p class="lede">Atakların çoğu bağlantının en zayıf olduğu yerde gelir: metroda, asansörde, uçakta. Bu yüzden Liman'da hiçbir şey internete bağlı değil. Nabzı yorumlayan model bilekliğin ve telefonun içinde çalışır.</p>
+      <p class="lede">Nabız verin, atak kayıtların, hangi durakta olduğun hiçbir sunucuya gitmez. İşverenin, sigorta şirketin, kimse görmez.</p>
+    </div>
+    <div class="signal" aria-label="Sinyalsiz durumda çalışan özellikler">
+      <div class="row"><span>Hücresel sinyal</span><span class="bars" aria-label="sinyal yok"><i></i><i></i><i></i><i></i></span></div>
+      <div class="row">Atağı fark etme <b>bileklikte</b></div>
+      <div class="row">Titreşimli 5-4-3-2-1 <b>telefonsuz</b></div>
+      <div class="row">Sesli rehber <b>telefonda, çevrimdışı</b></div>
+      <div class="row">Sunucuya giden <b>hiçbir şey</b></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap passed">
+    <div>
+      <p class="big">14 / 14</p>
+      <h2 class="sec" style="margin-top:12px">Her biri geçti.</h2>
+      <p class="lede">Atağın ortasında en zor şey, geçeceğine inanmak. Liman her atağın ne kadar sürdüğünü yalnızca senin için tutar. Bir sonrakinde ekranda tek bir cümle belirir: "Önceki on dördü geçti. Ortalama dokuz dakika."</p>
+    </div>
+    <div class="log" aria-label="Son altı ayın atak kayıtları">
+      <h3>Son altı ay, durak durak</h3>
+      <div class="waves">
+        <span>12 Mayıs<b>14 dk</b></span><span>30 Mayıs<b>11 dk</b></span><span>9 Haz<b>12 dk</b></span><span>2 Tem<b>9 dk</b></span><span>18 Tem<b>10 dk</b></span><span>4 Ağu<b>8 dk</b></span><span>21 Ağu<b>9 dk</b></span><span>3 Eyl<b>7 dk</b></span><span>19 Eyl<b>8 dk</b></span><span>2 Eki<b>6 dk</b></span><span>14 Eki<b>9 dk</b></span><span>22 Eki<b>7 dk</b></span><span>29 Eki<b>6 dk</b></span><span>4 Kas<b>10 dk</b></span>
+      </div>
+      <p>Süreler kısalıyor. Bu, terapistinle konuşabileceğin bir şey; paylaşıp paylaşmamak sana kalmış.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="safety" role="note">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" fill="none" stroke="#B4461D" stroke-width="3"/><path d="M22 11v14" stroke="#B4461D" stroke-width="3.5" stroke-linecap="round"/><circle cx="22" cy="32" r="2.4" fill="#B4461D"/></svg>
+      <div>
+        <h3>Liman bir tanı aracı değildir.</h3>
+        <p>Göğüs ağrısı ilk kez oluyorsa, kola ya da çeneye yayılıyorsa, bayılma ya da nefes darlığı geçmiyorsa bu bir panik atak olmayabilir. Hemen 112'yi ara. Liman bu belirtileri sorduğunda da aynı şeyi söyler.</p>
+      </div>
+    </div>
+
+    <div class="voice">
+      <figure><blockquote>"Danışanlarıma 5-4-3-2-1'i seansta öğretiyorum; zor olan, atak anında hatırlamak. Liman o anı ezberlemelerine gerek bırakmıyor."</blockquote><figcaption>Dr. Murat Er · Psikiyatri uzmanı · Ankara</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="al" style="background:var(--sand)">
+  <div class="wrap buy">
+    <div class="plan">
+      <h3 style="font-size:24px">Liman</h3>
+      <p class="amt">Ücretsiz</p>
+      <ul>
+        <li>Erken fark etme, 5-4-3-2-1, kutu nefesi</li>
+        <li>Telefonsuz titreşim rehberi bileklikte</li>
+        <li>Çevrimdışı sesli rehber, kadın ya da erkek sesi</li>
+        <li>Hiçbir özellik ücretli değil. Bağışla ayakta duruyor.</li>
+      </ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn buoy" href="#">iPhone için indir</a><a class="btn" href="#" style="color:var(--sea)">Android için indir</a></div>
+    </div>
+    <div>
+      <h2 class="sec" style="font-size:30px;margin-bottom:8px">Merak edilenler</h2>
+      <details><summary>Spor yaparken de alarm verir mi?</summary><p>Hayır. Model hareketi de okur; koşarken yükselen nabızla otururken aniden yükselen nabzı ayırır. İlk iki haftada senin örüntünü öğrenir.</p></details>
+      <details><summary>Yanlış alarm olursa?</summary><p>Bileğine bir kez dokun, rehber kapanır. O anı "atak değildi" olarak işaretler ve model ona göre ayarlanır.</p></details>
+      <details><summary>Bilekliğim yok, işe yarar mı?</summary><p>Rehber telefonda tek dokunuşla açılır ve çevrimdışı çalışır. Erken fark etme için bileklik gerekir.</p></details>
+      <details><summary>Bir yakınıma haber verebilir mi?</summary><p>Yalnızca sen istersen ve yalnızca sinyal olduğunda: önceden seçtiğin tek bir kişiye "İyiyim, biraz zorlanıyorum" mesajı. Konum gönderilmez.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Liman · Kendisi de panik atak yaşamış bir mühendis ve bir klinik psikolog tarafından. destek@liman.app</p>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var S=[
+    {n:5,t:'Etrafında gördüğün 5 şey.',p:'Acele yok. Bir tanesine bak, adını içinden söyle. Bir direk, bir ayakkabı, bir reklam panosu.',b:'Bir tane gördüm'},
+    {n:4,t:'Dokunabildiğin 4 şey.',p:'Elini bir şeyin üstüne koy. Tutamak soğuk mu? Kumaş pürüzlü mü?',b:'Birine dokundum'},
+    {n:3,t:'Duyduğun 3 ses.',p:'Uzaktaki bir ses, yakındaki bir ses, kendi nefesin.',b:'Bir ses duydum'},
+    {n:2,t:'Kokusunu aldığın 2 şey.',p:'Bulamazsan, en sevdiğin iki kokuyu düşün. O da sayılır.',b:'Bir koku buldum'},
+    {n:1,t:'Tadını aldığın 1 şey.',p:'Ağzındaki tat, ya da bir yudum su.',b:'Tamam'}
+  ];
+  var si=0,ci=0;
+  var steps=document.querySelectorAll('#steps span'),dots=document.getElementById('dots'),t=document.getElementById('pTitle'),p=document.getElementById('pText'),yes=document.getElementById('yes'),foot=document.getElementById('foot');
+  function render(){
+    var s=S[si];
+    t.textContent=s.t;p.textContent=s.p;yes.textContent=s.b;
+    dots.innerHTML='';for(var i=0;i<s.n;i++){var d=document.createElement('i');if(i<ci)d.className='on';dots.appendChild(d);}
+    steps.forEach(function(e,i){e.className=i<si?'done':(i===si?'now':'');});
+  }
+  yes.addEventListener('click',function(){
+    if(si>=S.length){return;}
+    ci++;
+    if(ci>=S[si].n){si++;ci=0;}
+    if(si>=S.length){
+      steps.forEach(function(e){e.className='done'});
+      t.textContent='Buradasın.';p.textContent='Ayakların yerde, nefesin seninle. Nabzın düşüyor olabilir; düşmüyorsa sorun değil, bir tur daha yapabiliriz.';
+      dots.innerHTML='';yes.textContent='Bir tur daha';yes.onclick=function(){si=0;ci=0;yes.onclick=null;render();};foot.textContent='Bu tur bileklikte de kaydedildi: "geçti".';return;
+    }
+    render();
+  });
+  document.getElementById('re').addEventListener('click',function(){si=0;ci=0;yes.onclick=null;render();});
+  render();
+})();
+</script>
+</body>
+</html>

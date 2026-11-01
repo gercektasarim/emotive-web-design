@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masal Makinesi — Çocuğunuzun çizdiği resimden uyku masalı</title>
+<meta name="description" content="Masal Makinesi çocuğunuzun çizdiği resmi tarar, içindeki karakterlerle internetsiz bir uyku masalı anlatır. Çizim ve masal telefonda kalır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gece:#15182A;
+  --gece2:#1E2238;
+  --lamba:#FFC98B;
+  --kagit:#F5EFE2;
+  --metin:#ECE6DA;
+  --soluk:#A9A6B5;
+  --kirmizi:#E2553F;
+  --yesil:#4FA65B;
+  --mavi:#5B86E0;
+  --turuncu:#F29A38;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--gece);color:var(--metin);font-family:"Figtree",system-ui,sans-serif;font-size:18px;line-height:1.6}
+:focus-visible{outline:3px solid var(--lamba);outline-offset:3px;border-radius:4px}
+a{color:var(--lamba)}
+.serif{font-family:"Young Serif",Georgia,serif;font-weight:400}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+header{display:flex;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:22px 24px}
+.logo{font-family:"Young Serif";font-size:22px;color:var(--metin);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo svg{width:28px;height:28px}
+header nav a{color:var(--soluk);text-decoration:none;margin-left:22px;font-size:16px}
+header nav a:hover{color:var(--metin)}
+.btn{display:inline-block;font:inherit;font-weight:700;font-size:17px;padding:13px 22px;border-radius:12px;background:var(--lamba);color:var(--gece);border:2px solid var(--lamba);text-decoration:none;cursor:pointer}
+.btn:hover{background:#fff;border-color:#fff}
+.btn.cizgi{background:transparent;color:var(--metin);border-color:#4A4E68}
+.btn.cizgi:hover{border-color:var(--lamba);color:var(--lamba)}
+
+/* sahne */
+.sahne{position:relative;text-align:center;padding:30px 0 90px;
+  background:radial-gradient(ellipse 60% 55% at 50% 42%, rgba(255,201,139,.16), rgba(255,201,139,0) 70%)}
+.sahne h1{font-family:"Young Serif";font-weight:400;font-size:clamp(36px,5.2vw,64px);line-height:1.08;margin:0 auto 14px;max-width:17ch}
+.sahne .alt{max-width:52ch;margin:0 auto 34px;color:#CFC9D9;font-size:19px}
+.tezgah{display:grid;grid-template-columns:1fr 1fr;gap:34px;max-width:1040px;margin:0 auto;text-align:left;align-items:stretch}
+.resim{position:relative;background:var(--kagit);border-radius:4px;padding:14px;box-shadow:0 30px 70px -20px rgba(0,0,0,.6);transform:rotate(-1.2deg)}
+.resim svg{display:block;width:100%;height:auto}
+.bant{position:absolute;width:90px;height:26px;background:rgba(255,236,190,.65);top:-10px;left:50%;transform:translateX(-50%) rotate(2deg)}
+.tarama{position:absolute;left:14px;right:14px;height:3px;background:var(--lamba);box-shadow:0 0 18px 4px rgba(255,201,139,.7);top:14px;opacity:0}
+.taraniyor .tarama{animation:tara 2.2s ease-in-out forwards}
+@keyframes tara{0%{top:14px;opacity:1}90%{opacity:1}100%{top:calc(100% - 16px);opacity:0}}
+.etiket{position:absolute;font-size:14px;font-weight:700;background:var(--gece);color:#fff;padding:4px 10px;border-radius:999px;white-space:nowrap;opacity:1;transition:opacity .4s}
+.etiket::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:var(--c)}
+.gizli .etiket{opacity:0}
+.imza{position:absolute;bottom:18px;right:22px;font-size:13px;color:#6B6455}
+.masal{background:var(--gece2);border:1px solid #2E3350;border-radius:16px;padding:26px 28px;display:flex;flex-direction:column}
+.masal .ust{display:flex;justify-content:space-between;color:var(--soluk);font-size:15px;gap:10px;flex-wrap:wrap}
+.masal h2{font-family:"Young Serif";font-weight:400;font-size:26px;margin:10px 0 12px;color:#fff;line-height:1.2}
+.masal .metin{font-family:"Young Serif";font-size:19px;line-height:1.7;color:#E8E2D4;min-height:220px;margin:0}
+.masal .metin .k{color:var(--c);font-weight:400;border-bottom:2px solid currentColor}
+.oynatici{margin-top:auto;padding-top:18px;display:flex;align-items:center;gap:14px;border-top:1px solid #2E3350}
+.oynatici .cizgi-ilerleme{flex:1;height:4px;background:#363B58;border-radius:4px;overflow:hidden}
+.oynatici .cizgi-ilerleme span{display:block;height:100%;width:34%;background:var(--lamba)}
+.oynatici small{color:var(--soluk);font-size:14px;white-space:nowrap}
+.sahne .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.sahne .not{color:var(--soluk);font-size:15px;margin-top:14px}
+
+section{padding:90px 0}
+h2.b{font-family:"Young Serif";font-weight:400;font-size:clamp(30px,3.6vw,44px);line-height:1.15;margin:0 0 14px;max-width:22ch;color:#fff}
+.giris{max-width:58ch;color:#CFC9D9}
+
+/* çizimden masala */
+.ornekler{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px}
+.ornek{display:flex;flex-direction:column;gap:14px}
+.ornek .kk{background:var(--kagit);border-radius:3px;padding:10px;aspect-ratio:4/3}
+.ornek .kk svg{width:100%;height:100%;display:block}
+.ornek p{margin:0;font-family:"Young Serif";font-size:18px;line-height:1.55;color:#E8E2D4}
+.ornek small{color:var(--soluk);font-size:14px;font-family:Figtree}
+
+/* uyku eğrisi */
+.uyku{background:#11131F}
+.egri-wrap{display:grid;grid-template-columns:1.3fr .7fr;gap:48px;align-items:center;margin-top:30px}
+.egri{background:var(--gece2);border-radius:16px;padding:26px;border:1px solid #2E3350}
+.egri svg{width:100%;height:auto;display:block}
+.egri .eks{display:flex;justify-content:space-between;color:var(--soluk);font-size:13px;margin-top:6px}
+.kurallar{list-style:none;padding:0;margin:0}
+.kurallar li{padding:14px 0;border-bottom:1px solid #2A2E45}
+.kurallar li b{display:block;color:#fff;font-weight:700}
+.kurallar li span{color:var(--soluk);font-size:16px}
+
+/* kanıt */
+.kanit{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.kanit .yer{font-family:"Young Serif";font-size:clamp(24px,2.8vw,34px);line-height:1.35;color:#fff;margin:0}
+.kanit .yer em{font-style:normal;color:var(--lamba)}
+.kanit ul{margin:0;padding-left:20px;color:#CFC9D9}
+.kanit li{margin-bottom:10px}
+
+.alinti{text-align:center;max-width:780px;margin:0 auto}
+.alinti blockquote{font-family:"Young Serif";font-size:clamp(23px,2.6vw,31px);line-height:1.45;margin:0;color:#fff}
+.alinti p{color:var(--soluk);margin-top:18px;font-size:16px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:start}
+.bilet{background:var(--kagit);color:var(--gece);border-radius:16px;padding:30px;position:relative}
+.bilet h3{font-family:"Young Serif";font-weight:400;font-size:24px;margin:0}
+.bilet .t{font-family:"Young Serif";font-size:52px;margin:6px 0 0;line-height:1.1}
+.bilet .t small{font-family:Figtree;font-size:17px;color:#5A5466}
+.bilet ul{padding-left:20px;margin:16px 0 22px}
+.bilet .btn{background:var(--gece);color:#fff;border-color:var(--gece)}
+.bilet .btn:hover{background:#000}
+.bilet .alt-n{font-size:15px;color:#5A5466;margin:14px 0 0}
+details{border-bottom:1px solid #2E3350;padding:16px 0}
+summary{cursor:pointer;font-weight:700;color:#fff}
+details p{margin:8px 0 0;color:#CFC9D9}
+footer{padding:40px 0 34px;color:var(--soluk);font-size:15px;border-top:1px solid #2A2E45}
+footer .r{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--soluk)}
+.credit{margin-top:20px;font-size:13px}
+
+@media (max-width:880px){
+  header nav a:not(.btn){display:none}
+  .tezgah,.egri-wrap,.kanit,.fiyat{grid-template-columns:1fr}
+  .ornekler{grid-template-columns:1fr}
+  section{padding:64px 0}
+  .masal .metin{min-height:0}
+}
+@media (max-width:480px){
+  .etiket{font-size:12px;padding:3px 8px}
+  .masal{padding:20px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.tarama{display:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="pastel"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2"/></filter>
+</svg>
+<header>
+  <a class="logo" href="#" aria-label="Masal Makinesi ana sayfa"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M19 4a10 10 0 1 0 5 15A8 8 0 0 1 19 4z" fill="#FFC98B"/><circle cx="8" cy="6" r="1.4" fill="#ECE6DA"/><circle cx="4" cy="12" r="1" fill="#ECE6DA"/></svg>Masal Makinesi</a>
+  <nav aria-label="Ana menü">
+    <a href="#ornekler">Çizimden masala</a>
+    <a href="#uyku">Uykuya göre</a>
+    <a href="#fiyat">Fiyat</a>
+    <a class="btn cizgi" href="#fiyat">İndir</a>
+  </nav>
+</header>
+
+<main>
+<div class="sahne">
+  <div class="wrap">
+    <h1>Bu gecenin masalını Elif çizdi.</h1>
+    <p class="alt">Masal uydurmaktan yorulduğunuz gecelerde çocuğunuzun resmini telefona gösterin. Masal Makinesi resimdeki karakterleri tanır ve onlarla, internetsiz, uykuya doğru yavaşlayan bir masal anlatır.</p>
+
+    <div class="tezgah">
+      <figure class="resim gizli" id="resim" style="margin:0" aria-label="Çocuk çizimi: taçlı turuncu kedi, yeşil ağaç, kırmızı roket, mavi ay; karakterler etiketlenmiş">
+        <span class="bant" aria-hidden="true"></span>
+        <svg viewBox="0 0 400 300" role="img" aria-hidden="true">
+          <g filter="url(#pastel)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 250 C80 240 160 256 240 246 S360 250 392 244" stroke="#4FA65B" stroke-width="7"/>
+            <circle cx="330" cy="58" r="26" stroke="#5B86E0" stroke-width="6"/>
+            <path d="M318 46 l3 3 M338 62 l3 3" stroke="#5B86E0" stroke-width="4"/>
+            <path d="M60 248 L66 150" stroke="#8A5A33" stroke-width="10"/>
+            <path d="M28 150 C20 110 50 84 70 92 C88 70 124 92 112 128 C126 150 96 172 70 160 C50 176 30 168 28 150z" stroke="#4FA65B" stroke-width="7"/>
+            <circle cx="62" cy="122" r="5" fill="#E2553F" stroke="none"/><circle cx="88" cy="110" r="5" fill="#E2553F" stroke="none"/>
+            <ellipse cx="200" cy="208" rx="46" ry="34" stroke="#F29A38" stroke-width="7"/>
+            <circle cx="200" cy="150" r="30" stroke="#F29A38" stroke-width="7"/>
+            <path d="M178 128 l-6 -22 l18 12 M222 128 l6 -22 l-18 12" stroke="#F29A38" stroke-width="6"/>
+            <path d="M180 112 l6 -18 l8 12 l6 -16 l6 16 l8 -12 l6 18z" stroke="#E9C030" stroke-width="5" fill="#F6D766"/>
+            <circle cx="190" cy="148" r="3.5" fill="#15182A" stroke="none"/><circle cx="210" cy="148" r="3.5" fill="#15182A" stroke="none"/>
+            <path d="M193 162 q7 6 14 0" stroke="#15182A" stroke-width="3"/>
+            <path d="M246 214 q34 -10 30 -40" stroke="#F29A38" stroke-width="7"/>
+            <path d="M318 230 L318 150 L338 116 L358 150 L358 230z" stroke="#E2553F" stroke-width="7"/>
+            <circle cx="338" cy="168" r="10" stroke="#5B86E0" stroke-width="5"/>
+            <path d="M318 230 l-14 18 M358 230 l14 18" stroke="#E2553F" stroke-width="6"/>
+            <path d="M330 250 q8 18 16 0" stroke="#F29A38" stroke-width="5"/>
+            <path d="M120 40 l4 10 l10 2 l-8 7 l2 10 l-8 -5 l-9 5 l2 -10 l-8 -7 l10 -2z" stroke="#E9C030" stroke-width="3"/>
+            <path d="M250 30 l3 7 l7 1 l-5 5 l1 7 l-6 -3 l-6 3 l1 -7 l-5 -5 l7 -1z" stroke="#E9C030" stroke-width="3"/>
+          </g>
+          <text x="22" y="290" font-family="Figtree" font-size="13" fill="#6B6455">ELİF 5 YAŞ</text>
+        </svg>
+        <span class="etiket" style="--c:var(--turuncu);left:46%;top:24%">Kral Pıtır</span>
+        <span class="etiket" style="--c:var(--kirmizi);left:66%;top:84%">Roket Fıstık</span>
+        <span class="etiket" style="--c:var(--yesil);left:4%;top:20%">Elma ağacı</span>
+        <span class="etiket" style="--c:var(--mavi);left:66%;top:4%">Uykucu Ay</span>
+        <span class="tarama" aria-hidden="true"></span>
+      </figure>
+
+      <article class="masal" aria-live="polite">
+        <div class="ust"><span>Bu gecenin masalı · 7 dk</span><span>Ses: Masalcı Nine</span></div>
+        <h2>Kral Pıtır ile Uykucu Ay</h2>
+        <p class="metin" id="metin">Bir zamanlar, elma ağacının dibinde küçük bir taç takan <span class="k" style="--c:var(--turuncu)">Kral Pıtır</span> yaşarmış. Pıtır'ın krallığı minicikmiş: bir ağaç, bir çimen şeridi ve bir de kırmızı bir roket. Bir akşam <span class="k" style="--c:var(--mavi)">Uykucu Ay</span> gökyüzünden seslenmiş: “Pıtır, gözlerim kapanıyor, beni yatağıma götürür müsün?”</p>
+        <div class="oynatici"><button class="btn" id="tara" type="button">Resmi tara</button><div class="cizgi-ilerleme" aria-hidden="true"><span id="ilerleme"></span></div><small>2:24 / 7:00</small></div>
+      </article>
+    </div>
+
+    <div class="cta">
+      <a class="btn" href="#fiyat">iPhone için indir</a>
+      <a class="btn cizgi" href="#fiyat">Android için indir</a>
+    </div>
+    <p class="not">Resim ve masal telefonda kalır. Uçak modunda çalışır.</p>
+  </div>
+</div>
+
+<section id="ornekler">
+  <div class="wrap">
+    <h2 class="b">Her resim başka bir masalın ilk cümlesi.</h2>
+    <p class="giris">Karakterlerin adını çocuğunuz koyabilir; Masal Makinesi bir dahaki sefere hatırlar. Aynı kedi bir ay sonra yeni bir resimde çıkarsa, masal onu tanır.</p>
+    <div class="ornekler">
+      <div class="ornek">
+        <div class="kk"><svg viewBox="0 0 160 120" aria-label="Çocuk çizimi: mavi deniz, sarı güneş, pembe balık"><g filter="url(#pastel)" fill="none" stroke-width="4" stroke-linecap="round"><path d="M0 80 q20 -10 40 0 t40 0 t40 0 t40 0" stroke="#5B86E0"/><path d="M0 96 q20 -10 40 0 t40 0 t40 0 t40 0" stroke="#5B86E0"/><circle cx="128" cy="26" r="14" stroke="#E9C030"/><path d="M50 60 q16 -14 32 0 q-16 14 -32 0z M82 60 l10 -8 v16z" stroke="#E36F9C"/></g></svg></div>
+        <p>“Pembe balık Lokum, denizin en derin yerinde kaybolan bir düğme arıyormuş…”</p>
+        <small>Kerem, 4 yaş · Antalya · 6 dk</small>
+      </div>
+      <div class="ornek">
+        <div class="kk"><svg viewBox="0 0 160 120" aria-label="Çocuk çizimi: kahverengi ayı, kırmızı ev, yeşil tepe"><g filter="url(#pastel)" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M0 104 q80 -30 160 0" stroke="#4FA65B"/><path d="M96 90 v-30 l18 -16 l18 16 v30z" stroke="#E2553F"/><circle cx="48" cy="58" r="16" stroke="#8A5A33"/><circle cx="36" cy="44" r="5" stroke="#8A5A33"/><circle cx="60" cy="44" r="5" stroke="#8A5A33"/><ellipse cx="48" cy="90" rx="18" ry="14" stroke="#8A5A33"/></g></svg></div>
+        <p>“Ayı Pofuduk, tepedeki kırmızı evin bacasından çıkan kurabiye kokusunu takip etmiş…”</p>
+        <small>Zeynep, 6 yaş · Bursa · 8 dk</small>
+      </div>
+      <div class="ornek">
+        <div class="kk"><svg viewBox="0 0 160 120" aria-label="Çocuk çizimi: mor ejderha, yıldızlar"><g filter="url(#pastel)" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M30 84 q20 -40 60 -30 q30 6 40 -14 l6 10 q-10 30 -46 34 q-30 2 -40 20" stroke="#8E5BC7"/><path d="M60 58 l10 -20 l10 18" stroke="#8E5BC7"/><circle cx="118" cy="40" r="3" stroke="#15182A"/><path d="M20 20 l3 6 l6 1 l-4 4 l1 6 l-6 -3 l-6 3 l1 -6 l-4 -4 l6 -1z M140 90 l2 4 l4 1 l-3 3 l1 4 l-4 -2 l-4 2 l1 -4 l-3 -3 l4 -1z" stroke="#E9C030"/></g></svg></div>
+        <p>“Ejderha Mor, ateş püskürmeyi bir türlü beceremeyen, ama çok güzel ıslık çalan bir ejderhaymış…”</p>
+        <small>Can, 5 yaş · İzmir · 7 dk · korkutucu öğe yumuşatıldı</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="uyku" id="uyku">
+  <div class="wrap">
+    <h2 class="b">Masal uykuya doğru yavaşlar.</h2>
+    <p class="giris">Heyecanlı bir başlangıç, sonra her dakika biraz daha kısa cümleler, biraz daha alçak bir ses. Son iki dakikada ekran kendiliğinden kararır. Masal asla “devamı yarın” diye bitmez.</p>
+    <div class="egri-wrap">
+      <div class="egri" role="img" aria-label="Yedi dakikalık masal boyunca ses yüksekliği ve konuşma hızı azalıyor, ekran parlaklığı son iki dakikada sıfıra iniyor">
+        <svg viewBox="0 0 600 240">
+          <g stroke="#2E3350" stroke-width="1"><line x1="0" y1="60" x2="600" y2="60"/><line x1="0" y1="120" x2="600" y2="120"/><line x1="0" y1="180" x2="600" y2="180"/></g>
+          <path d="M0 40 C120 36 200 60 300 100 S480 170 600 200" fill="none" stroke="#FFC98B" stroke-width="4"/>
+          <path d="M0 70 C140 70 240 96 340 130 S500 186 600 214" fill="none" stroke="#5B86E0" stroke-width="3" stroke-dasharray="8 6"/>
+          <path d="M0 20 L420 20 C470 20 500 230 600 232" fill="none" stroke="#A9A6B5" stroke-width="2"/>
+          <text x="10" y="34" fill="#FFC98B" font-size="15" font-family="Figtree">ses yüksekliği</text>
+          <text x="10" y="92" fill="#8FB0F0" font-size="15" font-family="Figtree">konuşma hızı</text>
+          <text x="250" y="44" fill="#A9A6B5" font-size="15" font-family="Figtree">ekran ışığı</text>
+        </svg>
+        <div class="eks" aria-hidden="true"><span>0. dk · “Bir zamanlar…”</span><span>4. dk</span><span>7. dk · “İyi geceler, Pıtır.”</span></div>
+      </div>
+      <ul class="kurallar">
+        <li><b>Kötü son, korku, kovalamaca yok</b><span>Çizimde canavar bile olsa masalda sevimli bir komşuya dönüşür.</span></li>
+        <li><b>Çocuğun adını kullanır</b><span>“Elif uyurken Pıtır ona el salladı” gibi tek bir cümleyle, abartmadan.</span></li>
+        <li><b>Süreyi siz seçersiniz</b><span>4, 7 ya da 10 dakika. Uzatma düğmesi çocukta değil sizde.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap kanit">
+    <p class="yer">Resim buzdolabının kapağında, masal yastığın yanında kalır. <em>Arada hiçbir sunucu yok.</em></p>
+    <ul>
+      <li>Çizim telefonda taranır, karakterler telefonda tanınır, masal telefonda yazılıp seslendirilir.</li>
+      <li>İnternet bağlantısı gerekmez; çocuk odasında uçak modunda çalışır.</li>
+      <li>Çocuğunuzun çizimleri, adı ve masalları hiçbir yere yüklenmez, eğitim verisi olarak kullanılmaz.</li>
+      <li>İsterseniz en sevdiği masalları uygulamada saklarsınız; istemezseniz her sabah silinir.</li>
+    </ul>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap alinti">
+    <blockquote>“Üç yıldır her gece aynı tavşan masalını anlatıyordum. Şimdi Elif akşam yemeğinden sonra resim çizmeye oturuyor, çünkü o gece ne dinleyeceğini kendisi seçiyor.”</blockquote>
+    <p>Gökçe Arslan · Ankara · grafik tasarımcı, Elif'in annesi</p>
+  </div>
+</section>
+
+<section id="fiyat">
+  <div class="wrap fiyat">
+    <div class="bilet">
+      <h3>Masal Makinesi</h3>
+      <p class="t">279 ₺ <small>tek seferlik</small></p>
+      <ul><li>Sınırsız resim, sınırsız masal</li><li>3 masalcı sesi: Nine, Dede, Abla</li><li>4 çocuğa kadar karakter defteri</li></ul>
+      <a class="btn" href="#">iPhone için indir</a>
+      <p class="alt-n">İlk 5 masal ücretsiz. Abonelik ve reklam yok.</p>
+    </div>
+    <div>
+      <h2 class="b" style="font-size:32px">Ebeveynlerin sorduğu</h2>
+      <details><summary>Hangi yaşa uygun?</summary><p>3–8 yaş. Dil ve masal uzunluğu ayarlardaki yaşa göre değişir.</p></details>
+      <details><summary>Çizim çok karalama gibi; tanır mı?</summary><p>Tanıyamadığı bir şekli uydurmak yerine çocuğa sorar: “Bu yeşil şey ne?” Cevabı masala ekler.</p></details>
+      <details><summary>Ekran ışığı uykuyu bozmaz mı?</summary><p>Masal başladığında ekran koyulaşır, son iki dakikada tamamen kapanır. Telefonu ters çevirip yalnız sesle de dinletebilirsiniz.</p></details>
+      <details><summary>Android'de var mı?</summary><p>Evet. Android 11 ve üzeri, en az 6 GB belleği olan cihazlar. iPhone'da iOS 17 ve üzeri.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="r"><span>Masal Makinesi · İyi geceler.</span><span>merhaba@masalmakinesi.app · Gizlilik · KVKK</span></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  const resim=document.getElementById('resim'),btn=document.getElementById('tara'),metin=document.getElementById('metin'),bar=document.getElementById('ilerleme');
+  const full=metin.innerHTML;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  resim.classList.remove('gizli');
+  btn.addEventListener('click',()=>{
+    if(reduce){resim.classList.remove('gizli');metin.innerHTML=full;return}
+    resim.classList.add('gizli');resim.classList.remove('taraniyor');void resim.offsetWidth;resim.classList.add('taraniyor');
+    metin.innerHTML='<span style="color:#A9A6B5">Resme bakıyorum… bir kedi, bir taç, bir roket…</span>';bar.style.width='0%';
+    btn.disabled=true;
+    setTimeout(()=>{resim.classList.remove('gizli');},2200);
+    setTimeout(()=>{
+      const tmp=document.createElement('div');tmp.innerHTML=full;
+      const parts=[];tmp.childNodes.forEach(n=>parts.push(n.nodeType===3?{t:n.textContent}:{h:n.outerHTML}));
+      let out='',pi=0,ci=0;metin.innerHTML='';
+      const iv=setInterval(()=>{
+        if(pi>=parts.length){clearInterval(iv);btn.disabled=false;btn.textContent='Yeniden tara';return}
+        const p=parts[pi];
+        if(p.h){out+=p.h;pi++}else{out+=p.t.slice(ci,ci+3);ci+=3;if(ci>=p.t.length){pi++;ci=0}}
+        metin.innerHTML=out;bar.style.width=Math.min(34,out.length/full.length*34)+'%';
+      },28);
+    },2500);
+  });
+})();
+</script>
+</body>
+</html>

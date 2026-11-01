@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Şeker Seyir — Gece düşüşünü 25 dakika önceden haber verir</title>
+<meta name="description" content="Şeker Seyir sürekli glukoz sensörü verisinden önümüzdeki 30 dakikayı telefonda tahmin eder; tip 1 diyabetli çocuğunuzun gece hipoglisemisi riskinde sizi önceden uyandırır, sahte düşüşlerde uyandırmaz. İnternet kesilse de çalar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Red+Hat+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#211823; --plum-2:#2C2130; --plum-3:#3B2E40; --line:#4A3B50;
+  --text:#F4EDE6; --muted:#CDBFCB; --amber:#FFB547; --amber-soft:#3E2E1E; --range:#6CC59A; --low:#FF8A96;
+  --sans:"Lexend",system-ui,sans-serif; --mono:"Red Hat Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plum);color:var(--text);font:300 18px/1.65 var(--sans)}
+a{color:inherit}
+b,strong{font-weight:500}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;color:#000;padding:8px 12px;z-index:9}
+.glow{position:absolute;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(255,181,71,.18) 0,rgba(255,181,71,0) 70%)}
+
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:76px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:500 20px var(--sans)}
+.logo svg{width:30px;height:30px}
+header nav{display:flex;gap:26px;font-size:15.5px;align-items:center}
+header nav a{text-decoration:none;color:var(--muted)}
+header nav a:hover{color:var(--text)}
+.btn{display:inline-block;font:500 16.5px var(--sans);padding:14px 22px;border-radius:12px;text-decoration:none}
+.btn.amber{background:var(--amber);color:#2A1A05}
+.btn.amber:hover{background:#FFC46E}
+.btn.ghost{box-shadow:inset 0 0 0 1.5px var(--line);color:var(--text)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--muted)}
+header nav .btn{padding:9px 16px;font-size:15px}
+
+.hero{position:relative;padding:40px 0 70px;overflow:hidden}
+.hero .glow{width:760px;height:760px;left:-260px;top:-200px}
+.hero-top{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:start;position:relative}
+.hero h1{font:400 clamp(34px,4.4vw,56px)/1.12 var(--sans);letter-spacing:-.02em;margin:0 0 20px}
+.hero .lede{color:var(--muted);font-size:19px;margin:0 0 28px;max-width:31em}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.lock{position:relative}
+.clock{font:300 96px/1 var(--sans);letter-spacing:-.04em;color:#FFF7EE}
+.clock small{display:block;font:400 16px var(--sans);letter-spacing:0;color:var(--muted);margin-top:8px}
+.alert{margin-top:22px;background:rgba(255,247,238,.96);color:#2A1D2C;border-radius:18px;padding:14px 16px 12px;box-shadow:0 0 90px 10px rgba(255,181,71,.22),0 20px 40px -20px rgba(0,0,0,.7)}
+.status{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font:400 14px var(--mono);color:var(--muted)}
+.status span::before{content:"● ";color:var(--range)}
+.alert .h{display:flex;justify-content:space-between;font:500 13.5px var(--sans);color:#6B5A6E}
+.alert .h b{color:#2A1D2C;display:flex;align-items:center;gap:6px}
+.alert .h b i{width:14px;height:14px;border-radius:4px;background:var(--amber)}
+.alert p{margin:6px 0 10px;font:400 16.5px/1.45 var(--sans)}
+.alert p b{font-weight:600}
+.alert .acts{display:flex;gap:8px}
+.alert .acts span{flex:1;text-align:center;font:500 14px var(--sans);background:#EFE6EC;border-radius:10px;padding:8px}
+.alert .acts span:first-child{background:var(--amber);color:#2A1A05}
+
+.graph{margin-top:48px;background:var(--plum-2);border:1px solid var(--line);border-radius:20px;padding:20px 22px 14px;position:relative}
+.graph-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+.now{font:500 46px/1 var(--mono);color:#fff;letter-spacing:-.02em}
+.now small{font:400 16px var(--sans);color:var(--muted);letter-spacing:0;margin-left:6px}
+.now .arrow{color:var(--amber);font-size:34px;margin-left:6px}
+.graph svg{display:block;width:100%;height:auto}
+.gscroll{overflow-x:auto}
+.key{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--muted);margin-top:6px}
+.key i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:0}
+
+section{padding:96px 0;position:relative}
+h2{font:400 clamp(28px,3.2vw,42px)/1.18 var(--sans);letter-spacing:-.015em;margin:0 0 16px;max-width:22ch}
+.sub{color:var(--muted);max-width:58ch;margin:0 0 38px}
+
+/* moment: same night two alarms */
+.compare{background:var(--plum-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.toggle{display:inline-flex;background:var(--plum);border:1px solid var(--line);border-radius:14px;padding:5px;margin-bottom:24px}
+.toggle button{all:unset;cursor:pointer;padding:10px 18px;border-radius:10px;font:500 16px var(--sans);color:var(--muted)}
+.toggle button[aria-pressed="true"]{background:var(--amber);color:#2A1A05}
+.toggle button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.night{display:grid;grid-template-columns:1.6fr 1fr;gap:32px;align-items:start}
+.night svg{display:block;width:100%;height:auto;background:var(--plum);border:1px solid var(--line);border-radius:16px}
+.tally{display:grid;gap:14px}
+.tally .big{font:500 64px/1 var(--mono);color:#fff}
+.tally .big small{font:300 18px var(--sans);color:var(--muted)}
+.tally ul{list-style:none;padding:0;margin:0}
+.tally li{padding:12px 0;border-top:1px solid var(--line);font-size:16.5px;display:grid;grid-template-columns:62px 1fr;gap:12px}
+.tally li span:first-child{font:500 15px var(--mono);color:var(--amber)}
+.tally li.bad span:first-child{color:var(--low)}
+.tally li.calm span:first-child{color:var(--range)}
+
+/* how */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.how div{padding:0}
+.how .art{height:64px;display:flex;align-items:center;margin-bottom:14px}
+.chip{font:500 14px var(--mono);background:var(--plum-2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--text)}
+.chip.sw{border-color:#5DA9C9;color:#9BD3EA}
+.how h3{font:500 20px var(--sans);margin:0 0 6px}
+.how p{margin:0;color:var(--muted);font-size:16.5px}
+
+/* wifi proof */
+.proof{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.path{background:var(--plum-2);border:1px solid var(--line);border-radius:20px;padding:26px}
+.path .row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:8px;text-align:center;font-size:14.5px;color:var(--muted)}
+.path .node{background:var(--plum);border:1px solid var(--line);border-radius:14px;padding:14px 8px;color:var(--text)}
+.path .node b{display:block;font-weight:500;font-size:15.5px}
+.path .x{font:500 20px var(--mono);color:var(--low)}
+.path .ok{font:500 20px var(--mono);color:var(--range)}
+.path h3{font:500 15px var(--sans);color:var(--muted);margin:0 0 12px}
+.path .row + h3{margin-top:24px}
+.sensors{margin-top:26px;font-size:15.5px;color:var(--muted)}
+.sensors b{color:var(--text)}
+
+.quote{overflow:hidden}
+.quote figure{margin:0;max-width:900px}
+.quote blockquote{margin:0;font:300 clamp(23px,2.6vw,32px)/1.45 var(--sans);color:#FFF7EE}
+.quote figcaption{margin-top:18px;color:var(--muted);font-size:16px}
+.quote .glow{width:600px;height:600px;right:-200px;top:-150px}
+
+.price{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:960px}
+.pc{background:var(--plum-2);border:1px solid var(--line);border-radius:20px;padding:28px}
+.pc.hl{border-color:var(--amber)}
+.pc h3{font:500 20px var(--sans);margin:0}
+.pc .amt{font:500 46px var(--sans);margin:8px 0 2px;letter-spacing:-.02em}
+.pc .amt small{font:300 16px var(--sans);color:var(--muted);letter-spacing:0}
+.pc ul{padding-left:20px;margin:12px 0 22px;color:var(--muted)}
+.pc li{margin:4px 0;font-size:16.5px}
+.faq{max-width:860px;margin-top:70px}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;padding:18px 0;font:400 19px var(--sans)}
+.faq p{margin:0 0 18px;color:var(--muted)}
+
+footer{border-top:1px solid var(--line);padding:34px 0 28px;font-size:15px;color:var(--muted)}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .credit{margin-top:16px;font-size:13.5px}
+
+@media (max-width:980px){
+  header nav a:not(.btn){display:none}
+  .hero-top,.night,.proof{grid-template-columns:1fr;gap:30px}
+  .how{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  body{font-size:17px}
+  .wrap{padding:0 18px}
+  .hero{padding-top:22px}
+  .clock{font-size:64px}
+  .graph{padding:14px 12px 10px;margin-top:34px}
+  .now{font-size:36px}
+  .gscroll svg{min-width:640px}
+  .path .row{grid-template-columns:1fr auto 1fr auto 1fr!important;gap:4px!important;font-size:12px}
+  .path .node{padding:8px 4px}.path .node b{font-size:13px}
+  .path .x,.path .ok{transform:none!important}
+  .price{grid-template-columns:1fr}
+  section{padding:68px 0}
+  .path .row{grid-template-columns:1fr;gap:4px}
+  .path .x,.path .ok{transform:rotate(90deg)}
+  .toggle button{padding:9px 12px;font-size:14.5px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Şeker Seyir ana sayfa">
+      <svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="#4A3B50" stroke-width="2"/><path d="M5 17 Q10 10 15 14 T25 11" fill="none" stroke="#6CC59A" stroke-width="2.4" stroke-linecap="round"/><path d="M19 13 Q22 15 25 19" fill="none" stroke="#FFB547" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2 3"/></svg>
+      Şeker Seyir
+    </a>
+    <nav aria-label="Bölümler"><a href="#ayni-gece">Aynı gece, iki alarm</a><a href="#nasil">Tahmin nasıl yapılır</a><a href="#internet">İnternet kesilince</a><a href="#fiyat">Fiyat</a><a class="btn amber" href="#fiyat">İndir</a></nav>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="hero" aria-labelledby="h1" style="padding-top:40px">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <h1 id="h1">Düşüşü 25 dakika önceden bilirseniz, gece üç kez kalkmazsınız.</h1>
+        <p class="lede">Şeker Seyir, çocuğunuzun sensöründen gelen değerle önümüzdeki 30 dakikayı telefonunuzda tahmin eder. 70'in altına inecekse sizi şeker düşmeden önce bir kez uyandırır; kolunun üstüne yattığı için oluşan sahte düşüşlerde uyandırmaz.</p>
+        <div class="ctas"><a class="btn amber" href="#fiyat">iPhone için indir</a><a class="btn ghost" href="#fiyat">Android için indir</a></div>
+      </div>
+      <div class="lock" aria-label="Gece 02:14'te gelen tahmin bildirimi">
+        <div class="clock">02:14<small>Salı, 14 Ekim · Defne uyuyor, 3 metre ötede</small></div>
+        <div class="alert" role="img" aria-label="Bildirim: Defne'nin şekeri 25 dakika içinde 70'in altına inebilir">
+          <div class="h"><b><i></i>Şeker Seyir</b><span>şimdi</span></div>
+          <p>Defne <b>96 ve düşüyor.</b> 25 dakika içinde 70'in altına inmesi bekleniyor. Doktorunuzun verdiği düşük şeker planını şimdi uygulayabilirsiniz.</p>
+          <div class="acts"><span>Meyve suyu verdim</span><span>Bakıyorum</span></div>
+        </div>
+        <div class="status" aria-label="Bağlantı durumu"><span>Libre 3 · Bluetooth, 3 m</span><span>internet yok · sorun değil</span><span>sensör 8 gün 12 sa</span></div>
+      </div>
+    </div>
+
+    <div class="graph" aria-label="Son 3 saat ve önümüzdeki 30 dakikanın tahmini">
+      <div class="graph-h">
+        <div class="now">96<small>mg/dL</small><span class="arrow" aria-hidden="true">↘</span></div>
+        <span style="color:var(--muted);font-size:15px">23:15'ten beri · tahmin 02:39'da 68 mg/dL</span>
+      </div>
+      <div class="gscroll"><svg viewBox="0 0 1000 260" role="img" aria-label="Glukoz eğrisi 23:15'te 150 civarında, gece boyunca hedef aralıkta, 01:30'dan sonra düşüyor; tahmin konisi 02:39'da 70'in altını gösteriyor">
+        <defs><linearGradient id="coneG" x1="0" x2="1"><stop offset="0" stop-color="#FFB547" stop-opacity=".35"/><stop offset="1" stop-color="#FFB547" stop-opacity=".12"/></linearGradient></defs>
+        <rect x="40" y="40" width="950" height="150" fill="#6CC59A" opacity=".2"/><line x1="40" y1="40" x2="990" y2="40" stroke="#6CC59A" stroke-opacity=".6"/>
+        <line x1="40" y1="190" x2="990" y2="190" stroke="#FF8A96" stroke-width="1.5" stroke-dasharray="5 5"/>
+        <text x="46" y="208" font-family="Red Hat Mono" font-size="13" fill="#FF8A96">70</text>
+        <text x="46" y="56" font-family="Red Hat Mono" font-size="13" fill="#6CC59A">180</text>
+        <path id="hist" fill="none" stroke="#F4EDE6" stroke-width="3" stroke-linejoin="round"/>
+        <path id="cone" fill="url(#coneG)"/>
+        <path id="pred" fill="none" stroke="#FFB547" stroke-width="3" stroke-dasharray="6 6"/>
+        <line x1="800" y1="24" x2="800" y2="230" stroke="#CDBFCB" stroke-opacity=".4"/>
+        <text x="806" y="34" font-family="Lexend" font-size="13" fill="#CDBFCB">şimdi</text>
+        <g font-family="Red Hat Mono" font-size="13" fill="#CDBFCB"><text x="40" y="252">23:15</text><text x="300" y="252">00:15</text><text x="560" y="252">01:15</text><text x="790" y="252">02:14</text><text x="935" y="252">02:44</text></g>
+      </svg></div>
+      <div class="key"><span><i style="background:#6CC59A;opacity:.5"></i>hedef aralık 70–180</span><span><i style="background:#FFB547"></i>30 dakikalık tahmin</span><span><i style="background:#FF8A96"></i>düşük eşiği</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="compare" id="ayni-gece" aria-labelledby="h-ayni">
+  <div class="wrap">
+    <h2 id="h-ayni">Aynı gece, iki farklı alarm</h2>
+    <p class="sub">Defne'nin 13 Ekim gecesi, Şeker Seyir'le: bir kez kalktınız. “Sensör alarmı”na geçin; aynı gece yalnız sensörün kendi alarmıyla nasıl geçerdi, görün.</p>
+    <div class="toggle" role="group" aria-label="Alarm türü">
+      <button type="button" id="tSeyir" aria-pressed="true">Şeker Seyir</button>
+      <button type="button" id="tSensor" aria-pressed="false">Sensör alarmı</button>
+    </div>
+    <div class="night">
+      <svg viewBox="0 0 700 300" role="img" aria-label="22:00–07:00 arası glukoz eğrisi ve alarm anları" id="nightSvg">
+        <rect x="30" y="40" width="650" height="170" fill="#6CC59A" opacity=".2"/><text x="36" y="206" font-family="Red Hat Mono" font-size="12" fill="#FF8A96">70</text><text x="36" y="54" font-family="Red Hat Mono" font-size="12" fill="#6CC59A">180</text>
+        <line x1="30" y1="210" x2="680" y2="210" stroke="#FF8A96" stroke-dasharray="5 5"/>
+        <path id="nightPath" fill="none" stroke="#F4EDE6" stroke-width="2.6" stroke-linejoin="round"/>
+        <g id="alarms"></g>
+        <g font-family="Red Hat Mono" font-size="12" fill="#CDBFCB" id="nh"></g>
+      </svg>
+      <div class="tally" aria-live="polite">
+        <div class="big" id="wakes">3<small> kez kalktınız</small></div>
+        <ul id="events"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nasil" aria-labelledby="h-nasil">
+  <div class="wrap">
+    <h2 id="h-nasil">Tahmin, Defne'nin kendi gecelerinden öğrenir</h2>
+    <p class="sub">Genel bir formül değil. Şeker Seyir ilk 14 geceyi sessizce izler, Defne'nin akşam yemeğine, oyun gününe ve bazal insüline nasıl tepki verdiğini öğrenir. Bunu telefonunuzun içinde yapar.</p>
+    <div class="how">
+      <div><div class="art" aria-hidden="true"><svg width="180" height="54" viewBox="0 0 180 54"><path d="M2 12 C40 14 60 20 90 26 S150 40 178 46" fill="none" stroke="#F4EDE6" stroke-width="2.5"/><g fill="#F4EDE6"><circle cx="30" cy="14" r="2.5"/><circle cx="60" cy="19" r="2.5"/><circle cx="90" cy="26" r="2.5"/><circle cx="120" cy="33" r="2.5"/><circle cx="150" cy="40" r="2.5"/></g></svg></div><h3>Son 3 saatin eğrisi</h3><p>Sensör 5 dakikada bir değer gönderir. Eğim ve ivme tahminin iskeletidir.</p></div>
+      <div><div class="art" aria-hidden="true"><span class="chip">19:30 · makarna 45 g · 4 ü</span></div><h3>Akşam notlarınız</h3><p>“19:30 makarna, 45 g, 4 ünite” ya da “bugün yüzme vardı”. İki dokunuşla girilir, tahmini değiştirir.</p></div>
+      <div><div class="art" aria-hidden="true"><span class="chip sw">yüzme günü → 02:00 düşüş ×5</span></div><h3>Defne'nin geçmişi</h3><p>Yüzmeli günlerin gecesinde 02:00 civarı düşüş eğilimi var. Seyir o gece daha erken uyarır.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="internet" aria-labelledby="h-net" style="padding-top:20px">
+  <div class="wrap proof">
+    <div>
+      <h2 id="h-net">Ev interneti gece 02:00'de kesilirse de çalar</h2>
+      <p class="sub" style="margin-bottom:0">Çoğu takip uygulaması sensör verisini önce bir sunucuya yollar, oradan size geri getirir. Modem resetlendiğinde, operatör bakımdayken alarm susar. Şeker Seyir veriyi Bluetooth ile doğrudan yanınızdaki telefona alır ve tahmini orada yapar. Defne'nin şeker geçmişi hiçbir şirketin sunucusunda durmaz.</p>
+      <p class="sensors">Çalıştığı sensörler: <b>FreeStyle Libre 2 ve 3</b>, <b>Dexcom G6 ve G7</b>. Telefonun sensöre 10 metre içinde olması yeter.</p>
+    </div>
+    <div class="path" aria-label="Veri yolu karşılaştırması">
+      <h3>Bulut takip uygulaması</h3>
+      <div class="row"><div class="node"><b>Sensör</b>Defne'nin kolu</div><span class="x" aria-hidden="true">→</span><div class="node"><b>Sunucu</b>yurt dışı</div><span class="x" aria-hidden="true">✕</span><div class="node"><b>Sizin telefon</b>internet yoksa sessiz</div></div>
+      <h3>Şeker Seyir</h3>
+      <div class="row"><div class="node"><b>Sensör</b>Defne'nin kolu</div><span class="ok" aria-hidden="true">→</span><div class="node"><b>Bluetooth</b>10 m, internetsiz</div><span class="ok" aria-hidden="true">→</span><div class="node"><b>Sizin telefon</b>tahmin burada</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı yorumu">
+  <div class="wrap">
+    <figure>
+      <blockquote>“İki yıl boyunca 00:00, 03:00 ve 05:00'e alarm kurdum, her seferinde parmak ucundan kan aldım. Şimdi telefon haftada bir iki kez, şeker düşmeden önce çalıyor. Geçen ay ilk kez yedi saat aralıksız uyudum ve Defne'ye bir şey olmadı.”</blockquote>
+      <figcaption><b style="color:var(--text)">Murat Aksoy</b>, 41 · Ankara, Çankaya · lise öğretmeni; kızı Defne 6 yaşında tip 1 tanısı aldı</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="fiyat" aria-labelledby="h-fiyat">
+  <div class="wrap">
+    <h2 id="h-fiyat">18 yaşından küçük her çocuk için ücretsiz</h2>
+    <p class="sub">Çocuğu tip 1 olan bir aile, gece uykusu için ödeme yapmamalı. Yetişkin kullanıcılar bir kez öder; bu, çocuk hesaplarını ayakta tutar.</p>
+    <div class="price">
+      <div class="pc hl"><h3>Çocuk hesabı</h3><div class="amt">0 ₺</div><ul><li>30 dakikalık tahmin ve erken uyarı</li><li>Sahte düşüş (koluna yatma) ayıklama</li><li>Anne ve babaya aynı anda alarm</li><li>Okul saatleri için sessiz mod, öğretmene bildirim</li></ul><a class="btn amber" href="#">Ücretsiz indir</a></div>
+      <div class="pc"><h3>Yetişkin hesabı</h3><div class="amt">149 ₺ <small>tek seferlik</small></div><ul><li>Kendi sensörünüz için aynı tahmin</li><li>Uyurken partnerinize alarm</li><li>Doktor için 14 günlük gece raporu</li></ul><a class="btn ghost" href="#">Yetişkin hesabı al</a></div>
+    </div>
+    <div class="faq">
+      <details><summary>İnsülin dozu önerir mi?</summary><p>Hayır. Şeker Seyir yalnız tahmin eder ve uyandırır. Ne yapacağınızı çocuğunuzun diyabet hekiminin verdiği plan belirler; uygulama bu planı sizin girdiğiniz haliyle ekranda hatırlatabilir.</p></details>
+      <details><summary>Tahmin yanılırsa ne olur?</summary><p>Tahmin bir güvenlik ağı, tek ağ değil. Sensörün kendi düşük alarmını kapatmamanızı öneririz; Şeker Seyir çoğu gece ondan önce çalar, o yine yedek olarak durur.</p></details>
+      <details><summary>Telefonum sessizdeyken çalar mı?</summary><p>Evet. Kritik uyarı izniyle sessiz ve rahatsız etmeyin modunda da çalar. Pil %15'in altına inerse akşamdan haber verir.</p></details>
+      <details><summary>İki ebeveyn farklı evdeyse?</summary><p>Defne'nin yanındaki telefon tahmin yapar; diğer ebeveyne yalnız “Defne 96, düşüyor, Ayşe uyandı” gibi kısa bir uçtan uca şifreli bildirim gider.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row"><span><b style="color:var(--text)">Şeker Seyir</b> · Ankara. Tıbbi cihaz değildir; tedavi kararları için diyabet hekiminize danışın.</span><a href="mailto:aile@sekerseyir.app">aile@sekerseyir.app</a></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // hero graph: x 40..800 = 23:15..02:14 (179 min), 800..990 = +30 min ; y = 190 - (g-70)*(150/110)
+  function Y(g){return (190-(g-70)*(150/110)).toFixed(1)}
+  var pts=[],g;
+  for(var m=0;m<=179;m+=5){
+    if(m<80) g=150-m*0.35+Math.sin(m/9)*5;
+    else if(m<130) g=122-(m-80)*0.3+Math.sin(m/7)*3;
+    else g=107-(m-130)*0.23;
+    pts.push((40+m/179*760).toFixed(1)+" "+Y(g));
+  }
+  pts.push("800 "+Y(96));
+  document.getElementById("hist").setAttribute("d","M"+pts.join("L"));
+  var p=["800 "+Y(96)],up=[],dn=[];
+  for(var k=0;k<=30;k+=3){var x=(800+k/30*190).toFixed(1),c=96-k*0.95,w=k*0.55;p.push(x+" "+Y(c));up.push(x+" "+Y(c+w));dn.unshift(x+" "+Y(c-w));}
+  document.getElementById("pred").setAttribute("d","M"+p.join("L"));
+  document.getElementById("cone").setAttribute("d","M"+up.join("L")+"L"+dn.join("L")+"Z");
+  var gs=document.querySelector(".gscroll"); if(gs.scrollWidth>gs.clientWidth) gs.scrollLeft=gs.scrollWidth;
+
+  // night compare: 22:00..07:00 (540 min) x 30..680 ; y = 210 - (g-70)*(170/120)
+  function NX(m){return (30+m/540*650).toFixed(1)} function NY(g){return (210-(g-70)*(170/120)).toFixed(1)}
+  function curve(k){var np=[];
+  for(var t=0;t<=540;t+=5){
+    var v;
+    if(t<150) v=165-t*0.3+Math.sin(t/14)*6;
+    else if(t<200) v=120-(t-150)*0.35;
+    else if(t<215) v=102-(t-200)*0.2;
+    else if(t<230) v=99-(t-215)*2.2;
+    else if(t<245) v=66+(t-230)*2.2;
+    else if(t<255) v=99;
+    else if(k==="seyir"){ if(t<270) v=99-(t-255)*1.3; else if(t<290) v=79.5-(t-270)*0.08; else if(t<330) v=78+(t-290)*0.6; else v=102+Math.sin(t/20)*6-(t-330)*0.03; }
+    else if(t<285) v=99-(t-255)*1.2;
+    else if(t<300) v=63+(t-285)*0.4;
+    else if(t<330) v=69+(t-300)*1.1;
+    else v=102+Math.sin(t/20)*6-(t-330)*0.03;
+    np.push(NX(t)+" "+NY(v));
+  }
+  document.getElementById("nightPath").setAttribute("d","M"+np.join("L"));}
+  var nh="";for(var h=0;h<=9;h+=1){var hh=(22+h)%24;nh+='<text x="'+NX(h*60)+'" y="290" text-anchor="middle">'+(hh<10?"0":"")+hh+'</text>';}
+  document.getElementById("nh").innerHTML=nh;
+  var modes={
+    sensor:{w:"3",ev:[["01:42","bad","Sahte düşüş: Defne koluna yattı, değer 66 gösterdi. Kalktınız, parmak ucu 104 çıktı."],["02:47","bad","Gerçek düşüş. Alarm şeker 64'e indikten sonra çaldı; meyve suyu, 15 dk bekleme."],["03:05","bad","Kontrol için tekrar kalktınız. 72, yükseliyor."]],
+            al:[[222,"#FF8A96"],[287,"#FF8A96"],[305,"#FF8A96"]]},
+    seyir:{w:"1",ev:[["01:42","calm","Sahte düşüş tanındı: 15 dakikada 33 puan düşüş, kol baskısıyla uyumlu. Uyandırmadı."],["02:20","","25 dakika önce uyardı. Defne 94'teyken yarım meyve suyu verdiniz, uykusundan uyanmadan içti."],["02:45","calm","Şeker 78'de dönüp yükseldi. Kontrol için kalkmanız gerekmedi."]],
+            al:[[260,"#FFB547"]]}
+  };
+  function setMode(k){
+    document.getElementById("tSensor").setAttribute("aria-pressed",k==="sensor");
+    document.getElementById("tSeyir").setAttribute("aria-pressed",k==="seyir");
+    var M=modes[k]; curve(k);
+    document.getElementById("wakes").innerHTML=M.w+'<small> kez kalktınız</small>';
+    document.getElementById("events").innerHTML=M.ev.map(function(e){return '<li class="'+e[1]+'"><span>'+e[0]+'</span><span>'+e[2]+'</span></li>'}).join("");
+    var a="";M.al.forEach(function(q){a+='<line x1="'+NX(q[0])+'" y1="30" x2="'+NX(q[0])+'" y2="270" stroke="'+q[1]+'" stroke-width="2"/><circle cx="'+NX(q[0])+'" cy="30" r="7" fill="'+q[1]+'"/>';});
+    if(k==="seyir"){a+='<rect x="'+NX(212)+'" y="30" width="'+(NX(246)-NX(212))+'" height="240" fill="#6CC59A" opacity=".1"/><text x="'+NX(229)+'" y="262" text-anchor="middle" font-family="Lexend" font-size="12" fill="#6CC59A">sahte düşüş</text>';}
+    // the treated real drop differs
+    document.getElementById("alarms").innerHTML=a;
+  }
+  document.getElementById("tSensor").addEventListener("click",function(){setMode("sensor")});
+  document.getElementById("tSeyir").addEventListener("click",function(){setMode("seyir")});
+  setMode("seyir");
+})();
+</script>
+</body>
+</html>

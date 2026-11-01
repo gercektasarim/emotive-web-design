@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ekşi Maya — Kavanozu kamera izler, ne zaman besleyeceğinizi söyler</title>
+<meta name="description" content="Ekşi Maya, kavanozdaki ekşi mayanın kabarmasını kamerayla izler; mutfağınızın sıcaklığına göre ne zaman besleyeceğinizi ve hamurun ne zaman fırına gireceğini söyler. Görüntü telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --glass:#E2E9E5; --glass-2:#CCD8D2; --glass-3:#A9BBB3; --paper:#F4F6F4;
+  --rye:#2C241E; --rye-2:#5A4D42; --starter:#D9CDB8; --starter-2:#BFAF95;
+  --band:#C92F2A; --tape:#E9DCAE; --sage:#3E6A57;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--glass) radial-gradient(rgba(255,255,255,.55) 1px,transparent 1.5px) 0 0/17px 13px;color:var(--rye);font-family:"Instrument Sans",system-ui,sans-serif;font-size:17.5px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--band);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-stretch:80%;letter-spacing:-.015em;line-height:1}
+.hand{font-family:"Caveat",cursive}
+
+header.top{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.brand{font-weight:700;font-stretch:80%;font-size:24px;text-decoration:none;display:flex;gap:10px;align-items:center}
+.brand i{display:inline-block;width:12px;height:24px;border-radius:4px 4px 6px 6px;border:2px solid var(--rye);position:relative;background:linear-gradient(0deg,var(--starter-2) 0 55%,transparent 55%)}
+header.top nav{display:flex;gap:24px;align-items:center;font-size:15.5px}
+header.top nav a{text-decoration:none;color:var(--rye-2)}
+header.top nav a:hover{color:var(--rye)}
+.btn{display:inline-block;background:var(--rye);color:#fff!important;text-decoration:none;font-weight:600;padding:12px 20px;border-radius:8px;font-size:15.5px}
+.btn:hover{background:#000}
+.btn.ghost{background:transparent;color:var(--rye)!important;box-shadow:inset 0 0 0 1.5px var(--rye)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:460px 1fr;gap:56px;align-items:center;padding:20px 0 60px}
+.hero>*{min-width:0}
+.jarbox{position:relative}
+.jar{width:100%;height:auto;display:block}
+.controls{margin-top:8px;background:var(--paper);border-radius:14px;padding:16px 18px}
+.controls label{display:flex;justify-content:space-between;font-weight:600;font-size:15px}
+.controls output{font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--rye);margin:8px 0 12px}
+.temps{display:flex;gap:6px}
+.temps button{flex:1;appearance:none;font:inherit;font-size:14.5px;padding:7px 6px;border-radius:8px;border:1.5px solid var(--glass-3);background:#fff;cursor:pointer;color:var(--rye)}
+.temps button[aria-pressed="true"]{background:var(--rye);color:#fff;border-color:var(--rye)}
+.state{margin-top:14px;padding-top:12px;border-top:1px dashed var(--glass-3);display:flex;gap:12px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.state b{font-size:19px;font-stretch:85%}
+.state span{font-size:14.5px;color:var(--rye-2)}
+
+.hero h1{font-size:clamp(52px,7vw,104px);font-weight:700;margin:0 0 20px}
+.hero .lede{font-size:20px;color:var(--rye-2);max-width:27em;margin:0 0 28px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.note{display:inline-block;background:var(--tape);padding:6px 16px 4px;transform:rotate(-1.5deg);font-family:"Caveat";font-size:24px;line-height:1.1;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+
+section{padding:84px 0}
+h2{font-size:clamp(36px,4.6vw,60px);font-weight:700;margin:0 0 16px;max-width:15em}
+.sub{color:var(--rye-2);max-width:38em;margin:0 0 36px}
+
+/* deaths */
+.deaths{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.death{background:var(--paper);border-radius:16px;padding:24px 24px 26px;position:relative}
+.death .tape{position:absolute;top:-12px;left:22px;background:var(--tape);font-family:"Caveat";font-size:22px;padding:2px 12px;transform:rotate(-2deg)}
+.death h3{font-size:28px;margin:18px 0 10px}
+.death p{margin:0 0 12px;color:var(--rye-2);font-size:16.5px}
+.death .fix{font-size:15.5px;border-top:1px solid var(--glass-2);padding-top:12px;color:var(--rye)}
+.death .fix b{color:var(--sage)}
+
+/* log */
+.log{background:var(--paper);border-radius:16px;overflow:hidden}
+.log table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15.5px}
+.log th{text-align:left;font-weight:600;font-size:13.5px;color:var(--rye-2);padding:12px 16px;border-bottom:2px solid var(--glass-2)}
+.log td{padding:12px 16px;border-bottom:1px solid var(--glass-2);vertical-align:middle}
+.log tr:last-child td{border-bottom:0}
+.rise{display:block;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--starter-2),var(--rye-2));min-width:6px}
+.log .handn{font-family:"Caveat";font-size:21px;color:var(--rye-2);line-height:1}
+.log .peak{color:var(--band);font-weight:600}
+
+/* oven */
+.oven{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.oven>*{min-width:0}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--glass-3)}
+.steps li::before{counter-increment:s;content:counter(s);font-stretch:75%;font-weight:700;font-size:34px;line-height:1;color:var(--sage)}
+.steps b{display:block;font-size:18.5px}
+.steps span{color:var(--rye-2);font-size:16px}
+.notif{background:var(--rye);color:#F1EEE9;border-radius:18px;padding:18px 20px;max-width:420px;box-shadow:0 22px 40px -22px rgba(0,0,0,.6)}
+.notif .app{font-size:13px;color:#B8ADA2;display:flex;justify-content:space-between}
+.notif b{display:block;font-size:18px;margin:6px 0 2px}
+.notif p{margin:0;font-size:15.5px;color:#DCD5CC}
+.notif + .notif{margin-top:12px;opacity:.75;transform:scale(.97);transform-origin:top left}
+
+/* offline */
+.off{border-top:2px solid var(--rye);border-bottom:2px solid var(--rye);padding:44px 0;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.off>*{min-width:0}
+.off h2{font-size:clamp(30px,3.6vw,46px)}
+.frames{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.fr{text-align:center;font-size:13px;color:var(--rye-2)}
+.jarmini{display:block;width:54px;height:76px;border:2.5px solid var(--glass-3);border-radius:6px 6px 10px 10px;background:linear-gradient(0deg,var(--starter-2) var(--h),#F1F5F3 var(--h));margin-bottom:4px}
+.num{font-size:15px;color:var(--rye-2);padding-bottom:20px}
+.num b{display:block;font-size:40px;line-height:1;color:var(--rye);font-stretch:75%}
+.num small{display:block;max-width:12em}
+.off dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;margin:0;font-size:16px}
+.off dt{color:var(--rye-2)}
+.off dd{margin:0;font-weight:600}
+
+blockquote{margin:0;display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:center}
+blockquote>*{min-width:0}
+blockquote .loaf{font-family:"Caveat";font-size:30px;line-height:1.15;color:var(--rye-2);background:var(--tape);padding:16px 20px;transform:rotate(-1.5deg)}
+blockquote p{font-size:clamp(22px,2.4vw,30px);line-height:1.3;margin:0 0 14px;font-stretch:90%}
+blockquote footer{color:var(--rye-2);font-size:16px}
+
+.buy{background:var(--paper);border-radius:20px;padding:40px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}
+.buy>*{min-width:0}
+.buy .amt{font-size:64px;font-weight:700;font-stretch:75%;line-height:1}
+.buy ul{margin:16px 0 0;padding-left:20px;color:var(--rye-2);columns:2;column-gap:36px}
+.buy li{margin-bottom:6px;break-inside:avoid}
+.buy .side{text-align:right}
+.buy .side p{margin:8px 0 16px;font-size:14.5px;color:var(--rye-2)}
+
+.faq{max-width:820px}
+details{border-bottom:1px solid var(--glass-3);padding:18px 0}
+summary{cursor:pointer;font-weight:600;font-size:19px}
+details p{margin:10px 0 0;color:var(--rye-2)}
+
+footer.site{padding:44px 0 30px;font-size:14.5px;color:var(--rye-2)}
+footer.site .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;border-top:1px solid var(--glass-3);padding-top:24px}
+footer.site .credit{margin-top:22px;font-size:12.5px}
+
+@media (max-width:940px){
+  .hero{grid-template-columns:1fr;gap:20px}
+  .hero .text{order:-1}
+  .jarbox{max-width:420px;margin:0 auto;width:100%}
+  .deaths,.oven,.off,blockquote{grid-template-columns:1fr}
+  .buy{grid-template-columns:1fr}
+  .buy .side{text-align:left}
+  header.top nav a:not(.btn){display:none}
+}
+@media (max-width:540px){
+  .wrap{padding:0 16px}
+  body{font-size:16.5px}
+  .buy{padding:24px}
+  .buy ul{columns:1}
+  .log .hide-s{display:none}
+  .log td,.log th{padding:10px 10px}
+  section{padding:60px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="brand" href="#"><i aria-hidden="true"></i>Ekşi Maya</a>
+  <nav aria-label="Ana menü"><a href="#neden">Neden öldü?</a><a href="#gunluk">Günlük</a><a href="#firin">Fırın zamanı</a><a href="#al">Fiyat</a><a class="btn" href="#al">İndir</a></nav>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h" style="padding-top:20px">
+  <div class="jarbox">
+    <svg class="jar" viewBox="0 0 420 470" role="img" aria-labelledby="jt">
+      <title id="jt">Ekşi maya kavanozu: bantla işaretlenmiş başlangıç seviyesi ve kabarma çizgisi</title>
+      <defs>
+        <linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".18" stop-color="#fff" stop-opacity=".08"/><stop offset=".8" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity=".45"/></linearGradient>
+        <linearGradient id="st" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E5DBC9"/><stop offset="1" stop-color="#BFAF95"/></linearGradient>
+        <clipPath id="body"><path d="M98 96h224c16 0 26 10 26 26v300c0 20-14 34-34 34H106c-20 0-34-14-34-34V122c0-16 10-26 26-26z"/></clipPath>
+      </defs>
+      <!-- lid -->
+      <rect x="110" y="40" width="200" height="40" rx="8" fill="#5A4D42"/>
+      <rect x="104" y="72" width="212" height="22" rx="6" fill="#8C7D70"/>
+      <g clip-path="url(#body)">
+        <rect x="60" y="90" width="300" height="380" fill="#EEF3F0"/>
+        <g id="starter">
+          <rect id="stRect" x="60" y="300" width="300" height="200" fill="url(#st)"/>
+          <path id="stTop" d="" fill="#E5DBC9"/>
+          <g id="bubbles" fill="#F7F2E8" stroke="#A8977C" stroke-width="1"></g>
+        </g>
+        <!-- streaks on glass where it has been -->
+        <rect id="streak" x="60" y="300" width="300" height="0" fill="#D9CDB8" opacity=".35"/>
+      </g>
+      <path d="M98 96h224c16 0 26 10 26 26v300c0 20-14 34-34 34H106c-20 0-34-14-34-34V122c0-16 10-26 26-26z" fill="url(#gl)" stroke="#8FA59B" stroke-width="3"/>
+      <!-- tape: start line -->
+      <g transform="rotate(-2 340 330)">
+        <rect x="300" y="318" width="96" height="28" fill="#E9DCAE"/>
+        <text x="348" y="338" text-anchor="middle" font-family="Caveat" font-size="20" fill="#2C241E">09:00 · 1:1:1</text>
+      </g>
+      <line x1="72" y1="330" x2="300" y2="330" stroke="#2C241E" stroke-width="2" stroke-dasharray="6 5"/>
+      <!-- rubber band: target 2x -->
+      <rect x="66" y="196" width="288" height="9" rx="4" fill="#C92F2A"/>
+      <text x="20" y="206" font-family="Instrument Sans" font-size="14" font-weight="600" fill="#C92F2A">2×</text>
+      <!-- reading -->
+      <g id="readG">
+        <rect id="readBg" x="116" y="380" width="188" height="40" rx="8" fill="#2C241E"/>
+        <text id="readT" x="210" y="406" text-anchor="middle" font-family="Instrument Sans" font-size="17" font-weight="600" fill="#fff">+0%</text>
+      </g>
+    </svg>
+
+    <div class="controls">
+      <label for="t">Beslemeden sonra geçen süre <output id="to">5 sa 30 dk</output></label>
+      <input id="t" type="range" min="0" max="14" step="0.25" value="5.5">
+      <div class="temps" role="group" aria-label="Mutfak sıcaklığı">
+        <button data-c="19" aria-pressed="false">19 °C · kış</button>
+        <button data-c="23" aria-pressed="true">23 °C</button>
+        <button data-c="27" aria-pressed="false">27 °C · kalorifer üstü</button>
+      </div>
+      <div class="state" aria-live="polite"><b id="sb">Kabarıyor</b><span id="ss">Zirveye ~45 dk</span></div>
+    </div>
+  </div>
+
+  <div class="text">
+    <h1 id="h">Maya ölmedi. Aç kaldı.</h1>
+    <p class="lede">Ekşi Maya, kavanozunuzu telefonun kamerasıyla izler; kabarmayı milim milim ölçer, mutfağınızın sıcaklığına göre ne zaman besleyeceğinizi, hamurun ne zaman fırına gireceğini söyler. Dördüncü mayanız yaşayacak.</p>
+    <div class="ctas"><a class="btn" href="#al">iPhone için indir</a><a class="btn ghost" href="#al">Android için indir</a></div>
+    <span class="note">Kavanozun altındaki süreyi kaydırın, sıcaklığı değiştirin</span>
+  </div>
+</section>
+
+<section id="neden" aria-labelledby="ne">
+  <h2 id="ne">Önceki üç maya neden öldü?</h2>
+  <p class="sub">Ev fırıncılarından topladığımız 2.300 “maya öldü” hikâyesinin neredeyse hepsi üç başlıkta toplanıyor. Ekşi Maya üçünü de kavanoza bakarak fark eder.</p>
+  <div class="deaths">
+    <article class="death"><span class="tape">1. maya</span><h3>Zirveyi kaçırdınız</h3><p>Gece 03:00’te zirve yapıp sabaha çöktü. Siz 09:00’da baktığınızda sıvı, ekşi kokulu, üstü gri sudu.</p><p class="fix"><b>Ekşi Maya:</b> Zirveye bir saat kala sessiz bildirim. Geceyse buzdolabı önerisi.</p></article>
+    <article class="death"><span class="tape">2. maya</span><h3>Kalorifer üstü</h3><p>Sıcak yerde dört saatte yoruldu; siz on iki saatlik tarifi izliyordunuz. Tarifler sizin mutfağınızı bilmez.</p><p class="fix"><b>Ekşi Maya:</b> Kavanozun yükselme hızından sıcaklığı tahmin eder, besleme oranını değiştirir.</p></article>
+    <article class="death"><span class="tape">3. maya</span><h3>Çeşme suyu, beyaz un</h3><p>Klorlu su ve kepeksiz un başlangıçtaki zayıf mayayı besleyemedi. Beşinci günde hâlâ hareket yoktu.</p><p class="fix"><b>Ekşi Maya:</b> İlk yedi gün “bekletilmiş su, yarı çavdar” planı ve günlük kabarma kaydı.</p></article>
+  </div>
+</section>
+
+<section id="gunluk" aria-labelledby="gn" style="padding-top:20px">
+  <h2 id="gn">Bir haftanın kavanoz günlüğü</h2>
+  <p class="sub">Her beslemeyi kamera kaydeder, siz bir şey yazmazsınız. Zamanla mayanızın huyunu öğrenir: Ayşe Hanım’ın mayası bu hafta her seferinde ortalama 6 saat 10 dakikada zirve yaptı.</p>
+  <div class="log">
+    <table>
+      <thead><tr><th>Gün</th><th>Besleme</th><th class="hide-s">Mutfak</th><th>Kabarma</th><th>Zirve</th></tr></thead>
+      <tbody>
+        <tr><td>Pzt 26</td><td>08:10 · 1:1:1</td><td class="hide-s">22 °C</td><td><span class="rise" style="width:78%"></span></td><td>14:20 <span class="handn">+%115</span></td></tr>
+        <tr><td>Sal 27</td><td>08:30 · 1:1:1</td><td class="hide-s">22 °C</td><td><span class="rise" style="width:82%"></span></td><td>14:35 <span class="handn">+%120</span></td></tr>
+        <tr><td>Çar 28</td><td>21:00 · 1:3:3</td><td class="hide-s">20 °C</td><td><span class="rise" style="width:70%"></span></td><td>07:40 <span class="handn">gece, buzdolabı yok</span></td></tr>
+        <tr><td>Per 29</td><td>08:00 · 1:2:2</td><td class="hide-s">23 °C</td><td><span class="rise" style="width:90%"></span></td><td class="peak">14:10 · hamura katıldı</td></tr>
+        <tr><td>Cum 30</td><td>buzdolabı</td><td class="hide-s">5 °C</td><td><span class="rise" style="width:8%"></span></td><td>—</td></tr>
+        <tr><td>Cmt 31</td><td>09:00 · 1:1:1</td><td class="hide-s">23 °C</td><td><span class="rise" style="width:84%"></span></td><td>15:05 <span class="handn">+%125, en iyisi</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="firin" aria-labelledby="fr">
+  <div class="oven">
+    <div>
+      <h2 id="fr">Hamur ne zaman fırına girer?</h2>
+      <p class="sub" style="margin-bottom:14px">Hamurdan bir parça küçük bir kavanoza alın, onu da kameraya gösterin. Ana hamuru açmadan nerede olduğunu bilirsiniz.</p>
+      <ol class="steps">
+        <li><div><b>Katlama</b><span>İlk iki saatte dört set; her biri için hatırlatma.</span></div></li>
+        <li><div><b>Mayalanma: %75 kabarma</b><span>Örnek kavanoz %75’e ulaşınca şekillendirme zamanı. Sıcak mutfakta 4 saat, serin mutfakta 7.</span></div></li>
+        <li><div><b>Soğuk dinlenme</b><span>Buzdolabında 12–16 saat. Sabah fırını 250 °C’ye ne zaman açacağınızı söyler.</span></div></li>
+        <li><div><b>Fırın</b><span>Döküm tencerede 20 dk kapaklı, 22 dk kapaksız. Zamanlayıcıyı o kurar.</span></div></li>
+      </ol>
+    </div>
+    <div aria-label="Örnek bildirimler">
+      <div class="notif"><div class="app"><span>Ekşi Maya</span><span>14:02</span></div><b>Örnek kavanoz %75’te</b><p>Hamuru şekillendirebilirsiniz. Mutfak 23 °C, beklemek fazla ekşitir.</p></div>
+      <div class="notif"><div class="app"><span>Ekşi Maya</span><span>08:10</span></div><b>Maya zirveye 50 dk kala</b><p>Ekmek yapmayacaksanız şimdi buzdolabına alın.</p></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="of" style="padding-top:20px">
+  <div class="off">
+    <div>
+      <h2 id="of">Kamera mutfağınıza bakıyor. Gördüğü mutfakta kalır.</h2>
+      <p class="sub" style="margin:0">Tezgâha bıraktığınız telefon saatlerce kavanozu çeker. Bu görüntüler hiçbir sunucuya gitmez: ölçüm telefonda yapılır, her kareden yalnız tek bir sayı kalır, “kabarma yüzdesi”. Gece 03:00 bildirimi de internetten değil, telefonun kendi saatinden gelir.</p>
+    </div>
+    <div class="frames" aria-label="Her kare ölçülür, yalnız bir sayı kalır">
+      <div class="fr"><span class="jarmini" style="--h:30%"></span><small>09:00</small></div>
+      <div class="fr"><span class="jarmini" style="--h:52%"></span><small>12:00</small></div>
+      <div class="fr"><span class="jarmini" style="--h:74%"></span><small>15:00</small></div>
+      <div class="num">→ <b>+%118</b><small>kalan tek şey bu sayı; kareler silindi</small></div>
+    </div>
+  </div>
+</section>
+
+<section aria-label="Kullanıcı yorumu">
+  <blockquote>
+    <div class="loaf">Cumartesi 31 Ekim<br>%75 hidrasyon, %20 çavdar<br>kulak açtı!</div>
+    <div>
+      <p>“İlk üç mayamı gömdüm, dördüncüsüne isim bile koymadım. Ekşi Maya zirveyi iki kez gece yakaladı, buzdolabına almamı söyledi. Şimdi ‘Hamza’ beş aylık ve her cumartesi ekmek var.”</p>
+      <footer><b>Ayşe Demirtaş</b>, emekli kimya öğretmeni, ev fırıncısı · Kadıköy</footer>
+    </div>
+  </blockquote>
+</section>
+
+<section id="al" aria-labelledby="fy" style="padding-top:20px">
+  <h2 id="fy">Bir torba çavdar unu fiyatına.</h2>
+  <div class="buy">
+    <div>
+      <div class="amt">129 ₺</div>
+      <p style="margin:6px 0 0;color:var(--rye-2)">Tek seferlik. Abonelik yok, reklam yok. İlk 7 gün ücretsiz: yeni bir maya başlatmaya yeter.</p>
+      <ul><li>Sınırsız kavanoz ve maya</li><li>Zirve ve çöküş bildirimi</li><li>Hamur örnek kavanozu takibi</li><li>Besleme oranı önerisi</li><li>Haftalık günlük, dışa aktarma</li><li>Yeni maya başlatma planı</li></ul>
+    </div>
+    <div class="side"><a class="btn" href="#">iPhone için indir</a><p>iOS 16 ve üzeri</p><a class="btn ghost" href="#">Android için indir</a><p>Android 11 ve üzeri</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="sq" style="padding-top:0">
+  <h2 id="sq">Sorulanlar</h2>
+  <div class="faq">
+    <details><summary>Kavanoz nasıl olmalı?</summary><p>Düz kenarlı, şeffaf bir cam kavanoz. Bombeli kavanozlarda ölçüm daha az isabetli olur; uygulama ilk kurulumda kavanozun ölçüsünü bir kez ister.</p></details>
+    <details><summary>Telefonumu saatlerce kavanoza mı dikeceğim?</summary><p>Eski bir telefon en iyisi. Elinizdeki telefonu kullanacaksanız, zirveye yakın saatlerde bir kez kavanozun fotoğrafını çekmeniz de yeter; arayı uygulama tahmin eder.</p></details>
+    <details><summary>Maya kokusundan bir şey anlar mı?</summary><p>Hayır, koku alamaz. Ama yüzeydeki sıvıyı (“hooch”) ve çöküş izini görür; bunlar açlığın görünür işaretidir.</p></details>
+    <details><summary>Glütensiz ya da tam buğday mayası?</summary><p>Hepsi. Un türünü girdiğinizde kabarma beklentisini ona göre ayarlar; çavdar mayası daha az kabarır, bu bir hastalık değildir.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="row"><span><b style="color:var(--rye)">Ekşi Maya</b> · Kavanozu izleyen, besleme zamanını söyleyen uygulama</span><span>merhaba@eksimaya.app · Gizlilik</span></div>
+  <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+</footer>
+</div>
+
+<script>
+(function(){
+  const PK={19:9,23:6.2,27:4.2};let C=23;
+  const t=document.getElementById('t'),to=document.getElementById('to');
+  const base=330, perPct=1.3; // 100% rise = 130px (band at 2x ≈ y200)
+  // deterministic bubbles
+  const bub=document.getElementById('bubbles');let seed=7;const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
+  const B=[];for(let i=0;i<40;i++){B.push({x:78+rnd()*264,f:rnd(),r:2+rnd()*6})}
+  function rise(h){const p=PK[C];const max=C==19?115:C==23?125:110;
+    if(h<=p){const x=h/p;return max*(x*x*(3-2*x))}
+    const d=(h-p);return Math.max(30,max-d*d*7-d*6)}
+  function fmt(h){const H=Math.floor(h),M=Math.round((h-H)*60);return H+' sa'+(M?' '+M+' dk':'')}
+  function draw(){
+    const h=+t.value;const r=rise(h);const y=base-r*perPct;
+    document.getElementById('stRect').setAttribute('y',y);
+    // domed or collapsed top
+    const p=PK[C];const dome=h<=p?10:-4;
+    document.getElementById('stTop').setAttribute('d',`M60 ${y+2} Q210 ${y-dome*2} 360 ${y+2} L360 ${y+8} L60 ${y+8}Z`);
+    const maxR=base-rise(Math.min(h,p))*perPct;
+    const st=document.getElementById('streak');st.setAttribute('y',maxR);st.setAttribute('height',Math.max(0,y-maxR));
+    bub.innerHTML=B.filter(b=>b.f<Math.min(1,r/110)).map(b=>{const yy=y+12+b.f*(460-y-20);return `<circle cx="${b.x.toFixed(1)}" cy="${yy.toFixed(1)}" r="${b.r.toFixed(1)}"/>`}).join('');
+    document.getElementById('readT').textContent='+%'+Math.round(r)+' · '+fmt(h);
+    to.textContent=fmt(h);
+    let s,d;const left=p-h;
+    if(h<0.75){s='Uyanıyor';d='Henüz hareket yok, normal.'}
+    else if(left>1){s='Kabarıyor';d='Zirveye ~'+fmt(left)}
+    else if(left>0){s='Zirveye yakın';d='Hamura katmaya hazırlanın.'}
+    else if(h-p<1.2){s='Zirvede';d='Şimdi hamura katın ya da besleyin.'}
+    else{s='Çöküyor · aç';d='Şimdi besleyin: 1 kısım maya, 2 un, 2 su.'}
+    document.getElementById('sb').textContent=s;document.getElementById('ss').textContent=d;
+  }
+  t.addEventListener('input',draw);
+  document.querySelectorAll('.temps button').forEach(b=>b.onclick=()=>{C=+b.dataset.c;document.querySelectorAll('.temps button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+  draw();
+})();
+</script>
+</body>
+</html>

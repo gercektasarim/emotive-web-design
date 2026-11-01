@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Okuma Gözlüğü — Prospektüsü büyütür, sadeleştirir, size okur</title>
+<meta name="description" content="İlaç prospektüsünü, faturayı, lokanta menüsünü telefonun kamerasıyla büyütür, sade cümlelere çevirir ve sesli okur. Kimseye sormadan, kendi başınıza. İnternetsiz çalışır, kâğıtlarınız telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Noto+Serif:wght@400;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#111111; --soft:#3D3D3D; --hl:#FFE04A; --hl-soft:#FFF4B8; --blue:#1B4FA0; --desk:#ECEEF1; --line:#C9CDD3; --red:#B3261E;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--desk);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-size:22px;line-height:1.55}
+a{color:var(--blue)}
+:focus-visible{outline:4px solid var(--blue);outline-offset:4px;border-radius:4px}
+h1,h2,h3{margin:0;line-height:1.12;font-weight:700}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:28px;text-decoration:none;color:var(--ink)}
+.size{display:flex;gap:8px;align-items:center;font-size:18px}
+.size button{font:700 18px "Atkinson Hyperlegible",sans-serif;border:2px solid var(--ink);background:var(--paper);border-radius:8px;padding:6px 12px;cursor:pointer;min-width:48px}
+.size button[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+.hero{padding:18px 0 80px}
+.hero h1{font-size:clamp(40px,5vw,68px);max-width:20ch}
+.hero h1 mark{background:linear-gradient(transparent 55%,var(--hl) 55%);color:inherit;padding:0 4px}
+.hero .lead{margin-top:18px;font-size:25px;color:var(--soft);max-width:40ch}
+.stage{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:40px;align-items:start}
+
+/* prospectus */
+.leaf{position:relative;background:var(--paper);border:1px solid var(--line);padding:22px 22px 18px;overflow:hidden;cursor:crosshair;border-radius:2px;box-shadow:0 18px 30px -24px rgba(0,0,0,.5);touch-action:none}
+.leaf .fold{position:absolute;top:0;bottom:0;left:50%;width:1px;background:linear-gradient(#e9e9e9,#d5d5d5,#e9e9e9)}
+.pt{font-family:"Noto Serif",serif;font-size:9.5px;line-height:1.35;color:#222;columns:2;column-gap:28px;text-align:justify;hyphens:auto}
+.pt h4{font-size:10px;margin:6px 0 2px;font-weight:700}
+.pt p{margin:0 0 4px}
+.pt .dose{background:transparent}
+.lens{position:absolute;width:210px;height:210px;border-radius:50%;border:6px solid #2A2A2A;box-shadow:0 10px 24px rgba(0,0,0,.35),inset 0 0 0 2px rgba(255,255,255,.6);overflow:hidden;background:var(--paper);pointer-events:none;left:120px;top:150px}
+.lens .inner{position:absolute;transform-origin:0 0}
+.lens::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.35),transparent 40%)}
+.leaf-cap{font-size:17px;color:var(--soft);margin-top:10px}
+
+/* simple card */
+.simple{background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:28px 30px}
+.simple .src{font-size:18px;color:var(--soft);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.simple h2{font-size:30px;margin:10px 0 16px}
+.simple ul{list-style:none;margin:0;padding:0}
+.simple li{font-size:var(--big,27px);line-height:1.35;padding:12px 0;border-top:2px solid var(--desk);display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}
+.simple li svg{margin-top:4px}
+.simple li.warn b{background:var(--hl);padding:0 4px}
+.simple li.word{transition:background .2s}
+.simple li.now{background:var(--hl-soft)}
+.listen{margin-top:20px;display:flex;align-items:center;gap:16px;width:100%;background:var(--ink);color:#fff;border:0;border-radius:14px;padding:16px 20px;font:700 23px "Atkinson Hyperlegible",sans-serif;cursor:pointer;text-align:left}
+.listen:hover{background:#000}
+.listen span{display:block;font-weight:400;font-size:17px;color:#d7d7d7}
+.check{margin-top:14px;font-size:18px;color:var(--soft)}
+
+section{padding:90px 0}
+.h2{font-size:clamp(34px,4vw,52px);max-width:22ch}
+.lede{margin-top:16px;color:var(--soft);font-size:23px;max-width:50ch}
+
+/* papers */
+.papers{background:var(--paper)}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:36px}
+.tabs button{font:700 21px "Atkinson Hyperlegible",sans-serif;border:2px solid var(--ink);background:var(--paper);padding:12px 22px;border-radius:40px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:#fff}
+.panel{display:grid;grid-template-columns:.8fr 1.2fr;gap:36px;margin-top:28px;align-items:start}
+.panel[hidden]{display:none}
+.raw{background:var(--desk);border-radius:12px;padding:20px;font-family:"Noto Serif",serif;font-size:13px;line-height:1.4;color:#333}
+.raw table{width:100%;border-collapse:collapse;font-size:12px}
+.raw td{padding:3px 0;border-bottom:1px dotted #aaa}
+.raw td:last-child{text-align:right}
+.out{font-size:28px;line-height:1.4}
+.out p+p{margin-top:14px}
+.out b{background:var(--hl);padding:0 4px}
+
+/* lessons */
+.lessons ol{list-style:none;margin:44px 0 0;padding:0;display:grid;gap:22px;counter-reset:l}
+.lessons li{counter-increment:l;display:grid;grid-template-columns:90px 1fr;gap:24px;align-items:start;background:var(--paper);border-radius:16px;padding:24px 28px}
+.lessons li::before{content:counter(l);width:72px;height:72px;border-radius:50%;background:var(--hl);display:grid;place-items:center;font-size:38px;font-weight:700}
+.lessons h3{font-size:30px}
+.lessons p{color:var(--soft);margin-top:6px}
+
+/* proof */
+.proof{background:var(--ink);color:#fff}
+.proof .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.proof .h2{color:#fff}
+.proof p{color:#DADADA}
+.proof p+p{margin-top:16px}
+.proof .big{font-size:clamp(30px,3.2vw,42px);font-weight:700;line-height:1.25;color:#fff}
+.proof .big b{color:var(--hl)}
+
+.quote{padding:84px 0}
+.quote blockquote{margin:0;font-size:clamp(28px,3.2vw,40px);line-height:1.35;max-width:26em;font-style:italic}
+.quote cite{display:block;margin-top:20px;font-style:normal;font-size:20px;color:var(--soft)}
+
+.price{background:var(--paper)}
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.price .free{font-size:80px;font-weight:700;line-height:1}
+.price ul{padding-left:24px;margin:16px 0 26px}
+.btn{display:inline-block;background:var(--blue);color:#fff;font:700 23px "Atkinson Hyperlegible",sans-serif;padding:18px 30px;border-radius:12px;text-decoration:none}
+.btn:hover{background:#143c7b}
+.faq details{border-bottom:2px solid var(--desk);padding:18px 0}
+.faq summary{cursor:pointer;font-weight:700;font-size:23px}
+.faq details p{margin-top:10px;color:var(--soft)}
+
+footer{padding:36px 0;font-size:19px;color:var(--soft)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 30px}
+footer .credit{flex-basis:100%;font-size:15px}
+
+body.xl{--big:33px;font-size:25px}
+body.xl .lede,body.xl .hero .lead{font-size:27px}
+
+@media (max-width:960px){
+  .stage,.panel,.proof .wrap,.price .wrap{grid-template-columns:1fr;gap:28px}
+}
+@media (max-width:520px){
+  body{font-size:21px}
+  .wrap{padding:0 16px}
+  .size span{display:none}
+  .brand{font-size:22px;gap:8px}
+  .brand svg{width:34px}
+  .simple{padding:20px 18px}
+  .simple li{grid-template-columns:30px 1fr;font-size:var(--big,24px)}
+  .lessons li{grid-template-columns:1fr;gap:12px;padding:20px}
+  .lens{width:160px;height:160px}
+  section{padding:62px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">
+      <svg width="44" height="26" viewBox="0 0 44 26" aria-hidden="true"><circle cx="11" cy="14" r="9" fill="none" stroke="#111" stroke-width="3"/><circle cx="33" cy="14" r="9" fill="none" stroke="#111" stroke-width="3"/><path d="M20 12q2-3 4 0" fill="none" stroke="#111" stroke-width="3"/><circle cx="11" cy="14" r="5" fill="#FFE04A"/></svg>
+      Okuma Gözlüğü
+    </a>
+    <div class="size" role="group" aria-label="Sayfadaki yazı boyu">
+      <span>Yazı boyu</span>
+      <button type="button" id="sN" aria-pressed="true">A</button>
+      <button type="button" id="sX" aria-pressed="false" style="font-size:24px">A</button>
+    </div>
+  </header>
+</div>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <h1>Küçük yazıyı <mark>büyütür, sadeleştirir</mark> ve size okur.</h1>
+    <p class="lead">İlaç prospektüsü, elektrik faturası, lokanta menüsü. Telefonu kâğıdın üstüne tutun; kimseye sormadan, kendiniz okuyun.</p>
+
+    <div class="stage">
+      <div>
+        <div class="leaf" id="leaf" tabindex="0" aria-label="Küçük puntolu ilaç prospektüsü. Büyüteci fareyle ya da ok tuşlarıyla gezdirin.">
+          <div class="fold" aria-hidden="true"></div>
+          <div class="pt" id="pt">
+            <h4>KULLANMA TALİMATI</h4>
+            <p>TANSİLAR 5 mg film kaplı tablet. Ağızdan alınır. Etkin madde: Her film kaplı tablet 5 mg amlodipin içerir. Yardımcı maddeler: mikrokristalin selüloz, kalsiyum hidrojen fosfat, sodyum nişasta glikolat, magnezyum stearat.</p>
+            <p>Bu ilacı kullanmaya başlamadan önce bu KULLANMA TALİMATINI dikkatlice okuyunuz, çünkü sizin için önemli bilgiler içermektedir. Bu kullanma talimatını saklayınız. Daha sonra tekrar okumaya ihtiyaç duyabilirsiniz.</p>
+            <h4>1. TANSİLAR nedir ve ne için kullanılır?</h4>
+            <p>TANSİLAR kalsiyum kanal blokörleri olarak adlandırılan bir ilaç grubuna aittir. Yüksek tansiyonun (hipertansiyon) tedavisinde ve belirli tipteki göğüs ağrılarının (anjina) tedavisinde kullanılır.</p>
+            <h4>2. TANSİLAR'ı kullanmadan önce dikkat edilmesi gerekenler</h4>
+            <p>Eğer amlodipine veya bu ilacın içeriğindeki maddelerden herhangi birine karşı alerjiniz varsa, ciddi derecede düşük tansiyonunuz (hipotansiyon) varsa, kalp kapakçığınızda daralma (aort stenozu) ya da kardiyojenik şok varsa KULLANMAYINIZ.</p>
+            <p>Greyfurt suyu ve greyfurt, TANSİLAR kullanan kişilerce tüketilmemelidir. Bunun nedeni, greyfurt ve greyfurt suyunun kandaki etkin madde düzeylerinde artışa yol açabilmesidir.</p>
+            <h4>Araç ve makine kullanımı</h4>
+            <p>TANSİLAR araç ve makine kullanma yeteneğinizi etkileyebilir. Eğer tabletler kendinizi hasta, sersem veya yorgun hissetmenize ya da baş ağrısına neden olursa araç veya makine kullanmayınız.</p>
+            <h4>3. TANSİLAR nasıl kullanılır?</h4>
+            <p class="dose">Önerilen başlangıç dozu günde bir kez 5 mg'dır. Doktorunuz dozu günde bir kez 10 mg'a çıkarabilir. İlacınızı yemeklerle birlikte veya ayrı olarak alabilirsiniz. Her gün aynı saatte, bir bardak su ile alınız. Greyfurt suyu ile birlikte almayınız.</p>
+            <p>Eğer TANSİLAR'ın etkisinin çok güçlü veya zayıf olduğuna dair bir izleniminiz var ise doktorunuz veya eczacınız ile konuşunuz. Kullanmanız gerekenden fazla TANSİLAR kullandıysanız bir doktor veya eczacı ile konuşunuz.</p>
+            <h4>4. Olası yan etkiler</h4>
+            <p>Çok yaygın: ayak bileklerinde şişme (ödem). Yaygın: baş ağrısı, baş dönmesi, uyku hali, çarpıntı, yüz kızarması, karın ağrısı, bulantı, yorgunluk.</p>
+          </div>
+          <div class="lens" id="lens" aria-hidden="true"><div class="inner" id="lensInner"></div></div>
+        </div>
+        <p class="leaf-cap">Prospektüsün gerçek boyu: 7 punto. Büyüteci üstünde gezdirin.</p>
+      </div>
+
+      <div class="simple" aria-label="Sadeleştirilmiş okuma">
+        <p class="src"><span>Tansilar 5 mg · kullanma talimatı</span><span>4 sayfa → 5 cümle</span></p>
+        <h2>Bu ilaç ne diyor?</h2>
+        <ul id="lines">
+          <li class="word"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="#111" stroke-width="2.5"/><path d="M13 7v6l4 3" stroke="#111" stroke-width="2.5" fill="none"/></svg><span>Günde <b>bir kez</b>, her gün aynı saatte.</span></li>
+          <li class="word"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M7 4h12l-2 18H9z" fill="none" stroke="#111" stroke-width="2.5"/></svg><span>Bir bardak suyla. Aç ya da tok fark etmez.</span></li>
+          <li class="word warn"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M13 3l11 20H2z" fill="#FFE04A" stroke="#111" stroke-width="2"/><path d="M13 10v6M13 19v1" stroke="#111" stroke-width="2.5"/></svg><span><b>Greyfurt yemeyin</b>, suyunu da içmeyin.</span></li>
+          <li class="word warn"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M13 3l11 20H2z" fill="#FFE04A" stroke="#111" stroke-width="2"/><path d="M13 10v6M13 19v1" stroke="#111" stroke-width="2.5"/></svg><span>Başınız dönerse <b>araba kullanmayın</b>.</span></li>
+          <li class="word"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="#111" stroke-width="2.5"/><path d="M13 8v6M13 17v1" stroke="#111" stroke-width="2.5"/></svg><span>Ayak bileğiniz şişerse doktorunuza söyleyin.</span></li>
+        </ul>
+        <button class="listen" id="listen" type="button">
+          <svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="#FFE04A"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <div id="listenTxt">Bana sesli okuyun<span>yavaş · kadın sesi</span></div>
+        </button>
+        <p class="check">Dozu her zaman kutudaki asıl yazıyla birlikte gösterir. Emin olmadığında “eczacınıza sorun” der.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="papers" aria-labelledby="pp">
+  <div class="wrap">
+    <h2 class="h2" id="pp">Evdeki her küçük yazı için</h2>
+    <p class="lede">Ne olduğunu kendisi anlar; faturada son ödeme gününü, menüde fiyatı, mektupta kimden geldiğini öne çıkarır.</p>
+    <div class="tabs" role="tablist" aria-label="Kâğıt türleri">
+      <button type="button" role="tab" id="tb1" aria-selected="true" aria-controls="p1">Elektrik faturası</button>
+      <button type="button" role="tab" id="tb2" aria-selected="false" aria-controls="p2" tabindex="-1">Lokanta menüsü</button>
+      <button type="button" role="tab" id="tb3" aria-selected="false" aria-controls="p3" tabindex="-1">Banka mektubu</button>
+    </div>
+    <div class="panel" id="p1" role="tabpanel" aria-labelledby="tb1">
+      <div class="raw"><b>MERAM ELEKTRİK PERAKENDE SATIŞ</b><br>Tesisat no: 4001827736 · Abone grubu: Mesken<br><table><tr><td>İlk endeks</td><td>18.442</td></tr><tr><td>Son endeks</td><td>18.611</td></tr><tr><td>Tüketim (kWh)</td><td>169</td></tr><tr><td>Enerji bedeli</td><td>412,36</td></tr><tr><td>Dağıtım bedeli</td><td>187,22</td></tr><tr><td>BTV + KDV</td><td>125,38</td></tr><tr><td><b>ÖDENECEK TUTAR</b></td><td><b>724,96 TL</b></td></tr><tr><td>Son ödeme tarihi</td><td>18.11.2026</td></tr></table></div>
+      <div class="out"><p>Bu ay elektriğe <b>724 lira 96 kuruş</b> ödeyeceksiniz.</p><p>Son gün: <b>18 Kasım Çarşamba</b>. On yedi gün var.</p><p>Geçen aydan 38 lira fazla; kış geldi, normal.</p></div>
+    </div>
+    <div class="panel" id="p2" role="tabpanel" aria-labelledby="tb2" hidden>
+      <div class="raw"><b>KÖŞK LOKANTASI · ÖĞLE</b><br>Etli ekmek (yarım / tam) ........ 180 / 320<br>Fırın kebabı, pilav ile ............... 450<br>Bamya çorbası ............................... 120<br>Tirit ................................................... 380<br>Mevsim salata .................................. 110<br>Höşmerim ........................................ 140</div>
+      <div class="out"><p>Çorbalar: <b>bamya çorbası 120 lira</b>.</p><p>Ana yemekler: etli ekmek yarım 180, tam 320; fırın kebabı 450; tirit 380.</p><p>Tatlı: höşmerim 140.</p></div>
+    </div>
+    <div class="panel" id="p3" role="tabpanel" aria-labelledby="tb3" hidden>
+      <div class="raw"><b>Sayın Müşterimiz,</b><br>Kredi kartı sözleşmeniz kapsamında, 01.12.2026 tarihinden itibaren yıllık kart aidatı tutarı 650,00 TL olarak uygulanacaktır. Aidat iadesi talebiniz için bankamızın şubelerine başvurabilirsiniz…</div>
+      <div class="out"><p>Bankanız, kredi kartı için <b>yılda 650 lira aidat</b> alacağını söylüyor.</p><p>1 Aralık'tan itibaren.</p><p>İstemiyorsanız şubeye gidip iade isteyebilirsiniz.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="lessons" aria-labelledby="ll">
+  <div class="wrap">
+    <h2 class="h2" id="ll">İlk gün, üç adım</h2>
+    <p class="lede">Torununuzun göstermesine gerek yok; uygulama ilk açılışta sizi adım adım, sesli olarak geçirir.</p>
+    <ol>
+      <li><div><h3>Telefonu kâğıdın üstüne tutun</h3><p>Bir karış yukarıdan. Titrese de olur; yazıyı yakaladığında telefon bir kez titrer.</p></div></li>
+      <li><div><h3>Ekrana bir kez dokunun</h3><p>Yazı büyür. İki parmağınızla daha da büyütebilirsiniz; satırlar kaymaz, yerinde durur.</p></div></li>
+      <li><div><h3>“Sadeleştir” ya da “Oku” deyin</h3><p>Ekrana dokunmak yerine söyleyebilirsiniz. “Bir daha oku”, “yavaş oku” da anlar.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="proof">
+  <div class="wrap">
+    <p class="big">Hangi ilacı kullandığınızı, ne kadar fatura ödediğinizi <b>telefonunuzdan başka kimse bilmez.</b></p>
+    <div>
+      <p>Yazıyı okuyan, sadeleştiren ve seslendiren telefonun kendisi. Kameranın gördüğü kâğıt hiçbir yere yüklenmez; okuma bitince görüntü silinir.</p>
+      <p>Eczane kuyruğunda, köy evinde, internet paketi bittiğinde de okur. Hesap açmanız, şifre hatırlamanız gerekmez.</p>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>“Kırk yıl terzilik yaptım, iğneye iplik geçirirdim. Şimdi ilacın kâğıdını okuyamıyordum, gelinime soruyordum, ayıp oluyordu. Artık kendim bakıyorum. Greyfurt yememem gerekiyormuş, bilmiyordum.”</blockquote>
+    <cite>Saniye Çelik, 74 · Konya, Meram. Emekli terzi.</cite>
+  </div>
+</section>
+
+<section class="price">
+  <div class="wrap">
+    <div>
+      <p class="free">Ücretsiz</p>
+      <ul><li>Reklam yok, abonelik yok</li><li>Android 8 ve üzeri, iPhone 8 ve üzeri</li><li>Büyük yazı ve sesli anlatım baştan açık</li></ul>
+      <a class="btn" href="#">Telefonuma indir</a>
+    </div>
+    <div class="faq">
+      <details><summary>Yanlış okursa ne olur?</summary><p>İlaç dozu, saat ve uyarılar her zaman asıl yazının fotoğrafıyla yan yana gösterilir. Emin olmadığı bir sayı varsa sarıyla işaretler ve “eczacınıza sorun” der. Sadeleştirme, doktor ya da eczacı sözünün yerine geçmez.</p></details>
+      <details><summary>Gözlüğümle mi kullanayım, gözlüksüz mü?</summary><p>Nasıl rahatsanız. Ekrandaki yazı boyunu bir kez ayarlarsınız, sonra hep öyle açılır.</p></details>
+      <details><summary>El yazısını okur mu?</summary><p>Düzgün el yazısını, reçete gibi hızlı yazılmışları her zaman değil. Okuyamadığında bunu açıkça söyler, tahmin etmez.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Okuma Gözlüğü · Konya · yardim@okumagozlugu.app</span>
+    <span>Gizlilik · Erişilebilirlik beyanı</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* lens */
+  var leaf=document.getElementById('leaf'),lens=document.getElementById('lens'),inner=document.getElementById('lensInner'),pt=document.getElementById('pt'),Z=2.6;
+  var clone=pt.cloneNode(true);clone.removeAttribute('id');inner.appendChild(clone);
+  function sync(){inner.style.width=pt.offsetWidth+'px';}
+  var pos={x:150,y:230};
+  function place(x,y){
+    var w=leaf.clientWidth,h=leaf.clientHeight,r=lens.offsetWidth/2;
+    x=Math.max(0,Math.min(w,x));y=Math.max(0,Math.min(h,y));pos={x:x,y:y};
+    lens.style.left=(x-r)+'px';lens.style.top=(y-r)+'px';
+    var ox=x-pt.offsetLeft,oy=y-pt.offsetTop;
+    inner.style.transform='translate('+(r-ox*Z)+'px,'+(r-oy*Z)+'px) scale('+Z+')';
+  }
+  function fromEvt(e){var b=leaf.getBoundingClientRect();place(e.clientX-b.left,e.clientY-b.top)}
+  leaf.addEventListener('pointermove',fromEvt);
+  leaf.addEventListener('pointerdown',fromEvt);
+  leaf.addEventListener('keydown',function(e){var d=18,m={ArrowLeft:[-d,0],ArrowRight:[d,0],ArrowUp:[0,-d],ArrowDown:[0,d]}[e.key];if(m){e.preventDefault();place(pos.x+m[0],pos.y+m[1])}});
+  function init(){sync();var dose=pt.querySelector('.dose');place(dose.offsetLeft+dose.offsetWidth*0.45,dose.offsetTop+dose.offsetHeight*0.35)}
+  window.addEventListener('resize',init);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(init);init();
+
+  /* read aloud */
+  var btn=document.getElementById('listen'),lines=[].slice.call(document.querySelectorAll('#lines li')),t=null;
+  btn.addEventListener('click',function(){
+    clearTimeout(t);var i=0,text=lines.map(function(l){return l.textContent}).join('. ');
+    try{if(window.speechSynthesis){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(text);u.lang='tr-TR';u.rate=.8;speechSynthesis.speak(u)}}catch(e){}
+    (function step(){lines.forEach(function(l,j){l.classList.toggle('now',j===i)});i++;if(i<=lines.length)t=setTimeout(step,2200)})();
+  });
+
+  /* tabs */
+  var tabs=[].slice.call(document.querySelectorAll('[role=tab]'));
+  function sel(tb){tabs.forEach(function(x){var on=x===tb;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).hidden=!on});tb.focus()}
+  tabs.forEach(function(tb,i){tb.addEventListener('click',function(){sel(tb)});tb.addEventListener('keydown',function(e){if(e.key==='ArrowRight')sel(tabs[(i+1)%tabs.length]);if(e.key==='ArrowLeft')sel(tabs[(i+tabs.length-1)%tabs.length])})});
+
+  /* page size */
+  var sN=document.getElementById('sN'),sX=document.getElementById('sX');
+  function sz(x){document.body.classList.toggle('xl',x);sN.setAttribute('aria-pressed',!x);sX.setAttribute('aria-pressed',x);init()}
+  sN.addEventListener('click',function(){sz(false)});sX.addEventListener('click',function(){sz(true)});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "slug": "titrek-el",
+  "name": "Sakin El",
+  "interpretation": "Öğretmenin mektubu",
+  "world": "Emekli öğretmenin masası: çizgili mektup kâğıdı, okul dolma kaleminin turkuaz mürekkebi ve kırmızı düzeltme kalemi.",
+  "palette": [
+    "#EDF2F1",
+    "#0F5260",
+    "#21242C",
+    "#3A3F4B",
+    "#B42318",
+    "#D3E6E6"
+  ],
+  "fonts": [
+    "Gelasio",
+    "Nunito Sans"
+  ],
+  "score": 26,
+  "lowest": "Tanınabilirlik",
+  "moment": "Toruna yazılan mesajda kırmızı titrek dokunuşlar tuşların çevresine düşerken mesaj temiz çıkar; Sakin El kapatılınca aynı mesaj hatalı kelimelerle yeniden yazılır."
+}

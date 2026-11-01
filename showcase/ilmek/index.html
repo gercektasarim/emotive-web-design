@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İlmek — Sırayı sen ör, saymayı telefon tutsun</title>
+<meta name="description" content="İlmek örgünü kamerayla izler, sırayı ve ilmekleri sayar, desen hatasını iki sıra sonra değil hemen söyler; el işi defterini tutar. Görüntü kaydedilmez, internet gerekmez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --angora:#F7EEF0;   /* açık pembe tiftik */
+  --visne:#A3324F;    /* vişne rengi yün */
+  --visne-2:#7E2139;
+  --lacivert:#26355E; /* lacivert yün */
+  --sis:#D9B98C;      /* kayın ağacı şiş */
+  --metin:#33232A;
+  --soluk:#6A5560;
+  --ip:#E7D3D9;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--angora);color:var(--metin);font:400 20px/1.6 "Atkinson Hyperlegible",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:4px solid var(--lacivert);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:"Young Serif",Georgia,serif;font-weight:400;line-height:1.1;margin:0}
+.w{max-width:1180px;margin:0 auto;padding:0 28px}
+.ust{display:flex;justify-content:space-between;align-items:center;padding:22px 0;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;font:400 28px/1 "Young Serif";text-decoration:none;color:var(--visne)}
+.ust nav{display:flex;gap:26px;font-size:18px}
+.ust nav a{text-decoration:none}
+.ust nav a:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.btn{display:inline-block;font:700 19px/1 "Atkinson Hyperlegible";padding:17px 24px;border-radius:12px;text-decoration:none;border:2px solid var(--visne);color:var(--visne);background:transparent;cursor:pointer}
+.btn.dolu{background:var(--visne);color:#fff}
+.btn.dolu:hover{background:var(--visne-2)}
+.btn:hover{background:#F1DCE2}
+
+.giris{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end;padding:26px 0 34px}
+.giris h1{font-size:clamp(44px,6vw,80px);color:var(--vari,var(--metin))}
+.giris p{margin:0 0 6px;font-size:21px;max-width:28em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+
+/* tezgâh */
+.tezgah{background:#fff;border:2px solid var(--ip);border-radius:22px;display:grid;grid-template-columns:260px 1fr 300px;overflow:hidden}
+.sayac{background:var(--lacivert);color:#fff;padding:26px 24px;display:flex;flex-direction:column;gap:16px}
+.sayac .et{font-size:16px;color:#C9D0E6}
+.sayac .no{font:400 104px/1 "Young Serif";letter-spacing:-.03em}
+.sayac .ilmek{font:400 34px/1 "Young Serif"}
+.sayac .ses{margin-top:auto;font-size:16px;color:#C9D0E6;border-top:1px solid #3D4D7A;padding-top:14px}
+.sayac .ses b{color:#fff;font-weight:700}
+.kumas{padding:12px 18px 18px;display:flex;flex-direction:column;align-items:center;background:repeating-linear-gradient(90deg,#FBF6F7 0 24px,#F8F1F3 24px 48px)}
+.kumas svg{width:100%;max-width:420px;height:auto;display:block}
+.kumas .kamera{align-self:stretch;display:flex;justify-content:space-between;font-size:15px;color:var(--soluk)}
+.kumas .kamera span:first-child::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:#3E8E5A;margin-right:8px;vertical-align:1px}
+.sema{padding:22px 22px 20px;border-left:2px solid var(--ip);display:flex;flex-direction:column}
+.sema h3{font-size:22px}
+.sema .ad{font-size:16px;color:var(--soluk);margin-bottom:12px}
+.izgara{display:grid;grid-template-columns:repeat(16,1fr);gap:2px;background:var(--ip);border:2px solid var(--ip)}
+.izgara span{aspect-ratio:1;background:#fff;display:grid;place-items:center;font-size:10px;color:var(--metin)}
+.izgara span.t::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--metin)}
+.izgara span.su{background:#FBE3EA}
+.izgara span.hata{background:#F2B8C6;outline:2px solid var(--visne);z-index:1}
+.sema .mesaj{margin-top:16px;font-size:18px;line-height:1.45;min-height:5.2em}
+.sema .mesaj.uyari{color:var(--visne-2);font-weight:700}
+.sema .dugmeler{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:12px}
+.sema .btn{padding:14px 18px;font-size:17px}
+
+section{padding:96px 0}
+.iki{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.kisi{border-radius:22px;padding:36px}
+.kisi.anne{background:var(--visne);color:#fff}
+.kisi.genc{background:#fff;border:2px solid var(--ip)}
+.kisi h2{font-size:clamp(30px,3.4vw,42px);margin-bottom:16px}
+.kisi ul{list-style:none;padding:0;margin:0}
+.kisi li{padding:12px 0;border-top:1px solid rgba(255,255,255,.3)}
+.kisi.genc li{border-top-color:var(--ip)}
+.kisi li b{display:block}
+
+.ev{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.ev h2{font-size:clamp(34px,4vw,52px);color:var(--lacivert)}
+.ev .sahne{background:var(--lacivert);border-radius:22px;padding:28px;color:#E6E9F3;font-size:18px}
+.ev .sahne dl{display:grid;grid-template-columns:auto 1fr;gap:12px 18px;margin:0}
+.ev .sahne dt{color:#AEB8D6}
+.ev .sahne dd{margin:0;font-weight:700}
+
+/* defter = yün banderolleri */
+.bas{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:34px;flex-wrap:wrap}
+.bas h2{font-size:clamp(34px,4vw,52px)}
+.bas p{margin:0;max-width:26em;color:var(--soluk)}
+.banderol{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.yun{position:relative;border-radius:60px/26px;padding:26px 28px 28px;color:#fff;overflow:hidden}
+.yun::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.08) 0 3px,transparent 3px 9px);pointer-events:none}
+.yun .ic{position:relative;background:#fff;color:var(--metin);border-radius:12px;padding:18px 18px 16px}
+.yun h3{font-size:24px}
+.yun .kim{font-size:16px;color:var(--soluk)}
+.yun .bar{height:12px;border-radius:6px;background:var(--ip);margin:14px 0 6px;overflow:hidden}
+.yun .bar i{display:block;height:100%;background:var(--c)}
+.yun .alt{display:flex;justify-content:space-between;font-size:15px;color:var(--soluk)}
+
+.soz{display:grid;grid-template-columns:1.3fr 1fr;gap:56px;align-items:start}
+.soz blockquote{margin:0;font:400 clamp(28px,3.2vw,40px)/1.25 "Young Serif";color:var(--visne-2)}
+.soz cite{display:block;font:400 18px/1.4 "Atkinson Hyperlegible";font-style:normal;color:var(--soluk);margin-top:16px}
+.soz .genc{font-size:22px;border-left:4px solid var(--sis);padding-left:20px}
+.soz .genc cite{font-size:16px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:10px}
+.paket{background:#fff;border:2px solid var(--ip);border-radius:22px;padding:32px}
+.paket.tam{border-color:var(--visne)}
+.paket h3{font-size:28px}
+.paket .tl{font:400 52px/1 "Young Serif";margin:12px 0 4px;color:var(--visne)}
+.paket .tl small{font:400 18px "Atkinson Hyperlegible";color:var(--soluk)}
+.paket ul{padding-left:22px;margin:16px 0 24px}
+
+.sss details{background:#fff;border:2px solid var(--ip);border-radius:16px;padding:18px 22px;margin-bottom:12px}
+.sss summary{cursor:pointer;font:400 23px/1.3 "Young Serif"}
+.sss p{margin:10px 0 0}
+
+footer{background:var(--lacivert);color:#E6E9F3;padding:52px 0 30px}
+footer .w{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:center}
+footer h2{font-size:clamp(30px,3.6vw,44px);max-width:16em}
+footer .btn{border-color:#fff;color:#fff}
+footer .btn:hover{background:#33467A}
+footer .imza{width:100%;font-size:16px;border-top:1px solid #3D4D7A;padding-top:18px;color:#C9D0E6}
+
+@media (max-width:1000px){
+  .tezgah{grid-template-columns:1fr 1fr}
+  .sayac{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:10px 28px}
+  .sayac .no{font-size:76px}
+  .sayac .ses{margin-top:0;border-top:0;padding-top:0;flex-basis:100%}
+  .sayac>.et:first-child{flex-basis:100%}
+}
+@media (max-width:900px){
+  .giris,.iki,.ev,.soz,.fiyat{grid-template-columns:1fr}
+  .banderol{grid-template-columns:1fr}
+  .ust nav{display:none}
+}
+@media (max-width:640px){
+  .tezgah{grid-template-columns:1fr}
+  .sema{border-left:0;border-top:2px solid var(--ip)}
+}
+@media (max-width:520px){
+  body{font-size:19px}
+  .w{padding:0 16px}
+  section{padding:68px 0}
+  .kisi{padding:26px 22px}
+  .sayac .no{font-size:64px}
+}
+</style>
+</head>
+<body>
+<div class="w">
+  <header class="ust">
+    <a class="logo" href="#"><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="16" cy="20" r="13" fill="#A3324F"/><path d="M6 14c6 4 14 4 20 0M4 21c8 4 16 4 24 0M7 28c6 2 12 2 18 0" stroke="#7E2139" stroke-width="2" fill="none"/><path d="M24 4l10 28" stroke="#D9B98C" stroke-width="3" stroke-linecap="round"/></svg>İlmek</a>
+    <nav aria-label="Sayfa içi"><a href="#tezgah">Nasıl sayar</a><a href="#iki">Kimin için</a><a href="#defter">El işi defteri</a><a href="#fiyat">Fiyat</a></nav>
+  </header>
+</div>
+
+<main>
+<div class="w">
+  <div class="giris">
+    <h1>Sen ör. Sırayı İlmek saysın.</h1>
+    <div>
+      <p>Telefonu örgüne bakacak şekilde koy. İlmek sıraları ve ilmekleri sayar, sesli söyler; desende bir ilmek kaçarsa iki sıra sonra değil, hemen söyler.</p>
+      <div class="cta"><a class="btn dolu" href="#fiyat">Ücretsiz indir</a><a class="btn" href="#tezgah">Önce dene</a></div>
+    </div>
+  </div>
+
+  <div class="tezgah" id="tezgah" aria-label="Uygulamanın sayma ekranı, denenebilir örnek">
+    <div class="sayac">
+      <span class="et">Defne'nin hırkası · sırt</span>
+      <div><div class="no" id="sira" aria-live="polite">47</div><span class="et">. sıra / 140</span></div>
+      <div><div class="ilmek">64 ilmek</div><span class="et">her sırada</span></div>
+      <div class="ses">Sesli söyler: <b id="sesli">"Kırk yedi."</b></div>
+    </div>
+    <div class="kumas">
+      <div class="kamera"><span>Kamera örgüye bakıyor</span><span>kaydetmiyor</span></div>
+      <svg id="kumas" viewBox="0 0 340 250" role="img" aria-label="Şişteki örgü parçası; her tıklamada bir sıra eklenir"></svg>
+    </div>
+    <div class="sema">
+      <h3>Desen: jarse, 2 burgu</h3>
+      <div class="ad">Şemada sıranın yeri işaretli</div>
+      <div class="izgara" id="izgara" aria-hidden="true"></div>
+      <p class="mesaj" id="mesaj" aria-live="polite">47. sıra tamam. Kol oyuntusuna 13 sıra kaldı.</p>
+      <div class="dugmeler"><button class="btn dolu" id="or" type="button">Bir sıra ör</button><button class="btn" id="sok" type="button" hidden>Bu sırayı sök</button></div>
+    </div>
+  </div>
+</div>
+
+<section id="iki">
+  <div class="w iki">
+    <div class="kisi anne">
+      <h2>Kırk yıldır örüyorsan</h2>
+      <ul>
+        <li><b>Kâğıda çentik atmak yok.</b>Sayaç kendisi sayar; dizi izlerken unutsan da kaldığın sıra yerinde.</li>
+        <li><b>Gözlük aramak yok.</b>Rakamlar kocaman, istersen sesli söyler: "Kırk sekiz."</li>
+        <li><b>Burguyu kaçırmak yok.</b>"Altıncı sırada burgu çevir" der, sen çevirmeden geçmez.</li>
+      </ul>
+    </div>
+    <div class="kisi genc">
+      <h2>Yeni başladıysan</h2>
+      <ul>
+        <li><b>Düz mü ters mi, gösterir.</b>Kamera ilmeğini tanır; yanlış örersen o ilmeği ekranda işaretler.</li>
+        <li><b>Sökmekten korkma.</b>Hatayı erken söylediği için genelde bir iki sıra sökmen yeter.</li>
+        <li><b>Desen okumayı öğretir.</b>Şemadaki her işaretin ne demek olduğunu sırası gelince anlatır.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w ev">
+    <div>
+      <h2>Akşam, dizi açık, örgü kucakta. Kamera yalnız şişi görür.</h2>
+      <p>İlmek görüntüyü kaydetmez; her kareyi telefonun içinde sayar ve unutur. Salon görünmez, yüzün görünmez, internete gerek yoktur. Satın aldığın desen de telefonunda kalır, kimseyle paylaşılmaz.</p>
+    </div>
+    <div class="sahne" aria-label="Bir akşamki örgü oturumunun özeti">
+      <dl>
+        <dt>Süre</dt><dd>1 saat 52 dakika</dd>
+        <dt>Örülen</dt><dd>9 sıra, 576 ilmek</dd>
+        <dt>Yakalanan hata</dt><dd>1 · 48. sıra, 9. ilmek</dd>
+        <dt>Kaydedilen görüntü</dt><dd>0 kare</dd>
+        <dt>İnternet</dt><dd>kapalıydı</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="defter" style="padding-top:0">
+  <div class="w">
+    <div class="bas">
+      <h2>El işi defteri</h2>
+      <p>Her işin yünü, şişi, kime örüldüğü ve kaldığın sıra bir banderolde. Yarım kalan bere bile kaybolmaz.</p>
+    </div>
+    <div class="banderol">
+      <div class="yun" style="background:#A3324F;--c:#A3324F"><div class="ic"><h3>Defne'ye hırka</h3><div class="kim">4 yaş · vişne, %100 yün · 4 numara şiş</div><div class="bar"><i style="width:34%"></i></div><div class="alt"><span>47 / 140 sıra</span><span>sırt</span></div></div></div>
+      <div class="yun" style="background:#26355E;--c:#26355E"><div class="ic"><h3>Kendime bere</h3><div class="kim">lacivert, merinos · 3,5 numara şiş</div><div class="bar"><i style="width:80%"></i></div><div class="alt"><span>64 / 80 sıra</span><span>tepe azaltma</span></div></div></div>
+      <div class="yun" style="background:#B8925E;--c:#8A6A3E"><div class="ic"><h3>Bebek battaniyesi</h3><div class="kim">krem, pamuk · 5 numara şiş</div><div class="bar"><i style="width:100%"></i></div><div class="alt"><span>bitti · Mart</span><span>Ece'nin bebeğine</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w soz">
+    <div>
+      <blockquote>"Elli yıldır örerim, sırayı hep kaçırırdım. Torunum telefonu koydu; şimdi o sayıyor, ben çay içiyorum."</blockquote>
+      <cite>Nurten Aksoy · 71 · emekli terzi, Bursa</cite>
+    </div>
+    <div class="genc">"İlk kazağımı bitirdim. Ters ilmeği her seferinde gösterdi, anneannemi aramadan."
+      <cite>Zeynep Kılıç · 23 · üniversite öğrencisi, Ankara</cite></div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:0">
+  <div class="w">
+    <div class="bas"><h2>Saymak ücretsiz.</h2><p>Defter ve desen tanıma isteyene, bir kere.</p></div>
+    <div class="fiyat">
+      <div class="paket"><h3>Sayaç</h3><div class="tl">0 ₺</div><ul><li>Kamerayla sıra ve ilmek sayma</li><li>Sesli sayı söyleme, büyük yazı</li><li>Tek iş</li></ul><a class="btn" href="#">Ücretsiz indir</a></div>
+      <div class="paket tam"><h3>Örgü defteri</h3><div class="tl">129 ₺ <small>bir kere</small></div><ul><li>Desen şeması ve hata yakalama</li><li>Sınırsız iş, yün ve şiş kaydı</li><li>Burgu, ajur, lastik ve haraşo desenleri</li><li>Ailede 5 telefona kadar</li></ul><a class="btn dolu" href="#">Defteri al</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sss" style="padding-top:0">
+  <div class="w" style="max-width:860px">
+    <h2 style="font-size:40px;margin-bottom:20px">Sorulanlar</h2>
+    <details open><summary>Telefonu nereye koyacağım?</summary><p>Kucağının karşısına, bir bardağa ya da kitaba dayalı, şişleri görecek kadar. Uygulama ilk açılışta doğru açıyı sesle tarif eder.</p></details>
+    <details><summary>Tığ işinde de sayar mı?</summary><p>Şu an iki şiş ve yuvarlak şişle çalışıyor. Tığ, sonbahar güncellemesinde geliyor; ücretsiz.</p></details>
+    <details><summary>Akşam ışığında görür mü?</summary><p>Salon lambası yeterli. Koyu yünde (lacivert, siyah) biraz daha ışık ister; o zaman söyler.</p></details>
+    <details><summary>Kendi desenimi yükleyebilir miyim?</summary><p>Evet. Dergideki deseni fotoğraflarsın, İlmek şemayı telefonda okur ve sıralara böler.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <h2>Bir sonraki hırkada sırayı kaçırma.</h2>
+    <a class="btn" href="#fiyat">Ücretsiz indir</a>
+    <div class="imza">İlmek · Bursa · merhaba@ilmek.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+ const S=16, GOR=17, HATA_SIRA=48, HATA_ILMEK=8;
+ let sira=47, hata=false, soktu=false;
+ const sayi=["","bir","iki","üç","dört","beş","altı","yedi","sekiz","dokuz"],onlar=["","on","yirmi","otuz","kırk","elli","altmış","yetmiş","seksen","doksan"];
+ const oku=n=>(onlar[Math.floor(n/10)]+" "+sayi[n%10]).trim();
+ const buyuk=s=>s.charAt(0).toLocaleUpperCase('tr-TR')+s.slice(1);
+ const svg=document.getElementById('kumas'),iz=document.getElementById('izgara');
+ function ilmek(x,y,renk,ters,vurgu){
+  if(ters) return '<ellipse cx="'+x+'" cy="'+y+'" rx="8" ry="4" fill="'+renk+'"/>'+(vurgu?'<circle cx="'+x+'" cy="'+y+'" r="12" fill="none" stroke="#F2B8C6" stroke-width="3"/>':'');
+  return '<ellipse cx="'+(x-3.5)+'" cy="'+y+'" rx="3.4" ry="8" fill="'+renk+'" stroke="#00000022" stroke-width=".6" transform="rotate(-30 '+(x-3.5)+' '+y+')"/><ellipse cx="'+(x+3.5)+'" cy="'+y+'" rx="3.4" ry="8" fill="'+renk+'" stroke="#00000022" stroke-width=".6" transform="rotate(30 '+(x+3.5)+' '+y+')"/>';
+ }
+ function ciz(){
+  let s='<rect x="6" y="10" width="328" height="6" rx="3" fill="#D9B98C"/><circle cx="334" cy="13" r="7" fill="#B8925E"/>';
+  for(let i=0;i<GOR;i++){const r=sira-i;if(r<1)break;const y=30+i*12.5;
+   const renk=(r%12===0||r%12===1)?'#26355E':(i%2?'#952B47':'#A3324F');
+   for(let c=0;c<S;c++){const x=22+c*20;const bur=(c===4||c===11)&&r%6===0;const ters=(hata&&r===HATA_SIRA&&c===HATA_ILMEK);
+    s+=ilmek(x,y,bur?'#7E2139':renk,ters,ters);}}
+  s+='<path d="M10 '+(30+GOR*12.5)+'q8 6 16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0" fill="none" stroke="#A3324F" stroke-width="2" opacity=".5"/>';
+  svg.innerHTML=s;
+  let g='';for(let rr=0;rr<8;rr++){const r=sira+2-rr;for(let c=0;c<S;c++){let k='';if(r===sira)k='su';if((c===4||c===11)&&r%6===0)k+=' t';if(hata&&r===HATA_SIRA&&c===HATA_ILMEK)k='hata';g+='<span class="'+k+'"></span>';}}
+  iz.innerHTML=g;
+  document.getElementById('sira').textContent=sira;
+  document.getElementById('sesli').textContent='"'+buyuk(oku(sira))+'."';
+ }
+ const m=document.getElementById('mesaj'),or=document.getElementById('or'),sok=document.getElementById('sok');
+ or.addEventListener('click',()=>{
+  if(hata)return;
+  sira++;
+  if(sira===HATA_SIRA&&!soktu){hata=true;m.className='mesaj uyari';m.textContent='Dur bir bakalım: 48. sıranın 9. ilmeği ters örülmüş. Bu sırayı söküp yeniden örmen yeter.';sok.hidden=false;or.disabled=true;}
+  else{m.className='mesaj';const kalan=60-sira;m.textContent=sira+'. sıra tamam. '+(kalan>0?'Kol oyuntusuna '+kalan+' sıra kaldı.':'Kol oyuntusu başlıyor: iki yandan 4\'er ilmek kapat.');}
+  if(sira%6===5&&!hata)m.textContent+=' Gelecek sıra burgu sırası.';
+  ciz();
+ });
+ sok.addEventListener('click',()=>{hata=false;soktu=true;sira=47;sok.hidden=true;or.disabled=false;m.className='mesaj';m.textContent='Söktün, 47. sıradasın. Şimdi 48\'i yeniden ör; bu kez gözüm üstünde.';ciz();or.focus();});
+ ciz();
+})();
+</script>
+</body>
+</html>

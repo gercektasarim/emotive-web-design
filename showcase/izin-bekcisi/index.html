@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İzin Bekçisi — Dün gece mikrofonunu kim açtı?</title>
+<meta name="description" content="İzin Bekçisi, telefonundaki uygulamaların arka planda konuma, mikrofona, kameraya ve rehbere ne zaman eriştiğini kaydeder ve sabah sade bir dille anlatır. Kendisinin internet izni yok.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;900&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gece:#0F141C;
+  --gece-2:#171E2A;
+  --gece-3:#222B3A;
+  --kagit:#E8ECF2;
+  --soluk:#9AA6B8;
+  --mik:#FF9F0A;   /* mikrofon göstergesi */
+  --kam:#30D158;   /* kamera / fotoğraf */
+  --kon:#5B9BFF;   /* konum */
+  --reh:#C49BFF;   /* rehber */
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--gece);color:var(--kagit);font:400 18px/1.6 "Spline Sans",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--mik);outline-offset:3px;border-radius:3px}
+h1,h2,h3{margin:0;line-height:1.04;font-weight:900;letter-spacing:-.02em}
+.mono{font-family:"Spline Sans Mono",monospace}
+.w{max-width:1180px;margin:0 auto;padding:0 28px}
+.ust{display:flex;justify-content:space-between;align-items:center;padding:22px 0;gap:16px}
+.logo{display:flex;gap:10px;align-items:center;font:900 21px/1 "Spline Sans";text-decoration:none}
+.ust nav{display:flex;gap:24px;font-size:15px}
+.ust nav a{text-decoration:none;color:var(--soluk)}
+.ust nav a:hover{color:var(--kagit)}
+.btn{display:inline-block;font:700 16px/1 "Spline Sans";padding:15px 20px;border-radius:6px;text-decoration:none;border:1.5px solid var(--kagit)}
+.btn.dolu{background:var(--kagit);color:var(--gece)}
+.btn.dolu:hover{background:#fff}
+.btn.bos:hover{background:var(--gece-3)}
+
+.bas{padding:36px 0 34px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end}
+.bas h1{font-size:clamp(46px,6.8vw,96px)}
+.bas p{margin:0 0 20px;color:#C5CEDB;font-size:19px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+
+/* gece çizelgesi */
+.nobet{background:var(--gece-2);border:1px solid var(--gece-3);border-radius:12px;padding:22px 22px 18px}
+.nobet-ust{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font:500 14px "Spline Sans Mono";color:var(--soluk);margin-bottom:14px}
+.seritler{display:grid;grid-template-columns:120px 1fr;row-gap:6px}
+.ad{font:500 14px/40px "Spline Sans Mono";color:var(--soluk);display:flex;align-items:center;gap:8px}
+.ad i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.serit{position:relative;height:40px;border-bottom:1px solid var(--gece-3);overflow-x:clip;overflow-y:visible}
+.serit::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(11.111% - 1px),var(--gece-3) calc(11.111% - 1px) 11.111%)}
+.olay{position:absolute;top:8px;height:24px;min-width:10px;border-radius:4px;border:0;padding:0;cursor:pointer;transform:translateX(-50%)}
+.olay[aria-pressed="true"]{box-shadow:0 0 0 3px var(--gece-2),0 0 0 5px var(--kagit)}
+.olay.cok{min-width:4px;width:4px;opacity:.75}
+.saatler{grid-column:2;display:flex;justify-content:space-between;font:400 13px "Spline Sans Mono";color:var(--soluk);padding-top:6px}
+
+.tutanak{margin-top:18px;display:grid;grid-template-columns:1.1fr 1fr;gap:0;background:var(--kagit);color:var(--gece);border-radius:8px;overflow:hidden}
+.tutanak .sol{padding:22px 24px;border-right:1px dashed #A9B3C2}
+.tutanak .sag{padding:22px 24px;background:#F6F8FB}
+.tno{font:500 13px "Spline Sans Mono";color:#55627A;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tutanak h3{font-size:26px;margin:8px 0 12px}
+.tutanak dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:15px}
+.tutanak dt{font:500 13px/1.7 "Spline Sans Mono";color:#55627A}
+.tutanak dd{margin:0;font-weight:500}
+.karar{display:inline-block;font:700 13px/1 "Spline Sans Mono";padding:6px 10px;border-radius:4px;letter-spacing:.04em}
+.karar.supheli{background:#FFE3BF;color:#7A3E00}
+.karar.olagan{background:#D9F5E1;color:#145C2A}
+.karar.fazla{background:#DCE8FF;color:#183E86}
+.sag h4{margin:0 0 6px;font:700 15px "Spline Sans";color:#55627A}
+.sag p{margin:0 0 16px;font-size:17px;line-height:1.5}
+
+section{padding:96px 0}
+.bolum-bas{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:36px}
+.bolum-bas h2{font-size:clamp(34px,4.4vw,56px)}
+.bolum-bas p{margin:0;color:#C5CEDB}
+
+.ceviri{border-top:1px solid var(--gece-3)}
+.cv{display:grid;grid-template-columns:1fr 40px 1fr;gap:20px;align-items:center;padding:22px 0;border-bottom:1px solid var(--gece-3)}
+.cv .ham{font:400 14px/1.6 "Spline Sans Mono";color:var(--soluk);background:var(--gece-2);padding:12px 14px;border-radius:6px}
+.cv .ok{text-align:center;color:var(--soluk);font-size:22px}
+.cv .sade{font-size:19px;font-weight:500}
+
+.kapi{background:var(--kagit);color:var(--gece)}
+.kapi .w{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.kapi h2{font-size:clamp(36px,4.6vw,60px)}
+.kapi p{color:#3A4559}
+.manifest{background:#fff;border:1px solid #C6CEDA;border-radius:8px;font:400 15px/1.5 "Spline Sans Mono";overflow:hidden}
+.manifest .mb{background:#F0F3F7;padding:12px 16px;font-weight:600;border-bottom:1px solid #C6CEDA}
+.manifest div.s{display:flex;justify-content:space-between;gap:12px;padding:11px 16px;border-bottom:1px solid #E6EAF0}
+.manifest div.s:last-child{border:0}
+.manifest .var{color:#145C2A;font-weight:600}
+.manifest .yok{color:#8A1F1F;font-weight:600}
+
+.yap{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.yk{background:var(--gece-2);border:1px solid var(--gece-3);border-radius:10px;padding:24px}
+.yk h3{font-size:24px;margin-bottom:8px}
+.yk p{margin:0;color:#C5CEDB;font-size:16px}
+.yk .yol{margin-top:14px;font:400 13px/1.6 "Spline Sans Mono";color:var(--soluk)}
+
+.soz{display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:start}
+.soz blockquote{margin:0;font:700 clamp(26px,3.2vw,40px)/1.2 "Spline Sans"}
+.soz cite{display:block;margin-top:16px;font-style:normal;font-size:15px;color:var(--soluk)}
+.soz .ikinci{font-size:19px;color:#C5CEDB;border-left:3px solid var(--mik);padding-left:18px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:10px}
+.fp{background:var(--gece-2);border:1px solid var(--gece-3);border-radius:10px;padding:28px}
+.fp.tam{border-color:var(--kagit)}
+.fp h3{font-size:24px}
+.fp .tl{font:600 46px/1 "Spline Sans Mono";margin:14px 0 6px}
+.fp .tl small{font:400 15px "Spline Sans";color:var(--soluk)}
+.fp ul{padding-left:20px;margin:14px 0 22px;color:#C5CEDB}
+
+.sss details{border-top:1px solid var(--gece-3);padding:18px 0}
+.sss details:last-child{border-bottom:1px solid var(--gece-3)}
+.sss summary{cursor:pointer;font-weight:700;font-size:20px}
+.sss p{margin:8px 0 0;color:#C5CEDB;max-width:44em}
+
+footer{border-top:1px solid var(--gece-3);padding:52px 0 30px}
+footer .w{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:center}
+footer h2{font-size:clamp(30px,3.8vw,46px)}
+footer .imza{width:100%;font-size:14px;color:var(--soluk);border-top:1px solid var(--gece-3);padding-top:16px}
+
+@media (max-width:900px){
+  .bas,.bolum-bas,.kapi .w,.soz,.fiyat,.tutanak{grid-template-columns:1fr}
+  .tutanak .sol{border-right:0;border-bottom:1px dashed #A9B3C2}
+  .yap{grid-template-columns:1fr}
+  .cv{grid-template-columns:1fr;gap:8px}
+  .cv .ok{transform:rotate(90deg);text-align:left;width:24px}
+  .ust nav{display:none}
+}
+@media (max-width:520px){
+  .w{padding:0 16px}
+  .nobet{padding:16px 12px}
+  .seritler{grid-template-columns:78px 1fr}
+  .ad{font-size:12px}
+  .saatler span:nth-child(even){visibility:hidden}
+  section{padding:64px 0}
+}
+</style>
+</head>
+<body>
+<div class="w">
+  <header class="ust">
+    <a class="logo" href="#"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="5" y="2" width="18" height="24" rx="4" fill="none" stroke="#E8ECF2" stroke-width="2"/><circle cx="10" cy="7" r="2" fill="#FF9F0A"/><circle cx="16" cy="7" r="2" fill="#30D158"/><path d="M9 15h10M9 19h7" stroke="#E8ECF2" stroke-width="2" stroke-linecap="round"/></svg>İzin Bekçisi</a>
+    <nav aria-label="Sayfa içi"><a href="#sade">Sade dil</a><a href="#kapi">Bekçinin kapısı yok</a><a href="#fiyat">Fiyat</a><a href="#sss">Sorular</a></nav>
+  </header>
+</div>
+
+<main>
+<div class="w">
+  <div class="bas">
+    <h1>Dün gece mikrofonunu kim açtı?</h1>
+    <div>
+      <p>İzin Bekçisi, telefonundaki uygulamaların konuma, mikrofona, fotoğraflara ve rehbere ne zaman eriştiğini gece boyu deftere yazar. Sabah sana teknik terim değil, düz bir cümle verir: kim, ne zaman, ne kadar ve bu normal mi.</p>
+      <div class="cta"><a class="btn dolu" href="#fiyat">Android için indir</a><a class="btn bos" href="#sss">iPhone'da nasıl?</a></div>
+    </div>
+  </div>
+
+  <div class="nobet" aria-label="Bu gecenin nöbet çizelgesi; bir erişime dokun">
+    <div class="nobet-ust"><span>Nöbet · 13→14 Kasım · 22:00–07:00 · ekran kapalıyken</span><span>6 uygulama, 40 erişim</span></div>
+    <div class="seritler">
+      <div class="ad"><i style="background:var(--mik)"></i>Mikrofon</div><div class="serit" id="s-mik"></div>
+      <div class="ad"><i style="background:var(--kon)"></i>Konum</div><div class="serit" id="s-kon"></div>
+      <div class="ad"><i style="background:var(--kam)"></i>Fotoğraf</div><div class="serit" id="s-kam"></div>
+      <div class="ad"><i style="background:var(--reh)"></i>Rehber</div><div class="serit" id="s-reh"></div>
+      <div class="saatler" aria-hidden="true"><span>22</span><span>23</span><span>00</span><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span></div>
+    </div>
+    <div class="tutanak" aria-live="polite">
+      <div class="sol">
+        <div class="tno"><span id="tNo">Tutanak 0214</span><span id="tZaman">14 Kasım · 02:07</span></div>
+        <h3 id="tUyg">Kolay Not</h3>
+        <dl>
+          <dt>İzin</dt><dd id="tIzin">Mikrofon</dd>
+          <dt>Süre</dt><dd id="tSure">3 saniye</dd>
+          <dt>Ekran</dt><dd id="tEkran">Kapalı, telefon ters</dd>
+          <dt>Son açılış</dt><dd id="tSon">9 gün önce</dd>
+          <dt>Değerlendirme</dt><dd><span class="karar supheli" id="tKarar">ŞÜPHELİ</span></dd>
+        </dl>
+      </div>
+      <div class="sag">
+        <h4>Düz söylersek</h4>
+        <p id="tSade">Dokuz gündür açmadığın bir not uygulaması, gece ikide, ekran kapalıyken mikrofonu üç saniye kullandı. Bir not uygulamasının buna ihtiyacı yok.</p>
+        <h4>Ne yapabilirsin</h4>
+        <p id="tYap">Mikrofon iznini "Her seferinde sor"a al. Hâlâ kullanmıyorsan uygulamayı sil; notların telefondaki yedekte durur.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="sade">
+  <div class="w">
+    <div class="bolum-bas">
+      <h2>Telefonun dili bu. Bekçininki şu.</h2>
+      <p>Telefonun ayarlarında her şey yazıyor; yalnız kimsenin okuyamayacağı biçimde. İzin Bekçisi aynı kaydı alır ve sana bir komşunun anlatacağı gibi anlatır.</p>
+    </div>
+    <div class="ceviri">
+      <div class="cv"><div class="ham">com.havabugun · ACCESS_FINE_LOCATION · background · 34 ops · 22:04–06:51</div><div class="ok" aria-hidden="true">→</div><div class="sade">Hava Bugün gece 34 kez tam yerini sordu. Hava durumu için şehrin yeterdi.</div></div>
+      <div class="cv"><div class="ham">com.klavyeplus · READ_CONTACTS · 214 rows · 23:41</div><div class="ok" aria-hidden="true">→</div><div class="sade">Klavye Plus rehberindeki 214 kişiyi okudu. Bir klavyenin rehberi okuması şart değil.</div></div>
+      <div class="cv"><div class="ham">com.kargotakip · ACCESS_COARSE_LOCATION · 1 op · 05:55</div><div class="ok" aria-hidden="true">→</div><div class="sade">Kargo Takip bir kez yaklaşık yerini sordu; bugün teslimatın var. Bu normal.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="kapi" id="kapi">
+  <div class="w">
+    <div>
+      <h2>Bekçinin kapısı yok. İnternet izni istemez.</h2>
+      <p>Telefonundaki her erişimi gören bir uygulama, o bilgiyi kolayca dışarı da taşıyabilir. Bu yüzden İzin Bekçisi'nin internet izni yok. Gördüğünü yazar, yorumunu telefonda yapar, kimseye anlatamaz. Bunu bizim sözümüzle değil, telefonunun kendi izin ekranından doğrularsın.</p>
+      <p>Kaynak kodu açık; isteyen derleyip aynı olduğunu kontrol edebilir.</p>
+    </div>
+    <div class="manifest" aria-label="İzin Bekçisi'nin istediği ve istemediği izinler">
+      <div class="mb">İzin Bekçisi · istediği izinler</div>
+      <div class="s"><span>Kullanım erişimi (kim ne zaman)</span><span class="var">var</span></div>
+      <div class="s"><span>Bildirim gönderme</span><span class="var">var</span></div>
+      <div class="s"><span>İnternet</span><span class="yok">yok</span></div>
+      <div class="s"><span>Konum</span><span class="yok">yok</span></div>
+      <div class="s"><span>Mikrofon, kamera</span><span class="yok">yok</span></div>
+      <div class="s"><span>Rehber, fotoğraflar</span><span class="yok">yok</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="w">
+    <div class="bolum-bas"><h2>Bulduktan sonra üç yol.</h2><p>Bekçi karar vermez; sana ayarın tam yerini gösterir ve bir dokunuşla oraya götürür.</p></div>
+    <div class="yap">
+      <div class="yk"><h3>Daralt</h3><p>"Her zaman" yerine "Yalnız kullanırken", "Tam konum" yerine "Yaklaşık". Uygulama çalışmaya devam eder.</p><div class="yol">Ayarlar › Uygulamalar › Hava Bugün › İzinler › Konum</div></div>
+      <div class="yk"><h3>Uyut</h3><p>Az kullandığın uygulamayı arka planda tamamen durdur. Açtığında uyanır.</p><div class="yol">Ayarlar › Pil › Arka plan kısıtlaması</div></div>
+      <div class="yk"><h3>Sil</h3><p>Dokuz gündür açmadığın uygulama gece mikrofon açıyorsa, belki de gitme vakti.</p><div class="yol">Bekçi, silmeden önce verini nasıl yedekleyeceğini söyler</div></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w soz">
+    <div>
+      <blockquote>"Bir hafta sonra konuştuğumuz şeyin reklamını görünce emindim, dinleniyorum. Bekçi gösterdi: mikrofon değilmiş, konummuş. İkisini de kapattım."</blockquote>
+      <cite>Gülşen Aydın · 38 · muhasebeci, Kartal</cite>
+    </div>
+    <div class="ikinci">"Taksimetre uygulamam gece de konum topluyormuş. Mesai bitince kapanıyor artık."
+      <cite style="font-size:14px">Mert Yalçın · 45 · taksici, Ankara</cite></div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:0">
+  <div class="w">
+    <div class="bolum-bas"><h2>Nöbet ücretsiz.</h2><p>Reklam yok, veri yok. İsteyen geçmişi uzatmak için bir kere öder.</p></div>
+    <div class="fiyat">
+      <div class="fp"><h3>Bekçi</h3><div class="tl">0 ₺</div><ul><li>Son 7 gecenin defteri</li><li>Sabah özeti, sade dil</li><li>Şüpheli erişimde anında bildirim</li></ul><a class="btn bos" href="#">Ücretsiz indir</a></div>
+      <div class="fp tam"><h3>Baş bekçi</h3><div class="tl">149 ₺ <small>bir kere</small></div><ul><li>90 günlük defter ve arama</li><li>Haftalık rapor, PDF</li><li>Uygulama başına "normal mi?" karşılaştırması</li><li>iPhone gizlilik raporunu içe aktarma</li></ul><a class="btn dolu" href="#">Baş bekçi ol</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sss" id="sss" style="padding-top:0">
+  <div class="w" style="max-width:860px">
+    <h2 style="font-size:40px;margin-bottom:14px">Sorular</h2>
+    <details open><summary>iPhone'da çalışıyor mu?</summary><p>iPhone, başka uygulamaların erişimlerini canlı izlemeye izin vermiyor. Ama Ayarlar › Gizlilik › Uygulama Gizlilik Raporu'nu kaydedip Bekçi'ye verirsen, aynı sade raporu telefonda hazırlar. Android'de kendiliğinden, her gece.</p></details>
+    <details><summary>Pili bitirir mi?</summary><p>Hayır. Telefonun zaten tuttuğu kaydı okur; günde ortalama %0,4.</p></details>
+    <details><summary>"Normal mi" kararını neye göre veriyor?</summary><p>Uygulamanın türüne (hava, not, klavye), ekranın açık olup olmadığına, saatine ve sıklığına bakar. Model telefonun içinde; senin kayıtların onu eğitmek için hiçbir yere gitmez.</p></details>
+    <details><summary>Telefonumu başkası izlemek için kullanabilir mi?</summary><p>Hayır. Bekçi yalnız kendi telefonundaki uygulamalara bakar; uzaktan rapor gönderemez, çünkü internet izni yok.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <h2>Bu gece nöbeti bekçi tutsun.</h2>
+    <a class="btn dolu" href="#fiyat">Ücretsiz indir</a>
+    <div class="imza">İzin Bekçisi · İstanbul · merhaba@izinbekcisi.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+ const R={mik:'#FF9F0A',kon:'#5B9BFF',kam:'#30D158',reh:'#C49BFF'};
+ const yuzde=s=>{let [h,m]=s.split(':').map(Number);if(h<22)h+=24;return ((h-22)*60+m)/(9*60)*100};
+ const O=[
+  {id:"0214",t:"02:07",s:"mik",u:"Kolay Not",iz:"Mikrofon",su:"3 saniye",ek:"Kapalı, telefon ters",so:"9 gün önce",k:["supheli","ŞÜPHELİ"],sd:"Dokuz gündür açmadığın bir not uygulaması, gece ikide, ekran kapalıyken mikrofonu üç saniye kullandı. Bir not uygulamasının buna ihtiyacı yok.",y:"Mikrofon iznini \"Her seferinde sor\"a al. Hâlâ kullanmıyorsan uygulamayı sil; notların telefondaki yedekte durur."},
+  {id:"0209",t:"23:12",s:"mik",u:"Sesli Asistan",iz:"Mikrofon",su:"sürekli, 1 sa 40 dk",ek:"Kapalı",so:"bugün 21:30",k:["olagan","OLAĞAN"],sd:"\"Merhaba asistan\" diye çağrılmayı bekleyen sistem asistanı. Bu dinleme telefonda kalır; ama istemiyorsan kapatabilirsin.",y:"Kullanmıyorsan Ayarlar › Asistan › Sesle uyandırma'yı kapat."},
+  {id:"0211",t:"01:12",s:"kon",u:"Hava Bugün",iz:"Konum (tam)",su:"34 kez, 15 dakikada bir",ek:"Kapalı",so:"dün 08:10",k:["fazla","FAZLA"],sd:"Hava durumu uygulaması gece boyu 34 kez tam yerini sordu. Yağmuru bilmek için şehrin yeterdi.",y:"Konumu \"Yaklaşık\" ve \"Yalnız kullanırken\" yap. Hava durumu aynen çalışır."},
+  {id:"0216",t:"05:55",s:"kon",u:"Kargo Takip",iz:"Konum (yaklaşık)",su:"1 kez",ek:"Kapalı",so:"dün 19:02",k:["olagan","OLAĞAN"],sd:"Bugün teslimatın var; uygulama bir kez semtini sordu. Bu beklenen bir şey.",y:"Bir şey yapmana gerek yok."},
+  {id:"0212",t:"03:30",s:"kam",u:"Fener Foto",iz:"Fotoğraflar",su:"1.284 fotoğraf tarandı",ek:"Kapalı, şarjda",so:"4 gün önce",k:["fazla","FAZLA"],sd:"Fotoğraf düzenleyici, gece şarjdayken bütün galerini taradı. Yalnız düzenlediğin fotoğraflara erişmesi yeterdi.",y:"Fotoğraf iznini \"Seçili fotoğraflar\"a al."},
+  {id:"0208",t:"23:41",s:"reh",u:"Klavye Plus",iz:"Rehber",su:"214 kişi okundu",ek:"Kapalı",so:"şu an, her gün",k:["supheli","ŞÜPHELİ"],sd:"Klavye uygulaması rehberindeki 214 kişiyi okudu. Bir klavyenin isim önermek için bütün rehberine ihtiyacı yok.",y:"Rehber iznini kapat. İsim önerisi yine çalışır, yalnız biraz daha az akıllı."}
+ ];
+ const ek=[["kon",["22:04","22:19","22:34","22:49","23:04","23:19","23:34","23:49","00:04","00:19","00:34","00:49","01:27","01:42","01:57","02:12","02:27","02:42","02:57","03:12","03:27","03:42","03:57","04:12","04:27","04:42","04:57","05:12","05:27","05:42","06:12","06:27","06:42"]]];
+ ek.forEach(([s,ts])=>{const el=document.getElementById('s-'+s);ts.forEach(t=>{const b=document.createElement('span');b.className='olay cok';b.style.left=yuzde(t)+'%';b.style.background=R[s];b.setAttribute('aria-hidden','true');el.appendChild(b);});});
+ const bs=[];
+ O.forEach((o,i)=>{const el=document.getElementById('s-'+o.s);const b=document.createElement('button');b.type='button';b.className='olay';b.style.left=yuzde(o.t)+'%';b.style.background=R[o.s];
+  if(o.u==="Sesli Asistan"){b.style.width=(100/540*100)+'%';b.style.transform='none';}
+  else b.style.width='16px';
+  b.setAttribute('aria-label',o.t+' '+o.u+', '+o.iz);b.setAttribute('aria-pressed',i===0);b.addEventListener('click',()=>goster(i));el.appendChild(b);bs.push(b);});
+ function goster(i){const o=O[i];bs.forEach((b,j)=>b.setAttribute('aria-pressed',i===j));
+  tNo.textContent='Tutanak '+o.id;tZaman.textContent=(o.t<'12'?'14':'13')+' Kasım · '+o.t;tUyg.textContent=o.u;tIzin.textContent=o.iz;tSure.textContent=o.su;tEkran.textContent=o.ek;tSon.textContent=o.so;
+  tKarar.className='karar '+o.k[0];tKarar.textContent=o.k[1];tSade.textContent=o.sd;tYap.textContent=o.y;}
+})();
+</script>
+</body>
+</html>

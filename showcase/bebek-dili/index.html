@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bebek Dili — Gece dörtte neden ağladığını birlikte anlayalım</title>
+<meta name="description" content="Bebek Dili, bebeğinizin ağlamasını 8 saniye dinleyip açlık, gaz, uyku ya da rahatsızlık olasılığını söyler. Ses telefonunuzdan çıkmaz, kayıt tutulmaz, internetsiz çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Young+Serif&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --night:#13151B;
+  --wall:#1C1F27;
+  --wall-2:#242833;
+  --line:#343947;
+  --muslin:#EDE3D3;
+  --muted:#B5AE9F;
+  --lamp:#F0B46A;
+  --lamp-deep:#C98A3F;
+  --hunger:#F0B46A;
+  --gas:#9CC3A0;
+  --sleep:#AFACD6;
+  --fuss:#E9937E;
+  --r:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{background:var(--night);color:var(--muslin);font-family:"Lexend",system-ui,sans-serif;font-weight:300;font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--lamp);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:"Young Serif",Georgia,serif;font-weight:400;line-height:1.15;letter-spacing:-.01em}
+.wrap{max-width:1140px;margin:0 auto;padding:0 28px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--lamp);color:var(--night);padding:8px 14px;border-radius:8px;z-index:9}
+.skip:focus{left:12px}
+
+/* nav */
+header.top{position:sticky;top:0;z-index:5;background:rgba(19,21,27,.92);backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid #22252e}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:"Young Serif",serif;font-size:21px}
+.brand svg{flex:none}
+nav.links{display:flex;gap:26px;font-size:15px}
+nav.links a{text-decoration:none;color:var(--muted)}
+nav.links a:hover{color:var(--muslin)}
+.btn{display:inline-flex;align-items:center;gap:10px;font:500 16px/1 "Lexend",sans-serif;text-decoration:none;border-radius:999px;padding:15px 24px;border:1px solid transparent;cursor:pointer}
+.btn-lamp{background:var(--lamp);color:#1a1408}
+.btn-lamp:hover{background:#f5c385}
+.btn-ghost{border-color:#4a4f5e;color:var(--muslin);background:transparent}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn-sm{padding:10px 18px;font-size:14px}
+
+/* hero */
+.hero{position:relative;padding:64px 0 90px}
+.hero::before{content:"";position:absolute;right:8%;top:40px;width:560px;height:560px;border-radius:50%;background:radial-gradient(closest-side,rgba(240,180,106,.16),rgba(240,180,106,.05) 60%,transparent);pointer-events:none}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative}
+.clock{font-size:15px;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.clock b{font-weight:500;color:var(--lamp);font-variant-numeric:tabular-nums}
+.hero h1{font-size:clamp(40px,5.4vw,66px);margin-bottom:22px}
+.hero p.lead{font-size:20px;color:#D9D0C1;max-width:31em;margin-bottom:32px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.facts{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14.5px;color:var(--muted);list-style:none}
+.facts li{display:flex;align-items:center;gap:8px}
+.facts li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gas)}
+
+/* listening card */
+.listen{background:linear-gradient(180deg,#1E2129,#181A21);border:1px solid #2c303b;border-radius:34px;padding:30px 28px 26px;box-shadow:0 40px 80px -30px rgba(0,0,0,.7);width:100%}
+.listen-head{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--muted);margin-bottom:18px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gas);margin-right:7px;vertical-align:1px}
+.dial{position:relative;width:220px;height:220px;margin:4px auto 18px}
+.dial svg{width:100%;height:100%}
+.dial .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.dial .center strong{font-family:"Young Serif",serif;font-weight:400;font-size:34px;line-height:1}
+.dial .center span{font-size:13px;color:var(--muted);margin-top:6px}
+.wave{height:54px;display:flex;align-items:center;gap:3px;justify-content:center;margin-bottom:20px}
+.wave i{display:block;width:4px;border-radius:2px;background:#5b6070}
+.wave i.on{background:var(--lamp)}
+.bars{list-style:none;display:grid;gap:10px;margin-bottom:20px}
+.bars li{display:grid;grid-template-columns:92px 1fr 42px;align-items:center;gap:12px;font-size:14.5px}
+.bars .track,.bars .fill{display:block}
+.bars .track{height:8px;background:#2b2f3a;border-radius:6px;overflow:hidden}
+.bars .fill{height:100%;border-radius:6px;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.bars .pct{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.advice{background:#262a34;border-radius:16px;padding:16px 18px;font-size:15px;line-height:1.55}
+.advice b{font-weight:500;color:var(--gas)}
+
+section{padding:96px 0}
+.sec-title{font-size:clamp(32px,3.6vw,46px);margin-bottom:16px;max-width:18em}
+.sec-lead{color:#D2C9BA;max-width:36em;font-size:19px}
+
+/* four cries */
+.cries{background:var(--wall);border-top:1px solid #262a33;border-bottom:1px solid #262a33}
+.cry-grid{display:grid;grid-template-columns:320px 1fr;gap:48px;margin-top:48px;align-items:start}
+.cry-tabs{display:grid;gap:10px}
+.cry-tab{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:transparent;border:1px solid #333845;color:var(--muslin);border-radius:18px;padding:16px 18px;font:400 17px/1.3 "Lexend",sans-serif;cursor:pointer}
+.cry-tab small{display:block;color:var(--muted);font-size:13.5px;margin-top:3px}
+.cry-tab .sw{flex:none;width:14px;height:14px;border-radius:50%}
+.cry-tab[aria-selected="true"]{background:var(--wall-2);border-color:var(--c,#555)}
+.cry-panel{background:var(--night);border:1px solid #2c303b;border-radius:28px;padding:34px}
+.cry-panel h3{font-size:30px;margin-bottom:6px}
+.cry-panel .sub{color:var(--muted);font-size:15px;margin-bottom:22px}
+.spectro{width:100%;height:120px;display:block;margin-bottom:26px}
+.cues{display:grid;grid-template-columns:1fr 1fr;gap:22px 34px}
+.cues h4{font-weight:500;font-size:14px;color:var(--muted);margin-bottom:6px;letter-spacing:.01em}
+.cues p{font-size:16px;line-height:1.55}
+.cry-run{margin-top:26px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cry-out{font-size:15.5px;color:#C9C1B2}
+.cry-out b{color:var(--muslin);font-weight:500}
+
+/* room proof */
+.room .wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.buffer{background:var(--wall);border-radius:28px;padding:30px;border:1px solid #2a2e38}
+.buffer ol{list-style:none;position:relative;margin-left:8px}
+.buffer ol::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:2px;background:#3a3f4c}
+.buffer li{position:relative;padding:0 0 22px 32px}
+.buffer li:last-child{padding-bottom:0}
+.buffer li::before{content:"";position:absolute;left:0;top:7px;width:12px;height:12px;border-radius:50%;background:var(--night);border:2px solid var(--lamp)}
+.buffer li.gone::before{border-color:var(--gas);background:var(--gas)}
+.buffer time{display:block;font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.buffer li p{font-size:16.5px}
+.zeros{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.zeros div{border-top:1px solid var(--line);padding-top:14px}
+.zeros strong{display:block;font-family:"Young Serif",serif;font-weight:400;font-size:32px;color:var(--lamp)}
+.zeros span{font-size:15px;color:#C9C1B2}
+
+/* night log */
+.log{background:var(--wall)}
+.night{margin-top:44px;background:var(--night);border:1px solid #2c303b;border-radius:28px;padding:30px 30px 26px}
+.night-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:15px;color:var(--muted);margin-bottom:22px}
+.night-head b{color:var(--muslin);font-weight:500}
+.timeline{position:relative;height:120px;border-bottom:1px solid #3a3f4c;margin:0 6px}
+.ev{position:absolute;bottom:0;width:14px;border-radius:7px 7px 0 0;transform:translateX(-50%)}
+.ev span{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);font-size:12.5px;color:var(--muted);white-space:nowrap}
+.hours{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin:10px 0 0;font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:20px;font-size:14px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px}
+.insight{margin-top:24px;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;background:#20242d;border-radius:18px;padding:20px 22px}
+.insight p{font-size:16.5px}
+.insight small{display:block;color:var(--muted);font-size:14.5px;margin-top:6px}
+
+/* doctor */
+.doctor .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px}
+.redlist{list-style:none;border:1px solid #4a3a33;background:#1d1a1a;border-radius:24px;padding:10px 26px}
+.redlist li{padding:16px 0;border-bottom:1px solid #3a2f2b;display:grid;grid-template-columns:20px 1fr;gap:14px;font-size:16.5px}
+.redlist li:last-child{border-bottom:0}
+.redlist li::before{content:"";width:10px;height:10px;margin-top:9px;border-radius:2px;background:var(--fuss);transform:rotate(45deg)}
+.call{margin-top:22px;font-size:16px;color:var(--muted)}
+.call b{color:var(--muslin);font-weight:500}
+
+/* voices */
+.voices .wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:stretch}
+blockquote{background:var(--wall);border-radius:28px;padding:38px 38px 32px;border:1px solid #2a2e38}
+blockquote p{font-family:"Young Serif",serif;font-size:clamp(22px,2.3vw,28px);line-height:1.4;margin-bottom:22px}
+blockquote footer{font-size:15px;color:var(--muted)}
+blockquote footer b{color:var(--muslin);font-weight:500}
+blockquote.small p{font-family:"Lexend",sans-serif;font-weight:300;font-size:18px;line-height:1.6}
+
+/* price */
+.price .plans{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px;max-width:900px}
+.plan{border:1px solid #333845;border-radius:28px;padding:32px}
+.plan.paid{background:var(--wall);border-color:var(--lamp-deep)}
+.plan h3{font-size:26px}
+.plan .amt{font-family:"Young Serif",serif;font-size:42px;margin:10px 0 4px}
+.plan .amt small{font-family:"Lexend";font-size:15px;color:var(--muted)}
+.plan ul{list-style:none;margin:20px 0 26px;display:grid;gap:10px}
+.plan li{padding-left:24px;position:relative;font-size:16px}
+.plan li::before{content:"";position:absolute;left:2px;top:10px;width:9px;height:5px;border-left:2px solid var(--gas);border-bottom:2px solid var(--gas);transform:rotate(-45deg)}
+
+/* faq */
+.faq .wrap{max-width:860px}
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:22px 40px 22px 0;font-size:19px;font-weight:400;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:6px;top:18px;font-size:26px;color:var(--lamp);font-weight:300}
+details[open] summary::after{content:"–"}
+details p{padding:0 0 24px;color:#D2C9BA;max-width:42em;font-size:17px}
+
+.end{text-align:center;padding:100px 0 80px}
+.end h2{font-size:clamp(32px,4vw,50px);margin-bottom:16px}
+.end p{color:var(--muted);margin-bottom:30px}
+.end .cta-row{justify-content:center}
+footer.site{border-top:1px solid #23262f;padding:34px 0 40px;font-size:14px;color:var(--muted)}
+footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer.site .credit{width:100%;margin-top:14px;font-size:13px}
+footer.site .credit a{color:#8f897d;text-decoration:none}
+footer.site .credit a:hover{color:var(--muslin)}
+
+
+/* sabah: günlük muslin sayfası */
+.log{--hunger:#B9772B;--gas:#4F8A58;--sleep:#6E69A8;--fuss:#B9553F;background-color:#EDE3D3;color:#2A2620;
+  background-image:repeating-linear-gradient(45deg,rgba(120,96,60,.06) 0 1px,transparent 1px 7px),repeating-linear-gradient(-45deg,rgba(120,96,60,.06) 0 1px,transparent 1px 7px)}
+.log .sec-lead{color:#4A4238}
+.log .night{background:#FAF6EE;border-color:#D9CCB6;border-radius:6px 28px 28px 6px;box-shadow:0 20px 40px -30px rgba(60,40,10,.4)}
+.log .night-head,.log .hours,.log .legend,.log .ev span,.log .insight small{color:#62584A}
+.log .night-head b{color:#2A2620}
+.log .timeline{border-color:#CBBDA6}
+.log .insight{background:#EFE6D4}
+.cries{background-image:repeating-linear-gradient(45deg,rgba(237,227,211,.025) 0 1px,transparent 1px 7px),repeating-linear-gradient(-45deg,rgba(237,227,211,.025) 0 1px,transparent 1px 7px)}
+.side-col{position:relative;justify-self:center;width:100%;max-width:440px}
+.crib-mobile{display:block;width:250px;height:auto;margin:-40px auto -6px}
+
+@media (max-width:960px){
+  nav.links{display:none}
+  .hero .wrap,.room .wrap,.doctor .wrap,.voices .wrap{grid-template-columns:minmax(0,1fr);gap:44px}
+  .hero .wrap>*,.cry-grid>*{min-width:0}
+  .cry-grid{grid-template-columns:minmax(0,1fr)}
+  .cry-tabs{grid-template-columns:1fr 1fr}
+  .price .plans{grid-template-columns:1fr}
+  .hero::before{right:-30%;top:300px}
+}
+@media (max-width:560px){
+  body{font-size:17px}
+  .wrap{padding:0 18px}
+  .hero{padding:34px 0 60px}
+  section{padding:68px 0}
+  .listen{padding:22px 18px;border-radius:28px}
+  .dial{width:184px;height:184px}
+  .cues{grid-template-columns:1fr}
+  .cry-panel{padding:24px 20px}
+  .cry-tab{padding:12px 14px;font-size:15.5px}
+  .cry-tab small{display:none}
+  .zeros{grid-template-columns:1fr;gap:12px}
+  .ev span{display:none}
+  .top .btn-sm{padding:9px 14px}
+  blockquote{padding:28px 24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe geç</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Bebek Dili ana sayfa">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M20 4a11 11 0 1 0 6 18A9 9 0 0 1 20 4Z" fill="#F0B46A"/><path d="M9 15h1.5M12 12v6M15 10v10M18 13v4" stroke="#13151B" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Bebek Dili
+    </a>
+    <nav class="links" aria-label="Ana menü">
+      <a href="#aglamalar">Dört ağlama</a>
+      <a href="#oda">Ses nerede kalır</a>
+      <a href="#gunluk">Gece günlüğü</a>
+      <a href="#doktor">Ne zaman doktor</a>
+      <a href="#fiyat">Fiyat</a>
+    </nav>
+    <a class="btn btn-lamp btn-sm" href="#fiyat">İndir</a>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <p class="clock"><b id="saat">04:12</b> · çocuk odası, ışıklar kısık</p>
+      <h1 id="h1">Ağlıyor. Neden ağladığına birlikte bakalım.</h1>
+      <p class="lead">Telefonu bebeğe doğru tutun. Bebek Dili 8 saniye dinler ve açlık, gaz, uyku ya da rahatsızlık olasılığını söyler; ne yapabileceğinizi de. Ses telefonunuzdan hiç çıkmaz.</p>
+      <div class="cta-row">
+        <a class="btn btn-lamp" href="#fiyat">iPhone için indir</a>
+        <a class="btn btn-ghost" href="#fiyat">Android için indir</a>
+      </div>
+      <ul class="facts">
+        <li>Uçak modunda da çalışır</li>
+        <li>0–6 ay için</li>
+        <li>Çocuk doktorları danışmanlığında</li>
+      </ul>
+    </div>
+
+    <div class="side-col">
+    <svg class="crib-mobile" viewBox="0 0 250 120" aria-hidden="true">
+      <path d="M125 0v22M40 22h170" stroke="#5b6070" stroke-width="2" stroke-linecap="round"/>
+      <path d="M52 22v44M98 22v62M152 22v52M198 22v38" stroke="#5b6070" stroke-width="1.2"/>
+      <path d="M60 70a10 10 0 1 1-6-18 8 8 0 0 0 6 18z" fill="#F0B46A"/>
+      <path d="M98 84l4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1z" fill="#EDE3D3" opacity=".85"/>
+      <path d="M140 80a9 9 0 0 1 9-9 11 11 0 0 1 20 3 7 7 0 0 1-1 13h-24a8 8 0 0 1-4-7z" fill="#AFACD6" opacity=".9"/>
+      <circle cx="198" cy="66" r="7" fill="#9CC3A0"/>
+    </svg>
+    <div class="listen" role="img" aria-label="Uygulama ekranı: 8 saniyelik dinleme sonucu. Büyük olasılıkla gaz, yüzde 72. Açlık yüzde 16, uyku yüzde 8, rahatsızlık yüzde 4.">
+      <div class="listen-head"><span><span class="dot"></span>Telefonda dinlendi</span><span>Ada · 7 hafta</span></div>
+      <div class="dial">
+        <svg viewBox="0 0 220 220" aria-hidden="true">
+          <circle cx="110" cy="110" r="96" fill="none" stroke="#2b2f3a" stroke-width="10"/>
+          <circle cx="110" cy="110" r="96" fill="none" stroke="#9CC3A0" stroke-width="10" stroke-linecap="round" stroke-dasharray="434 603" transform="rotate(-90 110 110)"/>
+          <circle cx="110" cy="110" r="78" fill="none" stroke="#262a34" stroke-width="1"/>
+        </svg>
+        <div class="center"><strong>Gaz</strong><span>büyük olasılıkla · %72</span></div>
+      </div>
+      <div class="wave" id="heroWave" aria-hidden="true"></div>
+      <ul class="bars">
+        <li>Gaz<span class="track"><span class="fill" style="width:72%;background:var(--gas)"></span></span><span class="pct">%72</span></li>
+        <li>Açlık<span class="track"><span class="fill" style="width:16%;background:var(--hunger)"></span></span><span class="pct">%16</span></li>
+        <li>Uyku<span class="track"><span class="fill" style="width:8%;background:var(--sleep)"></span></span><span class="pct">%8</span></li>
+        <li>Rahatsızlık<span class="track"><span class="fill" style="width:4%;background:var(--fuss)"></span></span><span class="pct">%4</span></li>
+      </ul>
+      <p class="advice"><b>Deneyin:</b> sırtüstü yatırıp bacaklarını yavaşça bisiklet gibi çevirin, karnına saat yönünde masaj yapın. 10 dakika sonra hâlâ ağlıyorsa yeniden dinletin.</p>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="cries" id="aglamalar" aria-labelledby="h-cries">
+  <div class="wrap">
+    <h2 class="sec-title" id="h-cries">Dört ağlama, dört ayrı ses.</h2>
+    <p class="sec-lead">İlk haftalarda hepsi aynı gelir. Aslında perdesi, ritmi ve araları farklıdır. Uygulama bu farkları duyar; birkaç gece sonra siz de duymaya başlarsınız.</p>
+
+    <div class="cry-grid">
+      <div class="cry-tabs" role="tablist" aria-label="Ağlama türleri">
+        <button class="cry-tab" role="tab" aria-selected="true" aria-controls="cryPanel" data-k="aclik" style="--c:var(--hunger)"><span class="sw" style="background:var(--hunger)"></span><span>Açlık<small>ritmik, “neh” sesine yakın</small></span></button>
+        <button class="cry-tab" role="tab" aria-selected="false" aria-controls="cryPanel" data-k="gaz" style="--c:var(--gas)"><span class="sw" style="background:var(--gas)"></span><span>Gaz<small>tiz, kesik, ani başlar</small></span></button>
+        <button class="cry-tab" role="tab" aria-selected="false" aria-controls="cryPanel" data-k="uyku" style="--c:var(--sleep)"><span class="sw" style="background:var(--sleep)"></span><span>Uyku<small>sızlanır, esnemeyle kesilir</small></span></button>
+        <button class="cry-tab" role="tab" aria-selected="false" aria-controls="cryPanel" data-k="rahatsizlik" style="--c:var(--fuss)"><span class="sw" style="background:var(--fuss)"></span><span>Rahatsızlık<small>sürekli, tekdüze, huzursuz</small></span></button>
+      </div>
+
+      <div class="cry-panel" id="cryPanel" role="tabpanel" aria-live="polite">
+        <h3 id="cryName">Açlık</h3>
+        <p class="sub" id="crySub">Genellikle beslenmeden 2–3 saat sonra, yavaş yavaş yükselir.</p>
+        <svg class="spectro" id="spectro" viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="cues">
+          <div><h4>Nasıl duyulur</h4><p id="cueSound">Kısa, ritmik ağlama; aralarda nefes alır. Ağız kapanırken “neh” sesine benzer bir başlangıç.</p></div>
+          <div><h4>Nasıl görünür</h4><p id="cueLook">Başını yana çevirip arar, elini ağzına götürür, dudaklarını şapırdatır.</p></div>
+          <div><h4>Ne yapabilirsiniz</h4><p id="cueDo">Beslemeyi deneyin. Son beslemeden 90 dakikadan az geçtiyse önce gazını çıkarın.</p></div>
+          <div><h4>Uygulama neye bakar</h4><p id="cueModel">Ağlamalar arası boşluğun düzenli olmasına ve perdenin 350–450 Hz bandında kalmasına.</p></div>
+        </div>
+        <div class="cry-run">
+          <button class="btn btn-lamp btn-sm" id="runBtn" type="button">Örneği dinlet</button>
+          <p class="cry-out" id="cryOut">Örnek kayıt, sitenin içinde çalınmadan analiz edilir.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="room" id="oda" aria-labelledby="h-room">
+  <div class="wrap">
+    <div>
+      <h2 class="sec-title" id="h-room">Onun sesi bu odada kalır.</h2>
+      <p class="sec-lead">Bebeğinizin ağlaması, gece üçte sizin tükenmiş sesiniz, odadaki ninni… Bunlar hiçbir sunucuya gitmez. Bebek Dili sesi telefonun kendi işlemcisinde dinler, sonucu çıkarır ve sesi siler. “Ürünü geliştirmek için anonim örnek” diye bir ayar da yok.</p>
+      <div class="zeros">
+        <div><strong>0 bayt</strong><span>ses buluta yüklenir</span></div>
+        <div><strong>8 sn</strong><span>tampon; sonra silinir</span></div>
+        <div><strong>41 MB</strong><span>model, telefonunuzda</span></div>
+      </div>
+    </div>
+    <div class="buffer" aria-label="Bir dinlemenin saniye saniye akışı">
+      <ol>
+        <li><time>04:12:03</time><p>Dinle’ye bastınız. Mikrofon açıldı, ses yalnızca telefonun belleğinde tutuluyor.</p></li>
+        <li><time>04:12:11</time><p>8 saniye doldu. Model ağlamayı telefonda inceledi: perde, ritim, nefes araları.</p></li>
+        <li><time>04:12:11</time><p>Sonuç ekranda: gaz, %72. Günlüğe yalnızca sonuç ve saat yazıldı.</p></li>
+        <li class="gone"><time>04:12:11,2</time><p>Ses tamponu silindi. Elinizde ne bir kayıt var ne de bizde.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="log" id="gunluk" aria-labelledby="h-log">
+  <div class="wrap">
+    <h2 class="sec-title" id="h-log">Sabah, gecenin özeti hazır.</h2>
+    <p class="sec-lead">Her dinlemenin yalnızca sonucu ve saati günlüğe düşer. Bir hafta sonra örüntü görünür; artık tahmin etmiyor, biliyorsunuz.</p>
+
+    <div class="night" role="img" aria-label="Salı gecesi günlüğü: 22:40 açlık, 01:15 gaz, 02:05 uyku, 04:12 gaz, 05:50 açlık.">
+      <div class="night-head"><span><b>Salı gecesi</b> · Ada, 7 hafta</span><span>5 uyanış · toplam 47 dk ağlama</span></div>
+      <div class="timeline" id="timeline"></div>
+      <div class="hours"><span>22:00</span><span>00:00</span><span>02:00</span><span>04:00</span><span>06:00</span></div>
+      <div class="legend"><span><i style="background:var(--hunger)"></i>Açlık</span><span><i style="background:var(--gas)"></i>Gaz</span><span><i style="background:var(--sleep)"></i>Uyku</span><span><i style="background:var(--fuss)"></i>Rahatsızlık</span></div>
+      <div class="insight">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#2f3a32"/><path d="M14 7v8M14 19v1.5" stroke="#9CC3A0" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <div><p>Bu hafta gaz ağlamalarının 5’te 4’ü beslenmeden 30–45 dakika sonra başladı. Gazını çıkarırken Ada’yı 5 dakika daha dik tutmayı deneyin.</p><small>7 gecelik kayda dayanır · öneri, tıbbi tavsiye değildir</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doctor" id="doktor" aria-labelledby="h-doc">
+  <div class="wrap">
+    <div>
+      <h2 class="sec-title" id="h-doc">Bazı ağlamalar uygulamanın işi değil.</h2>
+      <p class="sec-lead">Bebek Dili sıradan gecelerin yardımcısıdır, tanı koymaz. Aşağıdakilerden biri varsa dinletmekle vakit kaybetmeyin; uygulama da sonuç yerine bu listeyi gösterir.</p>
+      <p class="call">Acil durumda <b>112</b>. Mesai dışında çocuk doktorunuza ulaşamıyorsanız en yakın çocuk acil servisi.</p>
+    </div>
+    <ul class="redlist">
+      <li>3 aydan küçük bebekte 38 °C ve üzeri ateş</li>
+      <li>Hiçbir şeyle durmayan, 3 saati aşan ağlama</li>
+      <li>Tiz, inleme gibi, alışılmadık bir ses</li>
+      <li>Fışkırır gibi kusma, ıslak bez sayısında belirgin azalma</li>
+      <li>Morarma, nefes almakta zorlanma, gevşeklik ya da uyandırılamama</li>
+    </ul>
+  </div>
+</section>
+
+<section class="voices" aria-label="Kullananlar ne diyor">
+  <div class="wrap">
+    <blockquote>
+      <p>“Üçüncü gece telefona bakmadan önce tahmin etmeye başladım: gaz ağlaması bambaşka. Uygulama bana bebeğimi dinlemeyi öğretti.”</p>
+      <footer><b>Emre Yalçın</b> · Eskişehir · 7 haftalık Ada’nın babası</footer>
+    </blockquote>
+    <blockquote class="small">
+      <p>“Yeni ebeveynlere ilk iki ayda en çok ‘neden ağlıyor’ sorusunu dinliyorum. Bebek Dili cevap vermekten çok sakin bir başlangıç noktası veriyor; kırmızı bayrakları da açıkça söylüyor.”</p>
+      <footer><b>Uzm. Dr. Selin Arıkan</b> · Çocuk sağlığı ve hastalıkları uzmanı, İzmir · uygulamanın danışmanı</footer>
+    </blockquote>
+  </div>
+</section>
+
+<section class="price" id="fiyat" aria-labelledby="h-price">
+  <div class="wrap">
+    <h2 class="sec-title" id="h-price">Dinlemek ücretsiz. Gece günlüğü tek sefer ödenir.</h2>
+    <p class="sec-lead">Abonelik yok. Bebeğiniz büyüdüğünde unutup giden bir aylık ücret de yok.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>Bebek Dili</h3>
+        <p class="amt">0 ₺</p>
+        <ul>
+          <li>Sınırsız dinleme ve sonuç</li>
+          <li>Her sonuç için “deneyin” önerisi</li>
+          <li>Kırmızı bayrak uyarıları</li>
+        </ul>
+        <a class="btn btn-ghost" href="#">iPhone için indir</a>
+      </div>
+      <div class="plan paid">
+        <h3>Bebek Dili Gece</h3>
+        <p class="amt">149 ₺ <small>tek seferlik</small></p>
+        <ul>
+          <li>Gece günlüğü ve haftalık örüntüler</li>
+          <li>Beslenme ve bez saatlerini tek dokunuşla ekleme</li>
+          <li>İkinci ebeveynin telefonuyla ev ağından eşleşme</li>
+          <li>Doktor kontrolü için 4 haftalık özet (PDF, telefonda üretilir)</li>
+        </ul>
+        <a class="btn btn-lamp" href="#">Android için indir</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="h-faq">
+  <div class="wrap">
+    <h2 class="sec-title" id="h-faq">Gece sorulan sorular</h2>
+    <details><summary>Ne kadar doğru söylüyor?</summary><p>Test kayıtlarında en olası sonuç 10 seferin yaklaşık 8’inde doğru çıktı. Bu yüzden tek bir cevap değil, yüzdeler gösteriyoruz. Sonuç %50’nin altındaysa uygulama “emin değilim” der ve bir dakika sonra yeniden dinletmenizi önerir.</p></details>
+    <details><summary>Kaç aylığa kadar işe yarar?</summary><p>0–6 ay için eğitildi. Altıncı aydan sonra bebekler sesleriyle daha çok şey anlatmaya başlar ve ağlama çeşitlenir; günlük o dönemde de işinize yarar ama sınıflandırma güveni düşer.</p></details>
+    <details><summary>Sürekli dinliyor mu, bebek telsizi gibi?</summary><p>Hayır. Yalnızca siz “Dinle”ye bastığınızda 8 saniye dinler. İsterseniz “gece nöbeti” modunu açabilirsiniz: telefon odada kalır, ağlama başlayınca dinler ve size titreşimle haber verir. Bu modda da ses telefondan çıkmaz.</p></details>
+    <details><summary>İnternet olmadan çalışır mı?</summary><p>Evet, tamamen. Model kurulumla birlikte telefona iner. Uçak modunda, köydeki anneannenin evinde ya da hastane odasında aynı sonucu verir.</p></details>
+    <details><summary>İkizlerde ne olur?</summary><p>İki bebeği ayrı profillerde tutabilirsiniz. Aynı anda ağlıyorlarsa uygulama önce “iki ses duyuyorum” der; telefonu birine yaklaştırmanızı ister.</p></details>
+    <details><summary>Tıbbi cihaz mı?</summary><p>Değil. Bir hastalık tanısı koymaz, doktor muayenesinin yerini tutmaz. Kırmızı bayrak listesindeki durumlarda sonuç yerine doktora başvurmanızı söyler.</p></details>
+  </div>
+</section>
+
+<section class="end" aria-labelledby="h-end">
+  <div class="wrap">
+    <h2 id="h-end">Bu gece de uyanacak. Bu sefer hazırsınız.</h2>
+    <p>Ücretsiz. Kayıt, hesap ya da internet gerekmez.</p>
+    <div class="cta-row">
+      <a class="btn btn-lamp" href="#">iPhone için indir</a>
+      <a class="btn btn-ghost" href="#">Android için indir</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Bebek Dili · Ankara’da geliştirildi</span>
+    <span>Gizlilik: ses yok, hesap yok, sunucu yok · KVKK aydınlatma metni</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // hero wave
+  var hw=document.getElementById('heroWave'), hv=[8,14,22,30,18,40,46,28,12,6,10,34,48,52,38,20,10,6,14,26,44,50,36,18,8,6,12,22,16,8];
+  hv.forEach(function(h,i){var b=document.createElement('i');b.style.height=h+'px';if(i<22)b.className='on';hw.appendChild(b);});
+
+  // cry data
+  var D={
+    aclik:{n:'Açlık',sub:'Genellikle beslenmeden 2–3 saat sonra, yavaş yavaş yükselir.',
+      s:'Kısa, ritmik ağlama; aralarda nefes alır. Ağız kapanırken “neh” sesine benzer bir başlangıç.',
+      l:'Başını yana çevirip arar, elini ağzına götürür, dudaklarını şapırdatır.',
+      d:'Beslemeyi deneyin. Son beslemeden 90 dakikadan az geçtiyse önce gazını çıkarın.',
+      m:'Ağlamalar arası boşluğun düzenli olmasına ve perdenin 350–450 Hz bandında kalmasına.',
+      c:'#F0B46A',p:[[.2,.5],[.6,.5],[1,.5],[1.4,.5],[1.8,.5],[2.2,.5],[2.6,.5],[3,.5],[3.4,.5]],r:{aclik:81,gaz:9,uyku:6,rahatsizlik:4}},
+    gaz:{n:'Gaz',sub:'Çoğunlukla beslenmeden 20–60 dakika sonra, aniden başlar.',
+      s:'Tiz ve kesik; birden en yüksek perdeye çıkar, nefes tutar gibi durup yeniden başlar.',
+      l:'Bacaklarını karnına çeker, yüzü kızarır, sırtını geriye atabilir.',
+      d:'Dik tutup gazını çıkarın; sırtüstü yatırıp bacaklarını bisiklet gibi çevirin.',
+      m:'Ani başlangıca, 500 Hz üstüne çıkan perdeye ve düzensiz nefes aralarına.',
+      c:'#9CC3A0',p:[[.3,.9],[1.6,.4],[2.2,.85],[3.3,.3]],r:{aclik:12,gaz:74,uyku:6,rahatsizlik:8}},
+    uyku:{n:'Uyku',sub:'Uyanık kalma süresi uzadığında; akşam saatlerinde sıklaşır.',
+      s:'Sızlanır, iner çıkar; araya esneme ve uzun iç çekişler girer. Yükselir, sonra kendiliğinden azalır.',
+      l:'Gözlerini ovuşturur, boşluğa bakar, kulağını çeker, kucakta kıvranır.',
+      d:'Işığı kısın, sallanarak beyaz gürültü deneyin. Yeni uyaran eklemeyin.',
+      m:'Yükselip alçalan perde eğrisine ve ağlamanın içine karışan esneme seslerine.',
+      c:'#AFACD6',p:[[.1,.25],[.9,.45],[1.7,.3],[2.4,.4],[3.2,.2]],r:{aclik:10,gaz:8,uyku:71,rahatsizlik:11}},
+    rahatsizlik:{n:'Rahatsızlık',sub:'Islak bez, sıcaklık, sıkan bir giysi ya da yalnızca pozisyon.',
+      s:'Sürekli, tekdüze, ne çok tiz ne çok kısık; sanki “bir şey yanlış” diyor.',
+      l:'Kıpırdanır, kollarını sallar, bir yere değince ağlama artar ya da azalır.',
+      d:'Bezini, ense sıcaklığını ve giysi etiketlerini kontrol edin; pozisyonunu değiştirin.',
+      m:'Uzun süre aynı perdede kalmaya ve hareketle değişen ses şiddetine.',
+      c:'#E9937E',p:[[.1,.55],[3.5,.55]],r:{aclik:9,gaz:11,uyku:7,rahatsizlik:73}}
+  };
+  var svg=document.getElementById('spectro'), cur='aclik';
+  function draw(k,progress){
+    var d=D[k], W=600,H=120, n=120, out='';
+    var bw=W/n;
+    for(var i=0;i<n;i++){
+      var t=i/n*3.6, a=0.06;
+      d.p.forEach(function(seg,j){
+        var start=seg[0], amp=seg[1];
+        if(k==='aclik'){ if(t>start&&t<start+.3) a=Math.max(a,amp*Math.sin((t-start)/.3*Math.PI)); }
+        else if(k==='gaz'){ var dur=j%2?0.55:1.0; if(t>start&&t<start+dur) a=Math.max(a,amp*(1-((t-start)/dur)*.25)); }
+        else if(k==='uyku'){ a=Math.max(a,.18+.18*Math.sin(t*2.2)+ (Math.abs(t-1.7)<.12?-.12:0)); }
+        else { if(t>seg[0]&&t<d.p[1][0]) a=.48+.06*Math.sin(t*9); }
+      });
+      a=Math.max(.04,Math.min(1,a+ (Math.sin(i*12.9898)*43758.5453%1)*.04));
+      var h=a*(H-10), on=(i/n)<=progress;
+      out+='<rect x="'+(i*bw+1).toFixed(1)+'" y="'+((H-h)/2).toFixed(1)+'" width="'+(bw-2).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="1.5" fill="'+(on?d.c:'#3a3f4c')+'"/>';
+    }
+    svg.innerHTML=out;
+  }
+  function show(k){
+    cur=k; var d=D[k];
+    document.getElementById('cryName').textContent=d.n;
+    document.getElementById('crySub').textContent=d.sub;
+    document.getElementById('cueSound').textContent=d.s;
+    document.getElementById('cueLook').textContent=d.l;
+    document.getElementById('cueDo').textContent=d.d;
+    document.getElementById('cueModel').textContent=d.m;
+    document.getElementById('cryOut').innerHTML='Örnek kayıt, sitenin içinde çalınmadan analiz edilir.';
+    draw(k,1);
+  }
+  var tabs=[].slice.call(document.querySelectorAll('.cry-tab'));
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){tabs.forEach(function(x){x.setAttribute('aria-selected','false');x.tabIndex=-1;});t.setAttribute('aria-selected','true');t.tabIndex=0;show(t.dataset.k);});
+    t.addEventListener('keydown',function(e){var j=null;if(e.key==='ArrowDown'||e.key==='ArrowRight')j=(i+1)%tabs.length;if(e.key==='ArrowUp'||e.key==='ArrowLeft')j=(i+tabs.length-1)%tabs.length;if(j!==null){e.preventDefault();tabs[j].focus();tabs[j].click();}});
+    if(i)t.tabIndex=-1;
+  });
+  var names={aclik:'açlık',gaz:'gaz',uyku:'uyku',rahatsizlik:'rahatsızlık'};
+  document.getElementById('runBtn').addEventListener('click',function(){
+    var k=cur,d=D[k],out=document.getElementById('cryOut'),start=null,dur=reduce?0:2600;
+    out.textContent='Dinliyor…';
+    function fin(){var r=d.r,best=Object.keys(r).sort(function(a,b){return r[b]-r[a]})[0];
+      out.innerHTML='Sonuç: <b>'+names[best]+' %'+r[best]+'</b> · diğerleri: '+Object.keys(r).filter(function(x){return x!==best}).map(function(x){return names[x]+' %'+r[x]}).join(', ');}
+    if(!dur){draw(k,1);fin();return;}
+    function step(ts){if(!start)start=ts;var p=Math.min(1,(ts-start)/dur);draw(k,p);if(p<1)requestAnimationFrame(step);else fin();}
+    requestAnimationFrame(step);
+  });
+  show('aclik');
+
+  // night timeline 22:00 -> 06:00 (480 min)
+  var ev=[['22:40',40,'aclik',11],['01:15',195,'gaz',14],['02:05',245,'uyku',6],['04:12',372,'gaz',9],['05:50',470,'aclik',7]];
+  var tl=document.getElementById('timeline');
+  ev.forEach(function(e){var el=document.createElement('div');el.className='ev';el.style.left=(e[1]/480*100)+'%';el.style.height=(e[3]*6+14)+'px';el.style.background='var(--'+{aclik:'hunger',gaz:'gas',uyku:'sleep',rahatsizlik:'fuss'}[e[2]]+')';el.innerHTML='<span>'+e[0]+' · '+e[3]+' dk</span>';tl.appendChild(el);});
+})();
+</script>
+</body>
+</html>

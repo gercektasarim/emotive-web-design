@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pazar Listesi — Söyleyin, yazsın; geçen haftanın fiyatını hatırlasın</title>
+<meta name="description" content="Pazar Listesi sesle tutulan aile alışveriş listesidir. Semt pazarında neyin mevsimi olduğunu ve geçen hafta kaça aldığınızı hatırlar. İnternet istemez, iki telefonda aynı liste.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tent:#1E57A3; --tent-2:#E9F0F8; --light:#F2F5F8; --kraft:#CDA772; --kraft-2:#B88F57;
+  --ink:#15202B; --ink-2:#435160; --red:#C8322A; --green:#21703A; --crate:#2F8A57;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--light);color:var(--ink);font-family:"Rubik",system-ui,sans-serif;font-size:20px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:4px solid #F2B705;outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.marker{font-family:"Kalam",cursive;font-weight:700}
+
+/* awning */
+.awning{height:74px;background:repeating-linear-gradient(90deg,var(--tent) 0 70px,#fff 70px 140px);position:relative}
+.awning::after{content:"";position:absolute;left:0;right:0;bottom:-22px;height:22px;
+  background:radial-gradient(circle at 35px 0,var(--tent) 34px,transparent 35px) 0 0/140px 22px repeat-x,radial-gradient(circle at 105px 0,#fff 34px,transparent 35px) 0 0/140px 22px repeat-x}
+.awning .bar{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;height:74px}
+.brand{background:#fff;color:var(--tent);font-weight:800;font-size:24px;padding:8px 16px;border-radius:8px;text-decoration:none;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.awning nav{display:flex;gap:10px}
+.awning nav a{background:#fff;color:var(--ink);text-decoration:none;font-weight:600;font-size:17px;padding:8px 14px;border-radius:8px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.awning nav a.go{background:var(--ink);color:#fff}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:64px 0 40px;align-items:start}
+.hero>*{min-width:0}
+h1{font-size:clamp(42px,5.4vw,70px);line-height:1.02;font-weight:800;letter-spacing:-.02em;margin:0 0 20px}
+.lede{font-size:22px;color:var(--ink-2);margin:0 0 30px;max-width:24em}
+.mic{appearance:none;border:0;cursor:pointer;font:inherit;display:flex;align-items:center;gap:16px;background:var(--red);color:#fff;font-weight:700;font-size:22px;padding:16px 26px 16px 16px;border-radius:999px;box-shadow:0 6px 0 #8F2019}
+.mic:active{transform:translateY(3px);box-shadow:0 3px 0 #8F2019}
+.mic .dot{width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.mic.rec .dot{animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(.88)}}
+.heard{min-height:3.2em;margin:18px 0 0;font-size:19px;color:var(--ink-2);font-style:italic;max-width:26em}
+.stores{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-block;background:var(--ink);color:#fff!important;text-decoration:none;font-weight:600;padding:14px 22px;border-radius:10px;font-size:18px}
+.btn.out{background:#fff;color:var(--ink)!important;box-shadow:inset 0 0 0 2px var(--ink)}
+
+.list{background:#fff;border-radius:6px;box-shadow:0 2px 0 #D4DBE3,0 22px 40px -26px rgba(21,32,43,.5);padding:26px 28px 18px;position:relative}
+.list::before{content:"";position:absolute;top:-10px;left:50%;width:120px;height:22px;transform:translateX(-50%) rotate(-2deg);background:rgba(205,167,114,.7)}
+.list h2{margin:0;font-size:24px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.list h2 span{font-size:16px;color:var(--ink-2);font-weight:500}
+.list ul{list-style:none;margin:14px 0 0;padding:0}
+.list li{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1.5px dashed #CBD3DC;font-size:20px}
+.list li.new{animation:in .4s ease-out}
+@keyframes in{from{background:#FFF6C7}to{background:transparent}}
+.list .box{width:26px;height:26px;border:2.5px solid var(--ink);border-radius:6px}
+.list .what b{font-weight:600}
+.list .what small{display:block;font-size:15.5px;color:var(--ink-2)}
+.list .price{text-align:right;font-size:16px;color:var(--ink-2);white-space:nowrap}
+.list .price b{display:block;font-size:19px;color:var(--ink)}
+.up{color:var(--red);font-weight:600}
+.down{color:var(--green);font-weight:600}
+.season{display:inline-block;font-size:13.5px;font-weight:600;padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:2px}
+.season.in{background:#DDF0E2;color:#1C5F31}
+.season.out{background:#FBE3E1;color:#8F2019}
+.list .foot{display:flex;justify-content:space-between;padding-top:12px;font-size:17px;color:var(--ink-2);flex-wrap:wrap;gap:6px}
+.list .foot b{color:var(--ink)}
+
+/* season stall */
+section{padding:80px 0}
+h2.big{font-size:clamp(34px,4.2vw,54px);line-height:1.05;font-weight:800;letter-spacing:-.015em;margin:0 0 14px;max-width:18em}
+.sub{color:var(--ink-2);font-size:21px;max-width:34em;margin:0 0 36px}
+.stall{background:var(--crate);border-radius:10px;padding:26px 22px 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px 16px}
+.crate{background:repeating-linear-gradient(0deg,#3B9E65 0 10px,#2F8A57 10px 14px);border-radius:6px;padding:10px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+.heap{height:62px;border-radius:40px 40px 6px 6px;opacity:.95}
+.sign{background:var(--kraft);color:var(--ink);border-radius:2px;padding:6px 10px 4px;transform:rotate(-2deg);box-shadow:0 2px 0 var(--kraft-2);font-family:"Kalam";font-weight:700;line-height:1.05;align-self:flex-start}
+.sign .n{font-size:21px}
+.sign .p{font-size:28px}
+.crate:nth-child(even) .sign{transform:rotate(2deg)}
+.stall-note{color:#E6F3EA;font-size:17px;margin:4px 0 0;grid-column:1/-1}
+
+/* price memory */
+.mem{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+.mem>*{min-width:0}
+.tbl{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 0 #D4DBE3}
+.tbl table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:19px}
+.tbl th{background:var(--tent);color:#fff;text-align:right;font-weight:500;font-size:16px;padding:12px 14px}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{padding:12px 14px;border-bottom:1px solid #E1E6EC;text-align:right}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td.now{font-weight:700}
+.say{margin-top:22px;background:#fff;border-left:6px solid var(--red);padding:16px 18px;border-radius:4px;font-size:19px}
+.say b{display:block;font-size:15.5px;color:var(--ink-2);font-weight:500}
+
+/* two phones offline */
+.two{background:var(--tent);color:#fff;border-radius:14px;padding:50px;display:grid;grid-template-columns:1.1fr 1fr;gap:44px;align-items:center}
+.two>*{min-width:0}
+.two h2.big{color:#fff}
+.two .sub{color:#D3E1F2;margin:0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mini{background:#fff;color:var(--ink);border-radius:16px;padding:16px;font-size:16.5px}
+.mini b{display:block;font-size:18px;margin-bottom:6px}
+.mini div{padding:5px 0;border-bottom:1px dashed #CBD3DC}
+.mini s{color:var(--ink-2)}
+.sig{grid-column:1/-1;font-size:16px;color:#D3E1F2;text-align:center}
+
+blockquote{margin:0;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;max-width:920px}
+blockquote .sign{transform:rotate(-3deg);font-size:26px;padding:10px 16px}
+blockquote p{font-size:clamp(23px,2.6vw,31px);line-height:1.35;margin:0 0 14px}
+blockquote footer{font-size:18px;color:var(--ink-2)}
+
+.priceb{display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:center;background:#fff;border-radius:10px;padding:34px;box-shadow:0 2px 0 #D4DBE3}
+.priceb>*{min-width:0}
+.priceb .sign{font-size:54px;padding:12px 22px 6px}
+.priceb ul{margin:0 0 20px;padding-left:22px}
+
+.faq{max-width:860px}
+details{border-bottom:2px solid #D2D9E1;padding:18px 0}
+summary{cursor:pointer;font-weight:600;font-size:22px}
+details p{color:var(--ink-2);margin:10px 0 0}
+
+footer.site{border-top:2px solid #D2D9E1;padding:36px 0 30px;font-size:17px;color:var(--ink-2)}
+footer.site .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+footer.site .credit{margin-top:22px;font-size:14px}
+
+@media (max-width:960px){
+  .hero,.mem,.two{grid-template-columns:1fr}
+  .stall{grid-template-columns:repeat(2,1fr)}
+  .awning nav a:not(.go){display:none}
+}
+@media (max-width:540px){
+  .wrap{padding:0 16px}
+  body{font-size:18.5px}
+  .two{padding:26px}
+  .pair{grid-template-columns:1fr}
+  .priceb{grid-template-columns:1fr;padding:24px}
+  blockquote{grid-template-columns:1fr}
+  .list{padding:22px 16px 14px}
+  .list li{grid-template-columns:26px 1fr auto;gap:8px;font-size:18px}
+  .mic{font-size:20px}
+  .tbl table{font-size:16.5px}
+  .tbl th,.tbl td{padding:10px 8px}
+  section{padding:60px 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="awning">
+  <div class="wrap bar">
+    <a class="brand" href="#">Pazar Listesi</a>
+    <nav aria-label="Ana menü"><a href="#mevsim">Mevsim</a><a href="#fiyat-hafiza">Fiyatlar</a><a href="#al">Fiyat</a><a class="go" href="#al">İndir</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+<section class="hero" aria-labelledby="h">
+  <div>
+    <h1 id="h">Söyleyin, yazsın. Pazarda telefonunuzda olsun.</h1>
+    <p class="lede">Pazar Listesi’ne mutfakta sesle söylersiniz: “bir kilo domates, iki demet maydanoz”. Cumartesi tezgâhın önünde liste cebinizde; neyin mevsimi olduğunu ve geçen hafta kaça aldığınızı da hatırlar.</p>
+    <button class="mic" id="mic" type="button" aria-describedby="heard"><span class="dot" aria-hidden="true"><svg width="22" height="30" viewBox="0 0 22 30"><rect x="6" y="1" width="10" height="18" rx="5" fill="#C8322A"/><path d="M2 14a9 9 0 0 0 18 0M11 23v6" stroke="#C8322A" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg></span>Basın, söyleyin</button>
+    <p class="heard" id="heard" aria-live="polite">Düğmeye basın: Nermin Hanım’ın Cuma akşamı mutfakta söylediklerini dinleyin.</p>
+    <div class="stores"><a class="btn" href="#al">iPhone için indir</a><a class="btn out" href="#al">Android için indir</a></div>
+  </div>
+
+  <div class="list" aria-labelledby="lt">
+    <h2 id="lt">Cumartesi pazarı <span>7 Kasım · mahalle pazarı, Kadıköy</span></h2>
+    <ul id="items"></ul>
+    <div class="foot"><span>Tahmini toplam <b id="total">0 ₺</b></span><span>Aynı kalemler geçen hafta <b id="lastt">0 ₺</b></span></div>
+  </div>
+</section>
+
+<section id="mevsim" aria-labelledby="mv" style="padding-top:40px">
+  <h2 class="big" id="mv">Kasım tezgâhı: neyin tam zamanı?</h2>
+  <p class="sub">Pazar Listesi mevsimi bilir. Listeye domates yazdığınızda “sera domatesi, bu ay pahalanır” der; ıspanak yazdığınızda “tam zamanı” der. Fiyatlar geçen cumartesi kendi kaydınızdan.</p>
+  <div class="stall" role="list">
+    <div class="crate" role="listitem"><div class="heap" style="background:radial-gradient(circle at 30% 40%,#3E7A2E 0 14px,transparent 15px),radial-gradient(circle at 70% 60%,#4C8C38 0 16px,transparent 17px),#2F6B24"></div><div class="sign"><div class="n">Ispanak</div><div class="p">40 ₺</div></div></div>
+    <div class="crate" role="listitem"><div class="heap" style="background:repeating-linear-gradient(90deg,#E8EBD9 0 12px,#9BBE6A 12px 16px)"></div><div class="sign"><div class="n">Pırasa</div><div class="p">35 ₺</div></div></div>
+    <div class="crate" role="listitem"><div class="heap" style="background:radial-gradient(circle at 25% 50%,#F08A1C 0 16px,transparent 17px),radial-gradient(circle at 60% 40%,#F59A2A 0 16px,transparent 17px),radial-gradient(circle at 85% 60%,#EE8418 0 14px,transparent 15px),#E07A12"></div><div class="sign"><div class="n">Mandalina</div><div class="p">30 ₺</div></div></div>
+    <div class="crate" role="listitem"><div class="heap" style="background:radial-gradient(circle at 30% 50%,#A61E2E 0 18px,transparent 19px),radial-gradient(circle at 72% 45%,#B8293A 0 18px,transparent 19px),#8E1A27"></div><div class="sign"><div class="n">Nar</div><div class="p">45 ₺</div></div></div>
+    <div class="crate" role="listitem"><div class="heap" style="background:radial-gradient(circle at 30% 50%,#E7C53A 0 18px,transparent 19px),radial-gradient(circle at 70% 45%,#DDB92C 0 18px,transparent 19px),#C9A51E"></div><div class="sign"><div class="n">Ayva</div><div class="p">40 ₺</div></div></div>
+    <div class="crate" role="listitem"><div class="heap" style="background:radial-gradient(circle at 50% 60%,#F2F0E4 0 26px,transparent 27px),#7FA35A"></div><div class="sign"><div class="n">Karnabahar</div><div class="p">30 ₺</div></div></div>
+    <div class="crate" role="listitem"><div class="heap" style="background:radial-gradient(circle at 50% 55%,#D9DCC5 0 22px,transparent 23px),radial-gradient(circle at 50% 20%,#5B8E3A 0 14px,transparent 15px),#E4E6D3"></div><div class="sign"><div class="n">Kereviz</div><div class="p">40 ₺</div></div></div>
+    <div class="crate" role="listitem"><div class="heap" style="background:radial-gradient(circle at 30% 50%,#D9372B 0 15px,transparent 16px),radial-gradient(circle at 68% 50%,#C92E23 0 15px,transparent 16px),#B92A20;opacity:.55"></div><div class="sign" style="background:#E3D3B8"><div class="n">Domates · sera</div><div class="p">55 ₺</div></div></div>
+    <p class="stall-note">Son kasa: domatesin mevsimi geçti. Liste bunu söyler, almayı size bırakır.</p>
+  </div>
+</section>
+
+<section id="fiyat-hafiza" aria-labelledby="fh">
+  <div class="mem">
+    <div>
+      <h2 class="big" id="fh">“Geçen hafta kaçaydı?” Artık hatırlamanıza gerek yok.</h2>
+      <p class="sub" style="margin-bottom:0">Tezgâhın önünde fiyatı söylemeniz yeter: “domates elli beş”. Pazar Listesi o hafta için yazar, ertesi cumartesi size hatırlatır. Pahalanan ürünün yanında kırmızı, ucuzlayanın yanında yeşil ok.</p>
+    </div>
+    <div>
+      <div class="tbl">
+        <table>
+          <caption class="marker" style="text-align:left;padding:10px 14px;font-size:20px;background:#fff">Son dört cumartesi · kilo fiyatı</caption>
+          <thead><tr><th scope="col">Ürün</th><th scope="col">17 Eki</th><th scope="col">24 Eki</th><th scope="col">31 Eki</th><th scope="col">7 Kas</th></tr></thead>
+          <tbody>
+            <tr><td>Domates</td><td>38</td><td>42</td><td>48</td><td class="now up">55 ↑</td></tr>
+            <tr><td>Ispanak</td><td>55</td><td>50</td><td>45</td><td class="now down">40 ↓</td></tr>
+            <tr><td>Mandalina</td><td>45</td><td>38</td><td>32</td><td class="now down">30 ↓</td></tr>
+            <tr><td>Sivri biber</td><td>50</td><td>55</td><td>60</td><td class="now up">70 ↑</td></tr>
+            <tr><td>Maydanoz (demet)</td><td>10</td><td>12</td><td>15</td><td class="now">15</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="say"><b>Listeye domates eklediğinizde:</b>“Domates üç haftadır pahalanıyor, 55 lira. Salçalı yemek için yarım kilo yeter mi?”</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="ik">
+  <div class="two">
+    <div>
+      <h2 class="big" id="ik">Siz mutfakta söylersiniz, eşiniz pazarda görür.</h2>
+      <p class="sub">İki telefon evde aynı ağdayken listeyi eşitler. Pazarın ortasında internet çekmese de liste telefonda durur; sesinizi de telefon kendisi yazıya çevirir, hiçbir yere göndermez. Ne aldığınız, kaça aldığınız sizin bileceğiniz iştir.</p>
+    </div>
+    <div class="pair" aria-label="İki telefonda aynı liste">
+      <div class="mini"><b>Nermin’in telefonu</b><div><s>Ispanak 1 kg</s></div><div><s>Mandalina 2 kg</s></div><div>Pırasa 1 kg</div><div>Maydanoz 2 demet</div></div>
+      <div class="mini"><b>Hüseyin’in telefonu</b><div><s>Ispanak 1 kg</s></div><div><s>Mandalina 2 kg</s></div><div>Pırasa 1 kg</div><div>Maydanoz 2 demet</div></div>
+      <p class="sig">Pazarda şebeke: yok · liste: telefonda · son eşitleme evde 08:40</p>
+    </div>
+  </div>
+</section>
+
+<section aria-label="Kullanıcı yorumu">
+  <blockquote>
+    <span class="sign marker" aria-hidden="true">41 yıllık<br>pazarcı<br>müşterisi</span>
+    <div>
+      <p>“Kırk bir yıldır cumartesi pazara giderim, listeyi kırk bir yıldır evde unuturum. Şimdi Hüseyin mutfakta söylüyor, telefon yazıyor. Biberin geçen hafta altmış olduğunu da o hatırlatıyor, ben pazarlık ediyorum.”</p>
+      <footer><b>Nermin Yıldız</b>, emekli hemşire · Kadıköy, cumartesi pazarının müdavimi</footer>
+    </div>
+  </blockquote>
+</section>
+
+<section id="al" aria-labelledby="fy" style="padding-top:20px">
+  <h2 class="big" id="fy">Bir file mandalina parasına.</h2>
+  <div class="priceb">
+    <span class="sign" aria-hidden="true">79 ₺</span>
+    <div>
+      <p style="margin:0 0 10px;font-size:22px"><b>Tek seferlik 79 ₺.</b> Abonelik yok, reklam yok. İlk ay ücretsiz.</p>
+      <ul><li>Sesle liste, iki telefonda aynı liste</li><li>Mevsim takvimi ve fiyat hafızası</li><li>Büyük yazı ve sesli okuma seçeneği</li></ul>
+      <div class="stores" style="margin-top:0"><a class="btn" href="#">iPhone için indir</a><a class="btn out" href="#">Android için indir</a></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="sq" style="padding-top:0">
+  <h2 class="big" id="sq">Sorulanlar</h2>
+  <div class="faq">
+    <details><summary>Telefonla aram iyi değil, kullanabilir miyim?</summary><p>Tek düğme var: basıp konuşursunuz. Yazı büyüktür, isterseniz listeyi size sesli de okur. Torununuzun kurması beş dakika sürer, sonra kendiniz kullanırsınız.</p></details>
+    <details><summary>Şivemi anlar mı?</summary><p>Anlar. Ses tanıma telefonda çalışır ve Türkçenin farklı ağızlarıyla eğitilmiştir. “Patlıcan” yerine “badılcan” deseniz de patlıcan yazar.</p></details>
+    <details><summary>Fiyatları nereden biliyor?</summary><p>Sizden. Tezgâhta fiyatı söylediğinizde kaydeder. Başka bir yerden fiyat çekmez; internette fiyat aramaz. Sizin pazarınızın, sizin fiyatınız.</p></details>
+    <details><summary>İnternet paketi yer mi?</summary><p>Hayır. Uygulama hiç internet kullanmaz; iki telefon evdeki Wi-Fi’da birbirini bulur.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="row"><span><b style="color:var(--ink)">Pazar Listesi</b> · Sesle tutulan aile pazar listesi</span><span>Destek hattı: hafta içi 10:00–17:00 · destek@pazarlistesi.app</span></div>
+  <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+</footer>
+</div>
+
+<script>
+const ALL=[
+ {said:"bir kilo ıspanak",n:"Ispanak",q:"1 kg",p:40,last:45,s:"in"},
+ {said:"iki kilo mandalina",n:"Mandalina",q:"2 kg",p:60,last:64,s:"in"},
+ {said:"bir kilo pırasa",n:"Pırasa",q:"1 kg",p:35,last:35,s:"in"},
+ {said:"yarım kilo domates",n:"Domates",q:"½ kg",p:28,last:24,s:"out"},
+ {said:"iki demet maydanoz",n:"Maydanoz",q:"2 demet",p:30,last:30,s:"in"},
+ {said:"bir nar, büyüğünden",n:"Nar",q:"1 adet, iri",p:25,last:null,s:"in"}
+];
+const ul=document.getElementById('items'),heard=document.getElementById('heard'),mic=document.getElementById('mic');
+let shown=0;
+function li(x,isNew){
+  const diff=x.last==null?'<span>ilk kez</span>':(x.p>x.last?`<span class="up">geçen ${x.last} ₺ ↑</span>`:(x.p<x.last?`<span class="down">geçen ${x.last} ₺ ↓</span>`:`<span>geçen ${x.last} ₺</span>`));
+  const s=x.s==='in'?'<span class="season in">mevsiminde</span>':'<span class="season out">mevsimi geçti</span>';
+  const e=document.createElement('li');if(isNew)e.className='new';
+  e.innerHTML=`<span class="box" aria-hidden="true"></span><span class="what"><b>${x.n}</b>${s}<small>${x.q}</small></span><span class="price"><b>~${x.p} ₺</b>${diff}</span>`;
+  ul.appendChild(e);
+}
+function total(){const xs=ALL.slice(0,shown);document.getElementById('total').textContent=xs.reduce((a,x)=>a+x.p,0)+' ₺';document.getElementById('lastt').textContent=xs.reduce((a,x)=>a+(x.last==null?x.p:x.last),0)+' ₺'}
+// başlangıçta üç kalem
+for(;shown<3;shown++)li(ALL[shown]);total();
+let busy=false;
+mic.onclick=()=>{
+  if(busy)return;
+  if(shown>=ALL.length){ul.innerHTML='';shown=0;for(;shown<3;shown++)li(ALL[shown]);total();heard.textContent='Liste baştan. Bir daha basın.';return}
+  busy=true;mic.classList.add('rec');
+  const rest=ALL.slice(shown);let i=0;
+  const text='“'+rest.map(x=>x.said).join(', ')+'”';
+  heard.textContent='Dinliyor…';
+  const step=()=>{
+    if(i<rest.length){heard.textContent='“'+rest.slice(0,i+1).map(x=>x.said).join(', ')+'…”';li(rest[i],true);shown++;total();i++;setTimeout(step,matchMedia('(prefers-reduced-motion:reduce)').matches?0:900)}
+    else{mic.classList.remove('rec');busy=false;heard.textContent=text+' → 3 kalem eklendi. Domatesin mevsimi geçti, hatırlatıldı.'}
+  };
+  setTimeout(step,500);
+};
+</script>
+</body>
+</html>

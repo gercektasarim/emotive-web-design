@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "emotive-web-design",
+  "compatibility_date": "2026-10-15",
+  "assets": {
+    "directory": "./showcase",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  "routes": [
+    { "pattern": "emotive-web-design.caliptic.com", "custom_domain": true }
+  ],
+  "workers_dev": true
+}

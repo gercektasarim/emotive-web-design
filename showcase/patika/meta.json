@@ -1,0 +1,20 @@
+{
+  "slug": "patika",
+  "name": "Patika",
+  "interpretation": "Topografik harita ve yol boyası",
+  "world": "Likya Yolu'nda kireçtaşı kayalara boyanmış kırmızı-beyaz işaretler, çam ormanı, aşağıda Akdeniz ve eş yükselti eğrili bir harita.",
+  "palette": [
+    "#DEDBD2",
+    "#C3302A",
+    "#23402E",
+    "#1F5373",
+    "#E9A93A"
+  ],
+  "fonts": [
+    "Zilla Slab",
+    "Work Sans"
+  ],
+  "score": 27,
+  "lowest": "Duygu yolculuğu",
+  "moment": "İrtifa profilinde kaydırıcıyı ilerlettikçe saat, gün batımına kalan süre ve karar 'rotada kal'dan 'geri dön, Kirme'ye in'e doğru değişir."
+}

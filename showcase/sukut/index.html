@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sükût — Toplantıda sesiniz yükselmeden önce doksan saniye</title>
+<meta name="description" content="Sükût, saatinizdeki nabız ve ses tonundaki yükselişi fark eder, bileğinize dokunup 90 saniyelik bir nefes rehberi başlatır. Ses kaydı tutulmaz; her şey saatte ve telefonda kalır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Public+Sans:wght@300;400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --wool:#202326;      /* koyu yün takım */
+  --wool-2:#2A2E32;
+  --linen:#ECE8E1;     /* keten gömlek */
+  --linen-2:#E1DCD3;
+  --ash:#A9A49B;       /* kül, ikincil metin (koyu zeminde) */
+  --ash-ink:#5E5A54;   /* ikincil metin (açık zeminde) */
+  --steel:#8FA9BA;     /* nefes: soğuk çelik mavisi */
+  --brass:#C9A86E;     /* saat kuronu, dolma kalem */
+  --rise:#D08A63;      /* yükselen ton (yalnız grafikte) */
+  --serif:"Instrument Serif", Georgia, serif;
+  --sans:"Public Sans", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--wool);color:var(--linen);font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 32px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.01em;line-height:1.05}
+
+/* nav */
+nav{display:flex;align-items:center;justify-content:space-between;padding:26px 0}
+.mark{font-family:var(--serif);font-size:28px;text-decoration:none;display:flex;align-items:center;gap:10px}
+.mark i{display:inline-block;width:10px;height:10px;border-radius:50%;border:1.5px solid var(--steel)}
+nav ul{display:flex;gap:28px;list-style:none;font-size:15px;color:var(--ash)}
+nav ul a{text-decoration:none}
+nav ul a:hover{color:var(--linen)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font:500 15px/1 var(--sans);text-decoration:none;cursor:pointer;border:1px solid transparent;transition:background .2s,color .2s}
+.btn-light{background:var(--linen);color:var(--wool)}
+.btn-light:hover{background:#fff}
+.btn-ghost{border-color:#4A4F55;color:var(--linen);background:transparent}
+.btn-ghost:hover{border-color:var(--ash)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;padding:56px 0 96px}
+.hero h1{font-size:clamp(46px,6.4vw,84px)}
+.hero h1 em{font-style:normal}
+.hero p.lead{margin-top:26px;max-width:30em;color:#CFCAC1;font-size:19px;font-weight:300}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+.hero .fine{margin-top:18px;font-size:14px;color:var(--ash)}
+
+/* saat */
+.watch-stage{display:flex;justify-content:center}
+.watch{position:relative;width:min(400px,86vw);aspect-ratio:1}
+.strap{position:absolute;left:50%;transform:translateX(-50%);width:46%;height:28%;background:linear-gradient(#26292d,#1a1c1f);border-radius:18px}
+.strap.t{top:-16%}.strap.b{bottom:-16%}
+.case{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a3e43,#151719 70%);box-shadow:0 30px 60px rgba(0,0,0,.45),inset 0 0 0 2px #3b3f44}
+.crown{position:absolute;right:-3.2%;top:44%;width:4%;height:12%;background:var(--brass);border-radius:3px}
+.face{position:absolute;inset:7%;border-radius:50%;background:#0B0C0D;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.ring{position:absolute;width:86%;aspect-ratio:1;border-radius:50%;border:2px solid var(--steel);opacity:.9;transform:scale(.72);transition:transform 4s cubic-bezier(.4,0,.2,1),opacity 1s}
+.ring.r2{width:86%;border-width:1px;opacity:.35;transform:scale(.8)}
+.face .t1{position:relative;font-size:13px;color:var(--ash);letter-spacing:.04em}
+.face .big{position:relative;font-family:var(--serif);font-size:clamp(40px,6vw,58px);line-height:1;margin:6px 0 4px}
+.face .t2{position:relative;font-size:14px;color:var(--steel)}
+.face .meter{position:absolute;bottom:15%;display:flex;gap:18px;font-size:12px;color:var(--ash)}
+.face .meter b{display:block;color:var(--linen);font-weight:500;font-size:15px;text-align:center}
+.face .meter b.up{color:var(--rise)}
+.watch-cap{text-align:center;margin-top:62px;font-size:14px;color:var(--ash)}
+.watch-cap button{background:none;border:0;color:var(--linen);font:500 14px var(--sans);text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:6px}
+
+/* açık bölümler */
+.linen{background:#E3E4E1;color:var(--wool)} /* toplantı masasının mat grisi */
+.linen .muted{color:var(--ash-ink)}
+section.pad{padding:110px 0}
+.kicker{font-size:14px;color:var(--ash-ink);margin-bottom:14px}
+.dark .kicker{color:var(--ash)}
+h2{font-size:clamp(36px,4.4vw,58px)}
+
+/* toplantı grafiği */
+.meeting-head{display:flex;justify-content:space-between;align-items:end;gap:40px;flex-wrap:wrap}
+.meeting-head p{max-width:30em}
+.chart{margin-top:52px;background:#EEEFEC;border:1px solid #CDD0CB;border-radius:6px;padding:28px 28px 20px}
+.chart svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:26px;flex-wrap:wrap;font-size:14px;color:var(--ash-ink);margin-top:14px}
+.legend span::before{content:"";display:inline-block;width:18px;height:2px;vertical-align:middle;margin-right:8px;background:currentColor}
+.legend .l1{color:#9A5434}.legend .l2{color:#3F6378}
+.beats{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:56px}
+.beats time{font-family:var(--serif);font-size:30px;display:block;margin-bottom:6px}
+.beats p{font-size:16px}
+
+/* müdahale */
+.dark section.pad{border-top:1px solid #34383d}
+.signals{display:grid;grid-template-columns:1fr 1.25fr;gap:72px;align-items:start}
+.signals ol{list-style:none;border-top:1px solid #3a3e43}
+.signals li{display:grid;grid-template-columns:120px 1fr;gap:24px;padding:26px 0;border-bottom:1px solid #3a3e43}
+.signals li strong{font-family:var(--serif);font-weight:400;font-size:26px;color:var(--steel)}
+.signals li p{color:#CFCAC1}
+.signals li span{display:block;font-size:14px;color:var(--ash);margin-top:4px}
+
+/* gizlilik: defter */
+.ledger{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:52px;border:1px solid #C9CCC6;border-radius:6px;overflow:hidden}
+.ledger > div{padding:30px}
+.ledger > div + div{border-left:1px solid #C9CCC6;background:#D9DBD7}
+.ledger h3{font-size:28px;margin-bottom:18px}
+.ledger ul{list-style:none;font-size:15.5px}
+.ledger li{padding:11px 0;border-top:1px dashed #C3BCAF;display:flex;justify-content:space-between;gap:16px}
+.ledger li code{font:500 13.5px/1.5 ui-monospace,Menlo,monospace;color:#3F6378}
+.ledger .no li{color:var(--ash-ink);text-decoration:line-through;text-decoration-color:#B9B1A3}
+.privacy-note{margin-top:28px;max-width:44em;font-size:16px}
+
+/* haftalık */
+.week{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;align-items:center}
+.report{background:var(--wool-2);border:1px solid #3a3e43;border-radius:8px;padding:30px}
+.report header{display:flex;justify-content:space-between;font-size:14px;color:var(--ash);border-bottom:1px solid #3a3e43;padding-bottom:14px}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:22px 0 18px;align-items:end;height:140px}
+.day{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%;font-size:12px;color:var(--ash)}
+.dots{display:flex;flex-direction:column-reverse;gap:6px}
+.dots i{width:20px;height:20px;border-radius:50%;background:var(--steel)}
+.dots i.miss{background:transparent;border:1.5px solid var(--rise)}
+.report p{font-size:15px;color:#CFCAC1;border-top:1px solid #3a3e43;padding-top:14px}
+
+/* alıntı */
+blockquote{max-width:880px}
+blockquote p{font-family:var(--serif);font-size:clamp(30px,3.6vw,46px);line-height:1.18}
+blockquote footer{margin-top:24px;font-size:15px;color:var(--ash-ink)}
+
+/* fiyat + sss */
+.buy{display:grid;grid-template-columns:1fr 1fr;gap:72px}
+.price{border:1px solid #3a3e43;border-radius:8px;padding:34px}
+.price .amt{font-family:var(--serif);font-size:72px;line-height:1}
+.price .amt small{font-family:var(--sans);font-size:16px;color:var(--ash);margin-left:8px}
+.price ul{list-style:none;margin:22px 0 28px;color:#CFCAC1;font-size:15.5px}
+.price li{padding:8px 0;border-top:1px solid #34383d}
+.price .ctas{display:flex;gap:10px;flex-wrap:wrap}
+details{border-top:1px solid #3a3e43;padding:18px 0}
+details:last-child{border-bottom:1px solid #3a3e43}
+summary{cursor:pointer;font-size:17px;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--steel);font-weight:300;font-size:22px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin-top:10px;color:#CFCAC1;font-size:15.5px;max-width:36em}
+
+footer.site{padding:56px 0 40px;border-top:1px solid #34383d;font-size:14px;color:var(--ash)}
+footer.site .row{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer.site .credit{margin-top:36px;font-size:12.5px}
+footer.site .credit a{color:var(--ash);text-decoration:none;border-bottom:1px solid #4A4F55}
+
+@media (max-width:900px){
+  .wrap{padding:0 20px}
+  .face .t1{font-size:11px}
+  .face .t2{font-size:12px}
+  .face .meter{bottom:6%;gap:14px;font-size:11px}
+  .face .meter b{font-size:13px}
+  .chart svg text{font-size:28px}
+  nav ul{display:none}
+  .hero{grid-template-columns:1fr;gap:72px;padding:24px 0 80px}
+  .watch{width:min(300px,76vw)}
+  .beats,.signals,.week,.buy,.ledger{grid-template-columns:1fr}
+  .ledger > div + div{border-left:0;border-top:1px solid #CFC8BC}
+  .signals li{grid-template-columns:1fr;gap:6px}
+  section.pad{padding:76px 0}
+  .chart{padding:16px 12px 12px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<div class="dark">
+<div class="wrap">
+  <nav aria-label="Ana menü">
+    <a class="mark" href="#"><i aria-hidden="true"></i>Sükût</a>
+    <ul>
+      <li><a href="#toplanti">Bir toplantı</a></li>
+      <li><a href="#kayit">Ne saklanır</a></li>
+      <li><a href="#fiyat">Fiyat</a></li>
+    </ul>
+    <a class="btn btn-ghost" href="#fiyat">İndir</a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Sesiniz yükselmeden önce,<br><em>doksan saniye.</em></h1>
+      <p class="lead">Sükût, saatinizdeki nabızla ses tonunuzu birlikte dinler. Öfke tırmanmaya başladığında bileğinize iki kez dokunur ve masadaki kimse fark etmeden bir nefes rehberi açar.</p>
+      <div class="ctas">
+        <a class="btn btn-light" href="#fiyat">iPhone ve Apple Watch için</a>
+        <a class="btn btn-ghost" href="#fiyat">Android ve Wear OS için</a>
+      </div>
+      <p class="fine">Ses kaydı yok. Hesap yok. Tek ödeme, ₺690.</p>
+    </div>
+
+    <div>
+      <div class="watch-stage">
+        <div class="watch" role="img" aria-label="Saat ekranı: nabız 104, ses tonu yüzde 18 yükseldi, nefes al yazıyor">
+          <div class="strap t"></div><div class="strap b"></div>
+          <div class="case"></div><div class="crown"></div>
+          <div class="face">
+            <div class="ring r2" id="ring2"></div>
+            <div class="ring" id="ring"></div>
+            <span class="t1" id="wLabel">10:47 · Bütçe toplantısı</span>
+            <span class="big" id="wBig">Nefes</span>
+            <span class="t2" id="wSub">dört saniye al</span>
+            <div class="meter" aria-hidden="true">
+              <span><b class="up" id="wPulse">104</b>nabız</span>
+              <span><b class="up" id="wTone">+18%</b>ton</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="watch-cap" aria-live="polite"><span id="capText">Şu an saatte gördüğünüz ekran.</span> <button type="button" id="tryBtn">Doksan saniyeyi burada deneyin</button></p>
+    </div>
+  </header>
+</div>
+
+<section class="linen pad" id="toplanti">
+  <div class="wrap">
+    <div class="meeting-head">
+      <div>
+        <p class="kicker">Salı, 10:00–11:00 · Üçüncü çeyrek bütçe toplantısı</p>
+        <h2>Bir saatin içinde<br>kırk saniyelik bir an.</h2>
+      </div>
+      <p class="muted">Grafik, gerçek bir kullanıcının toplantısından anonim olarak çizildi. Kelimeler yok; yalnız tonun yüksekliği ve nabız var. Sükût'un gördüğü de yalnız bu.</p>
+    </div>
+
+    <div class="chart">
+      <svg viewBox="0 0 1000 260" role="img" aria-label="Toplantı boyunca ses tonu ve nabız. 10:44'te ikisi birlikte yükseliyor, 10:47'de Sükût devreye giriyor, 10:49'da ikisi de iniyor.">
+        <g stroke="#D6D0C5" stroke-width="1">
+          <line x1="0" y1="60" x2="1000" y2="60"/><line x1="0" y1="130" x2="1000" y2="130"/><line x1="0" y1="200" x2="1000" y2="200"/>
+        </g>
+        <rect x="770" y="10" width="64" height="215" fill="#8FA9BA" opacity=".22"/>
+        <line x1="770" y1="10" x2="770" y2="225" stroke="#3F6378" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <text x="778" y="28" font-family="Public Sans" font-size="13" fill="#2A4555">Sükût dokundu</text>
+        <path d="M0 175 C60 170 90 178 140 168 S240 172 300 160 S400 166 450 158 S560 150 620 140 S700 110 740 82 S765 58 778 54 C795 70 815 120 840 150 S900 170 1000 172" fill="none" stroke="#9A5434" stroke-width="2.5"/>
+        <path d="M0 196 C80 194 120 192 180 190 S300 188 360 186 S480 184 540 178 S660 160 720 132 S760 104 780 98 C800 112 820 150 850 170 S920 184 1000 186" fill="none" stroke="#3F6378" stroke-width="2.5"/>
+        <g font-family="Public Sans" font-size="13" fill="#5E5A54">
+          <text x="0" y="252">10:00</text><text x="236" y="252">10:15</text><text x="486" y="252">10:30</text><text x="736" y="252">10:45</text><text x="1000" y="252" text-anchor="end">11:00</text>
+        </g>
+      </svg>
+      <div class="legend"><span class="l1">Ses tonu (perde ve şiddet)</span><span class="l2">Nabız</span></div>
+    </div>
+
+    <div class="beats">
+      <div><time>10:44</time><p>Satış hedefleri konuşulurken ses tonu sakin seyrinin %12 üstüne çıktı. Nabız 88'den 97'ye. Sükût bekliyor; tek bir yükseliş öfke değildir.</p></div>
+      <div><time>10:47</time><p>İkisi birlikte, otuz saniyedir yukarıda. Saat iki kısa titreşimle bileğe dokundu. Ekranda tek kelime: <em>Nefes.</em></p></div>
+      <div><time>10:49</time><p>Altı nefes sonra ton sakin seyrine döndü, nabız 91. Söz o sırada başkasındaydı. Toplantı devam etti; fark eden olmadı.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="dark">
+<section class="pad">
+  <div class="wrap signals">
+    <div>
+      <p class="kicker">Masada kimse görmeden</p>
+      <h2>Size dokunur,<br>sizi susturmaz.</h2>
+    </div>
+    <ol>
+      <li><strong>Bilekte</strong><p>İki kısa titreşim; bildirim titreşiminden farklı, kısa sürede ezberlenen bir ritim.<span>Saat kolunuzda ve kilitliyken de çalışır.</span></p></li>
+      <li><strong>Ekranda</strong><p>Tek kelime ve genişleyip daralan bir halka. Dört saniye al, iki tut, altı ver. Göz ucuyla bakmak yeter.<span>Ekran parlaklığı düşük kalır, masadakilere ışık vurmaz.</span></p></li>
+      <li><strong>Kulakta</strong><p>Tek kulaklık takılıysa alçak sesle sayar. Telefon görüşmelerinde de işe yarar.<span>İsterseniz kapatılır; varsayılan kapalıdır.</span></p></li>
+      <li><strong>Sonra</strong><p>Toplantı bittiğinde bir satır not: "10:47, 38 saniye, nefes tamamlandı." Fazlası değil.</p></li>
+    </ol>
+  </div>
+</section>
+</div>
+
+<section class="linen pad" id="kayit">
+  <div class="wrap">
+    <p class="kicker">Toplantı odasında söylenen, toplantı odasında kalır</p>
+    <h2>Saatin defterinde ne yazar,<br>ne asla yazmaz.</h2>
+    <div class="ledger">
+      <div>
+        <h3>Saklanan</h3>
+        <ul>
+          <li>Yükselişin saati <code>10:47</code></li>
+          <li>Ne kadar sürdüğü <code>38 sn</code></li>
+          <li>Nefesin tamamlanıp tamamlanmadığı <code>evet</code></li>
+          <li>Takvimdeki toplantı adı <code>isterseniz</code></li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3>Hiç kaydedilmeyen</h3>
+        <ul>
+          <li>Sesiniz</li>
+          <li>Söylenen kelimeler</li>
+          <li>Odada başka kimin konuştuğu</li>
+          <li>Konum ve katılımcı listesi</li>
+        </ul>
+      </div>
+    </div>
+    <p class="privacy-note">Mikrofon, sesi yarım saniyelik pencerelerde yalnızca iki sayıya çevirir: perde ve şiddet. Ham ses belleğe yazılmadan silinir. Model saatin ve telefonun içinde çalışır; uçak modunda da aynı şekilde. Şirketinizin BT bölümü, cihaz yönetimi açık olsa bile bu notları göremez, çünkü notlar hiçbir sunucuya gitmez.</p>
+  </div>
+</section>
+
+<div class="dark">
+<section class="pad">
+  <div class="wrap week">
+    <div>
+      <p class="kicker">Cuma akşamı, tek ekran</p>
+      <h2>Haftanın öfke takvimi.</h2>
+      <p style="margin-top:22px;color:#CFCAC1;max-width:28em">Sükût size not vermez, kimseyle karşılaştırmaz. Yalnızca hangi toplantının sizi her hafta aynı yerden yakaladığını gösterir. Çoğu kullanıcı üçüncü haftada o toplantının saatini değiştiriyor.</p>
+    </div>
+    <div class="report" role="img" aria-label="Haftalık özet: pazartesi 2, salı 1, çarşamba 0, perşembe 2, cuma 1 yükseliş. Altı yükselişin beşinde nefes tamamlandı.">
+      <header><span>27–31 Ekim</span><span>6 yükseliş · 5 nefes</span></header>
+      <div class="days">
+        <div class="day"><div class="dots"><i></i><i></i></div>Pzt</div>
+        <div class="day"><div class="dots"><i></i></div>Sal</div>
+        <div class="day"><div class="dots"></div>Çar</div>
+        <div class="day"><div class="dots"><i></i><i class="miss"></i></div>Per</div>
+        <div class="day"><div class="dots"><i></i></div>Cum</div>
+      </div>
+      <p>İki hafta üst üste: Pazartesi 09:30, haftalık durum toplantısı. Perşembe 16:10'daki tedarikçi görüşmesinde nefesi yarıda bıraktınız; olur.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="linen pad">
+  <div class="wrap">
+    <blockquote>
+      <p>"Yönetim kurulunda masaya vurmadan geçen ilk çeyreğim oldu. Saatin dokunduğunu hissedince artık cümlemi bitirmiyorum, önce soruyorum."</p>
+      <footer>Selim Karaca · Otomotiv yan sanayi, genel müdür · Bursa</footer>
+    </blockquote>
+  </div>
+</section>
+
+<div class="dark">
+<section class="pad" id="fiyat">
+  <div class="wrap buy">
+    <div class="price">
+      <p class="kicker">Abonelik yok</p>
+      <p class="amt">₺690<small>tek ödeme</small></p>
+      <ul>
+        <li>Saat ve telefon uygulaması birlikte</li>
+        <li>Apple Watch Series 6 ve sonrası · Wear OS 3 ve sonrası</li>
+        <li>On dört gün deneyin; beğenmezseniz mağaza üzerinden iade</li>
+        <li>Ekip lisansı yok, bilerek: Sükût şirketin değil, sizin</li>
+      </ul>
+      <div class="ctas">
+        <a class="btn btn-light" href="#">iPhone için indir</a>
+        <a class="btn btn-ghost" href="#">Android için indir</a>
+      </div>
+    </div>
+    <div>
+      <h2 style="font-size:40px;margin-bottom:22px">Sorulanlar</h2>
+      <details><summary>Ya öfkem haklıysa?</summary><p>Olabilir. Sükût konuşmanızı kesmez, fikrinizi değiştirmez. Yalnızca söylemeden önce doksan saniye verir. Haklı bir itiraz, nefesten sonra genelde daha iyi duyulur.</p></details>
+      <details><summary>Heyecan ile öfkeyi nasıl ayırıyor?</summary><p>İlk hafta sizin sakin seyrinizi öğrenir. Sunum heyecanında nabız yükselir ama ton genelde düzdür; öfkede ikisi birlikte ve otuz saniyeden uzun yükselir. Yanlış dokunuşta saate bir kez dokunmanız yeterli, model ona göre ayarlanır.</p></details>
+      <details><summary>Toplantıda biri fark eder mi?</summary><p>Titreşim yalnızca bilekte hissedilir, ekran karanlık kalır. Kullanıcıların çoğu ilk ay kimseye söylemediğini yazıyor.</p></details>
+      <details><summary>Telefon görüşmelerinde de çalışır mı?</summary><p>Evet. Telefonun mikrofonu da aynı şekilde yalnız ton bilgisi çıkarır. Görüşmenin içeriği ve karşı tarafın sesi işlenmez.</p></details>
+      <details><summary>İnternet ya da hesap gerekiyor mu?</summary><p>Hayır. İlk kurulumdan sonra uçak modunda da çalışır. E-posta adresinizi bile istemiyoruz.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="row">
+      <span>Sükût · Tıbbi bir cihaz değildir; öfke kontrolü terapisinin yerini tutmaz.</span>
+      <span>destek@sukut.app</span>
+    </div>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var btn=document.getElementById('tryBtn'),ring=document.getElementById('ring'),ring2=document.getElementById('ring2');
+  var big=document.getElementById('wBig'),sub=document.getElementById('wSub'),lab=document.getElementById('wLabel');
+  var pulse=document.getElementById('wPulse'),tone=document.getElementById('wTone'),cap=document.getElementById('capText');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timer=null,running=false;
+  var phases=[["Al",4,1],["Tut",2,1],["Ver",6,.72]];
+  function stop(){clearTimeout(timer);running=false;btn.textContent='Doksan saniyeyi burada deneyin';ring.style.transform='scale(.72)';}
+  btn.addEventListener('click',function(){
+    if(running){stop();big.textContent='Nefes';sub.textContent='dört saniye al';lab.textContent='10:47 · Bütçe toplantısı';cap.textContent='Şu an saatte gördüğünüz ekran.';return;}
+    running=true;btn.textContent='Durdur';cap.textContent='Halkayla birlikte nefes alın.';
+    var start=Date.now(),total=90,i=0,p0=104,t0=18;
+    function step(){
+      if(!running)return;
+      var el=(Date.now()-start)/1000;
+      if(el>=total){running=false;btn.textContent='Bir daha';big.textContent='Tamam';sub.textContent='doksan saniye bitti';lab.textContent='10:49 · not düşüldü';cap.textContent='Saatin defterine tek satır yazıldı: 10:47, nefes tamamlandı.';ring.style.transform='scale(.72)';return;}
+      var ph=phases[i%3];
+      big.textContent=ph[0];
+      sub.textContent=ph[1]+' saniye · '+Math.ceil(total-el)+' sn kaldı';
+      lab.textContent='Sükût · nefes rehberi';
+      if(!reduce){ring.style.transitionDuration=ph[1]+'s';ring.style.transform='scale('+ph[2]+')';ring2.style.transform='scale('+(ph[2]===1?.95:.8)+')';}
+      var k=Math.min(el/60,1);
+      pulse.textContent=Math.round(p0-k*13);tone.textContent='+'+Math.max(0,Math.round(t0-k*18))+'%';
+      if(k>=1){pulse.className='';tone.className='';}
+      i++;timer=setTimeout(step,ph[1]*1000);
+    }
+    step();
+  });
+})();
+</script>
+</body>
+</html>

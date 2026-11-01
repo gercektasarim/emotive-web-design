@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doz — Yedi ilaç, dört saat, tek haftalık kutu</title>
+<meta name="description" content="Doz ilaç kutusunu kamerayla tanır, saatini hatırlatır ve birlikte kullanılan ilaçlarda etkileşim uyarısı verir. İlaç listesi telefonda kalır, internet olmadan da çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F1EA; --white:#FFFFFF; --ink:#16181D; --ink-2:#4A4F59; --line:#D8DCE3; --tray:#E9ECF1;
+  --pzt:#D63B3B; --sal:#E7832A; --car:#E3B623; --per:#3A9A48; --cum:#2B78C9; --cmt:#7650C2; --paz:#D24E93;
+  --warn:#9A3412; --warn-bg:#FFF1E6; --ok:#21683A; --ok-bg:#E7F4EA;
+  --sans:"Atkinson Hyperlegible",system-ui,sans-serif; --cond:"Barlow Semi Condensed","Arial Narrow",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 19px/1.55 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cum);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px 12px;z-index:9}
+
+.top{background:var(--white);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.word{display:flex;align-items:center;gap:10px;font:700 26px var(--cond);text-decoration:none;letter-spacing:.01em}
+.word .lids{display:grid;grid-template-columns:repeat(7,6px);gap:2px}
+.word .lids i{height:18px;border-radius:2px}
+.top nav{display:flex;gap:26px;align-items:center;font-size:16.5px}
+.top nav a{text-decoration:none;color:var(--ink-2)}
+.top nav a:hover{color:var(--ink);text-decoration:underline}
+.btn{display:inline-block;font:700 18px var(--sans);padding:14px 22px;border-radius:10px;text-decoration:none;border:2px solid var(--ink)}
+.btn.ink{background:var(--ink);color:#fff}
+.btn.ink:hover{background:#30343C}
+.btn.out{background:var(--white)}
+.btn.out:hover{background:var(--tray)}
+.top nav .btn{padding:9px 16px;font-size:16px}
+
+/* hero */
+.hero{padding:34px 0 64px;background:var(--white);border-bottom:1px solid var(--line)}
+.hero-head{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:end;margin-bottom:26px}
+.hero h1{font:700 clamp(32px,4vw,50px)/1.1 var(--sans);letter-spacing:-.015em;margin:0}
+.hero .lede{margin:0 0 18px;color:var(--ink-2)}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.board{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.org{background:var(--tray);border-radius:18px;padding:14px;border:1px solid var(--line)}
+.org-grid{display:grid;grid-template-columns:62px repeat(7,1fr);gap:7px}
+.dayh{text-align:center;font:700 16px var(--cond);padding:8px 0 6px;border-radius:8px 8px 0 0;color:#fff;letter-spacing:.02em}
+.dayh.today{outline:3px solid var(--ink);outline-offset:-1px}
+.slot{font:600 15px/1.15 var(--cond);color:var(--ink-2);display:flex;flex-direction:column;justify-content:center}
+.slot b{font:700 17px var(--cond);color:var(--ink)}
+.cell{all:unset;box-sizing:border-box;cursor:pointer;background:var(--white);border-radius:8px;min-height:74px;padding:7px 6px 6px;position:relative;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start;justify-content:center;border:1.5px solid #CCD2DB;border-top:6px solid var(--lid)}
+.cell:hover{border-color:var(--ink);border-top-color:var(--lid)}
+.cell:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.cell.empty{background:repeating-linear-gradient(135deg,#F2F4F7 0 6px,#ECEFF3 6px 12px);border-top-style:dashed}
+.cell.empty::after{content:"✓";position:absolute;bottom:4px;right:6px;font:700 14px var(--sans);color:var(--ok)}
+.cell.now{box-shadow:0 0 0 3px var(--ink)}
+.cell[aria-pressed="true"]{background:#FFFBEA;border-color:var(--ink);border-top-color:var(--lid)}
+.cell.empty[aria-pressed="true"]{background:#FFFBEA}
+.pill{display:block;border:1px solid rgba(0,0,0,.18)}
+.p-glifor{width:24px;height:12px;border-radius:7px;background:#FDFDFB;border-color:#8A93A0!important}
+.p-concor{width:12px;height:12px;border-radius:50%;background:#F4E39A}
+.p-atoris{width:16px;height:9px;border-radius:5px;background:#E9F0FB;border-color:#6F86B0!important}
+.p-levo{width:11px;height:11px;border-radius:50%;background:#C9B8E6}
+.p-coum{width:12px;height:12px;border-radius:50%;background:#F2B48A}
+.p-lansor{width:22px;height:10px;border-radius:6px;background:linear-gradient(90deg,#B04D7B 50%,#F0D3E0 50%)}
+.p-calc{width:20px;height:20px;border-radius:50%;background:#FFFFFF;border:2px solid #9AA3AE!important}
+.p-maj{width:13px;height:13px;border-radius:50%;background:#5E7FD0}
+.panel{background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:20px 22px;min-height:100%}
+.panel h2{font:700 24px/1.2 var(--sans);margin:0}
+.panel .when{font:600 17px var(--cond);color:var(--ink-2);margin:2px 0 12px}
+.panel ul{list-style:none;margin:0;padding:0}
+.panel li{display:grid;grid-template-columns:30px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line);align-items:center}
+.panel li .nm{font-weight:700}
+.panel li .nt{display:block;font-size:16px;color:var(--ink-2)}
+.status{margin-top:12px;font-size:16.5px;padding:10px 12px;border-radius:10px}
+.status.ok{background:var(--ok-bg);color:var(--ok)}
+.status.wait{background:#EEF3FB;color:#1D4F8A}
+.status.warn{background:var(--warn-bg);color:var(--warn)}
+.today-sum{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;font-size:16px}
+.ts-h{display:flex;justify-content:space-between;font-weight:700}
+.ts-bar{height:10px;border-radius:5px;background:var(--tray);margin:8px 0 12px;overflow:hidden}
+.ts-bar i{display:block;height:100%;background:var(--ok)}
+.ts-next{padding:8px 0;border-top:1px dashed var(--line);color:var(--ink-2)}
+.ts-next b{display:block;color:var(--ink)}
+.hint{font-size:15.5px;color:var(--ink-2);margin:12px 4px 0}
+.alert{display:flex;gap:14px;margin-top:20px;background:var(--warn-bg);border:2px solid #E8B48A;border-radius:14px;padding:16px 18px;align-items:flex-start}
+.alert .ic{flex:none;width:30px;height:30px;border-radius:50%;background:var(--warn);color:#fff;font:700 19px/30px var(--sans);text-align:center}
+.alert b{display:block;font-size:19px}
+.alert p{margin:2px 0 0;font-size:17px}
+
+section{padding:88px 0}
+h2.sec{font:700 clamp(28px,3vw,38px)/1.18 var(--sans);letter-spacing:-.01em;margin:0 0 14px;max-width:24ch}
+.sub{color:var(--ink-2);max-width:60ch;margin:0 0 38px}
+
+/* camera */
+.cam{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.viewfinder{position:relative;background:#2A2D33;border-radius:22px;padding:42px 36px;overflow:hidden}
+.box{background:#fff;border-radius:6px;padding:18px 20px;transform:rotate(-4deg);box-shadow:0 18px 30px -16px rgba(0,0,0,.6);max-width:380px;margin:0 auto;border-left:12px solid #2B78C9}
+.box .brand{font:700 34px/1 var(--cond);color:#163B6B;letter-spacing:.01em}
+.box .dose{font:600 20px var(--cond);color:#163B6B}
+.box .fine{font:500 13.5px/1.35 var(--cond);color:#3F4652;margin-top:10px}
+.box .qr{display:grid;grid-template-columns:repeat(7,7px);gap:1px;margin-top:10px;width:max-content}
+.box .qr i{width:7px;height:7px;background:#16181D}
+.box .qr i:nth-child(3n),.box .qr i:nth-child(5n+1){background:transparent}
+.frame{position:absolute;inset:12px;border-radius:14px;pointer-events:none;
+  background:linear-gradient(#FFD34D,#FFD34D) top left/34px 4px no-repeat,linear-gradient(#FFD34D,#FFD34D) top left/4px 34px no-repeat,
+  linear-gradient(#FFD34D,#FFD34D) top right/34px 4px no-repeat,linear-gradient(#FFD34D,#FFD34D) top right/4px 34px no-repeat,
+  linear-gradient(#FFD34D,#FFD34D) bottom left/34px 4px no-repeat,linear-gradient(#FFD34D,#FFD34D) bottom left/4px 34px no-repeat,
+  linear-gradient(#FFD34D,#FFD34D) bottom right/34px 4px no-repeat,linear-gradient(#FFD34D,#FFD34D) bottom right/4px 34px no-repeat}
+.read{margin-top:26px;background:#fff;border-radius:12px;padding:14px 16px;font-size:16.5px;position:relative}
+.read b{font-size:18px}
+.read .row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:8px;margin-top:8px}
+.steps{list-style:none;padding:0;margin:0;counter-reset:n}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--line)}
+.steps li::before{counter-increment:n;content:counter(n);width:36px;height:36px;border-radius:50%;background:var(--ink);color:#fff;font:700 18px/36px var(--sans);text-align:center}
+.steps h3{margin:0 0 4px;font-size:20px}
+.steps p{margin:0;color:var(--ink-2);font-size:17.5px}
+
+.leaflet{background:linear-gradient(90deg,transparent calc(33.3% - 1px),rgba(120,100,60,.08) calc(33.3% - 1px) 33.3%,transparent 33.3% calc(66.6% - 1px),rgba(120,100,60,.08) calc(66.6% - 1px) 66.6%,transparent 66.6%),var(--bg)}
+/* interactions */
+.mix{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mixes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.mx{border-radius:14px;padding:20px 22px;border:2px solid}
+.pair{display:flex;align-items:center;gap:10px;margin:12px 0 4px;background:rgba(255,255,255,.75);border-radius:10px;padding:10px 12px;width:max-content;font:700 15px var(--cond);color:var(--ink-2)}
+.pair .pill{transform:scale(1.5);margin:0 6px}
+.mx .lvl{font:700 15px var(--cond);letter-spacing:.04em;text-transform:uppercase}
+.mx h3{font-size:21px;margin:6px 0 8px;line-height:1.25}
+.mx p{margin:0;font-size:17px}
+.mx.red{border-color:#E7A1A1;background:#FDF0F0}.mx.red .lvl{color:#9B1C1C}
+.mx.amb{border-color:#E8C27E;background:#FFF7E8}.mx.amb .lvl{color:#7A4A00}
+.mx.grn{border-color:#9FD0AA;background:var(--ok-bg)}.mx.grn .lvl{color:var(--ok)}
+.note-small{margin-top:20px;font-size:16px;color:var(--ink-2)}
+
+/* family */
+.fam{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.phone{background:var(--white);border:1.5px solid var(--line);border-radius:22px;padding:18px}
+.phone h3{font:700 16px var(--cond);margin:0 0 10px;color:var(--ink-2);letter-spacing:.03em}
+.phone .msg{background:var(--tray);border-radius:12px;padding:10px 12px;font-size:16px;margin-bottom:8px}
+.phone .msg small{display:block;font:600 13.5px var(--cond);color:var(--ink-2)}
+.phone .list{font-size:15.5px}
+.phone .list div{padding:6px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:6px}
+.fam ul{padding:0;list-style:none;margin:22px 0 0}
+.fam li{padding:12px 0;border-top:1px solid var(--line)}
+
+.quote{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.quote figure{border-left:8px solid var(--per);padding-left:28px}
+.quote blockquote{margin:0;font:400 clamp(22px,2.5vw,29px)/1.45 var(--sans);max-width:32em}
+.quote figcaption{margin-top:16px;color:var(--ink-2);font-size:17px}
+.quote figure{margin:0}
+
+.prices{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:920px}
+.pl{background:var(--white);border:2px solid var(--line);border-radius:16px;padding:26px 28px}
+.pl.f{border-color:var(--ink)}
+.pl h3{margin:0;font-size:22px}
+.pl .amt{font:700 42px var(--cond);margin:6px 0}
+.pl .amt small{font:400 17px var(--sans);color:var(--ink-2)}
+.pl ul{padding-left:22px;margin:8px 0 22px}
+.pl li{margin:5px 0;font-size:17.5px}
+.faq{max-width:860px;margin-top:64px}
+.faq details{background:var(--white);border:1.5px solid var(--line);border-radius:12px;margin-bottom:10px;padding:0 20px}
+.faq summary{cursor:pointer;padding:16px 0;font-weight:700;font-size:19px}
+.faq p{margin:0 0 18px;color:var(--ink-2)}
+
+footer{background:var(--white);border-top:1px solid var(--line);padding:34px 0 28px;font-size:16px;color:var(--ink-2)}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .credit{margin-top:18px;font-size:14px}
+
+@media (max-width:1000px){
+  .top nav a:not(.btn){display:none}
+  .hero-head,.cam,.fam{grid-template-columns:1fr;gap:26px}
+  .board{grid-template-columns:1fr}
+  .mixes{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  body{font-size:18px}
+  .wrap{padding:0 14px}
+  .hero{padding-top:26px}
+  .org{padding:8px;border-radius:12px}
+  .org-grid{grid-template-columns:40px repeat(7,1fr);gap:3px}
+  .dayh{font-size:13px;padding:5px 0 4px}
+  .slot{font-size:11.5px}.slot b{font-size:13px}
+  .cell{min-height:58px;padding:5px 2px;gap:2px;border-top-width:5px;border-radius:6px}
+  .pill{transform:scale(.72);margin:-2px}
+  .two,.prices{grid-template-columns:1fr}
+  .panel{order:-1}
+  .today-sum{display:none}
+  .slot{font-size:12.5px}.slot b{font-size:14px}
+  section{padding:64px 0}
+  .viewfinder{padding:30px 18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+<header class="top">
+  <div class="wrap">
+    <a class="word" href="#" aria-label="Doz ana sayfa">
+      <span class="lids" aria-hidden="true"><i style="background:var(--pzt)"></i><i style="background:var(--sal)"></i><i style="background:var(--car)"></i><i style="background:var(--per)"></i><i style="background:var(--cum)"></i><i style="background:var(--cmt)"></i><i style="background:var(--paz)"></i></span>Doz
+    </a>
+    <nav aria-label="Bölümler">
+      <a href="#kamera">Kutuyu tanıtma</a><a href="#etkilesim">Etkileşim</a><a href="#aile">Aile için</a><a href="#fiyat">Fiyat</a>
+      <a class="btn ink" href="#fiyat">İndir</a>
+    </nav>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="hero-head">
+      <h1 id="h1">Yedi ilaç, dört saat. Hangisi ne zaman, Doz söyler.</h1>
+      <div>
+        <p class="lede">İlaç kutusunu kameraya gösterin, Doz adını, dozunu ve saatini kendisi yazar. Haftayı bir ilaç kutusu gibi dizer, birlikte alınmaması gerekenleri önceden söyler.</p>
+        <div class="ctas"><a class="btn ink" href="#fiyat">iPhone için indir</a><a class="btn out" href="#fiyat">Android için indir</a></div>
+      </div>
+    </div>
+
+    <div class="board">
+      <div>
+        <div class="org" role="group" aria-label="Nermin Hanım'ın haftalık ilaç kutusu. Bir bölmeye dokunun.">
+          <div class="org-grid" id="org"></div>
+        </div>
+        <p class="hint">Bir bölmeye dokunun. Boş ve çizgili bölmeler alınmış dozlar.</p>
+      </div>
+      <aside class="panel" id="panel" aria-live="polite">
+        <h2 id="pn-t">Çarşamba · Öğle</h2>
+        <div class="when" id="pn-w">13:00 · yemekle birlikte</div>
+        <ul id="pn-l"></ul>
+        <div class="status wait" id="pn-s">Şimdi alınacak. 13:15'te tekrar hatırlatır.</div>
+        <div class="today-sum">
+          <div class="ts-h"><span>Bugün</span><span>4 / 8 doz</span></div>
+          <div class="ts-bar" aria-hidden="true"><i style="width:50%"></i></div>
+          <div class="ts-next"><b>Sıradaki · 19:00</b>Glifor 1000 mg, Coumadin 5 mg</div>
+          <div class="ts-next"><b>Kutu bitiyor</b>Concor 5 mg · 6 gün kaldı, eczane listesine eklendi</div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="alert" role="note">
+      <span class="ic" aria-hidden="true">!</span>
+      <div><b>Bugün eklenen Majezik, Coumadin ile birlikte kanama riskini artırır.</b><p>Majezik'i kutuya koymadan önce doktorunuza ya da eczacınıza sorun. Doz bu ilacı haftaya yerleştirmedi.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="kamera" class="leaflet" aria-labelledby="h-cam">
+  <div class="wrap cam">
+    <div class="viewfinder" aria-label="Kamera bir ilaç kutusunu okuyor">
+      <div class="frame" aria-hidden="true"></div>
+      <div class="box" aria-hidden="true">
+        <div class="brand">GLİFOR</div>
+        <div class="dose">1000 mg · 100 film kaplı tablet</div>
+        <div class="fine">Metformin hidroklorür · Ağızdan kullanılır<br>Reçete ile satılır · SKT 09/2027</div>
+        <div class="qr"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="read">
+        <b>Glifor 1000 mg tanındı</b>
+        <div class="row"><span>Reçetedeki kullanım</span><span>Günde 2 kez, tok karnına</span></div>
+        <div class="row"><span>Önerilen saat</span><span>08:00 ve 19:00</span></div>
+      </div>
+    </div>
+    <div>
+      <h2 class="sec" id="h-cam">Kutuyu gösterin, gerisini Doz yazsın</h2>
+      <p class="sub" style="margin-bottom:22px">Prospektüsü okumanıza, küçük yazıları büyütmenize gerek yok. Telefon kutunun üstündeki adı ve karekodu internet olmadan okur.</p>
+      <ol class="steps">
+        <li><div><h3>Kutuyu kameraya tutun</h3><p>Ön yüz ya da karekod yeter. Işık azsa telefonun feneri kendiliğinden yanar.</p></div></li>
+        <li><div><h3>Doktorun dediğini onaylayın</h3><p>“Günde 2 kez, tok karnına” gibi kalıpları Doz önerir; siz yalnız doğru mu diye bakarsınız.</p></div></li>
+        <li><div><h3>Hafta kendiliğinden dizilir</h3><p>İlaç doğru bölmelere yerleşir. Kutu bitmeden 5 gün önce “eczaneye uğrayın” der.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="mix" id="etkilesim" aria-labelledby="h-mix">
+  <div class="wrap">
+    <h2 class="sec" id="h-mix">Yeni bir ilaç eklendiğinde, ötekilerle yan yana koyar</h2>
+    <p class="sub">Farklı doktorlar farklı reçete yazınca kimse bütüne bakmaz. Doz her yeni kutuda listedeki tüm ilaçları birbiriyle karşılaştırır ve sonucu üç düzeyde, sade bir cümleyle söyler.</p>
+    <div class="mixes">
+      <div class="mx red"><span class="lvl">Birlikte almayın</span><div class="pair" aria-hidden="true"><i class="pill p-coum"></i><span>+</span><i class="pill p-maj"></i></div><h3>Coumadin + Majezik</h3><p>İkisi birlikte kanamayı kolaylaştırır. Ağrı kesici gerekiyorsa doktorunuza hangisinin uygun olduğunu sorun.</p></div>
+      <div class="mx amb"><span class="lvl">Arayla alın</span><div class="pair" aria-hidden="true"><i class="pill p-levo"></i><span>↔ 4 sa ↔</span><i class="pill p-calc"></i></div><h3>Levotiron + Calcimax D3</h3><p>Kalsiyum tiroid ilacının emilimini azaltır. En az 4 saat ara bırakın. Bu haftada aralık 5,5 saat: uygun.</p></div>
+      <div class="mx grn"><span class="lvl">Dikkat edin</span><div class="pair" aria-hidden="true"><i class="pill p-atoris"></i><span>+</span><i class="pill" style="width:18px;height:18px;border-radius:50%;background:#F08A6B"></i></div><h3>Atoris + greyfurt suyu</h3><p>Greyfurt, kolesterol ilacının kandaki düzeyini yükseltir. Kahvaltıda portakal suyu sorun değil.</p></div>
+    </div>
+    <p class="note-small">Etkileşim listesi telefonun içindedir ve her ay güncellenir. Doz bir eczacının yerini tutmaz; şüphede eczacınıza kutuları götürün.</p>
+  </div>
+</section>
+
+<section id="aile" aria-labelledby="h-aile">
+  <div class="wrap fam">
+    <div>
+      <h2 class="sec" id="h-aile">Annenizin ilaç listesi onun telefonunda kalır. Size yalnız “aldı” gelir.</h2>
+      <p class="sub" style="margin-bottom:0">Tosya'daki evde çekmese de Doz hatırlatır, çünkü her şey telefonun içinde. İlaç adları, hastalıklar, dozlar hiçbir sunucuya gitmez. Size yalnız annenizin izin verdiği tek satır ulaşır.</p>
+      <ul>
+        <li>Doz alınmazsa 30 dakika sonra annenize bir daha, 1 saat sonra size haber verir.</li>
+        <li>Doktor kontrolüne götüreceğiniz güncel ilaç listesini tek dokunuşla yazdırırsınız.</li>
+        <li>Telefonda internet yoksa bildirim, bağlantı gelince size ulaşır; hatırlatma beklemez.</li>
+      </ul>
+    </div>
+    <div class="two">
+      <div class="phone" aria-label="Annenin telefonu">
+        <h3>NERMİN HANIM'IN TELEFONU</h3>
+        <div class="list">
+          <div><span><i class="pill p-glifor" style="display:inline-block;vertical-align:-1px;margin-right:8px;transform:scale(.85)"></i>Glifor 1000</span><span>08:00 · 19:00</span></div>
+          <div><span><i class="pill p-concor" style="display:inline-block;vertical-align:-1px;margin-right:8px;transform:scale(.85)"></i>Concor 5</span><span>08:00</span></div>
+          <div><span><i class="pill p-levo" style="display:inline-block;vertical-align:-1px;margin-right:8px;transform:scale(.85)"></i>Levotiron 75</span><span>07:30 aç</span></div>
+          <div><span><i class="pill p-lansor" style="display:inline-block;vertical-align:-1px;margin-right:8px;transform:scale(.85)"></i>Lansor 30</span><span>07:30 aç</span></div>
+          <div><span><i class="pill p-calc" style="display:inline-block;vertical-align:-1px;margin-right:8px;transform:scale(.85)"></i>Calcimax D3</span><span>13:00</span></div>
+          <div><span><i class="pill p-coum" style="display:inline-block;vertical-align:-1px;margin-right:8px;transform:scale(.85)"></i>Coumadin 5</span><span>19:00</span></div>
+          <div><span><i class="pill p-atoris" style="display:inline-block;vertical-align:-1px;margin-right:8px;transform:scale(.85)"></i>Atoris 20</span><span>22:00</span></div>
+        </div>
+      </div>
+      <div class="phone" aria-label="Kızının telefonu">
+        <h3>EMİNE'NİN TELEFONU</h3>
+        <div class="msg"><small>Doz · 08:14</small>Annen sabah ilaçlarını aldı.</div>
+        <div class="msg"><small>Doz · 13:12</small>Annen öğle ilacını aldı.</div>
+        <div class="msg" style="background:var(--warn-bg)"><small>Doz · 20:05</small>Annen akşam ilaçlarını henüz almadı. Aramak ister misin?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı yorumu">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Annem yedi ilacı bir poşette tutuyordu, hangisini içtiğini telefonda bana soruyordu. Şimdi kutuları bir kere kameraya gösterdik; o ‘aldım’ diyor, ben işteyken görüyorum. Pazar telefonlarımız artık ilaç değil, hal hatır.”</blockquote>
+      <figcaption><b style="color:var(--ink)">Emine Çelik</b>, 49 · Kocaeli, İzmit · hemşire; annesi 76 yaşında, Kastamonu Tosya'da yalnız yaşıyor</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="fiyat" aria-labelledby="h-fiyat">
+  <div class="wrap">
+    <h2 class="sec" id="h-fiyat">Hatırlatma ücretsiz. Aile takibi tek ödeme.</h2>
+    <p class="sub">Abonelik yok, reklam yok. Kurulumu sizin telefonunuzdan, annenizin telefonuna bir kere yaparsınız.</p>
+    <div class="prices">
+      <div class="pl"><h3>Doz</h3><div class="amt">0 ₺</div><ul><li>Kamerayla kutu tanıma</li><li>Sınırsız ilaç ve hatırlatma</li><li>Etkileşim uyarıları</li></ul><a class="btn out" href="#">Ücretsiz indir</a></div>
+      <div class="pl f"><h3>Doz Aile</h3><div class="amt">199 ₺ <small>tek seferlik</small></div><ul><li>“Aldı / almadı” bildirimi, 3 kişiye kadar</li><li>Doktor için yazdırılabilir ilaç listesi</li><li>Kutu bitmeden eczane hatırlatması</li></ul><a class="btn ink" href="#">Doz Aile'yi al</a></div>
+    </div>
+    <div class="faq">
+      <h2 class="sec" style="font-size:28px">Sık sorulanlar</h2>
+      <details><summary>Annem akıllı telefonu zor kullanıyor. Ne yapması gerekiyor?</summary><p>Yalnız hatırlatma çalınca ekrandaki büyük “Aldım” düğmesine basması. Kurulumu, ilaç eklemeyi ve değiştirmeyi siz kendi telefonunuzdan yaparsınız.</p></details>
+      <details><summary>Kutusu olmayan, poşette duran ilaçlar ne olacak?</summary><p>Hapın üstündeki yazıyı ya da reçeteyi de okuyabilir. Olmazsa adını yazmanız yeter; Doz listeden bulur.</p></details>
+      <details><summary>Etkileşim uyarısı doğru mu, doktorumun yerine mi geçer?</summary><p>Doz yaygın ve önemli etkileşimleri bilir ama doktorun ya da eczacının yerini tutmaz. Kırmızı uyarıda ilacı bırakmayın; önce doktorunuza danışın.</p></details>
+      <details><summary>Telefon değişirse liste kaybolur mu?</summary><p>Telefonun kendi şifreli yedeğiyle yeni telefona geçer. Bizde bir kopyası yoktur.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row"><span><b style="color:var(--ink)">Doz</b> · Eskişehir. Tıbbi cihaz değildir; ilaç kullanımı için doktorunuza ve eczacınıza danışın.</span><a href="mailto:yardim@doz.app">yardim@doz.app</a></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var days=[["Pzt","pzt","Pazartesi"],["Sal","sal","Salı"],["Çar","car","Çarşamba"],["Per","per","Perşembe"],["Cum","cum","Cuma"],["Cmt","cmt","Cumartesi"],["Paz","paz","Pazar"]];
+  var slots=[["Sabah","07:30–08:00","Levotiron ve Lansor aç karnına 07:30, diğerleri kahvaltıyla 08:00"],["Öğle","13:00","yemekle birlikte"],["Akşam","19:00","yemekten sonra"],["Gece","22:00","yatmadan önce"]];
+  var meds={
+    0:[["levo","Levotiron 75 mcg","07:30 · aç karnına, suyla"],["lansor","Lansor 30 mg","07:30 · aç karnına"],["glifor","Glifor 1000 mg","08:00 · kahvaltıyla"],["concor","Concor 5 mg","08:00 · tansiyon ve nabız"]],
+    1:[["calc","Calcimax D3","13:00 · Levotiron'dan 5,5 saat sonra"]],
+    2:[["glifor","Glifor 1000 mg","19:00 · yemekten sonra"],["coum","Coumadin 5 mg","19:00 · her gün aynı saatte"]],
+    3:[["atoris","Atoris 20 mg","22:00 · greyfurt suyuyla almayın"]]
+  };
+  var cls={levo:"p-levo",lansor:"p-lansor",glifor:"p-glifor",concor:"p-concor",calc:"p-calc",coum:"p-coum",atoris:"p-atoris"};
+  var TODAY=2, NOWSLOT=1;
+  var org=document.getElementById("org"), h='<div></div>';
+  days.forEach(function(d,i){h+='<div class="dayh'+(i===TODAY?' today':'')+'" style="background:var(--'+d[1]+')">'+d[0]+'</div>';});
+  slots.forEach(function(s,si){
+    h+='<div class="slot"><b>'+s[0]+'</b>'+s[1].split("–")[0]+'</div>';
+    days.forEach(function(d,di){
+      var done = di<TODAY || (di===TODAY && si<NOWSLOT);
+      var now = di===TODAY && si===NOWSLOT;
+      var pills = done? "" : meds[si].map(function(m){return '<i class="pill '+cls[m[0]]+'"></i>'}).join("");
+      h+='<button class="cell'+(done?' empty':'')+(now?' now':'')+'" style="--lid:var(--'+d[1]+')" data-d="'+di+'" data-s="'+si+'" aria-pressed="'+(now?'true':'false')+'" aria-label="'+d[2]+' '+s[0]+(done?', alındı':'')+'">'+pills+'</button>';
+    });
+  });
+  org.innerHTML=h;
+  var takenTimes=["08:14","13:06","19:22","22:10"];
+  function show(di,si){
+    document.getElementById("pn-t").textContent=days[di][2]+" · "+slots[si][0];
+    document.getElementById("pn-w").textContent=slots[si][1]+" · "+slots[si][2];
+    document.getElementById("pn-l").innerHTML=meds[si].map(function(m){return '<li><span><i class="pill '+cls[m[0]]+'"></i></span><span><span class="nm">'+m[1]+'</span><span class="nt">'+m[2]+'</span></span></li>'}).join("");
+    var st=document.getElementById("pn-s"),done=di<TODAY||(di===TODAY&&si<NOWSLOT),now=di===TODAY&&si===NOWSLOT;
+    if(done){st.className="status ok";st.textContent="Alındı · "+takenTimes[si]+". Emine'ye bildirildi.";}
+    else if(now){st.className="status wait";st.textContent="Şimdi alınacak. 13:15'te tekrar hatırlatır.";}
+    else{st.className="status wait";st.textContent="Henüz zamanı gelmedi. Zamanında telefon çalar, internet gerekmez.";}
+    [].forEach.call(org.querySelectorAll(".cell"),function(c){c.setAttribute("aria-pressed",(+c.dataset.d===di&&+c.dataset.s===si)?"true":"false")});
+  }
+  org.addEventListener("click",function(e){var c=e.target.closest(".cell");if(c)show(+c.dataset.d,+c.dataset.s);});
+  show(TODAY,NOWSLOT);
+})();
+</script>
+</body>
+</html>

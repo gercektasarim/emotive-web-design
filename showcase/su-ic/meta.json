@@ -1,0 +1,21 @@
+{
+  "slug": "su-ic",
+  "name": "Yudum",
+  "interpretation": "Üroloji broşürü",
+  "world": "Üroloji polikliniğinin üç kırımlı beyaz broşürü, idrar rengi skalası ve elde tutulan su bardağı.",
+  "palette": [
+    "#FFFFFF",
+    "#0C3945",
+    "#8FD0E2",
+    "#1F8FB0",
+    "#F5EBA6",
+    "#C58A26"
+  ],
+  "fonts": [
+    "Lexend",
+    "Source Serif 4"
+  ],
+  "score": 27,
+  "lowest": "Palet/doku",
+  "moment": "Broşürün orta panelinde çay bardağı, su bardağı ya da pet şişeye dokununca bardağın dolması; sıcak hava ve adım seçeneğiyle günlük hedefin yeniden hesaplanması."
+}

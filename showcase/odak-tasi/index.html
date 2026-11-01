@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odak Taşı — DEHB'li yetişkinler için kaldığın yeri tutan masaüstü yardımcısı</title>
+<meta name="description" content="Odak Taşı ekranda ne yaptığını bilgisayarının içinde anlar, yarım kalan işi suçlamadan hatırlatır ve seni kaldığın yere geri götürür. Ekranın hiçbir zaman bilgisayardan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --desk:#F1F0EB;     /* masa yüzeyi, gün ışığı */
+  --sheet:#FFFFFF;
+  --graphite:#2B2E33; /* kurşun kalem */
+  --graphite-2:#555A61;
+  --pebble:#8E918A;   /* dere taşı */
+  --pebble-l:#DCDDD6;
+  --note:#F4D65E;     /* yapışkan not */
+  --return:#4C6B57;   /* dere taşının üstündeki yosun: geri dönüş */
+  --return-l:#E1E9DF;
+  --head:"Bricolage Grotesque", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--desk);color:var(--graphite);font-family:var(--body);font-size:18px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--return);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:var(--head);line-height:1.04;letter-spacing:-.02em}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:14px;font:700 16px var(--body);text-decoration:none;border:2px solid var(--graphite);cursor:pointer;background:var(--sheet);color:var(--graphite)}
+.btn.go{background:var(--return);border-color:var(--return);color:#fff}
+.btn:hover{transform:translateY(-1px)}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{display:flex;align-items:center;gap:10px;font:800 22px var(--head);text-decoration:none}
+.logo svg{width:30px;height:24px}
+nav .links{display:flex;gap:24px;align-items:center;font-size:16px}
+nav .links a.t{text-decoration:none;color:var(--graphite-2)}
+
+.hero{padding:30px 0 70px}
+.hero-top{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:end;margin-bottom:40px}
+.hero h1{font-size:clamp(44px,6.2vw,86px);font-weight:800}
+.hero .sub{font-size:19px;color:var(--graphite-2);max-width:28em}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.hero .fine{font-size:15px;color:var(--graphite-2);margin-top:12px}
+
+/* masaüstü penceresi */
+.screen{position:relative;background:var(--sheet);border:2px solid var(--graphite);border-radius:16px;overflow:hidden;box-shadow:0 30px 50px -34px rgba(43,46,51,.45)}
+.chrome{display:flex;align-items:center;gap:10px;background:#E7E6E0;border-bottom:2px solid var(--graphite);padding:10px 14px}
+.lights{display:flex;gap:6px;flex:none}.lights i{width:11px;height:11px;border-radius:50%;background:#C9C8C0}
+.tabs{display:flex;gap:3px;flex:1;min-width:0;overflow:hidden;transition:all .5s}
+.tab{flex:1 1 0;min-width:0;height:26px;background:#F7F6F2;border:1px solid #CFCDC5;border-radius:6px 6px 0 0;font-size:11px;padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:clip;color:var(--graphite-2);transition:all .5s}
+.tab.act{background:#fff;color:var(--graphite);font-weight:700}
+.tabs.grouped .tab{display:none}
+.group{display:none;align-items:center;gap:6px;height:26px;padding:0 12px;border-radius:8px;font-size:13px;font-weight:700;white-space:nowrap}
+.tabs.grouped .group{display:inline-flex}
+.g1{background:var(--return-l);color:#34503F}.g2{background:#F8EDBF;color:#5E4B05}.g3{background:#E6E6E0;color:var(--graphite-2)}
+.count{font-size:12px;color:var(--graphite-2);flex:none;font-variant-numeric:tabular-nums}
+
+.desk{display:grid;grid-template-columns:1fr 330px}
+.doc{padding:28px 32px;border-right:1px solid #E3E2DC}
+.doc h4{font:700 15px var(--body);color:var(--graphite-2);margin-bottom:14px}
+.form{display:grid;grid-template-columns:150px 1fr;gap:10px 16px;font-size:15px;max-width:520px}
+.form label{color:var(--graphite-2);padding-top:6px}
+.form .f{border:1.5px solid #CFCDC5;border-radius:8px;padding:6px 10px;min-height:36px;background:#FCFCFA}
+.form .f.empty{border-style:dashed;border-color:var(--return);background:#F2F6F1}
+.doc .other{margin-top:22px;font-size:14px;color:var(--graphite-2)}
+.inv{margin-top:20px;border-collapse:collapse;font-size:14px;width:100%;max-width:520px;opacity:.75}
+.inv caption{text-align:left;font-weight:700;color:var(--graphite-2);padding-bottom:6px}
+.inv td,.inv th{padding:5px 0;border-top:1px solid #E3E2DC;text-align:left}
+.inv td:last-child,.inv th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.sticky{position:absolute;right:360px;bottom:22px;transform:rotate(-3deg);background:var(--note);padding:12px 16px;width:190px;font-size:14px;box-shadow:2px 3px 0 rgba(0,0,0,.12);line-height:1.35}
+
+.stone-side{background:#FAFAF7;padding:24px 22px;display:flex;flex-direction:column;gap:16px}
+.stone{background:radial-gradient(ellipse at 30% 20%,#4A4E54,#2B2E33 60%);color:#F1F0EB;border-radius:42% 52% 46% 50% / 22% 26% 20% 24%;padding:24px 24px 22px;box-shadow:0 10px 24px -12px rgba(0,0,0,.5)}
+.stone small{display:block;font-size:13px;color:#BFC2BB;margin-bottom:6px}
+.stone p{font-size:17px;line-height:1.4}
+.stone p b{color:#fff}
+.stone .acts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.stone button{font:700 14px var(--body);border-radius:10px;padding:8px 14px;cursor:pointer;border:0}
+.stone .back{background:var(--note);color:var(--graphite)}
+.stone .later{background:transparent;color:#E3E4DF;border:1.5px solid #6B6F75}
+.half h5{font:700 14px var(--body);color:var(--graphite-2);margin-bottom:6px}
+.half ul{list-style:none;font-size:15px}
+.half li{padding:9px 0;border-top:1px solid #E3E2DC;display:flex;justify-content:space-between;gap:10px}
+.half li span{color:var(--graphite-2);font-size:13px;white-space:nowrap}
+.gather{margin-top:auto;font:700 15px var(--body);background:var(--sheet);border:2px solid var(--graphite);border-radius:12px;padding:10px 14px;cursor:pointer}
+.status{font-size:13px;color:var(--graphite-2);min-height:1.4em}
+
+/* bölümler */
+section{padding:96px 0}
+h2{font-size:clamp(34px,4.4vw,58px);font-weight:800;max-width:15em}
+.lede{font-size:19px;color:var(--graphite-2);max-width:34em;margin-top:16px}
+
+.voice{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:44px;border:2px solid var(--graphite);border-radius:16px;overflow:hidden;background:var(--sheet)}
+.voice > div{padding:28px 30px}
+.voice > div + div{border-left:2px solid var(--graphite);background:var(--return-l)}
+.voice h3{font-size:22px;margin-bottom:14px}
+.voice ul{list-style:none}
+.voice li{padding:12px 0;border-top:1px solid rgba(0,0,0,.1);font-size:17px}
+.voice .no li{color:var(--graphite-2);text-decoration:line-through;text-decoration-color:var(--pebble)}
+
+.day{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;margin-top:20px;align-items:start}
+.timeline{list-style:none;border-left:2px solid var(--graphite);margin-left:8px}
+.timeline li{position:relative;padding:0 0 26px 28px}
+.timeline li::before{content:"";position:absolute;left:-9px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--desk);border:2px solid var(--graphite)}
+.timeline li.ret::before{background:var(--return);border-color:var(--return)}
+.timeline time{font:700 15px var(--head);display:block}
+.timeline p{font-size:16.5px;color:var(--graphite-2)}
+.timeline p b{color:var(--graphite)}
+
+.privacy{background:var(--graphite);color:#ECEDE8}
+.privacy .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
+.privacy h2{color:#fff}
+.privacy .lede{color:#C4C7C1}
+.privacy dl{font-size:16.5px}
+.privacy dt{font:700 18px var(--head);color:var(--note);margin-top:20px}
+.privacy dd{color:#D4D6D0}
+
+.quote{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:start;max-width:900px}
+.quote .peb{width:84px;height:66px;background:radial-gradient(ellipse at 35% 30%,#B9BCB4,#8E918A 55%,#6E716B);border-radius:48% 52% 44% 56% / 52% 46% 54% 48%;box-shadow:0 8px 14px -8px rgba(0,0,0,.4)}
+nav .links .btn .mob{display:none}
+.quote p{font:700 clamp(24px,2.8vw,34px)/1.25 var(--head);letter-spacing:-.01em}
+.quote cite{display:block;margin-top:16px;font-style:normal;font-size:16px;color:var(--graphite-2)}
+
+.buy{display:grid;grid-template-columns:1fr;gap:56px}
+.buy > div:last-child{order:-1;display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.buy > div:last-child h2{grid-column:1/-1}
+.price{max-width:none}
+.price{background:var(--sheet);border:2px solid var(--graphite);border-radius:16px;padding:32px}
+.price .amt{font:800 60px/1 var(--head);margin:10px 0}
+.price .amt small{font:400 16px var(--body);color:var(--graphite-2)}
+.price ul{list-style:none;margin:18px 0 24px;font-size:16.5px}
+.price li{padding:7px 0;border-top:1px solid #E3E2DC}
+details{border-top:2px solid var(--graphite);padding:16px 0}
+summary{cursor:pointer;font:700 19px var(--head)}
+details p{margin-top:8px;color:var(--graphite-2);font-size:17px}
+
+footer{padding:44px 0 34px;border-top:2px solid var(--graphite);font-size:15px;color:var(--graphite-2)}
+footer .credit{margin-top:18px;font-size:13px}
+
+@media (max-width:900px){
+  .wrap{padding:0 18px}
+  nav .links a.t{display:none}
+  .hero-top,.day,.privacy .grid,.buy,.voice,.buy > div:last-child{grid-template-columns:1fr}
+  .voice > div + div{border-left:0;border-top:2px solid var(--graphite)}
+  .desk{grid-template-columns:1fr}
+  .doc{border-right:0;border-bottom:1px solid #E3E2DC;padding:20px 16px}
+  .form{grid-template-columns:1fr;gap:4px}
+  .form label{padding-top:8px}
+  .sticky{display:none}
+  .stone-side{order:-1;border-bottom:1px solid #E3E2DC}
+  nav .links .btn{padding:10px 14px;font-size:14px}
+  nav .links .btn .dsk{display:none}
+  nav .links .btn .mob{display:inline}
+  .tab:nth-child(n+9){display:none}
+  section{padding:70px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="#"><svg viewBox="0 0 30 24" aria-hidden="true"><defs><radialGradient id="st" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#7D817C"/><stop offset="1" stop-color="#2B2E33"/></radialGradient></defs><path d="M3 14C2 7 9 2 16 3s12 5 11 11-7 9-14 8S4 20 3 14z" fill="url(#st)"/><ellipse cx="11" cy="9" rx="4" ry="1.6" fill="#fff" opacity=".25"/></svg>Odak Taşı</a>
+    <div class="links">
+      <a class="t" href="#ses">Nasıl konuşur</a>
+      <a class="t" href="#ekran">Ekranın nerede kalır</a>
+      <a class="btn" href="#al"><span class="dsk">Mac ve Windows için</span><span class="mob">İndir</span></a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-top">
+      <h1>Dağıldın. Sorun değil. Kaldığın yer burada.</h1>
+      <div>
+        <p class="sub">DEHB'li yetişkinler için masaüstü yardımcısı. Ekranda ne yaptığını bilgisayarının içinde anlar, yarım kalan işi suçlamadan hatırlatır ve seni tek tıkla tam kaldığın satıra götürür.</p>
+        <div class="ctas"><a class="btn go" href="#al">Mac için indir</a><a class="btn" href="#al">Windows için indir</a></div>
+        <p class="fine">14 gün ücretsiz. Kart istemez.</p>
+      </div>
+    </div>
+
+    <div class="screen" aria-label="Odak Taşı çalışırken bir masaüstü örneği">
+      <div class="chrome">
+        <div class="lights" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="tabs" id="tabs">
+          <span class="tab act">GİB · KDV Beyannamesi</span><span class="tab">Gelen kutusu (214)</span><span class="tab">Bodrum otel</span><span class="tab">Excel · Ekim giderleri</span><span class="tab">Kedi tırmalama tahtası</span><span class="tab">e-Devlet</span><span class="tab">Bodrum feribot</span><span class="tab">Mahsup nedir</span><span class="tab">YouTube · ahşap oyma</span><span class="tab">Slack</span><span class="tab">Bodrum hava</span><span class="tab">Fatura PDF</span><span class="tab">Wikipedia · Ahtapot</span><span class="tab">Bodrum kahvaltı</span><span class="tab">Muhasebeci mail</span><span class="tab">Takvim</span><span class="tab">Kitap: Dağınık zihin</span><span class="tab">Banka</span><span class="tab">Bodrum araba</span><span class="tab">Ahtapot kalp sayısı</span><span class="tab">Fatura 2</span><span class="tab">Bodrum plaj</span><span class="tab">Spotify</span>
+          <span class="group g1">Beyanname · 7 sekme</span><span class="group g2">Bodrum tatili · 7 sekme</span><span class="group g3">Merak ettiklerin · 9 sekme</span>
+        </div>
+        <span class="count" id="count">23 sekme</span>
+      </div>
+      <div class="desk">
+        <div class="doc">
+          <h4>KDV 1 Beyannamesi · Ekim 2026</h4>
+          <div class="form">
+            <label>Matrah</label><div class="f">184.250,00 ₺</div>
+            <label>Hesaplanan KDV</label><div class="f">36.850,00 ₺</div>
+            <label>İndirilecek KDV</label><div class="f empty" aria-label="boş alan"></div>
+            <label>Devreden KDV</label><div class="f empty" aria-label="boş alan"></div>
+            <label>Ödenecek</label><div class="f empty" aria-label="boş alan"></div>
+          </div>
+          <p class="other">Son işlem 41 dakika önce: "Hesaplanan KDV" alanı.</p>
+          <table class="inv" aria-label="Faturalar sekmesinden">
+            <caption>12. sekme · Ekim alış faturaları</caption>
+            <tr><td>Ofis kirası</td><td>6.000,00 ₺</td></tr>
+            <tr><td>Yazılım lisansları (3)</td><td>2.184,00 ₺</td></tr>
+            <tr><td>Kırtasiye, kargo, diğer (10)</td><td>1.412,40 ₺</td></tr>
+            <tr><th>İndirilecek KDV, tahmini</th><th>9.596,40 ₺</th></tr>
+          </table>
+        </div>
+        <aside class="stone-side">
+          <div class="stone" role="status">
+            <small>41 dk sonra · nazik hatırlatma</small>
+            <p>Beyanname seni bekliyor. <b>Üç alan kaldı</b>, indirilecek KDV'den devam edebilirsin. Faturalar 12. sekmede.</p>
+            <div class="acts"><button class="back" type="button">Oraya dön</button><button class="later" type="button">Yarım saat sonra</button></div>
+          </div>
+          <div class="half">
+            <h5>Bugünün yarımları</h5>
+            <ul>
+              <li>Muhasebeciye cevap <span>2 satır yazıldı</span></li>
+              <li>Ekim giderleri <span>C14 hücresi</span></li>
+              <li>Bodrum oteli <span>2 seçenek kaldı</span></li>
+            </ul>
+          </div>
+          <button class="gather" id="gather" type="button">23 sekmeyi işlere göre topla</button>
+          <p class="status" id="status" aria-live="polite"></p>
+        </aside>
+      </div>
+      <div class="sticky" aria-hidden="true">Beyanname son gün: 26 Kasım!!</div>
+    </div>
+  </header>
+</div>
+
+<section id="ses" style="padding-top:40px">
+  <div class="wrap">
+    <h2>Seni yakalamaz, geri getirir.</h2>
+    <p class="lede">Çoğu odak uygulaması dikkatin dağıldığında seni suçlar. DEHB'de suçluluk bir sonraki dağılmanın en hızlı yoludur. Odak Taşı'nın cümleleri bilerek böyle yazıldı.</p>
+    <div class="voice">
+      <div class="no">
+        <h3>Başka yerlerde duyduğun</h3>
+        <ul>
+          <li>Üç saattir verimsizsin.</li>
+          <li>Hedefini yine kaçırdın, seri sıfırlandı.</li>
+          <li>YouTube'da 47 dakika harcadın.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Odak Taşı'nın söylediği</h3>
+        <ul>
+          <li>Beyanname seni bekliyor, üç alan kaldı.</li>
+          <li>Bugün dört kez geri döndün. Bu sayılır.</li>
+          <li>Ahşap oyma videosunu merak listene koydum, akşam bakarsın.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap day">
+    <div>
+      <h2>Bir salı, gerçek saatlerle.</h2>
+      <p class="lede">Bir kullanıcının izniyle, kendi notlarından. Dağılmalar hâlâ var; aradaki fark, geri dönüşün iki dakika sürmesi.</p>
+    </div>
+    <ol class="timeline">
+      <li><time>09:12</time><p>Beyannameyi açtı. On dakika sonra muhasebeciye mail yazmaya başladı, iki satırda kaldı.</p></li>
+      <li><time>09:40</time><p>Bodrum otelleri. Sonra feribot. Sonra hava durumu.</p></li>
+      <li class="ret"><time>10:21</time><p>Taş: <b>"Beyanname seni bekliyor, üç alan kaldı."</b> Oraya döndü, iki alanı doldurdu.</p></li>
+      <li><time>11:05</time><p>Ahtapotların üç kalbi olduğunu öğrendi. Taş karışmadı; mesaide merak da hakkı.</p></li>
+      <li class="ret"><time>11:30</time><p>Taş: <b>"Muhasebeci maili iki satırda kaldı, ilk cümle hazır."</b> Gönderdi.</p></li>
+      <li class="ret"><time>14:02</time><p>Öğle sonrası düşüş. Taş tek bir şey önerdi: son alan. Beyanname bitti.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="privacy" id="ekran">
+  <div class="wrap grid">
+    <div>
+      <h2>Ekranını okur. Kimseye anlatmaz.</h2>
+      <p class="lede">Ne yaptığını anlamak için ekranına bakması gerekir; tam da bu yüzden hiçbir şey bilgisayardan çıkmaz. Banka sayfan, sağlık raporun, işyerinin Slack'i: hepsi cihazda metne çevrilir, işi bitince silinir.</p>
+    </div>
+    <dl>
+      <dt>Ekran görüntüsü saklanmaz</dt><dd>Model her otuz saniyede bir pencere başlığını ve görünen metni okur, "hangi iş, nerede kaldı" notunu çıkarır, görüntüyü bellekten atar.</dd>
+      <dt>Notlar 24 saat yaşar</dt><dd>Gece yarısı "bugünün yarımları" listesi sıfırlanır. İstersen tek tek sabitlersin.</dd>
+      <dt>İşveren izleme aracı değildir</dt><dd>Rapor üretmez, dışarı veri göndermez, yönetici paneli yoktur. Ağ bağlantısını tamamen kapatsan da çalışır.</dd>
+      <dt>Kapatmak bir tık</dt><dd>Menü çubuğundaki taşa tıkla, "bir saat bakma" de. Taş griye döner.</dd>
+    </dl>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="quote">
+      <div class="peb" aria-hidden="true"></div>
+      <div>
+        <p>"29 yaşında tanı aldım. Hayatım boyunca 'yine yarım bıraktın' cümlesini duydum. Bu ilk kez bana 'kaldığın yer burada' diyen bir şey."</p>
+        <cite>Deniz Arslan · UX araştırmacısı · İstanbul</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="al" style="padding-top:20px">
+  <div class="wrap buy">
+    <div class="price">
+      <h3 style="font-size:26px">Odak Taşı</h3>
+      <p class="amt">₺890 <small>tek seferlik, iki bilgisayar</small></p>
+      <ul>
+        <li>macOS 13 ve sonrası (Apple çipli) · Windows 11</li>
+        <li>14 gün ücretsiz, kart bilgisi istemez</li>
+        <li>Öğrenciler için ₺390; tanı belgesi istemiyoruz</li>
+        <li>Güncellemeler üç yıl dahil</li>
+      </ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn go" href="#">Mac için indir</a><a class="btn" href="#">Windows için indir</a></div>
+    </div>
+    <div>
+      <h2 style="font-size:34px;margin-bottom:16px">Merak edilenler</h2>
+      <details><summary>DEHB tanım yok, yine de işe yarar mı?</summary><p>Evet. Yarım bırakılan işler herkeste var. Ama cümleler ve hatırlatma sıklığı DEHB'li kullanıcılarla birlikte ayarlandı.</p></details>
+      <details><summary>Ne sıklıkla hatırlatır?</summary><p>Varsayılan: aynı işten 25 dakika uzak kaldığında bir kez. Aynı iş için günde en fazla üç kez. Sonra susar; ısrar etmek de cezanın bir türü.</p></details>
+      <details><summary>Merak ettiğim şeyleri engelliyor mu?</summary><p>Hiçbir siteyi engellemez. Merak ettiklerini ayrı bir listeye koyar, akşam bakman için saklar.</p></details>
+      <details><summary>İlaç ya da terapinin yerine geçer mi?</summary><p>Hayır. Bir yardımcı araçtır; tedavini değiştirmeden önce doktorunla konuş.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Odak Taşı · Kendisi de DEHB'li iki geliştiricinin yan projesi, sonra ana işi oldu. selam@odaktasi.app</p>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var b=document.getElementById('gather'),tabs=document.getElementById('tabs'),c=document.getElementById('count'),st=document.getElementById('status');
+  b.addEventListener('click',function(){
+    var g=tabs.classList.toggle('grouped');
+    c.textContent=g?'3 iş':'23 sekme';
+    b.textContent=g?'Sekmeleri eski haline getir':'23 sekmeyi işlere göre topla';
+    st.textContent=g?'Hiçbir sekme kapanmadı. Yalnızca hangi işe ait olduklarına göre üç yığına ayrıldı.':'';
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Şükran — Günün fotoğraflarından üç güzel an, akşam bir satır not</title>
+<meta name="description" content="Şükran akşamları galerindeki günün fotoğraflarından üç güzel anı seçer ve kısa bir şükran notu yazdırır. Fotoğraflar telefonda incelenir; öğrencilerinin yüzleri hiçbir yere gitmez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Mulish:wght@400;600;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --board:#2E4A3E;     /* sınıfın yeşil tahtası */
+  --board-2:#26403A;
+  --chalk:#F2F1EA;     /* tebeşir */
+  --chalk-dim:#C6D0C8;
+  --wall:#ECEFE9;      /* koridorun yağlı boya duvarı */
+  --ink:#1F2E28;
+  --ink-2:#4E5D56;
+  --tea:#B87A22;       /* ince belli bardakta çay */
+  --dusk:#E19C86;      /* okul bahçesinde akşamüstü */
+  --serif:"Lora", Georgia, serif;
+  --sans:"Mulish", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--wall);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.65}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--tea);outline-offset:3px;border-radius:3px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;font:700 16px var(--sans);text-decoration:none;cursor:pointer;border:2px solid currentColor;background:transparent}
+.btn.tea{background:var(--tea);border-color:var(--tea);color:#fff}
+.btn.tea:hover{background:#9E6819;border-color:#9E6819}
+
+/* tahta */
+.board{background:var(--board);color:var(--chalk);background-image:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.05),transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(255,255,255,.04),transparent 50%);border-bottom:14px solid #6E5A43}
+nav{display:flex;justify-content:space-between;align-items:center;padding:24px 0}
+.logo{font:600 26px var(--serif);text-decoration:none}
+nav .r{display:flex;gap:22px;align-items:center;font-size:16px}
+nav .r a.t{text-decoration:none;color:var(--chalk-dim)}
+.hero{padding:34px 0 70px;display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center}
+.hero .date{font:500 italic 19px var(--serif);color:var(--chalk-dim)}
+.hero h1{font-size:clamp(40px,5vw,64px);margin-top:10px}
+.hero .lead{margin-top:20px;color:#DCE3DD;max-width:28em}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.hero .ctas .btn{color:var(--chalk)}
+
+.photos{position:relative;height:420px}
+.pol{position:absolute;width:236px;background:#FBFAF6;padding:12px 12px 0;box-shadow:0 14px 30px -12px rgba(0,0,0,.55);cursor:pointer;border:0;text-align:left;color:var(--ink);transition:transform .35s;perspective:800px}
+.pol:hover{transform:var(--r) translateY(-6px)!important}
+.pol svg{display:block;width:100%;height:auto;aspect-ratio:1}
+.pol .cap{font:500 italic 15.5px/1.35 var(--serif);padding:10px 4px 14px;min-height:72px}
+.pol .cap small{display:block;font:600 12.5px var(--sans);font-style:normal;color:var(--ink-2);margin-bottom:2px}
+.pol .back{display:none}
+.pol.open .front-cap{display:none}
+.pol.open .back{display:block}
+.p1{left:0;top:30px;--r:rotate(-5deg);transform:var(--r)}
+.p2{left:34%;top:0;--r:rotate(2.5deg);transform:var(--r);z-index:2}
+.p3{right:0;top:56px;--r:rotate(6deg);transform:var(--r)}
+.swipe{display:none}
+.from{position:absolute;left:0;bottom:0;font-size:14.5px;color:var(--chalk-dim)}
+
+/* 47'den 3 */
+section{padding:96px 0}
+.lede{color:var(--ink-2);font-size:19px;max-width:34em;margin-top:14px}
+h2{font-size:clamp(32px,3.8vw,48px)}
+.pick{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
+.grid47{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.grid47 i{aspect-ratio:1;border-radius:3px;background:#D3D9D2}
+.grid47 i.k{background:var(--tea);outline:3px solid var(--tea);outline-offset:2px}
+.grid47 i.s{background:#BFC7C0}
+.grid47 i.x{background:repeating-linear-gradient(45deg,#D3D9D2 0 4px,#E3E7E1 4px 8px)}
+.keys{display:flex;gap:18px;flex-wrap:wrap;font-size:14.5px;color:var(--ink-2);margin-top:14px}
+.keys span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.reasons{list-style:none;margin-top:24px}
+.reasons li{padding:12px 0;border-top:1px solid #CCD3CB;font-size:17px}
+.reasons li b{font-family:var(--serif);font-weight:600}
+
+/* defter */
+.journal{background:#FBFBF7}
+.week{margin-top:40px;display:grid;gap:0}
+.entry{display:grid;grid-template-columns:150px 1fr 220px;gap:28px;padding:24px 0;border-top:1px solid #DADFD8;align-items:start}
+.entry time{font:500 italic 18px var(--serif);color:var(--ink-2)}
+.entry p{font:500 20px/1.5 var(--serif)}
+.entry .tags{font-size:14px;color:var(--ink-2)}
+.entry .tags span{display:inline-block;margin:0 6px 6px 0;padding:2px 10px;border-radius:999px;background:var(--wall)}
+.entry.tired p{color:var(--ink-2);font-style:italic}
+
+/* gizlilik */
+.privacy{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.slip{background:#FBFBF7;color:var(--ink);border-radius:3px;padding:24px 28px 24px 56px;position:relative;box-shadow:0 1px 0 #D5DBD3,0 18px 30px -24px rgba(0,0,0,.3);transform:rotate(.6deg);background-image:linear-gradient(transparent 0 31px,#DCE5EC 31px 32px);background-size:100% 32px;line-height:32px}
+.slip::before{content:"";position:absolute;left:38px;top:0;bottom:0;width:1.5px;background:var(--dusk)}
+.slip h3{font:500 italic 20px/32px var(--serif)}
+.slip p{color:var(--ink-2);font-size:16px;margin:0}
+.slip ul{list-style:none;margin-top:14px;font-size:16px}
+.slip ul{margin:0}
+.slip li{display:flex;justify-content:space-between;gap:12px;font-family:var(--serif)}
+.slip li b{color:var(--tea);font-weight:600}
+
+.quote{border-left:4px solid var(--dusk);padding-left:28px;max-width:820px}
+.quote p{font:500 italic clamp(24px,2.8vw,34px)/1.4 var(--serif)}
+.quote cite{display:block;margin-top:16px;font-style:normal;color:var(--ink-2);font-size:16px}
+
+.end{display:grid;grid-template-columns:1fr;gap:48px;max-width:760px}
+.offer{background:#FBFBF7;border-radius:10px;padding:32px;border:1px solid #D5DBD3}
+.offer .amt{font:600 46px var(--serif);margin:6px 0}
+.offer .amt small{font:400 16px var(--sans);color:var(--ink-2)}
+.offer ul{list-style:none;margin:16px 0 24px}
+.offer li{padding:8px 0;border-top:1px solid #DADFD8;font-size:16.5px}
+.offer .btn{color:var(--ink)}
+.offer .btn.tea{color:#fff}
+details{border-bottom:1px solid #CCD3CB;padding:15px 0}
+summary{cursor:pointer;font:600 19px var(--serif)}
+details p{margin-top:8px;color:var(--ink-2);font-size:16.5px}
+
+footer{border-top:1px solid #CCD3CB;padding:40px 0 32px;font-size:15px;color:var(--ink-2)}
+footer .credit{margin-top:12px;font-size:13px}
+
+@media (max-width:900px){
+  .wrap{padding:0 18px}
+  nav .r a.t{display:none}
+  .hero,.pick,.privacy,.end{grid-template-columns:1fr}
+  .photos{height:auto;display:flex;gap:12px;overflow-x:auto;padding:10px 4px 76px;scroll-snap-type:x mandatory}
+  .pol{position:relative;left:auto;right:auto;top:auto;flex:0 0 220px;scroll-snap-align:start}
+  .from{bottom:10px;left:4px;right:4px}
+  .swipe{display:inline}
+  .entry{grid-template-columns:1fr;gap:6px}
+  section{padding:70px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.pol:hover{transform:var(--r)!important}}
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="wrap">
+    <nav aria-label="Ana menü"><a class="logo" href="#">Şükran</a><div class="r"><a class="t" href="#defter">Bir haftanın defteri</a><a class="t" href="#yuzler">Öğrencilerin yüzleri</a><a class="btn" href="#al" style="color:var(--chalk)">İndir</a></div></nav>
+    <header class="hero">
+      <div>
+        <p class="date">Çarşamba, 12 Kasım · akşam 21:10</p>
+        <h1>Yorucu bir gündü. Ama içinde bunlar da vardı.</h1>
+        <p class="lead">Şükran her akşam galerindeki günün fotoğraflarına bakar, gözden kaçan üç güzel anı önüne koyar ve tek bir satır yazmanı ister. Kötü yanlar zaten akılda kalıyor; bu, öbür yarısı için.</p>
+        <div class="ctas"><a class="btn tea" href="#al">iPhone için indir</a><a class="btn" href="#al">Android için indir</a></div>
+      </div>
+
+      <div class="photos" role="group" aria-label="Bugünden seçilen üç an. Notu görmek için fotoğrafa dokun.">
+        <button class="pol p1" type="button" aria-pressed="false">
+          <svg viewBox="0 0 200 200" aria-hidden="true"><rect width="200" height="200" fill="#36574A"/><rect x="0" y="168" width="200" height="32" fill="#7A6248"/><path transform="translate(-22 0)" d="M58 92c-8-14 8-26 18-14 4-16 26-14 24 2 14-6 24 12 10 20 12 8 0 26-14 18 0 16-24 16-26 0-14 8-28-8-14-18-14-6-8-24 2-8z" fill="none" stroke="#F2F1EA" stroke-width="2.5"/><circle cx="58" cy="92" r="7" fill="none" stroke="#F4D7A6" stroke-width="2.5"/><path d="M58 120v40" stroke="#F2F1EA" stroke-width="2.5"/><text x="100" y="70" font-family="Lora" font-size="13" font-style="italic" fill="#F2F1EA">Öğretmenim</text><text x="100" y="90" font-family="Lora" font-size="13" font-style="italic" fill="#F2F1EA">iyi ki</text><text x="100" y="110" font-family="Lora" font-size="13" font-style="italic" fill="#F2F1EA">varsınız</text><text x="126" y="146" font-family="Mulish" font-size="11" fill="#C6D0C8">— 3-B</text></svg>
+          <span class="cap front-cap"><small>08:12 · 3-B sınıfı</small>Tahtaya gece kim yazmış?</span>
+          <span class="cap back"><small>Senin notun</small>Elif'in el yazısı. Kimse söylemedi ama biliyorum.</span>
+        </button>
+        <button class="pol p2" type="button" aria-pressed="false">
+          <svg viewBox="0 0 200 200" aria-hidden="true"><rect width="200" height="200" fill="#E7DCCB"/><rect x="0" y="0" width="200" height="120" fill="#A9C2CF"/><rect x="0" y="116" width="200" height="10" fill="#F5F0E6"/><path d="M84 62c8 6 6 12 0 16" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/><path d="M98 56c8 8 6 14 0 20" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/><path d="M78 86h44l-6 22c-2 6 2 12 4 18l-4 24H84l-4-24c2-6 6-12 4-18z" fill="#B87A22" opacity=".9"/><path d="M78 86h44" stroke="#F5F0E6" stroke-width="3"/><ellipse cx="100" cy="156" rx="40" ry="8" fill="#F5F0E6" stroke="#B9AE9C" stroke-width="2"/><rect x="132" y="138" width="34" height="18" rx="2" fill="#E8C66B"/></svg>
+          <span class="cap front-cap"><small>12:40 · öğretmenler odası</small>Pencere kenarında ilk çay</span>
+          <span class="cap back"><small>Senin notun</small>Necla Hoca simit getirmişti. Beş dakika kimse ders konuşmadı.</span>
+        </button>
+        <button class="pol p3" type="button" aria-pressed="false">
+          <svg viewBox="0 0 200 200" aria-hidden="true"><rect width="200" height="200" fill="#E19C86"/><rect y="0" width="200" height="70" fill="#E8B38F"/><circle cx="150" cy="96" r="20" fill="#F6D7A5"/><rect y="132" width="200" height="68" fill="#5B5F52"/><path d="M40 132V82" stroke="#3B3A33" stroke-width="7"/><circle cx="40" cy="70" r="30" fill="#C66B3D"/><circle cx="58" cy="80" r="20" fill="#B85B30"/><path d="M110 150l8-14 8 14M118 136v-12" stroke="#2F3029" stroke-width="3" fill="none"/><circle cx="118" cy="119" r="5" fill="#2F3029"/><path d="M136 150l6-11 6 11M142 139v-9" stroke="#2F3029" stroke-width="3" fill="none"/><circle cx="142" cy="126" r="4" fill="#2F3029"/></svg>
+          <span class="cap front-cap"><small>16:05 · okul bahçesi</small>Servisi bekleyen iki kardeş</span>
+          <span class="cap back"><small>Senin notun</small>Ağaç bugün tamamen kızardı. Fark etmeye vaktim olmuştu demek.</span>
+        </button>
+        <p class="from">Bugünkü 47 fotoğraftan seçildi. Notu görmek için dokun.<span class="swipe"> Yana kaydır →</span></p>
+      </div>
+    </header>
+  </div>
+</div>
+
+<section>
+  <div class="wrap pick">
+    <div>
+      <h2>47 fotoğraftan neden bu üçü?</h2>
+      <p class="lede">Bir öğretmenin galerisi gün sonunda dolar: ödev fotoğrafları, nöbet çizelgesi, veli grubundan kaydedilenler. Şükran bunları ayırır, geriye kalanlarda bir an arar.</p>
+      <ul class="reasons">
+        <li><b>Atladıkları:</b> ekran görüntüleri, belgeler, ödev sayfaları, toplantı tutanakları.</li>
+        <li><b>Baktığı:</b> ışık, sıcak renkler, el yazısı, birinin sana bir şey uzattığı kareler.</li>
+        <li><b>Bilmediği:</b> fotoğraftaki kişilerin kim olduğu. Yüz tanıma yapmaz.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="grid47" id="g47" role="img" aria-label="Günün 47 fotoğrafı: 21'i belge ve ekran görüntüsü olarak ayrıldı, 23'ü bakıldı, 3'ü seçildi."></div>
+      <div class="keys"><span style="--c:var(--tea)">seçilen 3</span><span style="--c:#BFC7C0">bakılan 23</span><span style="--c:repeating-linear-gradient(45deg,#D3D9D2 0 3px,#E3E7E1 3px 6px)">belge ve ekran görüntüsü 21</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="journal" id="defter">
+  <div class="wrap">
+    <h2>Bir haftanın defteri.</h2>
+    <p class="lede">Bir sınıf öğretmeninin Kasım'ın ikinci haftası, kendi seçtiği satırlarla. Her gün güzel değil; Şükran öyleymiş gibi yapmaz.</p>
+    <div class="week">
+      <div class="entry"><time>Pazartesi</time><p>Deniz ilk kez parmak kaldırdı. Cevap yanlıştı, kimse gülmedi.</p><span class="tags"><span>sınıf</span><span>08:55</span></span></div>
+      <div class="entry tired"><time>Salı</time><p>Bugün fotoğraf yok. Şükran sadece "Yarın yine bakarız" dedi. İyi ki ısrar etmedi.</p><span class="tags"><span>boş gün</span></span></div>
+      <div class="entry"><time>Çarşamba</time><p>Tahtadaki yazı, pencere kenarında çay, kızaran ağaç.</p><span class="tags"><span>üç an</span><span>21:10</span></span></div>
+      <div class="entry"><time>Perşembe</time><p>Veli toplantısı uzadı ama Mert'in annesi "evde sizi anlatıyor" dedi.</p><span class="tags"><span>veli</span><span>18:30</span></span></div>
+      <div class="entry"><time>Cuma</time><p>Teneffüste ip atlayan kızlar beni de çağırdı. Dizim hâlâ ağrıyor.</p><span class="tags"><span>bahçe</span><span>10:40</span></span></div>
+    </div>
+  </div>
+</section>
+
+<section id="yuzler">
+  <div class="wrap privacy">
+    <div>
+      <h2>Öğrencilerinin yüzleri, telefonundan çıkmaz.</h2>
+      <p class="lede">Bir öğretmenin galerisi başkalarının çocuklarıyla doludur. Bu yüzden Şükran fotoğraflara yalnızca telefonun içinde bakar. Hiçbir kare yüklenmez, hiçbir yüz tanınmaz, hiçbir bulut hesabı gerekmez.</p>
+      <p class="lede">Uçak modunda da aynı şekilde çalışır. Okulun KVKK sorumlusuna gösterebileceğin kısa bir açıklama metni uygulamanın ayarlarında hazır.</p>
+    </div>
+    <div class="slip">
+      <h3>Çarşamba akşamının notu</h3>
+      <ul>
+        <li>İncelenen fotoğraf <b>47</b></li>
+        <li>Telefondan çıkan fotoğraf <b>0</b></li>
+        <li>Tanınan yüz <b>0</b></li>
+        <li>Saklanan <b>3 küçük kopya + notun</b></li>
+      </ul>
+      <p>Seçilen kareler bile galerine dokunmadan, defterin içinde küçük bir kopya olarak durur. Defteri silersen hepsi gider.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <blockquote class="quote">
+      <p>"Yirmi iki yıldır akşam eve gelince sadece kötü veli telefonunu hatırlıyordum. Şimdi telefon bana tahtaya çizilen çiçeği hatırlatıyor. Uykuya daha yumuşak geçiyorum."</p>
+      <cite>Gülşen Erdem · Sınıf öğretmeni · Trabzon</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section id="al" style="padding-top:20px">
+  <div class="wrap end">
+    <div class="offer">
+      <h3 style="font-size:24px">Şükran</h3>
+      <p class="amt">Ücretsiz</p>
+      <ul>
+        <li>Her akşam üç an ve tek satırlık not</li>
+        <li>Ay sonunda "Kasım'ın güzel anları" sayfası</li>
+        <li>İstersen destekçi ol: tek seferlik ₺149, öğretmenlere ₺0</li>
+      </ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn tea" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+    </div>
+    <div>
+      <h2 style="font-size:32px;margin-bottom:8px">Sorular</h2>
+      <details><summary>Ya o gün hiç güzel an yoksa?</summary><p>Olur. Şükran o akşam fotoğraf göstermez, yalnızca "Yarın yine bakarız" der. Zorla mutlu cümle yazdırmaz.</p></details>
+      <details><summary>Bildirim hangi saatte gelir?</summary><p>Sen seçersin; çoğu öğretmen 21:00 ile 22:00 arasını seçiyor. Hafta sonları ve tatillerde istersen susar.</p></details>
+      <details><summary>Not yazmak zorunda mıyım?</summary><p>Hayır. Bazen üç fotoğrafa bakmak yeter. Not alanı tek satır; uzun yazmak istersen genişler.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Şükran · Annesi emekli öğretmen olan bir geliştiricinin Rize'den gönderdiği bir hediye. merhaba@sukran.app</p>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var g=document.getElementById('g47');
+  var keep=[9,22,38],docs=[0,1,3,5,6,11,13,14,17,19,24,26,27,30,33,35,36,41,43,44,46];
+  for(var i=0;i<47;i++){var e=document.createElement('i');e.className=keep.indexOf(i)>-1?'k':(docs.indexOf(i)>-1?'x':'s');g.appendChild(e);}
+  document.querySelectorAll('.pol').forEach(function(p){
+    p.addEventListener('click',function(){var o=p.classList.toggle('open');p.setAttribute('aria-pressed',o);});
+  });
+})();
+</script>
+</body>
+</html>
