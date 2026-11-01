@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Düşme Bekçisi — Annenizin evinde kamera olmadan düşme algılama</title>
+<meta name="description" content="Duvardaki küçük radar sensörü annenizin düştüğünü kamera kullanmadan anlar. Yerde kalırsa önce ona sorar, cevap gelmezse sizi arar. Görüntü yok, kayıt yok, internet kesilse de çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --wall:#EEF1EC; --paper:#FFFFFF; --ink:#17252A; --muted:#47575B;
+  --ok:#2A7554; --ok-soft:#DCEBE2; --alert:#B04B17; --alert-soft:#F7E4D8;
+  --line:#C9D4CF; --radar:#9CB4AC;
+  --mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--wall);color:var(--ink);font-family:Lexend,system-ui,sans-serif;font-weight:300;font-size:20px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--alert);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-weight:500;line-height:1.2;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(30px,3.4vw,42px);max-width:22ch}
+p{margin:0}
+.lead{font-size:22px;color:var(--muted);max-width:38ch}
+
+/* nav */
+header.top{border-bottom:1px solid var(--line);background:var(--wall)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:500;font-size:21px;text-decoration:none}
+.top nav{display:flex;gap:28px;font-size:18px}
+.top nav a{text-decoration:none;color:var(--muted)}
+.top nav a:hover{color:var(--ink);text-decoration:underline}
+.hotline{font-family:var(--mono);font-size:17px;text-decoration:none}
+
+/* hero */
+.hero{padding:56px 0 72px}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:start}
+.when{font-family:var(--mono);font-size:16px;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.pulse{width:12px;height:12px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(42,117,84,.5);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(42,117,84,.45)}70%{box-shadow:0 0 0 12px rgba(42,117,84,0)}100%{box-shadow:0 0 0 0 rgba(42,117,84,0)}}
+.hero h1{font-size:clamp(38px,4.6vw,60px);font-weight:400;max-width:15ch}
+.hero h1 b{font-weight:600;color:var(--ok)}
+.hero .lead{margin-top:26px}
+.actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.btn{display:inline-flex;align-items:center;gap:10px;font:500 19px Lexend,sans-serif;padding:16px 26px;border-radius:10px;text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn.solid{background:var(--ink);color:#fff}
+.btn.solid:hover{background:#0c1619}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--paper)}
+.fine{font-size:16px;color:var(--muted);margin-top:16px}
+
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px 24px 20px}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px}
+.panel-head strong{font-weight:500;font-size:19px}
+.panel-head span{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.plan{width:100%;height:auto;display:block}
+.plan text{font-family:Lexend,sans-serif;font-size:13px;fill:#47575B}
+.state{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;background:var(--ok-soft);margin-top:12px;transition:background .4s}
+.state .dot{flex:none;width:14px;height:14px;border-radius:50%;background:var(--ok)}
+.state p{font-size:18px;font-weight:400}
+.state.alarm{background:var(--alert-soft)}
+.state.alarm .dot{background:var(--alert)}
+.day{list-style:none;margin:16px 0 0;padding:0;font-size:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:4px 18px;color:var(--muted)}
+.day time{font-family:var(--mono);color:var(--ink);margin-right:8px}
+
+/* sees */
+section{padding:88px 0}
+.sees{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sees .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:44px}
+.posture{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+.posture figure{margin:0;background:var(--wall);border-radius:14px;padding:16px 10px 12px;text-align:center}
+.posture figcaption{font-size:17px;margin-top:6px}
+.sees h3{font-size:24px;margin-bottom:12px}
+.sees .col p{color:var(--muted)}
+.proof{margin-top:28px;border-left:4px solid var(--ok);padding:6px 0 6px 20px;font-size:21px;font-weight:400;color:var(--ink)}
+
+/* minute */
+.minute .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;margin-top:40px;align-items:start}
+.steps{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+.steps li{position:relative;padding:0 0 26px 30px;opacity:.55;transition:opacity .4s}
+.steps li::before{content:"";position:absolute;left:-9px;top:8px;width:16px;height:16px;border-radius:50%;background:var(--wall);border:2px solid var(--radar)}
+.steps li.on{opacity:1}
+.steps li.on::before{background:var(--alert);border-color:var(--alert)}
+.steps li.done::before{background:var(--ok);border-color:var(--ok)}
+.steps time{font-family:var(--mono);font-size:15px;color:var(--muted);display:block}
+.steps strong{font-weight:500;display:block;font-size:21px}
+.steps q{display:block;margin-top:6px;font-style:normal;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:19px}
+.minute .side{position:sticky;top:24px}
+.minute .side .btn{margin-top:18px;width:100%;justify-content:center}
+
+/* dignity */
+.dignity{background:var(--ink);color:#EEF1EC}
+.dignity h2{color:#fff}
+.dignity .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:44px}
+.dignity h3{font-size:22px;color:#fff;margin-bottom:10px}
+.dignity p{color:#C5D1CD;font-size:19px}
+
+/* setup */
+.setup ol{list-style:none;margin:44px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;counter-reset:s}
+.setup li{counter-increment:s;border-top:2px solid var(--ink);padding-top:18px}
+.setup li::before{content:"Adım " counter(s);font-family:var(--mono);font-size:15px;color:var(--muted);display:block;margin-bottom:8px}
+.setup h3{font-size:22px;margin-bottom:8px}
+.setup p{color:var(--muted);font-size:19px}
+
+/* voice */
+.voice{padding:72px 0}
+.voice blockquote{margin:0;background:var(--paper);border-radius:18px;padding:44px 48px;border:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start}
+.voice .msg{font-family:var(--mono);font-size:15px;color:var(--muted);background:var(--wall);border-radius:12px;padding:14px 16px;width:220px;line-height:1.5}
+.voice .msg b{display:block;color:var(--ink);font-weight:500}
+.voice p{font-size:clamp(22px,2.3vw,28px);font-weight:300;line-height:1.5}
+.voice cite{display:block;margin-top:18px;font-style:normal;font-size:18px;color:var(--muted)}
+.voice cite b{color:var(--ink);font-weight:500}
+
+/* price */
+.price .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:40px;align-items:start}
+.bill{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px 32px}
+.bill dl{margin:0}
+.bill .row{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.bill dt{font-weight:400}
+.bill dt small{display:block;color:var(--muted);font-size:16px}
+.bill dd{margin:0;font-family:var(--mono);font-size:19px;white-space:nowrap}
+.bill .total{border-bottom:none;padding-top:20px}
+.bill .total dt{font-weight:500}
+.bill .btn{width:100%;justify-content:center;margin-top:16px}
+.price .note p+p{margin-top:16px}
+.price .note p{color:var(--muted)}
+
+/* faq */
+.faq details{border-top:1px solid var(--line);padding:20px 0}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;font-weight:400;font-size:22px;list-style:none;display:flex;justify-content:space-between;gap:20px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);color:var(--muted)}
+.faq details[open] summary::after{content:"−"}
+.faq details p{margin-top:12px;color:var(--muted);max-width:62ch}
+.faq .wrap{max-width:900px}
+.faq .list{margin-top:36px}
+
+footer{border-top:1px solid var(--line);padding:40px 0 34px;font-size:17px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
+footer .credit{flex-basis:100%;font-family:var(--mono);font-size:13px;margin-top:20px}
+footer .credit a{color:var(--muted)}
+
+/* radar svg */
+.sweep{transform-origin:332px 132px;animation:sweep 6s linear infinite}
+@keyframes sweep{to{transform:rotate(360deg)}}
+.person{transition:transform 1.2s ease}
+
+@media (max-width:900px){
+  .top nav{display:none}
+  .hero .wrap,.sees .grid,.minute .grid,.price .grid{grid-template-columns:1fr;gap:36px}
+  .dignity .grid,.setup ol{grid-template-columns:1fr;gap:28px}
+  .minute .side{position:static}
+  .voice blockquote{grid-template-columns:1fr;padding:28px 24px}
+  section{padding:64px 0}
+}
+@media (max-width:480px){
+  body{font-size:19px}
+  .wrap{padding:0 18px}
+  .day{grid-template-columns:1fr}
+  .hotline{font-size:15px}
+  .posture figcaption{font-size:15px}
+  .bill{padding:22px 20px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="22" r="3" fill="#2A7554"/><path d="M8 17a10 10 0 0 1 14 0M4 12.5a16 16 0 0 1 22 0" fill="none" stroke="#17252A" stroke-width="2" stroke-linecap="round"/></svg>
+      Düşme Bekçisi
+    </a>
+    <nav aria-label="Sayfa içi">
+      <a href="#gorur">Ne görür</a><a href="#dakika">Düşünce ne olur</a><a href="#kurulum">Kurulum</a><a href="#fiyat">Fiyat</a><a href="#sss">Sorular</a>
+    </nav>
+    <a class="hotline" href="tel:08503044141">0850 304 41 41</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" style="padding-top:56px">
+  <div class="wrap">
+    <div>
+      <p class="when"><span class="pulse" aria-hidden="true"></span>Ayşe'nin telefonunda · Salı 14:26</p>
+      <h1>Annen evde, salonda oturuyor. <b>Her şey yolunda.</b></h1>
+      <p class="lead">İşteyken aklınızın bir köşesi hep onda. Düşme Bekçisi, annenizin evine kamera koymadan, duvardaki küçük bir radarla düştüğünü anlar. Yerde kalırsa önce ona sorar; cevap gelmezse sizi arar.</p>
+      <div class="actions">
+        <a class="btn solid" href="#fiyat">Sensörü edinin · 3.490 ₺</a>
+        <a class="btn ghost" href="#dakika">Düşünce ne olur?</a>
+      </div>
+      <p class="fine">Tek seferlik ödeme. Aylık abonelik zorunlu değil.</p>
+    </div>
+
+    <div class="panel" aria-label="Uygulama ekranı: annenin evi, canlı durum">
+      <div class="panel-head"><strong>Nermin Hanım · Karşıyaka</strong><span>sensör çevrimiçi</span></div>
+      <svg class="plan" viewBox="0 0 520 300" role="img" aria-label="Evin kat planı. Salon bölgesinde oturan bir kişi noktası; son hareket 3 dakika önce.">
+        <defs><radialGradient id="rg" cx="0" cy="0" r="1"><stop offset="0" stop-color="#2A7554" stop-opacity=".22"/><stop offset="1" stop-color="#2A7554" stop-opacity="0"/></radialGradient></defs>
+        <rect x="8" y="8" width="504" height="284" rx="6" fill="#F6F8F5" stroke="#17252A" stroke-width="3"/>
+        <line x1="190" y1="8" x2="190" y2="170" stroke="#17252A" stroke-width="3"/>
+        <line x1="8" y1="170" x2="250" y2="170" stroke="#17252A" stroke-width="3"/>
+        <line x1="250" y1="170" x2="250" y2="292" stroke="#17252A" stroke-width="3"/>
+        <line x1="120" y1="170" x2="120" y2="292" stroke="#17252A" stroke-width="3"/>
+        <rect x="150" y="166" width="30" height="8" fill="#F6F8F5"/><rect x="186" y="96" width="8" height="34" fill="#F6F8F5"/>
+        <rect x="260" y="166" width="0" height="0"/><rect x="246" y="200" width="8" height="34" fill="#F6F8F5"/><rect x="60" y="166" width="34" height="8" fill="#F6F8F5"/>
+        <text x="24" y="34">Yatak odası</text><text x="210" y="34">Salon</text><text x="24" y="196">Banyo</text><text x="136" y="196">Mutfak</text><text x="268" y="282">Koridor · giriş</text>
+        <!-- furniture -->
+        <rect x="26" y="52" width="90" height="62" rx="6" fill="none" stroke="#C9D4CF" stroke-width="2"/>
+        <rect x="300" y="40" width="130" height="34" rx="8" fill="none" stroke="#C9D4CF" stroke-width="2"/>
+        <rect x="440" y="110" width="44" height="44" rx="6" fill="none" stroke="#C9D4CF" stroke-width="2"/>
+        <rect x="138" y="246" width="96" height="28" rx="4" fill="none" stroke="#C9D4CF" stroke-width="2"/>
+        <!-- sensor + sweep -->
+        <g class="sweep"><path d="M332 132 L332 40 A92 92 0 0 1 410 86 Z" fill="url(#rg)"/></g>
+        <circle cx="332" cy="132" r="92" fill="none" stroke="#9CB4AC" stroke-dasharray="3 6"/>
+        <circle cx="332" cy="132" r="56" fill="none" stroke="#9CB4AC" stroke-dasharray="3 6"/>
+        <rect x="496" y="122" width="12" height="20" rx="3" fill="#17252A"/>
+        <text x="420" y="168" style="font-size:12px">sensör</text>
+        <!-- trail -->
+        <path d="M70 84 C120 90 150 120 186 112 S260 120 300 104 S350 70 362 64" fill="none" stroke="#2A7554" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" opacity=".7"/>
+        <g class="person" id="heroPerson"><circle cx="362" cy="64" r="22" fill="#2A7554" opacity=".16"/><circle cx="362" cy="64" r="9" fill="#2A7554"/></g>
+        <text x="380" y="99" style="font-size:12px;fill:#2A7554">oturuyor · koltuk</text>
+      </svg>
+      <div class="state"><span class="dot" aria-hidden="true"></span><p>Salonda oturuyor. Son hareket 3 dakika önce.</p></div>
+      <ul class="day" aria-label="Bugünün özeti">
+        <li><time>07:12</time>yataktan kalktı</li>
+        <li><time>07:40</time>mutfakta, 25 dk</li>
+        <li><time>10:05</time>dışarı çıktı</li>
+        <li><time>11:48</time>eve döndü</li>
+        <li><time>12:20</time>banyo, 9 dk</li>
+        <li><time>13:02</time>salonda</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sees" id="gorur">
+  <div class="wrap">
+    <h2>Evde kamera yok. Sensör yalnızca annenizin ayakta mı, yerde mi olduğunu bilir.</h2>
+    <div class="grid">
+      <div class="col">
+        <h3>Radarın "gördüğü" bu kadar</h3>
+        <div class="posture" role="img" aria-label="Üç nokta bulutu: ayakta, oturuyor, yerde. Yüz, kıyafet ya da oda görüntüsü yok.">
+          <figure>
+            <svg viewBox="0 0 80 110" width="70" height="96" aria-hidden="true"><g fill="#2A7554"><circle cx="40" cy="14" r="5"/><circle cx="34" cy="30" r="4"/><circle cx="46" cy="30" r="4"/><circle cx="40" cy="44" r="4"/><circle cx="32" cy="56" r="3.5"/><circle cx="48" cy="56" r="3.5"/><circle cx="40" cy="66" r="4"/><circle cx="35" cy="82" r="3.5"/><circle cx="45" cy="82" r="3.5"/><circle cx="34" cy="98" r="3.5"/><circle cx="46" cy="98" r="3.5"/></g></svg>
+            <figcaption>Ayakta</figcaption>
+          </figure>
+          <figure>
+            <svg viewBox="0 0 80 110" width="70" height="96" aria-hidden="true"><g fill="#2A7554"><circle cx="34" cy="38" r="5"/><circle cx="32" cy="54" r="4"/><circle cx="40" cy="56" r="4"/><circle cx="36" cy="68" r="4"/><circle cx="48" cy="72" r="3.5"/><circle cx="58" cy="74" r="3.5"/><circle cx="62" cy="88" r="3.5"/><circle cx="62" cy="100" r="3.5"/></g></svg>
+            <figcaption>Oturuyor</figcaption>
+          </figure>
+          <figure>
+            <svg viewBox="0 0 80 110" width="70" height="96" aria-hidden="true"><g fill="#B04B17"><circle cx="10" cy="92" r="5"/><circle cx="22" cy="94" r="4"/><circle cx="32" cy="92" r="4"/><circle cx="42" cy="95" r="4"/><circle cx="52" cy="93" r="3.5"/><circle cx="62" cy="96" r="3.5"/><circle cx="72" cy="94" r="3.5"/></g></svg>
+            <figcaption>Yerde</figcaption>
+          </figure>
+        </div>
+        <p class="proof">Görüntü olmadığı için banyoya da takılabilir. Düşmelerin çoğu zaten orada olur.</p>
+      </div>
+      <div class="col">
+        <h3>Ne kaydedilir, nereye gider</h3>
+        <p>Sensör odadaki cismin boyunu ve hızını ölçer, kararı kendi içindeki çipte verir. Dışarıya yalnızca "salonda, oturuyor" gibi tek satırlık bir durum çıkar; ses, görüntü ya da yüz bilgisi hiç oluşmaz.</p>
+        <p style="margin-top:18px">Ev interneti kesilse de çalışır: içindeki SIM kart sizi doğrudan telefonla arar. Elektrik giderse altı saatlik pili devreye girer.</p>
+        <p style="margin-top:18px">Kayıtlar 7 gün sensörde durur, sonra kendiliğinden silinir. Uygulamada kimin neyi görebileceğine annenizle birlikte karar verirsiniz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="minute" id="dakika">
+  <div class="wrap">
+    <h2>Düştüğünde ilk bir dakika böyle geçer</h2>
+    <div class="grid">
+      <div class="side">
+        <div class="panel" aria-live="polite">
+          <div class="panel-head"><strong>Banyo · canlandırma</strong><span id="clock">00 sn</span></div>
+          <svg class="plan" viewBox="0 0 300 180" role="img" aria-label="Banyo planı. Canlandırmada kişi noktası yere iner.">
+            <rect x="6" y="6" width="288" height="168" rx="6" fill="#F6F8F5" stroke="#17252A" stroke-width="3"/>
+            <rect x="20" y="20" width="70" height="120" rx="10" fill="none" stroke="#C9D4CF" stroke-width="2"/>
+            <rect x="210" y="22" width="60" height="40" rx="8" fill="none" stroke="#C9D4CF" stroke-width="2"/>
+            <text x="200" y="160" style="font-size:12px">lavabo karşısı</text>
+            <circle cx="150" cy="90" r="60" fill="none" stroke="#9CB4AC" stroke-dasharray="3 6"/>
+            <g id="bathPerson" class="person"><circle cx="150" cy="70" r="20" fill="#2A7554" opacity=".16"/><circle id="bp" cx="150" cy="70" r="8" fill="#2A7554"/></g>
+            <rect x="282" y="78" width="10" height="18" rx="3" fill="#17252A"/>
+          </svg>
+          <div class="state" id="bathState"><span class="dot" aria-hidden="true"></span><p id="bathText">Banyoda, ayakta.</p></div>
+          <button class="btn solid" id="play" type="button">Bir düşmeyi canlandır</button>
+        </div>
+      </div>
+      <ol class="steps" id="steps">
+        <li data-t="0"><time>0. saniye</time><strong>Yere hızlı bir iniş algılanır</strong>Sensör, boyun 1,6 metreden 30 santimetreye bir saniyeden kısa sürede düştüğünü görür.</li>
+        <li data-t="4"><time>4. saniye</time><strong>Önce annenize sorar, size değil</strong><q>Nermin Hanım, iyi misiniz? “İyiyim” derseniz kimseyi aramayacağım.</q></li>
+        <li data-t="30"><time>30. saniye</time><strong>Cevap yoksa ikinci kez, daha yüksek sesle sorar</strong>Kalkmaya çalışıyorsa bekler; hareket varsa acele etmez.</li>
+        <li data-t="45"><time>45. saniye</time><strong>Ayşe aranıyor</strong>Telefonunuz çalar: “Annen banyoda yerde, 45 saniyedir kalkmadı.” Hoparlörden onunla konuşabilirsiniz.</li>
+        <li data-t="75"><time>75. saniye</time><strong>Açmazsanız sıradaki kişi</strong>Kardeşiniz Kemal, sonra alt kattaki Saadet Hanım. Sırayı siz belirlersiniz.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="dignity">
+  <div class="wrap">
+    <h2>Gözetlenmiyor, yalnızca yalnız bırakılmıyor</h2>
+    <div class="grid">
+      <div><h3>Son söz onun</h3><p>“İyiyim” demesi yeter. Yanlış alarmda kimse panikle kapıya dayanmaz, kimse onu çocuk yerine koymaz.</p></div>
+      <div><h3>Namaz düşme sayılmaz</h3><p>Secdeye yavaşça varmak, halıya oturup çorap giymek, yere eğilip kediyi sevmek… Sensör kontrollü inişi düşmeden ayırır.</p></div>
+      <div><h3>Gördüğünüzü o da görür</h3><p>Annenizin telefonunda aynı ekran durur. Kimin hangi bilgiyi göreceğini birlikte seçersiniz; isterse tek dokunuşla duraklatır.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="setup" id="kurulum">
+  <div class="wrap">
+    <h2>Bir hafta sonu öğleden sonrası yeter</h2>
+    <ol>
+      <li><h3>Duvara asın</h3><p>Sabun kalıbı büyüklüğündeki sensörü 1,8 metre yüksekliğe yapışkan bantla ya da iki vidayla takın. Her biri bir odayı görür.</p></li>
+      <li><h3>Odaları tanıtın</h3><p>Uygulamada odanın kapısını ve yatağın yerini işaretleyin. Kat planını kendisi çıkarır, siz yalnız düzeltirsiniz.</p></li>
+      <li><h3>Annenizle bir deneme yapın</h3><p>Yere yavaşça oturun, sensör sorsun, o “iyiyim” desin. Sesi ve soruyu ona göre ayarlarsınız.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="voice">
+  <div class="wrap">
+    <blockquote>
+      <div class="msg"><b>Düşme Bekçisi</b>Annen 07:12'de kalktı, mutfakta. Günaydın.</div>
+      <div>
+        <p>Eskiden öğle arasında üç kere arardım, annem “kızım ben çocuk muyum” diye bozulurdu. Şimdi sabah o mesaj geliyor, salonda oturduğunu görüyorum, aramıyorum. Akşam arayınca da artık “iyi misin” değil, “bugün ne pişirdin” diye soruyorum.</p>
+        <cite><b>Ayşe Korkmaz</b> · İzmir, muhasebeci. Annesi Nermin Hanım 81 yaşında, Karşıyaka'da tek başına yaşıyor.</cite>
+      </div>
+    </blockquote>
+  </div>
+</section>
+
+<section class="price" id="fiyat">
+  <div class="wrap">
+    <h2>Bir kez alırsınız, evde kalır</h2>
+    <div class="grid">
+      <div class="bill">
+        <dl>
+          <div class="row"><dt>Düşme Bekçisi sensörü<small>1 oda · SIM ve pil dahil</small></dt><dd>3.490 ₺</dd></div>
+          <div class="row"><dt>Ek oda sensörü<small>banyo, yatak odası için önerilir</small></dt><dd>2.190 ₺</dd></div>
+          <div class="row"><dt>Uygulama<small>3 kişiye kadar aile üyesi</small></dt><dd>ücretsiz</dd></div>
+          <div class="row"><dt>Telefonla arama hattı<small>internetsiz evler için, isteğe bağlı</small></dt><dd>79 ₺ / ay</dd></div>
+          <div class="row total"><dt>Salon + banyo, tipik ev</dt><dd>5.680 ₺</dd></div>
+        </dl>
+        <a class="btn solid" href="#">Sipariş verin · 2 iş gününde kapıda</a>
+      </div>
+      <div class="note">
+        <p>30 gün içinde beğenmezseniz kargo bizden, paranızın tamamı iade.</p>
+        <p>Kurulumu kendiniz yapamıyorsanız İzmir, İstanbul, Ankara ve Bursa'da 450 ₺ karşılığında teknisyenimiz gelir, annenizle tanışır, denemeyi birlikte yaparsınız.</p>
+        <p>Düşme Bekçisi bir tıbbi cihaz değildir ve 112'nin yerini tutmaz. Yerde kaldığını size hızla haber verir; gerisi sizdedir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="sss">
+  <div class="wrap">
+    <h2>Kızların, oğulların en çok sorduğu</h2>
+    <div class="list">
+      <details><summary>Annem sensörü fark eder mi, rahatsız olur mu?</summary><p>Işığı yanıp sönmez, ses çıkarmaz; yalnızca düşme anında konuşur. Çoğu anne bir hafta sonra varlığını unutur. Yine de takmadan önce ona anlatmanızı, denemeyi birlikte yapmanızı öneririz.</p></details>
+      <details><summary>Kedisi var. Kedi düşme sanılır mı?</summary><p>Hayır. Düşme kararı, insan boyunda bir cismin hızla yere inmesiyle verilir. Kedinin boyu ve hareketi bu tanıma uymaz.</p></details>
+      <details><summary>Gece tuvalete kalktığında ne olur?</summary><p>Hiçbir şey; yalnız gün özetinde “03:40 banyo, 6 dk” yazar. İsterseniz gece 20 dakikayı geçen banyo ziyaretlerinde size sessiz bildirim gelir.</p></details>
+      <details><summary>İnternet ya da elektrik kesilirse?</summary><p>Karar sensörün içinde verildiği için internet gerekmez; içindeki SIM sizi normal telefon aramasıyla arar. Elektrik kesintisinde 6 saat pille çalışır ve pil azalınca size haber verir.</p></details>
+      <details><summary>Annem istemezse?</summary><p>O zaman takmayın. Uygulamada “duraklat” düğmesi annenizin telefonunda da var. Bu cihaz onun evine, onun izniyle girer.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Düşme Bekçisi · Danışma hattı 0850 304 41 41 · hafta içi 09:00–19:00</span>
+    <span>KVKK aydınlatma metni · İade koşulları</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('play'),steps=[].slice.call(document.querySelectorAll('#steps li')),
+      bp=document.getElementById('bp'),halo=bp.previousElementSibling,st=document.getElementById('bathState'),
+      tx=document.getElementById('bathText'),clk=document.getElementById('clock'),timer=null;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function reset(){steps.forEach(function(s){s.className=''});bp.setAttribute('cy',70);halo.setAttribute('cy',70);bp.setAttribute('fill','#2A7554');halo.setAttribute('fill','#2A7554');st.classList.remove('alarm');tx.textContent='Banyoda, ayakta.';clk.textContent='00 sn'}
+  btn.addEventListener('click',function(){
+    clearTimeout(timer);reset();
+    var keys=[0,4,30,45,75],texts=['Yerde. Hareket yok.','Soruyor: “İyi misiniz?”','Cevap yok. Tekrar soruyor.','Ayşe aranıyor…','Kemal aranıyor…'];
+    bp.setAttribute('cy',138);halo.setAttribute('cy',138);bp.setAttribute('fill','#B04B17');halo.setAttribute('fill','#B04B17');st.classList.add('alarm');
+    function show(i){
+      steps.forEach(function(s,j){s.className=j<i?'done':(j===i?'on':'')});
+      tx.textContent=texts[i];clk.textContent=(keys[i]<10?'0':'')+keys[i]+' sn';
+      if(i<keys.length-1)timer=setTimeout(function(){show(i+1)},reduce?0:1600);
+    }
+    show(0);
+  });
+})();
+</script>
+</body>
+</html>

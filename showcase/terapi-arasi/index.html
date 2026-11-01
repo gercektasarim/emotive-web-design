@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terapi Arası — Seanslar arasındaki altı gün için düşünce kaydı</title>
+<meta name="description" content="Terapi Arası, bilişsel davranışçı terapideki düşünce kaydı egzersizlerini seanslar arasında telefonunda yapmana yardım eder. Hangi kaydın terapistinle paylaşılacağına yalnız sen karar verirsin; kayıtlar telefonundan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --room:#F2F2EE;     /* danışma odasının duvarı, öğleden sonra */
+  --paper:#FFFFFF;    /* ödev kâğıdı */
+  --line:#E5DAD4;
+  --ink:#2A2B33;
+  --ink-2:#5B5A63;
+  --chair:#9C4A55;    /* koltuğun gül kurusu kadifesi */
+  --chair-l:#F3E1E2;
+  --lamp:#D9A441;     /* okuma lambası */
+  --shelf:#2F5D5A;    /* kitaplıktaki yeşil cilt: paylaşım */
+  --shelf-l:#DDEBE8;
+  --serif:"Source Serif 4", Georgia, serif;
+  --sans:"Figtree", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--room);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--lamp);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:12px;font:600 16px var(--sans);text-decoration:none;cursor:pointer;border:1.5px solid var(--chair);color:var(--chair);background:transparent}
+.btn.fill{background:var(--chair);color:#fff}
+.btn.fill:hover{background:#87404A}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{font:600 22px var(--serif);text-decoration:none;display:flex;gap:10px;align-items:center}
+.logo i{width:22px;height:14px;border:2px solid var(--chair);border-radius:3px;position:relative}
+.logo i::after{content:"";position:absolute;left:3px;right:3px;top:4px;height:2px;background:var(--chair)}
+nav .r{display:flex;gap:24px;align-items:center;font-size:16px}
+nav .r a.t{text-decoration:none;color:var(--ink-2)}
+
+.hero{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start;padding:40px 0 90px}
+.hero h1{font-size:clamp(38px,4.6vw,58px)}
+.hero .lead{margin-top:20px;color:var(--ink-2);font-size:19px}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.hero .note{margin-top:22px;font-size:15px;color:var(--ink-2);border-left:3px solid var(--lamp);padding-left:14px}
+
+/* düşünce kaydı */
+.sheet{background:linear-gradient(90deg,transparent 0 23px,#EEF0F3 23px 24px) 0 0/24px 24px,linear-gradient(transparent 0 23px,#EEF0F3 23px 24px) 0 0/24px 24px,var(--paper);border-radius:6px;box-shadow:0 1px 0 var(--line),0 24px 50px -30px rgba(42,43,51,.35);padding:28px 30px 24px}
+.sheet header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:6px}
+.sheet header h2{font-size:21px}
+.sheet header span{font-size:14px;color:var(--ink-2)}
+.row{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:13px 0;border-bottom:1px solid var(--line)}
+.row .k{font-size:13.5px;font-weight:600;color:var(--ink-2);line-height:1.4;padding-top:2px}
+.row .v{font-family:var(--serif);font-size:17px;line-height:1.5;color:#22386A} /* danışanın mürekkebi */
+.row .v em{color:#22386A}
+.ev{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:15.5px}
+.ev b{display:block;font-family:var(--sans);font-size:13px;color:var(--ink-2);font-weight:600}
+.meter{display:flex;align-items:center;gap:12px}
+.bar{flex:1;height:10px;background:#F1E9E5;border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--chair);border-radius:6px;transition:width .3s}
+.pct{font:600 16px var(--sans);min-width:3.2em;text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--chair);margin-top:8px}
+.share{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px;padding:14px 16px;border-radius:10px;background:var(--room)}
+.share p{font-size:14.5px;color:var(--ink-2);line-height:1.45}
+.share p b{color:var(--ink)}
+.switch{position:relative;width:52px;height:30px;flex:none;border-radius:999px;border:0;background:#CFC6C1;cursor:pointer;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}
+.switch[aria-checked=true]{background:var(--shelf)}
+.switch[aria-checked=true]::after{left:25px}
+
+section{padding:96px 0}
+h2.big{font-size:clamp(32px,3.8vw,48px);max-width:18em}
+.lede{color:var(--ink-2);max-width:36em;margin-top:14px;font-size:19px}
+
+/* hafta köprüsü */
+.bridge{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:44px;align-items:stretch}
+.d{background:var(--paper);border-radius:10px;padding:16px;min-height:130px;display:flex;flex-direction:column;gap:8px;font-size:15.5px}
+.d h3{font:600 17px var(--sans)}
+.d.ses{background:var(--chair);color:#fff}
+.d.ses p{color:#F6E3E5}
+.d p{color:var(--ink-2);line-height:1.4}
+.rec{border-radius:6px;padding:8px 10px;font-size:15px;line-height:1.4;background:#F1EEEA}
+.rec.sh{background:var(--shelf-l);color:#1F4542}
+.rec.sh::before{content:"Paylaşılacak · ";font-weight:600}
+.legend{margin-top:16px;font-size:15px;color:var(--ink-2)}
+
+/* paylaşım kararı */
+.consent{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.steps{list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--line)}
+.steps li::before{content:counter(s);width:34px;height:34px;border-radius:50%;border:1.5px solid var(--shelf);color:var(--shelf);font-weight:700;display:grid;place-items:center;font-size:15px}
+.steps h3{font:600 18px var(--sans);margin-bottom:2px}
+.steps p{color:var(--ink-2);font-size:16.5px}
+.never{background:var(--paper);border-radius:12px;padding:28px}
+.never h3{font-size:22px;margin-bottom:12px}
+.never p{color:var(--ink-2);font-size:16.5px;margin-top:10px}
+.never p b{color:var(--ink)}
+
+.voices{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
+.voices figure{background:var(--paper);border-radius:12px;padding:30px}
+.voices blockquote{font:400 21px/1.5 var(--serif)}
+.voices figcaption{margin-top:16px;font-size:15px;color:var(--ink-2)}
+
+.crisis{background:var(--ink);color:#EEE9E6;border-radius:14px;padding:30px 34px;display:flex;justify-content:space-between;gap:30px;align-items:center;flex-wrap:wrap}
+.crisis p{max-width:40em;font-size:17px;color:#D8D2CF}
+.crisis strong{font:600 22px var(--serif);color:#fff;display:block;margin-bottom:4px}
+.crisis a{font:700 28px var(--sans);color:#fff;text-decoration:none;border-bottom:2px solid var(--lamp)}
+
+.price{display:grid;grid-template-columns:1fr;gap:48px;align-items:start}
+.price > div:last-child{order:-1;display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.price > div:last-child h2{grid-column:1/-1}
+.p-card{max-width:none}
+.p-card{background:var(--paper);border-radius:12px;padding:32px;border-top:5px solid var(--chair)}
+.p-card .amt{font:600 46px var(--serif);margin:6px 0}
+.p-card .amt small{font:400 16px var(--sans);color:var(--ink-2)}
+.p-card ul{list-style:none;margin:14px 0 24px}
+.p-card li{padding:8px 0;border-top:1px solid var(--line);font-size:16.5px}
+details{border-bottom:1px solid #DCD0CA;padding:16px 0}
+summary{cursor:pointer;font:600 18px var(--sans)}
+details p{margin-top:8px;color:var(--ink-2);font-size:16.5px}
+
+footer{padding:44px 0 34px;border-top:1px solid #DCD0CA;font-size:15px;color:var(--ink-2)}
+footer .credit{margin-top:14px;font-size:13px}
+
+@media (max-width:980px){
+  .bridge{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:860px){
+  .wrap{padding:0 18px}
+  nav .r a.t{display:none}
+  .hero,.consent,.voices,.price,.price > div:last-child{grid-template-columns:1fr}
+  .hero{gap:36px;padding:20px 0 70px}
+  .sheet{padding:20px 16px}
+  .row{grid-template-columns:1fr;gap:4px}
+  .ev{grid-template-columns:1fr}
+  .bridge{grid-template-columns:1fr 1fr}
+  .d{min-height:0}
+  section{padding:70px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Ana menü">
+    <a class="logo" href="#"><i aria-hidden="true"></i>Terapi Arası</a>
+    <div class="r">
+      <a class="t" href="#hafta">Bir hafta</a>
+      <a class="t" href="#karar">Paylaşmak</a>
+      <a class="btn" href="#fiyat">İndir</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Salıdan salıya, aradaki altı gün için.</h1>
+      <p class="lead">Seansta öğrendiğin düşünce kaydını, zorlandığın anda telefonunda yap. Terapi Arası adım adım sorar, sen yazarsın. Hangi kaydın terapistine gideceğine yalnızca sen karar verirsin.</p>
+      <div class="ctas"><a class="btn fill" href="#fiyat">İlk kaydını yap</a><a class="btn" href="#karar">Terapistin için bilgi</a></div>
+      <p class="note">Kayıtlar telefonunda kalır. Bir hesap, bir sunucu, bir terapist paneli yok.</p>
+    </div>
+
+    <form class="sheet" aria-label="Örnek düşünce kaydı" onsubmit="return false">
+      <header><h2>Düşünce kaydı</h2><span>Perşembe, 6 Kasım · 18:52</span></header>
+      <div class="row"><span class="k">Durum</span><p class="v">Sunumdan sonra müdürüm "Bunu yarın ayrıca konuşalım" dedi ve odadan çıktı.</p></div>
+      <div class="row"><span class="k">Otomatik düşünce</span><p class="v"><em>"Kovulacağım. Her şeyi yine berbat ettim."</em></p></div>
+      <div class="row"><span class="k">Duygu, o an</span><div class="meter"><span class="v">Kaygı</span><div class="bar"><i style="width:85%"></i></div><span class="pct">%85</span></div></div>
+      <div class="row"><span class="k">Kanıtlar</span>
+        <div class="ev">
+          <div><b>Düşünceyi destekleyen</b>İki slaytta rakam hatası vardı. Yüzü ciddiydi.</div>
+          <div><b>Düşünceyi desteklemeyen</b>Ekim'de de "ayrıca konuşalım" demiş, sonra projeyi bana vermişti. Hatalar küçük.</div>
+        </div>
+      </div>
+      <div class="row"><span class="k">Dengeli düşünce</span><p class="v">Konuşmak istemesi kötü bir şey olduğu anlamına gelmiyor. Hata yaptım ama düzeltilebilir; yarın önce ben sorarım.</p></div>
+      <div class="row"><label class="k" for="now">Duygu, şimdi</label>
+        <div><div class="meter"><span class="v">Kaygı</span><div class="bar"><i id="nowBar" style="width:50%"></i></div><span class="pct" id="nowPct">%50</span></div>
+        <input type="range" id="now" min="0" max="100" step="5" value="50" aria-describedby="nowHelp"><span id="nowHelp" class="k" style="display:block;margin-top:4px">Kaydırarak şimdi nasıl hissettiğini işaretle.</span></div>
+      </div>
+      <div class="share">
+        <p id="shareText"><b>Bu kayıt yalnız sende.</b> Salı seansında göstermek istersen işaretle; sen göstermeden kimse görmez.</p>
+        <button type="button" class="switch" role="switch" aria-checked="false" aria-labelledby="shareText" id="sw"></button>
+      </div>
+    </form>
+  </header>
+</div>
+
+<section id="hafta" style="background:#E8E9E4">
+  <div class="wrap">
+    <h2 class="big">Bir hafta, iki seans arası.</h2>
+    <p class="lede">Bir danışanın izniyle, kayıt başlıkları değiştirilerek. Bazı günler hiç kayıt yok; o da olur.</p>
+    <div class="bridge">
+      <div class="d ses"><h3>Salı</h3><p>Seans. Ödev: zor anlarda düşünce kaydı.</p></div>
+      <div class="d"><h3>Çarşamba</h3><div class="rec">Annemle telefon · %70 → %40</div></div>
+      <div class="d"><h3>Perşembe</h3><div class="rec sh">Müdürüm "konuşalım" dedi · %85 → %50</div></div>
+      <div class="d"><h3>Cuma</h3><p>Kayıt yok.</p></div>
+      <div class="d"><h3>Cumartesi</h3><div class="rec">Davete gitmedim · %60 → %55</div></div>
+      <div class="d"><h3>Pazar</h3><div class="rec">Gece 01:10, uyuyamadım · %75 → %45</div></div>
+      <div class="d"><h3>Pazartesi</h3><div class="rec sh">Yine aynı düşünce: "yetersizim" · %80 → %60</div></div>
+      <div class="d ses"><h3>Salı</h3><p>Seans. İki kayıt birlikte okundu.</p></div>
+    </div>
+    <p class="legend">Altı günde beş kayıt. İkisi paylaşılmak üzere işaretlendi, üçü danışanın kendisinde kaldı.</p>
+  </div>
+</section>
+
+<section id="karar">
+  <div class="wrap consent">
+    <div>
+      <h2 class="big">Paylaşmak, her seferinde senin kararın.</h2>
+      <p class="lede">Terapiste giden kayıtlar internetten gönderilmez. Seansa telefonunla gelirsin, işaretlediğin kayıtları birlikte açarsınız. İstersen yalnız o kayıtları yazdırılabilir tek bir sayfaya çevirirsin.</p>
+      <ol class="steps" style="margin-top:28px">
+        <li><div><h3>Kaydı yaz</h3><p>Zorlandığın anda, beş adımda. Yarım bırakabilirsin; kaydedilir.</p></div></li>
+        <li><div><h3>İşaretle ya da işaretleme</h3><p>Varsayılan kapalıdır. Her kayıt tek tek seçilir; "hepsini paylaş" düğmesi yok.</p></div></li>
+        <li><div><h3>Seansta aç</h3><p>Seçtiklerin, tarih sırasıyla tek ekranda. Seans bitince işaretler sıfırlanır.</p></div></li>
+      </ol>
+    </div>
+    <aside class="never">
+      <h3>Ne yazarsan yaz, telefondan çıkmaz.</h3>
+      <p>Otomatik düşüncelerin, ailen hakkında yazdıkların, gece bir buçukta hissettiklerin. Adımları öneren dil modeli telefonun içinde çalışır; uçak modunda da aynı.</p>
+      <p><b>Terapistin bir hesap açmaz,</b> bir panel görmez, bildirim almaz. Kayıtlar yalnızca senin elinde, senin ekranında.</p>
+      <p><b>Uygulama kilidi:</b> yüz tanıma ya da ayrı bir şifre. Bildirimlerde içerik görünmez, yalnızca "Bugün nasılsın?" yazar.</p>
+    </aside>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2 class="big">Odanın iki tarafından.</h2>
+    <div class="voices">
+      <figure><blockquote>"Danışanlarım seansa artık 'bu hafta iyiydi galiba' diye gelmiyor. Perşembe akşamını kendi cümleleriyle getiriyorlar. Ne getireceklerini de onlar seçiyor, bu çok önemli."</blockquote><figcaption>Ayşe Tunalı · Klinik psikolog, BDT uygulayıcısı · İzmir</figcaption></figure>
+      <figure><blockquote>"Kâğıt ödevleri hep çantada unutuyordum. Şimdi metroda yazıyorum. Bazılarını hiç göstermiyorum ve bunun da sorun olmadığını bilmek rahatlatıyor."</blockquote><figcaption>Cem Ö. · 8 aydır terapide · Ankara</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="crisis" role="note">
+      <p><strong>Bu bir kriz hattı değil.</strong>Kendine zarar verme düşüncen varsa ya da kendini güvende hissetmiyorsan, lütfen hemen yardım iste. Uygulama da bu kelimeleri fark ettiğinde ekranına bu satırı getirir.</p>
+      <a href="tel:112">112</a>
+    </div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:0">
+  <div class="wrap price">
+    <div class="p-card">
+      <h3 style="font-size:24px">Terapi Arası</h3>
+      <p class="amt">₺290 <small>/ yıl</small></p>
+      <ul>
+        <li>Sınırsız düşünce kaydı, BDT adımlarıyla</li>
+        <li>Haftalık "seans öncesi" ekranı</li>
+        <li>Davranış deneyleri ve maruz bırakma günlüğü</li>
+        <li>İlk 30 gün ücretsiz; terapistler için her zaman ücretsiz</li>
+      </ul>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn fill" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+    </div>
+    <div>
+      <h2 style="font-size:30px;margin-bottom:10px">İlk seanstan önce sorulanlar</h2>
+      <details><summary>Terapiye gitmiyorum, yine de kullanabilir miyim?</summary><p>Kullanabilirsin, ama bu uygulama terapinin yanında düşünülerek yapıldı. Düşünce kaydı bir uzmanla birlikte öğrenildiğinde çok daha işe yarar.</p></details>
+      <details><summary>Terapistim BDT kullanmıyor, sorun olur mu?</summary><p>Kayıt formunu terapistinin önerdiği başlıklarla değiştirebilirsin. Şema terapisi ve kabul-kararlılık için hazır formlar da var.</p></details>
+      <details><summary>Yapay zekâ bana terapi mi yapıyor?</summary><p>Hayır. Yorum yapmaz, teşhis koymaz, tavsiye vermez. Yalnızca bir sonraki adımı sorar ve kaydını düzenli tutar.</p></details>
+      <details><summary>Telefonumu kaybedersem?</summary><p>Kayıtlar şifreli olduğu için kimse okuyamaz. Kendi aldığın şifreli yedek dosyayla yeni telefona taşırsın.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Terapi Arası · Klinik psikologlarla birlikte geliştirildi. Tıbbi bir cihaz değildir, tedavinin yerini tutmaz. destek@terapiarasi.app</p>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var r=document.getElementById('now'),bar=document.getElementById('nowBar'),pct=document.getElementById('nowPct');
+  r.addEventListener('input',function(){bar.style.width=r.value+'%';pct.textContent='%'+r.value;});
+  var sw=document.getElementById('sw'),txt=document.getElementById('shareText');
+  sw.addEventListener('click',function(){
+    var on=sw.getAttribute('aria-checked')!=='true';
+    sw.setAttribute('aria-checked',on);
+    txt.innerHTML=on?'<b>Salı seansında göstermek için işaretlendi.</b> Hiçbir yere gönderilmedi; seansta telefonundan birlikte açacaksınız.':'<b>Bu kayıt yalnız sende.</b> Salı seansında göstermek istersen işaretle; sen göstermeden kimse görmez.';
+  });
+})();
+</script>
+</body>
+</html>

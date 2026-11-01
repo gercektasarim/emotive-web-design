@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sandık — Babaannenin fotoğrafları, evden çıkmadan</title>
+<meta name="description" content="Sandık, eski aile fotoğraflarını telefonla tarar, çizik ve solmaları onarır, renklendirir, yüzlere göre soy ağacına yerleştirir. Fotoğraflar evden çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Jost:wght@300;400;500&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --ceviz:#2A1B12;    /* sandığın ceviz tahtası */
+  --ceviz-2:#3A271B;
+  --kadife:#7A1F2B;   /* kapak içi kadife */
+  --kagit:#EBDDC3;    /* eski fotoğraf kâğıdı */
+  --sepya:#B08A5B;
+  --bakir:#C9A06A;    /* sandık menteşesi */
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--ceviz);color:var(--kagit);font:300 18px/1.65 "Jost",system-ui,sans-serif;
+  background-image:repeating-linear-gradient(176deg,rgba(255,255,255,.012) 0 2px,transparent 2px 9px),repeating-linear-gradient(181deg,rgba(0,0,0,.08) 0 1px,transparent 1px 23px)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--bakir);outline-offset:4px}
+h1,h2,h3{font-family:"Bodoni Moda",serif;font-weight:500;line-height:1.02;margin:0;letter-spacing:-.01em}
+em{font-family:"Bodoni Moda",serif;font-style:italic}
+.w{max-width:1140px;margin:0 auto;padding:0 28px}
+.ust{display:flex;justify-content:space-between;align-items:center;padding:24px 0;font-size:15px;letter-spacing:.04em}
+.logo{font:500 24px/1 "Bodoni Moda";letter-spacing:.02em;text-decoration:none}
+.ust nav{display:flex;gap:28px}
+.ust nav a{text-decoration:none;opacity:.85}
+.ust nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:5px}
+
+/* hero */
+.hero{text-align:center;padding:30px 0 90px}
+.hero h1{font-size:clamp(46px,7.4vw,108px);font-weight:400;max-width:12ch;margin:0 auto}
+.hero h1 i{font-style:italic}
+.hero .alt{max-width:36em;margin:22px auto 44px;font-size:19px;color:#D9C9AC}
+
+.cerceve{position:relative;width:min(520px,100%);margin:0 auto;aspect-ratio:440/560;user-select:none;-webkit-user-select:none}
+.cerceve svg.kat{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cerceve .sonra{clip-path:inset(0 0 0 50%)}
+.tutamak{position:absolute;top:-10px;bottom:-10px;left:50%;width:2px;margin-left:-1px;background:var(--bakir);pointer-events:none}
+.tutamak::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:var(--ceviz);border:2px solid var(--bakir);display:grid;place-items:center;font-size:18px;color:var(--bakir)}
+.kaydirici{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.kaydirici:focus-visible+.tutamak::after{outline:3px solid var(--kagit);outline-offset:3px}
+.etiketler{display:flex;justify-content:space-between;width:min(520px,100%);margin:16px auto 0;font-size:14px;letter-spacing:.03em;color:#CDBB99}
+.kunye{margin:28px auto 0;max-width:520px;font:italic 400 17px/1.5 "Bodoni Moda";color:#D9C9AC}
+.dugmeler{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.btn{font:400 17px/1 "Jost";letter-spacing:.03em;padding:16px 26px;border:1px solid var(--kagit);text-decoration:none;border-radius:2px}
+.btn.dolu{background:var(--kagit);color:var(--ceviz)}
+.btn.dolu:hover{background:#F5EBD8}
+.btn.bos:hover{background:rgba(235,221,195,.08)}
+
+/* arka yüz */
+section{padding:100px 0}
+.arka{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.arka h2{font-size:clamp(36px,4.4vw,58px)}
+.arka p{color:#D9C9AC}
+.kart-arka{background:var(--kagit);color:#4A3A2C;aspect-ratio:440/300;padding:30px 34px;position:relative;transform:rotate(-2deg);box-shadow:0 30px 40px -30px #000;font-family:"Bodoni Moda";background-image:radial-gradient(ellipse at 80% 20%,rgba(150,110,60,.25),transparent 55%),radial-gradient(ellipse at 10% 90%,rgba(150,110,60,.18),transparent 50%)}
+.kart-arka .el{font:italic 400 clamp(22px,2.6vw,30px)/1.35 "Bodoni Moda";color:#3C4A6E;transform:rotate(-3deg);transform-origin:left;display:block;max-width:15em}
+.damga{position:absolute;right:26px;bottom:24px;border:2px solid #7E5E78;color:#7E5E78;border-radius:50%;width:118px;height:118px;display:grid;place-items:center;text-align:center;font:500 12px/1.3 "Jost";letter-spacing:.08em;transform:rotate(9deg);opacity:.75}
+.okundu{margin-top:30px;border-top:1px solid #5A4231;font-size:15px}
+.okundu div{display:grid;grid-template-columns:140px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid #5A4231}
+.okundu dt,.okundu b{color:var(--bakir);font-weight:400}
+
+/* soy ağacı */
+.agac{background:var(--kadife)}
+.agac h2{font-size:clamp(36px,4.4vw,58px);max-width:15ch}
+.agac .ust-m{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:48px}
+.agac .ust-m p{margin:0;color:#F0DCD0}
+.agac svg{display:block;width:100%;height:auto}
+
+/* ev */
+.ev{display:grid;grid-template-columns:1.2fr 1fr;gap:72px}
+.ev h2{font-size:clamp(34px,4vw,52px)}
+.liste{list-style:none;padding:0;margin:0}
+.liste li{padding:20px 0;border-top:1px solid #5A4231}
+.liste li:last-child{border-bottom:1px solid #5A4231}
+.liste h3{font-size:24px;margin-bottom:4px}
+.liste p{margin:0;color:#D9C9AC;font-size:16px}
+
+/* söz */
+.soz{text-align:center;max-width:880px;margin:0 auto}
+.soz blockquote{margin:0;font:italic 400 clamp(28px,3.4vw,44px)/1.25 "Bodoni Moda"}
+.soz cite{display:block;margin-top:22px;font-style:normal;letter-spacing:.05em;font-size:15px;color:#CDBB99}
+
+/* fiyat */
+.fiyat{display:grid;grid-template-columns:1fr 1fr;border:1px solid #5A4231;margin-top:40px}
+.fiyat>div{padding:36px}
+.fiyat>div+div{border-left:1px solid #5A4231;background:var(--ceviz-2)}
+.fiyat h3{font-size:30px}
+.fiyat .tl{font:400 52px/1 "Bodoni Moda";margin:16px 0 4px}
+.fiyat .tl small{font:300 16px "Jost";color:#CDBB99}
+.fiyat ul{padding-left:18px;margin:18px 0 28px;color:#D9C9AC}
+
+.sss details{border-top:1px solid #5A4231;padding:20px 0}
+.sss details:last-child{border-bottom:1px solid #5A4231}
+.sss summary{cursor:pointer;font:400 24px/1.3 "Bodoni Moda"}
+.sss p{color:#D9C9AC;margin:10px 0 0;max-width:42em}
+
+footer{border-top:1px solid #5A4231;padding:56px 0 32px;text-align:center}
+footer h2{font-size:clamp(32px,4vw,52px);font-style:italic;font-weight:400}
+footer .imza{margin-top:40px;font-size:14px;color:#BBA685;letter-spacing:.03em}
+
+@media (max-width:900px){
+  .arka,.ev,.agac .ust-m,.fiyat{grid-template-columns:1fr}
+  .fiyat>div+div{border-left:0;border-top:1px solid #5A4231}
+  .ust nav{display:none}
+  .arka{gap:48px}
+}
+@media (max-width:520px){
+  .w{padding:0 18px}
+  section{padding:72px 0}
+  .okundu div{grid-template-columns:1fr;gap:2px}
+  .fiyat>div{padding:26px 22px}
+  .kart-arka{padding:22px 20px}
+  .damga{width:88px;height:88px;font-size:10px;right:14px;bottom:14px}
+}
+</style>
+</head>
+<body>
+<!-- ortak çizimler -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="fon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8A9A94"/><stop offset="1" stop-color="#4F5E5B"/></linearGradient>
+    <linearGradient id="perde" x1="0" x2="1"><stop offset="0" stop-color="#5E2A2E"/><stop offset=".5" stop-color="#7E3A3C"/><stop offset="1" stop-color="#4E2226"/></linearGradient>
+    <radialGradient id="ten" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#E2BC98"/><stop offset="1" stop-color="#B98A66"/></radialGradient>
+    <linearGradient id="gelinlik" x1="0" x2="1"><stop offset="0" stop-color="#F4EFE4"/><stop offset=".6" stop-color="#E6DFD0"/><stop offset="1" stop-color="#CFC6B4"/></linearGradient>
+    <radialGradient id="yanik" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#3B2410" stop-opacity=".55"/></radialGradient>
+    <linearGradient id="isik" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="#FFF6E0" stop-opacity=".22"/><stop offset=".45" stop-color="#FFF6E0" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient>
+    <radialGradient id="vinyet" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".42"/></radialGradient>
+    <linearGradient id="kumas" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>
+    <filter id="eski" x="0" y="0" width="100%" height="100%">
+      <feColorMatrix type="matrix" values=".393 .769 .189 0 0  .349 .686 .168 0 0  .272 .534 .131 0 0  0 0 0 1 0"/>
+      <feComponentTransfer><feFuncR type="linear" slope=".55" intercept=".33"/><feFuncG type="linear" slope=".55" intercept=".28"/><feFuncB type="linear" slope=".5" intercept=".2"/></feComponentTransfer>
+      <feGaussianBlur stdDeviation="1.1" result="b"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .42  0 0 0 0 .32  0 0 0 .5 0" result="n2"/>
+      <feBlend in="b" in2="n2" mode="multiply"/>
+    </filter>
+    <filter id="yeni" x="0" y="0" width="100%" height="100%">
+      <feGaussianBlur stdDeviation=".55"/>
+      <feColorMatrix type="saturate" values=".72"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" seed="2" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .12 0" result="n2"/>
+      <feBlend in="SourceGraphic" in2="n2" mode="multiply"/>
+    </filter>
+    <symbol id="sahne" viewBox="0 0 396 516">
+      <rect width="396" height="516" fill="url(#fon)"/>
+      <path d="M0 0H70C52 120 84 250 56 516H0Z" fill="url(#perde)"/>
+      <path d="M22 0C16 150 34 330 18 516M44 0C38 170 56 320 40 516" stroke="#3E1A1D" stroke-width="3" fill="none" opacity=".6"/>
+      <rect x="318" y="88" width="44" height="372" fill="#CFC7B6"/><rect x="310" y="72" width="60" height="20" fill="#DCD5C6"/><rect x="310" y="452" width="60" height="16" fill="#BDB4A2"/>
+      <path d="M326 96V452M342 96V452M354 96V452" stroke="#B4AB98" stroke-width="2"/>
+      <rect y="444" width="396" height="72" fill="#5D5046"/>
+      <path d="M0 444H396" stroke="#463B33" stroke-width="3"/>
+      <ellipse cx="200" cy="474" rx="140" ry="14" fill="#000" opacity=".35"/>
+      <ellipse cx="212" cy="300" rx="120" ry="200" fill="#000" opacity=".12"/>
+      <!-- gelin -->
+      <path d="M118 214Q150 198 182 214L206 470Q150 486 94 470Z" fill="url(#gelinlik)"/>
+      <path d="M150 214V470M128 300L112 470M172 300L188 470" stroke="#D3CBBA" stroke-width="1.5" fill="none"/>
+      <path d="M120 218Q108 260 122 300L134 296Q128 262 136 226Z" fill="#E8E1D2"/>
+      <rect x="140" y="188" width="20" height="24" fill="url(#ten)"/>
+      <ellipse cx="150" cy="166" rx="22" ry="27" fill="url(#ten)"/>
+      <path d="M127 162Q128 132 152 133Q175 134 174 160Q168 146 152 146Q136 146 127 162Z" fill="#3A2A20"/>
+      <path d="M126 152Q150 120 176 152L200 300Q150 312 100 300Z" fill="#FFFFFF" opacity=".42"/>
+      <ellipse cx="142" cy="166" rx="2.3" ry="1.6" fill="#2A1C14"/><ellipse cx="158" cy="166" rx="2.3" ry="1.6" fill="#2A1C14"/>
+      <path d="M144 180Q150 184 156 180" stroke="#8E5A4A" stroke-width="1.6" fill="none"/>
+      <g><circle cx="160" cy="296" r="9" fill="#C77F7A"/><circle cx="172" cy="288" r="8" fill="#D9A3A0"/><circle cx="168" cy="304" r="8" fill="#B8676A"/><circle cx="178" cy="300" r="6" fill="#E3C3BC"/><path d="M168 310L176 360" stroke="#6E7E4E" stroke-width="3"/></g>
+      <!-- damat -->
+      <rect x="228" y="338" width="20" height="128" fill="#262C3C"/><rect x="252" y="338" width="20" height="128" fill="#232838"/>
+      <path d="M224 466h26v8h-30zM250 466h26l4 8h-30z" fill="#141414"/>
+      <path d="M208 212Q250 194 292 212L298 350L202 350Z" fill="#303A55"/>
+      <path d="M208 212Q196 270 200 336L212 336Q210 280 220 226Z" fill="#2A3350"/>
+      <path d="M292 212Q304 270 300 336L288 336Q290 280 280 226Z" fill="#2A3350"/>
+      <path d="M238 210L250 252L262 210Z" fill="#F3F0E8"/>
+      <path d="M247.5 214H252.5L255 248L250 256L245 248Z" fill="#6A2634"/>
+      <path d="M238 210L250 252L232 226ZM262 210L250 252L268 226Z" fill="#262E46"/>
+      <rect x="240" y="186" width="20" height="24" fill="url(#ten)"/>
+      <ellipse cx="250" cy="160" rx="23" ry="28" fill="url(#ten)"/>
+      <path d="M226 158Q224 128 250 128Q276 128 274 156Q268 140 250 141Q232 142 226 158Z" fill="#1C1714"/>
+      <ellipse cx="242" cy="160" rx="2.4" ry="1.7" fill="#1E1510"/><ellipse cx="258" cy="160" rx="2.4" ry="1.7" fill="#1E1510"/>
+      <path d="M240 174Q250 170 260 174Q256 178 250 177Q244 178 240 174Z" fill="#2A1E16"/>
+      <path d="M206 300Q186 304 178 296" stroke="#2A3350" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <path d="M208 212Q250 194 292 212L298 350L202 350Z" fill="url(#kumas)"/>
+      <path d="M118 214Q150 198 182 214L206 470Q150 486 94 470Z" fill="url(#kumas)"/>
+      <ellipse cx="250" cy="160" rx="23" ry="28" fill="url(#kumas)"/><ellipse cx="150" cy="166" rx="22" ry="27" fill="url(#kumas)"/>
+      <rect width="396" height="516" fill="url(#isik)"/>
+      <rect width="396" height="516" fill="url(#vinyet)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="w">
+  <header class="ust">
+    <a class="logo" href="#">Sandık</a>
+    <nav aria-label="Sayfa içi"><a href="#arka">Arkasında yazan</a><a href="#agac">Soy ağacı</a><a href="#ev">Evden çıkmaz</a><a href="#fiyat">Fiyat</a></nav>
+  </header>
+</div>
+
+<main>
+<div class="w hero">
+  <h1>Sandıktaki yüzler yeniden görünsün.</h1>
+  <p class="alt">Solmuş, kırışmış, köşesi kopmuş fotoğrafları telefonla tara. Sandık onları onarır, istersen renklendirir, yüzlerden kimin kim olduğunu bulup soy ağacına yerleştirir. Fotoğraflar evden çıkmaz.</p>
+
+  <div class="cerceve" id="cerceve">
+    <svg class="kat once" viewBox="0 0 440 560" role="img" aria-labelledby="onceT">
+      <title id="onceT">Onarımdan önce: solmuş, çizik, katlanmış izi olan sepya bir nişan fotoğrafı</title>
+      <path d="M4 6l8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 4 4V554l-4 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4L4 554Z" fill="#DCC9A4"/>
+      <g filter="url(#eski)"><use href="#sahne" x="22" y="22" width="396" height="516"/></g>
+      <rect x="22" y="22" width="396" height="516" fill="url(#yanik)"/>
+      <g stroke="#F4E9D2" fill="none" opacity=".8">
+        <path d="M22 210L418 330" stroke-width="2.2"/>
+        <path d="M60 40L96 300M300 60l-30 220M340 400l50 120M120 420l-20 110" stroke-width=".9"/>
+        <path d="M200 30c10 30-6 60 4 90" stroke-width="1.2"/>
+      </g>
+      <ellipse cx="330" cy="140" rx="52" ry="38" fill="#7A5228" opacity=".28"/>
+      <path d="M418 22L418 104L350 22Z" fill="#2A1B12"/>
+      <path d="M350 22L418 104" stroke="#C9B48E" stroke-width="2"/>
+    </svg>
+    <svg class="kat sonra" id="sonra" viewBox="0 0 440 560" role="img" aria-labelledby="sonraT">
+      <title id="sonraT">Onarımdan sonra: çizikleri giderilmiş, eksik köşesi tamamlanmış, renklendirilmiş aynı fotoğraf</title>
+      <path d="M4 6l8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 8 4 8-4 4 4V554l-4 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4-8-4-8 4L4 554Z" fill="#F6F2EA"/>
+      <g filter="url(#yeni)"><use href="#sahne" x="22" y="22" width="396" height="516"/></g>
+    </svg>
+    <input class="kaydirici" id="kaydirici" type="range" min="0" max="100" value="50" aria-label="Önce ve sonra karşılaştırması: sola çek onarılmışı, sağa çek eskisini gör">
+    <div class="tutamak" id="tutamak" aria-hidden="true"></div>
+  </div>
+  <div class="etiketler" aria-hidden="true"><span>Sandıktan çıktığı gibi</span><span>Sandık'ın elinden</span></div>
+  <p class="kunye">Nişan fotoğrafı, Sivas, Ekim 1962. Hatice ve Remzi Doğan.<br>Tarama: telefon, 4 çekim. Onarım ve renklendirme: telefonda, 38 saniye.</p>
+  <div class="dugmeler"><a class="btn dolu" href="#fiyat">iPhone için indir</a><a class="btn bos" href="#fiyat">Android için indir</a></div>
+</div>
+
+<section id="arka" style="padding-top:20px">
+  <div class="w arka">
+    <div>
+      <h2>Arkasında yazanı da okur.</h2>
+      <p>Eski fotoğrafın çoğu bilgisi arkasındadır: kurşun kalemle bir tarih, bir şehir, bazen yarısı silinmiş bir ad. Sandık o yazıyı, eski el yazısıyla ve stüdyo damgasıyla birlikte okur; fotoğrafın künyesine kendisi yazar.</p>
+      <dl class="okundu">
+        <div><dt>Tarih</dt><dd>Ekim 1962 <span style="opacity:.7">· el yazısından</span></dd></div>
+        <div><dt>Yer</dt><dd>Sivas <span style="opacity:.7">· stüdyo damgasından</span></dd></div>
+        <div><dt>Kişiler</dt><dd>Hatice, Remzi <span style="opacity:.7">· yazıdan ve 41 fotoğraftaki yüzlerden</span></dd></div>
+        <div><dt>Stüdyo</dt><dd>Foto Işık, Kongre Caddesi</dd></div>
+      </dl>
+    </div>
+    <div class="kart-arka" aria-label="Fotoğrafın arka yüzü: el yazısıyla not ve stüdyo damgası">
+      <span class="el">Nişanımız. Sivas, 14 Ekim 1962. Annemlere bir tane, bize bir tane. — Hatice</span>
+      <span class="damga">FOTO IŞIK<br>KONGRE CAD.<br>SİVAS</span>
+    </div>
+  </div>
+</section>
+
+<section class="agac" id="agac">
+  <div class="w">
+    <div class="ust-m">
+      <h2>Yüzler kendiliğinden bir ağaca dizilir.</h2>
+      <p>Aynı yüz 1962'de nişanda, 1975'te bir bayram sofrasında, 1998'de torununu kucaklarken. Sandık bunları birbirine bağlar; sen yalnız bir kez adını söylersin. Kimse tanınmak için bir sunucuya gönderilmez.</p>
+    </div>
+    <svg viewBox="0 0 1000 380" role="img" aria-labelledby="agT">
+      <title id="agT">Soy ağacı: Hatice ve Remzi Doğan; çocukları Nermin ve Kemal; Kemal'in kızı Elif. Her kişinin yanında kaç fotoğrafta bulunduğu yazıyor.</title>
+      <g stroke="#E2B9A4" stroke-width="1.5" fill="none" opacity=".7">
+        <path d="M444 80H556M500 80V200M300 200H700M300 200V228M700 200V228M700 296V330H640V336"/>
+      </g>
+      <g font-family="Jost" fill="#F6E4D8" text-anchor="middle">
+        <g><circle cx="400" cy="80" r="44" fill="#B08A5B" stroke="#F0DCD0" stroke-width="2"/><text x="400" y="88" font-family="Bodoni Moda" font-size="28" fill="#2A1B12">H</text><text x="400" y="150" font-size="18">Hatice</text><text x="400" y="170" font-size="13" opacity=".8">1941–2023 · 41 fotoğraf</text></g>
+        <g><circle cx="600" cy="80" r="44" fill="#9C7A52" stroke="#F0DCD0" stroke-width="2"/><text x="600" y="88" font-family="Bodoni Moda" font-size="28" fill="#2A1B12">R</text><text x="600" y="150" font-size="18">Remzi</text><text x="600" y="170" font-size="13" opacity=".8">1936–1999 · 29 fotoğraf</text></g>
+        <g><circle cx="300" cy="262" r="34" fill="#C3A17A" stroke="#F0DCD0" stroke-width="2"/><text x="300" y="270" font-family="Bodoni Moda" font-size="24" fill="#2A1B12">N</text><text x="300" y="318" font-size="17">Nermin</text><text x="300" y="337" font-size="13" opacity=".8">1965 · 63 fotoğraf</text></g>
+        <g><circle cx="700" cy="262" r="34" fill="#C3A17A" stroke="#F0DCD0" stroke-width="2"/><text x="700" y="270" font-family="Bodoni Moda" font-size="24" fill="#2A1B12">K</text><text x="760" y="318" font-size="17" text-anchor="start">Kemal</text><text x="760" y="337" font-size="13" opacity=".8" text-anchor="start">1968 · 57 fotoğraf</text></g>
+        <g><circle cx="640" cy="356" r="20" fill="#EBDDC3" stroke="#F0DCD0" stroke-width="2"/><text x="640" y="362" font-family="Bodoni Moda" font-size="16" fill="#2A1B12">E</text><text x="596" y="362" font-size="15" text-anchor="end">Elif (sen) · 1994</text></g>
+        <g opacity=".85"><circle cx="880" cy="80" r="30" fill="none" stroke="#F0DCD0" stroke-width="1.5" stroke-dasharray="4 4"/><text x="880" y="86" font-size="22">?</text><text x="880" y="134" font-size="14">Bilinmeyen yüz</text><text x="880" y="152" font-size="13" opacity=".8">7 fotoğraf · kim?</text></g>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section id="ev">
+  <div class="w ev">
+    <div>
+      <h2>Babaannenin fotoğrafları evden çıkmaz.</h2>
+      <p style="color:#D9C9AC">Tarama, onarım, renklendirme ve yüz eşleştirme telefonun içinde yapılır. Fotoğraflar bir buluta yüklenmez, yüzler bir tanıma şirketinin veritabanına girmez. Sandık'ın sunucusu yok; olsaydı bile babaannen orada olmazdı.</p>
+    </div>
+    <ul class="liste">
+      <li><h3>Parlamasız tarama</h3><p>Albümden sökmeden, camın arkasından bile: telefon dört açıdan çeker, yansımayı siler.</p></li>
+      <li><h3>Onarım, aslına sadık</h3><p>Çizik, kırışık, leke ve kopuk köşe giderilir. Yüz uydurulmaz; eksik bir göz "tamamlanmaz", işaretlenir.</p></li>
+      <li><h3>Renk, bir tahmindir</h3><p>Renklendirilmiş hali her zaman aslının yanında durur. Bir kurdelenin rengini biliyorsan sen düzeltirsin.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w soz">
+    <blockquote>"Babaannemin yirmi bir yaşındaki halini ilk kez gördüm. Meğer o gülüş bana geçmiş."</blockquote>
+    <cite>Elif Doğan · 31 · öğretmen, Eskişehir · sandıktan 212 fotoğraf</cite>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:0">
+  <div class="w">
+    <h2 style="font-size:clamp(34px,4vw,52px);text-align:center">Bir sandık, bir kere.</h2>
+    <div class="fiyat">
+      <div><h3>Deneme</h3><div class="tl">0 ₺</div><ul><li>İlk 50 fotoğraf, tüm özellikler</li><li>Parlamasız tarama ve onarım</li><li>Arka yüz okuma</li></ul><a class="btn bos" href="#">Ücretsiz dene</a></div>
+      <div><h3>Bütün sandık</h3><div class="tl">399 ₺ <small>bir kere</small></div><ul><li>Sınırsız fotoğraf</li><li>Renklendirme ve soy ağacı</li><li>Baskıya hazır yüksek çözünürlük</li><li>Aile içinde telefondan telefona paylaşım</li></ul><a class="btn dolu" href="#">Sandığı aç</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sss" style="padding-top:0">
+  <div class="w" style="max-width:820px">
+    <h2 style="font-size:40px;margin-bottom:16px">Sorulanlar</h2>
+    <details open><summary>Asıl fotoğrafa bir şey olur mu?</summary><p>Hayır. Fotoğraf yalnız telefonla çekilir; ışık ya da ısı uygulanmaz. Dijital aslı da hiç değişmez; onarılmış hali ayrı bir kopya olarak durur.</p></details>
+    <details><summary>Renkler doğru mu?</summary><p>Renklendirme bir tahmindir: ten, gökyüzü, kumaş gibi bilinenleri tutarlı boyar, gerisini akla yatkın seçer. Bu yüzden her zaman "aslı" düğmesi vardır.</p></details>
+    <details><summary>Cam çerçevenin içindekileri de tarar mı?</summary><p>Evet. Telefonu dört farklı açıda tutmanı ister ve yansımayı bu dört çekimden siler.</p></details>
+    <details><summary>Soy ağacını ailemle nasıl paylaşırım?</summary><p>Yan yana olduğunuzda telefondan telefona kablosuz gönderirsin ya da PDF olarak verirsin. İnternete yükleme yolu bilerek yok.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <h2>Sandığın kapağını bu akşam aç.</h2>
+    <div class="dugmeler" style="margin-top:28px"><a class="btn dolu" href="#fiyat">iPhone için indir</a><a class="btn bos" href="#fiyat">Android için indir</a></div>
+    <div class="imza">Sandık · Eskişehir · merhaba@sandik.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+const k=document.getElementById('kaydirici'),s=document.getElementById('sonra'),t=document.getElementById('tutamak');
+function guncelle(){const v=k.value;s.style.clipPath='inset(0 0 0 '+v+'%)';t.style.left=v+'%';}
+k.addEventListener('input',guncelle);guncelle();
+</script>
+</body>
+</html>

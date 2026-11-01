@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İlk Kelimeler — Çocuğunuzun kelime dağarcığını sakin bir gözle izleyin</title>
+<meta name="description" content="İlk Kelimeler, 1-4 yaş çocuğunuzun söylediği kelimeleri günlük anlardan sayar ve gelişim aralığına göre bilgi verir. Evin sesi telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --zemin:#F5F3F7;
+  --kart:#FFFFFF;
+  --murekkep:#2A2B3D;
+  --erik:#7A3B6B;
+  --bant:#DDE7DA;
+  --bant2:#C3D6BE;
+  --kayisi:#E9945A;
+  --soluk:#5C5E70;
+  --cizgi:#DCD8E2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--zemin);color:var(--murekkep);font-family:"Work Sans",system-ui,sans-serif;font-size:18px;line-height:1.65}
+:focus-visible{outline:3px solid var(--erik);outline-offset:3px;border-radius:4px}
+a{color:var(--erik)}
+h1,h2,h3{font-family:"Newsreader",Georgia,serif;font-weight:400}
+.wrap{max-width:1160px;margin:0 auto;padding:0 26px}
+header{max-width:1160px;margin:0 auto;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--cizgi)}
+.logo{font-family:Newsreader;font-size:24px;color:var(--murekkep);text-decoration:none;font-style:italic}
+.logo b{font-style:normal;font-weight:500}
+header nav a{margin-left:24px;color:var(--murekkep);text-decoration:none;font-size:16px}
+header nav a:hover{color:var(--erik)}
+.btn{display:inline-block;font:inherit;font-weight:600;font-size:17px;padding:13px 22px;border-radius:8px;background:var(--erik);color:#fff;text-decoration:none;border:2px solid var(--erik);cursor:pointer}
+.btn:hover{background:var(--murekkep);border-color:var(--murekkep)}
+.btn.duz{background:transparent;color:var(--erik)}
+.btn.duz:hover{background:var(--erik);color:#fff}
+header nav a.btn{color:#fff}
+
+.hero{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;padding-top:56px;padding-bottom:80px;align-items:start}
+.soru{font-family:Newsreader;font-style:italic;font-size:22px;color:var(--erik);margin:0 0 12px}
+.hero h1{font-size:clamp(36px,4.6vw,60px);line-height:1.08;margin:0 0 22px;letter-spacing:-.5px}
+.hero p{margin:0 0 26px;max-width:40ch}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.not{font-size:15px;color:var(--soluk);margin-top:16px;max-width:42ch}
+
+.grafik{background:var(--kart);border:1px solid var(--cizgi);border-radius:14px;padding:24px 24px 18px}
+.grafik .bas{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.grafik .bas b{font-family:Newsreader;font-size:22px;font-weight:500}
+.grafik .bas span{font-size:15px;color:var(--soluk)}
+.grafik svg{width:100%;height:auto;display:block;margin-top:10px}
+.grafik svg text{font-family:"Work Sans";font-size:14px;fill:#5C5E70}
+.okuma{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:#F7F5F9;border-radius:10px;padding:14px 16px;margin-top:10px}
+.okuma .say{font-family:Newsreader;font-size:44px;line-height:1;color:var(--erik)}
+.okuma p{margin:0;font-size:16px;line-height:1.5}
+.kaydir{display:flex;align-items:center;gap:14px;margin-top:14px;font-size:15px;color:var(--soluk)}
+.kaydir input{flex:1;accent-color:var(--erik)}
+.kaydir output{font-weight:600;color:var(--murekkep);min-width:52px}
+
+section{padding:90px 0}
+h2{font-size:clamp(30px,3.6vw,44px);line-height:1.15;margin:0 0 16px;max-width:24ch}
+.giris{max-width:60ch}
+.beyaz{background:var(--kart);border-top:1px solid var(--cizgi);border-bottom:1px solid var(--cizgi)}
+
+/* gün */
+.gun{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:40px;border-top:1px solid var(--murekkep)}
+.an{padding:22px 26px 0 0}
+.an + .an{padding-left:26px;border-left:1px solid var(--cizgi)}
+.an time{font-size:14px;color:var(--soluk);letter-spacing:.3px}
+.an h3{font-size:24px;margin:2px 0 10px}
+.an .soz{font-family:Newsreader;font-style:italic;font-size:20px;line-height:1.5;margin:0 0 12px}
+.an .soz mark{background:var(--bant);color:var(--murekkep);padding:0 4px;border-radius:3px;font-style:normal;font-family:"Work Sans";font-weight:600;font-size:17px}
+.an .soz .b{color:var(--soluk)}
+.an small{display:block;color:var(--soluk);font-size:15px}
+
+/* defter */
+.defter{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+.sozluk{background:var(--kart);border:1px solid var(--cizgi);border-radius:14px;padding:26px}
+.sozluk .ust{display:flex;justify-content:space-between;font-size:15px;color:var(--soluk);border-bottom:1px solid var(--cizgi);padding-bottom:10px;margin-bottom:6px;gap:10px;flex-wrap:wrap}
+.grup{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:12px 0;border-bottom:1px dashed var(--cizgi)}
+.grup:last-child{border-bottom:0}
+.grup b{font-size:15px;color:var(--soluk);font-weight:500;padding-top:3px}
+.grup div{display:flex;flex-wrap:wrap;gap:6px 8px}
+.k{font-family:Newsreader;font-size:20px;background:#F7F5F9;border-radius:6px;padding:1px 9px}
+.k.yeni{background:#F6E6EF;color:var(--erik)}
+.k small{font-family:"Work Sans";font-size:12px;color:var(--soluk);margin-left:4px}
+.ikili{margin-top:14px;font-size:16px;background:#F3F7F1;border-radius:10px;padding:12px 14px}
+.ikili b{font-family:Newsreader;font-size:19px;font-weight:500}
+
+/* uzman */
+.uzman{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.isaret{list-style:none;padding:0;margin:0;border-top:1px solid var(--murekkep)}
+.isaret li{padding:16px 0 16px 38px;border-bottom:1px solid var(--cizgi);position:relative}
+.isaret li::before{content:"";position:absolute;left:4px;top:24px;width:14px;height:14px;border-radius:50%;border:2px solid var(--kayisi)}
+.isaret li b{display:block}
+.isaret li span{color:var(--soluk);font-size:16px}
+.kutu-not{margin-top:22px;font-size:16px;color:var(--soluk);border-left:3px solid var(--erik);padding-left:14px}
+
+/* kanıt */
+.kanit{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.pencere{background:var(--kart);border:1px solid var(--cizgi);border-radius:14px;padding:22px}
+.pencere h3{margin:0 0 4px;font-size:20px;font-family:"Work Sans";font-weight:600}
+.pencere p{margin:0 0 14px;font-size:15px;color:var(--soluk)}
+.saat-cizgi{position:relative;height:44px;background:#F1EFF4;border-radius:8px;margin-bottom:8px}
+.saat-cizgi i{position:absolute;top:6px;bottom:6px;background:var(--bant2);border-radius:5px;border:1.5px solid #8DAA86}
+.saat-eks{display:flex;justify-content:space-between;font-size:13px;color:var(--soluk)}
+.pencere ul{margin:14px 0 0;padding-left:18px;font-size:15px}
+
+.alinti{max-width:860px}
+.alinti blockquote{margin:0;font-family:Newsreader;font-size:clamp(25px,3vw,36px);line-height:1.35}
+.alinti p{color:var(--soluk);margin-top:16px;font-size:16px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.fk{background:var(--kart);border:1px solid var(--cizgi);border-radius:14px;padding:28px}
+.fk .t{font-family:Newsreader;font-size:48px;margin:0;line-height:1.1}
+.fk .t small{font-family:"Work Sans";font-size:16px;color:var(--soluk)}
+.fk ul{padding-left:20px;margin:14px 0 20px}
+details{border-bottom:1px solid var(--cizgi);padding:16px 0}
+details:first-of-type{border-top:1px solid var(--murekkep)}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:#3B3D50}
+footer{padding:36px 0;border-top:1px solid var(--cizgi);font-size:15px;color:var(--soluk)}
+footer .r{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--soluk)}
+.credit{margin-top:16px;font-size:13px}
+
+@media (max-width:900px){
+  header nav a:not(.btn){display:none}
+  .hero,.defter,.uzman,.kanit,.fiyat{grid-template-columns:1fr;gap:34px}
+  .gun{grid-template-columns:1fr}
+  .an,.an + .an{padding:20px 0;border-left:0;border-bottom:1px solid var(--cizgi)}
+  section{padding:64px 0}
+  .hero{padding-top:34px}
+}
+@media (max-width:480px){
+  .grafik{padding:16px 14px}
+  .grup{grid-template-columns:1fr;gap:6px}
+  .okuma .say{font-size:36px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#" aria-label="İlk Kelimeler ana sayfa"><b>İlk</b> Kelimeler</a>
+  <nav aria-label="Ana menü">
+    <a href="#gun">Nasıl sayar</a>
+    <a href="#defter">Kelime defteri</a>
+    <a href="#uzman">Ne zaman uzmana</a>
+    <a href="#fiyat">Fiyat</a>
+    <a class="btn" href="#fiyat">İndir</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div>
+    <p class="soru">“Hâlâ konuşmuyor mu bu çocuk?”</p>
+    <h1>Bayram sofrasındaki yorum yerine, gerçek bir sayı.</h1>
+    <p>İlk Kelimeler, 1–4 yaş arası çocuğunuzun gün içinde söylediği kelimeleri sayar ve bunu yaşının tipik aralığıyla karşılaştırır. Endişelenecek bir şey varsa açıkça söyler; yoksa onu da.</p>
+    <div class="cta"><a class="btn" href="#fiyat">iPhone için indir</a><a class="btn duz" href="#fiyat">Android için indir</a></div>
+    <p class="not">Tanı koymaz; çocuk doktorunuzla konuşurken elinizde somut bilgi olsun diye vardır. Evin sesi telefondan çıkmaz.</p>
+  </div>
+
+  <figure class="grafik" style="margin:0" aria-label="Kelime gelişim grafiği: Deniz 25 aylık, 64 kelime, tipik aralığın alt kısmında ve içinde, son iki ayda hızla artıyor">
+    <div class="bas"><b>Deniz'in kelimeleri</b><span>25 ay · son güncelleme bu sabah 08.40</span></div>
+    <svg viewBox="0 0 560 300" id="svg">
+      <!-- eksen: x 12..36 ay → 50..540 ; y 0..600 kelime → 260..20 -->
+      <g stroke="#EAE7EE" stroke-width="1">
+        <line x1="50" y1="20" x2="540" y2="20"/><line x1="50" y1="80" x2="540" y2="80"/><line x1="50" y1="140" x2="540" y2="140"/><line x1="50" y1="200" x2="540" y2="200"/>
+      </g>
+      <line x1="50" y1="260" x2="540" y2="260" stroke="#2A2B3D"/>
+      <polygon points="50.0,256.0 60.2,254.0 70.4,252.0 80.6,250.0 90.8,248.0 101.0,246.0 111.2,244.0 121.5,240.7 131.7,237.3 141.9,234.0 152.1,230.7 162.3,227.3 172.5,224.0 182.7,212.7 192.9,201.3 203.1,190.0 213.3,178.7 223.5,167.3 233.8,156.0 244.0,141.3 254.2,126.7 264.4,112.0 274.6,97.3 284.8,82.7 295.0,68.0 305.2,56.0 315.4,44.0 325.6,32.0 335.8,20.0 346.0,20.0 356.2,20.0 366.5,20.0 376.7,20.0 386.9,20.0 397.1,20.0 407.3,20.0 417.5,20.0 427.7,20.0 437.9,20.0 448.1,20.0 458.3,20.0 468.5,20.0 478.8,20.0 489.0,20.0 499.2,20.0 509.4,20.0 519.6,20.0 529.8,20.0 540.0,20.0 540.0,148.0 529.8,152.3 519.6,156.7 509.4,161.0 499.2,165.3 489.0,169.7 478.8,174.0 468.5,178.3 458.3,182.7 448.1,187.0 437.9,191.3 427.7,195.7 417.5,200.0 407.3,203.7 397.1,207.3 386.9,211.0 376.7,214.7 366.5,218.3 356.2,222.0 346.0,225.3 335.8,228.7 325.6,232.0 315.4,235.3 305.2,238.7 295.0,242.0 284.8,243.8 274.6,245.6 264.4,247.4 254.2,249.2 244.0,251.0 233.8,252.8 223.5,253.7 213.3,254.7 203.1,255.6 192.9,256.5 182.7,257.5 172.5,258.4 162.3,258.5 152.1,258.7 141.9,258.8 131.7,258.9 121.5,259.1 111.2,259.2 101.0,259.3 90.8,259.5 80.6,259.6 70.4,259.7 60.2,259.9 50.0,260.0" fill="#DDE7DA"/>
+      <polyline points="50.0,258.4 60.2,257.7 70.4,256.9 80.6,256.2 90.8,255.5 101.0,254.7 111.2,254.0 121.5,251.7 131.7,249.3 141.9,247.0 152.1,244.7 162.3,242.3 172.5,240.0 182.7,234.0 192.9,228.0 203.1,222.0 213.3,216.0 223.5,210.0 233.8,204.0 244.0,196.0 254.2,188.0 264.4,180.0 274.6,172.0 284.8,164.0 295.0,156.0 305.2,149.3 315.4,142.7 325.6,136.0 335.8,129.3 346.0,122.7 356.2,116.0 366.5,110.0 376.7,104.0 386.9,98.0 397.1,92.0 407.3,86.0 417.5,80.0 427.7,75.3 437.9,70.7 448.1,66.0 458.3,61.3 468.5,56.7 478.8,52.0 489.0,48.7 499.2,45.3 509.4,42.0 519.6,38.7 529.8,35.3 540.0,32.0" fill="none" stroke="#9DBA96" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="150" y="196">üst sınır</text><text x="470" y="200">alt sınır</text><text x="430" y="70">orta</text>
+      <polyline points="172.5,255.2 192.9,253.6 213.3,251.2 233.8,248.4 254.2,245.6 274.6,243.6 295.0,239.2 315.4,234.4" fill="none" stroke="#7A3B6B" stroke-width="3" stroke-linejoin="round"/>
+      <g fill="#7A3B6B"><circle cx="172.5" cy="255.2" r="4"/><circle cx="192.9" cy="253.6" r="4"/><circle cx="213.3" cy="251.2" r="4"/><circle cx="233.8" cy="248.4" r="4"/><circle cx="254.2" cy="245.6" r="4"/><circle cx="274.6" cy="243.6" r="4"/><circle cx="295.0" cy="239.2" r="4"/><circle cx="315.4" cy="234.4" r="6" stroke="#fff" stroke-width="2"/></g>
+      <line id="cizgi" x1="315" y1="20" x2="315" y2="260" stroke="#E9945A" stroke-width="2"/>
+      <text x="50" y="280">12 ay</text><text x="234" y="280">20 ay</text><text x="418" y="280">28 ay</text><text x="505" y="280">36 ay</text>
+      <text x="8" y="24">600</text><text x="8" y="144">300</text><text x="20" y="262">0</text>
+    </svg>
+    <div class="okuma" aria-live="polite"><span class="say" id="say">64</span><p id="yorum"><b>25. ay:</b> Deniz tipik aralığın alt kısmında ama içinde. Son iki ayda 23 yeni kelime ekledi ve “su ver” gibi ilk iki kelimelik cümleleri kurmaya başladı.</p></div>
+    <label class="kaydir"><span>Ay seç</span><input type="range" id="ay" min="18" max="25" value="25" step="1"><output id="ayo">25 ay</output></label>
+  </figure>
+</div>
+
+<section class="beyaz" id="gun">
+  <div class="wrap">
+    <h2>Siz bir şey yapmazsınız. Gün kendi kendine sayılır.</h2>
+    <p class="giris">Telefonu mutfakta, banyoda, parkta yanınızda tutmanız yeter. İlk Kelimeler çocuğun sesini yetişkin seslerinden ayırır ve yalnız onun söylediği kelimeleri sayar. “Hav hav”, “pisi”, “mama” gibi çocuk sözleri de kelime sayılır, çünkü öyledir.</p>
+    <div class="gun">
+      <div class="an"><time>Kahvaltı · 08.15</time><h3>Sofrada</h3><p class="soz"><span class="b">Anne: “Ne istiyorsun?”</span><br>Deniz: “<mark>su</mark> <mark>ver</mark>”</p><small>Yeni: iki kelimelik birleşim (4. kez bu hafta)</small></div>
+      <div class="an"><time>Park · 16.40</time><h3>Salıncakta</h3><p class="soz">Deniz: “<mark>kuş</mark>! <mark>kuş</mark> <mark>gitti</mark>”</p><small>Yeni kelime: “gitti” · ilk kez duyuldu</small></div>
+      <div class="an"><time>Banyo · 19.50</time><h3>Köpükte</h3><p class="soz">Deniz: “<mark>ördek</mark>… <mark>baba</mark> <mark>ördek</mark>”</p><small>“Ördek” 3 gündür her akşam · artık sayılıyor</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="defter">
+  <div class="wrap defter">
+    <div>
+      <h2>Bir kelime defteri, kendiliğinden tutulur.</h2>
+      <p class="giris">Hangi kelimeyi ne zaman söylediği, hangi gruplarda zengin olduğu, ilk birleşimleri. Bir kelime en az iki farklı günde, anlamlı bir yerde duyulunca deftere girer; tesadüfi bir ses sayılmaz.</p>
+      <p class="giris" style="color:var(--soluk);font-size:16px">Çocuk doktoru randevusunda bu sayfayı PDF olarak gösterebilirsiniz.</p>
+    </div>
+    <div class="sozluk" aria-label="Deniz'in kelime defteri">
+      <div class="ust"><span>Deniz · 64 kelime · 6 iki kelimelik birleşim</span><span>pembe: son 2 hafta</span></div>
+      <div class="grup"><b>İnsanlar</b><div><span class="k">anne</span><span class="k">baba</span><span class="k">dede</span><span class="k">nene</span><span class="k">abi</span><span class="k yeni">Ela<small>abla</small></span></div></div>
+      <div class="grup"><b>Hayvanlar</b><div><span class="k">hav hav</span><span class="k">pisi</span><span class="k">kuş</span><span class="k">ördek</span><span class="k yeni">mö<small>inek</small></span></div></div>
+      <div class="grup"><b>Yiyecek</b><div><span class="k">su</span><span class="k">mama</span><span class="k">elma</span><span class="k">ekmek</span><span class="k yeni">peynir</span><span class="k">süt</span></div></div>
+      <div class="grup"><b>Eylem</b><div><span class="k">ver</span><span class="k">gel</span><span class="k">aç</span><span class="k yeni">gitti</span><span class="k yeni">düştü</span></div></div>
+      <div class="grup"><b>Diğer</b><div><span class="k">yok</span><span class="k">daha</span><span class="k">bu</span><span class="k">top</span><span class="k">araba</span><span class="k">… 37 kelime daha</span></div></div>
+      <div class="ikili"><b>İlk birleşimler:</b> su ver · baba gel · top yok · kuş gitti · daha su · baba ördek</div>
+    </div>
+  </div>
+</section>
+
+<section class="beyaz" id="uzman">
+  <div class="wrap uzman">
+    <div>
+      <h2>Ne zaman bir uzmana danışmalı?</h2>
+      <p class="giris">Her çocuk kendi hızında konuşur ve aralık geniştir. Ama bazı işaretler beklemek yerine konuşmayı gerektirir. İlk Kelimeler bunlardan biri görüldüğünde size açıkça, paniğe sokmadan söyler.</p>
+      <p class="kutu-not">Bu liste bilgilendirme amaçlıdır. Son sözü her zaman çocuk doktorunuz ya da bir dil ve konuşma terapisti söyler.</p>
+    </div>
+    <ul class="isaret">
+      <li><b>24 ayda 50'den az kelime ya da hiç iki kelimelik birleşim yok</b><span>Uygulama bu durumda randevuda sormanız için bir özet hazırlar.</span></li>
+      <li><b>Daha önce söylediği kelimeleri kaybetmesi</b><span>Herhangi bir yaşta; bekleme önerilmez.</span></li>
+      <li><b>İsmine ya da seslere tepki vermemesi</b><span>İşitme taraması ilk adım olabilir.</span></li>
+      <li><b>18 ayda işaret etme ya da göz teması kurma olmaması</b><span>Konuşmadan önce gelen iletişim adımları da önemlidir.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap kanit">
+    <div>
+      <h2>Evinizin sesi evinizde kalır.</h2>
+      <p class="giris">Bir uygulamanın gün boyu evi dinlemesi ciddi bir şeydir. İlk Kelimeler bu yüzden yalnız sizin seçtiğiniz saatlerde dinler, sesi telefonun içinde yazıya bile çevirmeden çözümler ve yalnız çocuğun kelimelerini tutar. Yetişkin konuşmaları hiçbir yerde saklanmaz. İnternet bağlantısı gerekmez.</p>
+    </div>
+    <div class="pencere">
+      <h3>Dinleme pencereleri</h3>
+      <p>Ayarlar › Ne zaman dinlesin</p>
+      <div class="saat-cizgi" aria-label="Dinleme saatleri: 08.00–09.00, 16.00–17.30, 19.30–20.30">
+        <i style="left:12.5%;width:6.25%"></i><i style="left:62.5%;width:9.4%"></i><i style="left:84.4%;width:6.25%"></i>
+      </div>
+      <div class="saat-eks" aria-hidden="true"><span>06.00</span><span>12.00</span><span>18.00</span><span>22.00</span></div>
+      <ul>
+        <li>Pencere dışında mikrofon kapalı; ekranda görünür bir işaret yanar.</li>
+        <li>Saklanan tek şey: kelime, tarih, kaç kez.</li>
+        <li>Telefon değişirse veriyi siz taşırsınız; bulut yedeği yok.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap alinti">
+    <blockquote>“Kayınvalidem her hafta ‘bu yaşta abisi cümle kuruyordu’ diyordu. Ben de geceleri arama yapıp duruyordum. Şimdi ‘64 kelimesi var, aralıkta, doktorumuz da gördü’ diyorum. Konu kapandı. Ben de rahatladım.”</blockquote>
+    <p>Merve Doğan · Konya · muhasebeci, 25 aylık Deniz'in annesi</p>
+  </div>
+</section>
+
+<section class="beyaz" id="fiyat">
+  <div class="wrap fiyat">
+    <div>
+      <h2>Bir kez alınır, dört yaşına kadar yeter.</h2>
+      <div class="fk">
+        <p class="t">549 ₺ <small>tek seferlik</small></p>
+        <ul><li>1–4 yaş, iki çocuğa kadar</li><li>Kelime defteri ve doktor özeti (PDF)</li><li>İlk 14 gün ücretsiz</li><li>Abonelik yok, reklam yok</li></ul>
+        <div class="cta"><a class="btn" href="#">iPhone için indir</a><a class="btn duz" href="#">Android için indir</a></div>
+      </div>
+    </div>
+    <div>
+      <details open><summary>İki dilli evde çalışır mı?</summary><p>Evet. Türkçe ile birlikte İngilizce, Almanca, Kürtçe ve Arapça kelimeleri ayrı sayar. İki dilli çocukta toplam kelime sayısı esas alınır; bu konuda aralığı buna göre gösterir.</p></details>
+      <details><summary>Aralık neye göre belirleniyor?</summary><p>Türkçe konuşan çocuklarla yapılmış kelime gelişimi çalışmalarındaki dağılıma göre. Aralık bilinçli olarak geniş tutulur; tek bir “olması gereken sayı” yoktur.</p></details>
+      <details><summary>Çocuğun söylediğini yanlış duyarsa?</summary><p>Defterdeki her kelimeyi düzeltebilir ya da silebilirsiniz. Emin olmadığı kelimeleri “belki” olarak gösterir ve sayıya katmaz.</p></details>
+      <details><summary>Hangi cihazlar?</summary><p>iOS 16+ iPhone, Android 10+ ve en az 4 GB belleği olan telefonlar.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="r"><span><i>İlk Kelimeler</i> · Sakin bir gözle.</span><span>destek@ilkkelimeler.app · Gizlilik · KVKK</span></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  // ay → [kelime, yorum]
+  const V={18:[12,'<b>18. ay:</b> 12 kelime. Bu yaşta aralık çok geniştir; birçok çocuk 10–50 arasındadır.'],19:[16,'<b>19. ay:</b> 16 kelime. Aralığın içinde, yavaş ama düzenli.'],20:[22,'<b>20. ay:</b> 22 kelime. “Pisi” ve “ördek” bu ay eklendi.'],21:[29,'<b>21. ay:</b> 29 kelime. Artış başlıyor.'],22:[36,'<b>22. ay:</b> 36 kelime. İlk eylem kelimesi: “ver”.'],23:[41,'<b>23. ay:</b> 41 kelime. Aralığın alt kısmında, içinde.'],24:[52,'<b>24. ay:</b> 52 kelime ve ilk iki kelimelik birleşim: “su ver”. 50 eşiği geçildi.'],25:[64,'<b>25. ay:</b> Deniz tipik aralığın alt kısmında ama içinde. Son iki ayda 23 yeni kelime ekledi ve “su ver” gibi ilk iki kelimelik cümleleri kurmaya başladı.']};
+  const r=document.getElementById('ay'),o=document.getElementById('ayo'),s=document.getElementById('say'),y=document.getElementById('yorum'),c=document.getElementById('cizgi');
+  r.addEventListener('input',()=>{const a=+r.value,v=V[a];o.textContent=a+' ay';s.textContent=v[0];y.innerHTML=v[1];const x=50+(a-12)*(490/24);c.setAttribute('x1',x);c.setAttribute('x2',x);});
+})();
+</script>
+</body>
+</html>

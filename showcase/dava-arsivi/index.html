@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dava Arşivi — Büronuzun dosyalarında anlamsal arama, sunucunuzdan çıkmadan</title>
+<meta name="description" content="Dava Arşivi hukuk bürosunun dilekçe, karar ve dosyalarında anlamla arama yapar; emsal, dilekçe ve süre bulur. Bütün işlem büronuzdaki sunucuda yapılır, müvekkil bilgisi dışarı çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Libre+Franklin:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --leather:#1F3B30; --leather-d:#172D25; --brass:#B48A4C; --brass-l:#D9BE8C; --paper:#F2EFE7; --page:#FAF8F3;
+  --ink:#1A1A18; --soft:#4F4B43; --rule:#CFC8B8; --ox:#6E2A2A;
+  --serif:"Newsreader", Georgia, serif; --sans:"Libre Franklin", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.62 var(--serif)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ox);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+.bar{background:var(--leather);color:var(--brass-l);font:500 13px/1 var(--sans);letter-spacing:.02em}
+.bar .wrap{display:flex;justify-content:space-between;padding-top:10px;padding-bottom:10px;gap:20px}
+header .wrap{display:flex;justify-content:space-between;align-items:flex-end;padding-top:30px;padding-bottom:18px;border-bottom:1px solid var(--rule)}
+.mark{font:500 30px/1 var(--serif);text-decoration:none;letter-spacing:-.01em}
+.mark small{display:block;font:400 13px/1.4 var(--sans);color:var(--soft);letter-spacing:.01em;margin-top:6px}
+header nav{display:flex;gap:26px;font:500 14.5px var(--sans)}
+header nav a{text-decoration:none;color:var(--soft)}
+header nav a:hover{color:var(--ox)}
+/* hero */
+.hero{padding:64px 0 84px}
+h1{font:400 clamp(40px,5vw,66px)/1.04 var(--serif);letter-spacing:-.02em;margin:0 0 20px;max-width:15em}
+.lede{font-size:21px;color:var(--soft);max-width:33em;margin:0 0 40px}
+.console{background:var(--page);border:1px solid var(--rule);box-shadow:0 1px 0 #fff inset,0 24px 50px -36px rgba(30,40,30,.45)}
+.q{display:flex;align-items:center;gap:14px;padding:20px 24px;border-bottom:2px solid var(--leather)}
+.q svg{flex:none}
+.q .txt{font:400 22px/1.35 var(--serif);flex:1;min-height:30px}
+.q .txt::after{content:"";display:inline-block;width:2px;height:24px;background:var(--ox);vertical-align:-4px;margin-left:2px;animation:caret 1s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+.chips{display:flex;gap:8px;flex-wrap:wrap;padding:12px 24px;border-bottom:1px solid var(--rule);font:500 13.5px var(--sans);color:var(--soft);align-items:center}
+.chips button{font:500 13.5px var(--sans);background:transparent;border:1px solid var(--rule);color:var(--ink);padding:6px 12px;border-radius:2px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--leather);color:#fff;border-color:var(--leather)}
+.res{padding:6px 24px 10px;min-height:340px}
+.hit{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid #e4dfd2;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+.hit.on{opacity:1;transform:none}
+.hit:last-child{border-bottom:0}
+.kind{font:600 12.5px/1.4 var(--sans);color:var(--ox)}
+.kind span{display:block;color:var(--soft);font-weight:400;margin-top:4px}
+.hit h3{font:500 19px/1.3 var(--serif);margin:0 0 4px}
+.hit p{margin:0;font-size:16.5px;color:var(--soft)}
+.hit mark{background:#EADDBD;color:var(--ink);padding:0 2px}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:12px 24px;background:var(--leather);color:var(--brass-l);font:500 13px var(--sans)}
+.foot b{color:#fff;font-weight:600}
+/* secret */
+section{padding:92px 0}
+h2{font:400 clamp(32px,3.6vw,46px)/1.1 var(--serif);letter-spacing:-.015em;margin:0 0 20px;max-width:18em}
+.secret{background:var(--leather);color:#E9E4D6}
+.secret .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.secret h2{color:#fff}
+.secret p{color:#CFC9B6}
+.law{border-left:2px solid var(--brass);padding:4px 0 4px 20px;font-style:italic;color:var(--brass-l);margin:26px 0 0}
+.law small{display:block;font:500 13px var(--sans);font-style:normal;margin-top:6px;color:#AFA88F}
+.plan svg{width:100%;height:auto;display:block}
+/* index */
+.index{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;margin-top:40px}
+.index h3{font:500 24px/1.2 var(--serif);margin:0 0 6px;border-top:2px solid var(--ink);padding-top:14px}
+.index p{margin:0 0 14px;font-size:17px;color:var(--soft)}
+.index ul{list-style:none;padding:0;margin:0;font:400 14.5px/1.5 var(--sans);color:var(--soft)}
+.index li{padding:8px 0;border-top:1px dotted var(--rule)}
+.index li b{color:var(--ox);font-weight:600}
+/* morning */
+.morning{background:var(--page)}
+.morning .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:64px}
+.log{list-style:none;padding:0;margin:0}
+.log li{display:grid;grid-template-columns:70px 1fr;gap:18px;padding:16px 0;border-top:1px solid var(--rule)}
+.log time{font:600 15px var(--sans);color:var(--ox);padding-top:3px}
+.log p{margin:0}
+blockquote{margin:0;font:400 italic clamp(24px,2.6vw,32px)/1.38 var(--serif);color:var(--ink)}
+blockquote cite{display:block;font:500 14.5px/1.5 var(--sans);font-style:normal;color:var(--soft);margin-top:18px}
+.quote{padding:84px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.quote .wrap{max-width:860px}
+/* license */
+.lic{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--rule);margin-top:34px;background:var(--page)}
+.lic > div{padding:30px 32px}
+.lic > div + div{border-left:1px solid var(--rule)}
+.lic h3{font:600 15px var(--sans);margin:0;color:var(--soft)}
+.lic .a{font:400 40px/1.1 var(--serif);margin:10px 0 6px}
+.lic .a small{font:400 15px var(--sans);color:var(--soft)}
+.lic ul{padding-left:18px;font-size:16.5px;color:var(--soft)}
+.btn{display:inline-block;font:600 15px/1 var(--sans);padding:14px 22px;text-decoration:none;background:var(--leather);color:#fff;border:1px solid var(--leather);border-radius:2px}
+.btn.l{background:transparent;color:var(--leather)}
+.btn:hover{background:var(--ox);border-color:var(--ox);color:#fff}
+.faq{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:56px}
+details{border-top:1px solid var(--rule);padding:18px 0}
+summary{font:500 20px/1.35 var(--serif);cursor:pointer}
+details p{color:var(--soft);margin:10px 0 0}
+footer{background:var(--leather-d);color:#BDB59E;font:400 14px/1.6 var(--sans);padding:40px 0 30px}
+footer .credit{margin-top:14px;font-size:12px}
+@media (max-width:960px){
+  .secret .wrap,.morning .wrap,.faq{grid-template-columns:1fr;gap:40px}
+  .index{grid-template-columns:1fr;gap:28px}
+  .lic{grid-template-columns:1fr}
+  .lic > div + div{border-left:0;border-top:1px solid var(--rule)}
+  header nav{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .bar .wrap span:last-child{display:none}
+  .hit{grid-template-columns:1fr;gap:6px}
+  .q{padding:16px}.q .txt{font-size:18px}
+  .chips,.res,.foot{padding-left:16px;padding-right:16px}
+  section{padding:64px 0}
+  .hero{padding:44px 0 64px}
+}
+@media (prefers-reduced-motion:reduce){.hit{transition:none}.q .txt::after{animation:none}}
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap"><span>Büro içi kurulum · Dışarıya bağlantı yok</span><span>Avukatlık Kanunu m.36 · KVKK uyumlu</span></div></div>
+<header>
+  <div class="wrap">
+    <a class="mark" href="#">Dava Arşivi<small>Hukuk büroları için anlamsal arşiv</small></a>
+    <nav aria-label="Ana menü"><a href="#sir">Müvekkil sırrı</a><a href="#ne">Ne bulur</a><a href="#lisans">Kurulum ve lisans</a><a href="#sss">Sorular</a></nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <h1>Büronun yirmi yıllık arşivi, tek bir soruyla açılır.</h1>
+    <p class="lede">Dosya numarasını, kelimesi kelimesine cümleyi hatırlamanız gerekmez. “Geçen yıl hakkaniyet indirimini kabul ettirdiğimiz kira dosyası” diye sorun; Dava Arşivi büronuzun dilekçelerinde, kararlarında ve yazışmalarında anlamı arar. Arama, büronuzdaki sunucuda yapılır.</p>
+
+    <div class="console" aria-label="Örnek arama ekranı">
+      <div class="q">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="9" cy="9" r="7" fill="none" stroke="#1F3B30" stroke-width="2"/><path d="M14 14l6 6" stroke="#1F3B30" stroke-width="2"/></svg>
+        <div class="txt" id="qt" aria-live="polite"></div>
+      </div>
+      <div class="chips" role="group" aria-label="Örnek sorular">
+        <span>Örnek:</span>
+        <button type="button" data-i="0" aria-pressed="true">Kira tespiti, hakkaniyet indirimi</button>
+        <button type="button" data-i="1">İşe iade, fesih bildirimi süresi</button>
+        <button type="button" data-i="2">Bu ay dolan süreler</button>
+      </div>
+      <div class="res" id="res"></div>
+      <div class="foot"><span>Taranan: <b>18.412 belge</b> · 2004–2026 · 0,8 sn</span><span>Sunucu: büro içi, 3. kat arşiv odası · dış bağlantı <b>0</b></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="secret" id="sir">
+  <div class="wrap">
+    <div>
+      <h2>Müvekkilin sırrı, büronun kapısından çıkmaz.</h2>
+      <p>Bulut tabanlı yapay zekâ araçlarına dilekçe yapıştırmak, müvekkil bilgisini başka bir şirketin sunucusuna göndermek demektir. Çoğu büro bu yüzden bu araçları hiç kullanmıyor; haklı olarak.</p>
+      <p>Dava Arşivi’nin dil modeli büronuzdaki sunucuya kurulur. Belgeler orada okunur, dizinlenir, aranır. Avukatlar kendi bilgisayarlarından büro ağı üzerinden bağlanır; internet bağlantısı kesilse de arama çalışır.</p>
+      <p class="law">“Avukatlar, kendilerine tevdi edilen veya görevleri dolayısıyla öğrendikleri hususları açığa vuramazlar.”<small>1136 sayılı Avukatlık Kanunu, m.36</small></p>
+    </div>
+    <div class="plan">
+      <svg viewBox="0 0 460 340" role="img" aria-label="Büro planı: arşiv odasındaki sunucu, avukat odalarına büro içi ağla bağlı, dış hat kesik">
+        <rect x="10" y="10" width="440" height="320" fill="none" stroke="#B48A4C" stroke-width="2"/>
+        <path d="M10 170h300M310 10v320M160 170v160" stroke="#B48A4C" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <g font-family="Libre Franklin, sans-serif" font-size="13" fill="#D9BE8C">
+          <text x="26" y="36">Av. Selin Ergun</text><text x="26" y="196">Av. Kerem Tunç</text><text x="176" y="196">Stajyer</text><text x="326" y="36">Arşiv odası</text><text x="326" y="196">Toplantı</text>
+        </g>
+        <rect x="350" y="60" width="60" height="84" fill="#172D25" stroke="#D9BE8C" stroke-width="1.5"/>
+        <path d="M358 76h44M358 90h44M358 104h44M358 118h44" stroke="#B48A4C"/>
+        <text x="380" y="160" text-anchor="middle" font-family="Libre Franklin, sans-serif" font-size="12" fill="#fff">sunucu</text>
+        <g fill="#E9E4D6"><rect x="60" y="80" width="46" height="30"/><rect x="60" y="240" width="46" height="30"/><rect x="210" y="240" width="46" height="30"/></g>
+        <g stroke="#D9BE8C" stroke-width="2" fill="none"><path d="M106 95H350"/><path d="M106 255h40V150h204"/><path d="M256 255h50V130h44"/></g>
+        <g stroke="#C9584F" stroke-width="2.5"><path d="M450 102h-40"/><path d="M425 92l14 20M439 92l-14 20"/></g>
+        <text x="444" y="53" text-anchor="end" font-family="Libre Franklin, sans-serif" font-size="12" fill="#E7A49D">internet: yok</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="ne">
+  <div class="wrap">
+    <h2>Ne bulur?</h2>
+    <p style="max-width:36em;color:var(--soft)">Kelime değil anlam arar: “kiracı tahliyeye zorlandı” sorusu, “mecurun boşaltılması için baskı” yazan dilekçeyi de bulur. Her sonuç, belgenin ilgili paragrafına ve dosya numarasına götürür.</p>
+    <div class="index">
+      <div><h3>Emsal</h3><p>Büronun daha önce dayandığı ve dosyalara eklediği Yargıtay, Danıştay ve BAM kararları.</p>
+        <ul><li><b>3. HD</b> · kira tespiti, hakkaniyet indirimi</li><li><b>9. HD</b> · işe iade, geçerli neden</li><li><b>BAM 17. HD</b> · ihtiyati tedbir teminatı</li></ul></div>
+      <div><h3>Dilekçe</h3><p>Ortaklarınızın yazdığı dava, cevap ve istinaf dilekçeleri; iyi çalışmış bir paragrafı yeniden yazmazsınız.</p>
+        <ul><li>Cevap dilekçesi · <b>2023/88</b> · zamanaşımı itirazı</li><li>İstinaf · <b>2022/41</b> · bilirkişi raporuna itiraz</li><li>Dava dilekçesi · <b>2024/17</b> · tahliye taahhüdü</li></ul></div>
+      <div><h3>Tarih ve süre</h3><p>Belgelerdeki tebliğ tarihlerinden hak düşürücü süreleri çıkarır; ajandanızla karşılaştırır.</p>
+        <ul><li><b>18 Kasım</b> · 2025/203 istinaf süresi doluyor</li><li><b>21 Kasım</b> · 2026/12 cevaba cevap</li><li><b>2 Aralık</b> · 2024/155 bilirkişi itiraz</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="morning">
+  <div class="wrap">
+    <div>
+      <h2>Bir dilekçe sabahı</h2>
+      <p style="color:var(--soft)">İstinaf süresi Cuma doluyor. Benzer bir dosya üç yıl önce yazılmıştı; kimin yazdığı, hangi klasörde olduğu belirsiz. Eskiden bu bir öğleden sonraydı.</p>
+    </div>
+    <ol class="log">
+      <li><time>09:05</time><p>“Kira tespitinde emsal kira bilirkişi raporuna itiraz ettiğimiz istinaf” diye soruyor.</p></li>
+      <li><time>09:06</time><p>2022/41 numaralı dosyadaki istinaf dilekçesinin ilgili üç paragrafı ve dayanılan iki 3. HD kararı karşısında.</p></li>
+      <li><time>09:20</time><p>Kararların büro arşivindeki tam metinlerini açıyor, güncelliklerini UYAP’tan kendisi kontrol ediyor.</p></li>
+      <li><time>11:40</time><p>Dilekçe ortağın masasında. Cuma değil, Salı.</p></li>
+    </ol>
+  </div>
+</section>
+
+<div class="quote">
+  <div class="wrap">
+    <blockquote>“Yapay zekâya ilgim vardı ama müvekkil dosyasını yabancı bir sunucuya koymayı vicdanen kabul edemiyordum. Dava Arşivi arşiv odasındaki dolapta duruyor; ben de ona öyle güveniyorum.”<cite>Av. Selin Ergun — Ergun &amp; Tunç Hukuk Bürosu kurucu ortağı, İzmir</cite></blockquote>
+  </div>
+</div>
+
+<section id="lisans">
+  <div class="wrap">
+    <h2>Kurulum ve lisans</h2>
+    <p style="max-width:38em;color:var(--soft)">Sunucuyu biz kurarız ya da sizin donanımınıza kurarız. Belgelerin ilk dizinlenmesi büronun büyüklüğüne göre bir gece ile üç gün arasında sürer.</p>
+    <div class="lic">
+      <div><h3>Büro</h3><div class="a">84.000 ₺ <small>kurulum, tek seferlik</small></div><ul><li>10 avukata kadar</li><li>Sunucu donanımı dahil (sessiz, arşiv dolabına sığar)</li><li>Yıllık bakım ve güncelleme: 24.000 ₺</li></ul><a class="btn" href="#">Büroya ziyaret isteyin</a></div>
+      <div><h3>Kendi sunucunuz</h3><div class="a">3.900 ₺ <small>avukat başı / yıl</small></div><ul><li>Büyük bürolar ve şirket hukuk birimleri</li><li>Kendi BT ekibinizle kurulum, uzaktan değil yerinde destek</li><li>Kaynak kod denetimi için gizlilik sözleşmesi</li></ul><a class="btn l" href="#">Teknik dökümanı isteyin</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="sss" style="padding-top:20px">
+  <div class="wrap faq">
+    <h2>Meslektaşlarınızın sorduğu</h2>
+    <div>
+      <details open><summary>Bulduğu karara güvenebilir miyim?</summary><p>Dava Arşivi yalnız büronuzun arşivindeki belgelerden alıntı yapar ve her sonucu kaynağıyla gösterir; uydurma karar üretmez. Yine de kararın güncel olup olmadığını resmî kaynaktan doğrulamanızı öneririz.</p></details>
+      <details><summary>UYAP’tan indirdiğim dosyaları okur mu?</summary><p>UDF, PDF, Word ve taranmış evrakı (görüntüden metin tanıma ile) okur. Klasör yapınızı değiştirmenize gerek yoktur.</p></details>
+      <details><summary>Stajyer her dosyayı görebilir mi?</summary><p>Hayır. Yetkiler dosya ve avukat bazında verilir; bir avukatın görmediği dosya onun aramasında çıkmaz. Her arama denetim kaydına yazılır.</p></details>
+      <details><summary>KVKK açısından durum nedir?</summary><p>Veri büronun kendi sistemlerinde işlenir; yurt dışına aktarım yoktur. Aydınlatma metniniz için örnek bir paragrafı kurulumla birlikte veriyoruz.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Dava Arşivi · Alsancak, İzmir · bilgi@davaarsivi.com.tr · Arama sonuçlarındaki dosya ve karar numaraları örnektir.
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var Q=[
+    {q:"geçen yıl hakkaniyet indirimini kabul ettirdiğimiz kira tespit dosyası",r:[
+      ["Büro dosyası","2025/203 · Karşıyaka 2. Sulh Hukuk","Kira tespit davası — cevap dilekçesi, s. 4","…emsal kira bedeline göre belirlenecek tutardan <mark>%20 hakkaniyet indirimi</mark> yapılması gerektiği, kiracının 11 yıllık kullanımı dikkate alınarak…"],
+      ["Emsal karar","Yargıtay 3. HD · E. 2021/4471","Yeni kira bedelinin tespitinde hakkaniyet indirimi","…uzun süreli kira ilişkilerinde <mark>hakkaniyet indirimi</mark> yapılmaksızın emsal kiraya göre karar verilmesi doğru görülmemiştir…"],
+      ["Bilirkişi raporu","2025/203 · ek 7","İtirazımız üzerine ek rapor, 12.03.2025","…mahkemenin talimatıyla <mark>%20 oranında indirim</mark> uygulanmış, aylık kira 31.500 ₺ olarak hesaplanmıştır…"]]},
+    {q:"işe iade davasında fesih bildiriminde geçerli neden yazılmaması",r:[
+      ["Emsal karar","Yargıtay 9. HD · E. 2019/5521","Fesih bildiriminde neden gösterilmemesi","…fesih bildiriminin yazılı yapılmaması ve <mark>fesih sebebinin açık ve kesin şekilde belirtilmemesi</mark> feshi geçersiz kılar…"],
+      ["Dava dilekçesi","2024/61 · İzmir 4. İş Mahkemesi","İşe iade — dava dilekçesi, s. 2","…müvekkile verilen bildirimde <mark>yalnızca “performans” ifadesine</mark> yer verilmiş, somut olgu gösterilmemiştir…"],
+      ["Arabuluculuk","2024/61 · son tutanak","Anlaşamama tutanağı, 08.02.2024","…işveren vekili <mark>geçerli nedenin</mark> sonradan bildirileceğini beyan etmiştir…"]]},
+    {q:"bu ay dolan hak düşürücü süreler",r:[
+      ["Süre","18 Kasım 2026 · 2025/203","İstinaf süresi (tebliğ 4 Kasım)","…gerekçeli karar <mark>04.11.2026</mark> tarihinde tebliğ edilmiştir; iki haftalık istinaf süresi 18.11.2026’da dolar…"],
+      ["Süre","21 Kasım 2026 · 2026/12","Cevaba cevap dilekçesi","…cevap dilekçesi <mark>07.11.2026</mark> tarihinde tebliğ alınmış, iki haftalık süre işlemektedir…"],
+      ["Süre","2 Aralık 2026 · 2024/155","Bilirkişi raporuna itiraz","…rapor <mark>18.11.2026</mark> tarihinde tebliğ edilecek; itiraz için iki hafta…"]]}
+  ];
+  var qt=document.getElementById('qt'),res=document.getElementById('res'),btns=[].slice.call(document.querySelectorAll('.chips button')),timer;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show(i){
+    clearInterval(timer);btns.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.i==i?'true':'false')});
+    res.innerHTML='';var s=Q[i].q,n=0;
+    function results(){Q[i].r.forEach(function(h,k){var d=document.createElement('div');d.className='hit';
+      d.innerHTML='<div class="kind">'+h[0]+'<span>'+h[1]+'</span></div><div><h3>'+h[2]+'</h3><p>'+h[3]+'</p></div>';res.appendChild(d);
+      if(reduce)d.className+=' on';else setTimeout(function(){d.className+=' on'},120+k*180)})}
+    if(reduce){qt.textContent=s;results();return}
+    qt.textContent='';timer=setInterval(function(){n+=2;qt.textContent=s.slice(0,n);if(n>=s.length){clearInterval(timer);results()}},28);
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){show(+b.dataset.i)})});
+  show(0);
+})();
+</script>
+</body>
+</html>

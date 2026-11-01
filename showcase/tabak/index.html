@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabak — Yemeği tartma, fotoğrafını çek</title>
+<meta name="description" content="Tabak, yemeğin fotoğrafından porsiyonu ve besin değerini tahmin eder. Mercimek çorbasını, karnıyarığı, pilavın kaç kaşık olduğunu tanır. Fotoğraf telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --steel:#E4E8E8; --steel-2:#D3D9DA; --steel-3:#9BA6A9; --surface:#F7F8F8;
+  --ink:#1B2528; --ink-2:#46555A; --mercimek:#D8941C; --mercimek-soft:#F5DFAE;
+  --maydanoz:#356230; --maydanoz-soft:#DCE8D3; --salca:#B23A22;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--steel);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;font-size:17px;line-height:1.55;
+  background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 1px,transparent 1px 3px);}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--mercimek);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.wide{font-stretch:125%}
+.narrow{font-stretch:75%}
+
+/* nav */
+header.top{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-stretch:125%;font-size:22px;letter-spacing:-.01em;text-decoration:none}
+.logo svg{width:30px;height:30px}
+header.top nav{display:flex;gap:26px;align-items:center;font-size:15px}
+header.top nav a{text-decoration:none;color:var(--ink-2)}
+header.top nav a:hover{color:var(--ink)}
+header.top nav a.btn{color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;font-size:15px;border:0;cursor:pointer;font-family:inherit}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn:hover{background:#000}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.02fr 1fr;gap:40px;align-items:center;padding:34px 0 70px}
+.hero h1{font-stretch:118%;font-weight:800;font-size:clamp(40px,5.6vw,72px);line-height:.98;letter-spacing:-.025em;margin:0 0 22px}
+.hero p.lede{font-size:19px;color:var(--ink-2);max-width:31em;margin:0 0 28px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:26px}
+.hero .small{font-size:14px;color:var(--ink-2)}
+.hero .small b{color:var(--ink)}
+
+.cam{margin:0;position:relative;background:#2A3134;border-radius:22px;padding:22px;box-shadow:0 30px 60px -30px rgba(20,30,33,.55)}
+.cam .vf{position:relative;aspect-ratio:1/1;border-radius:12px;overflow:hidden;
+  background:radial-gradient(circle at 50% 55%,#6E5A43 0,#4D3E2E 58%,#3A2F24 100%)}
+.cam .vf::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 60%,rgba(0,0,0,.25))}
+.cam svg.plate{position:absolute;inset:0;width:100%;height:100%}
+.bracket{position:absolute;width:34px;height:34px;border:3px solid #fff;opacity:.9}
+.bracket.tl{top:14px;left:14px;border-right:0;border-bottom:0;border-radius:8px 0 0 0}
+.bracket.tr{top:14px;right:14px;border-left:0;border-bottom:0;border-radius:0 8px 0 0}
+.bracket.bl{bottom:14px;left:14px;border-right:0;border-top:0;border-radius:0 0 0 8px}
+.bracket.br{bottom:14px;right:14px;border-left:0;border-top:0;border-radius:0 0 8px 0}
+.tag{position:absolute;background:var(--surface);color:var(--ink);font-size:13px;line-height:1.25;padding:7px 10px;border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,.25);white-space:nowrap}
+.tag b{display:block;font-stretch:110%;font-size:14px}
+.tag span{color:var(--ink-2)}
+.cam .readout{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;color:#E8ECEC}
+.cam .readout div{background:#343C40;border-radius:10px;padding:10px 12px}
+.cam .readout small{display:block;font-size:12px;color:#B7C2C5}
+.cam .readout strong{font-stretch:110%;font-size:22px;font-weight:700}
+.cam .meta{display:flex;justify-content:space-between;color:#B7C2C5;font-size:13px;margin-top:12px}
+.cam .meta b{color:#fff;font-weight:600}
+
+/* sections */
+section{padding:84px 0}
+.h2{font-stretch:112%;font-weight:800;font-size:clamp(30px,3.6vw,46px);line-height:1.04;letter-spacing:-.02em;margin:0 0 16px;max-width:20em}
+.sub{color:var(--ink-2);max-width:40em;margin:0 0 36px}
+
+/* day strip */
+.day{background:var(--surface);border-radius:20px;padding:30px;display:grid;grid-template-columns:200px 1fr;gap:30px}
+.day aside .d{font-stretch:125%;font-weight:800;font-size:28px;line-height:1}
+.day aside p{color:var(--ink-2);font-size:15px}
+.meals{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.meal{border-top:3px solid var(--steel-3);padding-top:12px}
+.meal time{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;color:var(--ink-2)}
+.meal h3{margin:4px 0 6px;font-size:17px;font-stretch:105%;line-height:1.25}
+.meal p{margin:0;font-size:14px;color:var(--ink-2)}
+.meal .k{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.ratio{grid-column:1/-1;display:flex;height:12px;border-radius:999px;overflow:hidden;margin-top:6px}
+.legend{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:20px;font-size:14px;color:var(--ink-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:0}
+
+/* vitrin (moment) */
+.vitrin-sec{background:#253034;color:#EEF2F2}
+.vitrin-sec .sub{color:#BAC6C9}
+.glass{position:relative;border-radius:18px 18px 6px 6px;background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.03) 40%);padding:16px;border:1px solid rgba(255,255,255,.18)}
+.benmari{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.dish{appearance:none;font-family:inherit;color:#EEF2F2;background:linear-gradient(180deg,#C9D0D2,#8E989B);border:0;border-radius:6px;padding:6px;cursor:pointer;text-align:left}
+.dish .food{height:70px;border-radius:3px;box-shadow:inset 0 6px 12px rgba(0,0,0,.25)}
+.dish .lbl{background:#1D2528;border-radius:3px;margin-top:6px;padding:7px 8px;font-size:14px;line-height:1.2}
+.dish .lbl b{display:block;font-stretch:105%}
+.dish .lbl span{font-size:12.5px;color:#AFC0C3}
+.dish[aria-pressed="true"]{outline:3px solid var(--mercimek);outline-offset:2px}
+.dish:hover .food{filter:brightness(1.08)}
+.tray-row{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;margin-top:26px;align-items:start}
+.tray{background:#6B4B33;border-radius:16px;padding:18px;min-height:190px;box-shadow:inset 0 0 0 6px #5A3E2A;display:flex;flex-wrap:wrap;gap:12px;align-content:flex-start}
+.tray .empty{color:#EADCCB;font-size:15px;padding:10px}
+.tray .item{background:#F4F1EA;color:var(--ink);border-radius:50%;width:118px;height:118px;display:grid;place-items:center;text-align:center;font-size:13px;line-height:1.2;box-shadow:0 4px 0 #D7D1C4;padding:10px}
+.tray .item b{display:block;font-size:13.5px}
+.tally{background:#1D2528;border-radius:16px;padding:22px}
+.tally .tot{font-stretch:120%;font-weight:800;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.tally .tot small{font-size:17px;font-weight:500;color:#AFC0C3;font-stretch:100%}
+.tally .bars{display:flex;height:14px;border-radius:999px;overflow:hidden;background:#2E393D;margin:16px 0 10px}
+.tally .bars span{transition:width .35s ease}
+.tally .mac{display:flex;gap:18px;font-size:14px;color:#C8D3D5;flex-wrap:wrap}
+.tally .mac b{color:#fff;font-variant-numeric:tabular-nums}
+.tally .note{margin:16px 0 0;padding-top:14px;border-top:1px solid #36434A;font-size:15.5px;color:#E5ECEC;min-height:3.2em}
+
+/* report + offline */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.paper{background:#fff;border-radius:4px;padding:30px 30px 26px;box-shadow:0 1px 0 #ccd,0 24px 40px -24px rgba(0,0,0,.35);transform:rotate(-1.2deg);font-size:14.5px}
+.paper h3{font-stretch:110%;margin:0;font-size:19px}
+.paper .who{color:var(--ink-2);font-size:13px;margin:2px 0 16px}
+.paper table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.paper td{padding:7px 0;border-bottom:1px dashed #C9D0D2}
+.paper td:last-child{text-align:right;font-weight:600}
+.paper .remark{margin-top:14px;background:var(--maydanoz-soft);color:#21401D;padding:10px 12px;border-radius:6px}
+ul.plain{list-style:none;padding:0;margin:0}
+ul.plain li{padding:12px 0;border-bottom:1px solid var(--steel-2)}
+ul.plain li b{display:block}
+
+.offline{background:var(--surface);border-radius:22px;padding:40px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.status{background:#1B2528;color:#E7ECEC;border-radius:16px;padding:20px;font-size:14.5px}
+.status .bar{display:flex;justify-content:space-between;color:#9FB0B4;font-size:13px;margin-bottom:14px}
+.status .row{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid #2F3B40}
+.status .row b{color:#fff;font-weight:600}
+.status .ok{color:#A6D49B}
+
+/* voices */
+.quotes{display:grid;grid-template-columns:1.3fr 1fr;gap:28px}
+blockquote{margin:0;background:var(--surface);border-radius:20px;padding:30px}
+blockquote p{font-size:21px;line-height:1.4;margin:0 0 16px;font-stretch:96%}
+blockquote footer{font-size:14.5px;color:var(--ink-2)}
+blockquote footer b{color:var(--ink)}
+blockquote.alt{background:var(--maydanoz);color:#F1F6EE}
+blockquote.alt p{font-size:18px}
+blockquote.alt footer{color:#CFE0CA}
+blockquote.alt footer b{color:#fff}
+
+/* price */
+.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.price{background:var(--surface);border-radius:18px;padding:26px;display:flex;flex-direction:column}
+.price.main{background:var(--ink);color:#EEF2F2}
+.price h3{margin:0;font-stretch:115%;font-size:20px}
+.price .amt{font-stretch:120%;font-weight:800;font-size:38px;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.price .per{font-size:14px;color:var(--ink-2)}
+.price.main .per,.price.main li{color:#C3CFD2}
+.price ul{padding-left:18px;margin:16px 0 22px;font-size:15px;color:var(--ink-2)}
+.price ul li{margin-bottom:6px}
+.price .btn{margin-top:auto;align-self:flex-start}
+.price.main .btn{background:var(--mercimek);color:var(--ink)}
+
+/* faq */
+.faq{max-width:820px}
+details{border-bottom:1.5px solid var(--steel-3);padding:18px 0}
+summary{cursor:pointer;font-weight:700;font-size:18px;font-stretch:108%;list-style:none;display:flex;justify-content:space-between;gap:20px}
+summary::after{content:"+";font-weight:400;font-size:24px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--ink-2);margin:12px 0 0;max-width:42em}
+
+footer.site{padding:56px 0 34px;border-top:1.5px solid var(--steel-3);margin-top:40px;font-size:14.5px;color:var(--ink-2)}
+footer.site .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px}
+footer.site .credit{margin-top:34px;font-size:12.5px}
+footer.site .credit a{color:var(--ink-2)}
+
+@media (max-width:900px){
+  .hero,.split,.offline,.quotes,.tray-row{grid-template-columns:1fr}
+  .day{grid-template-columns:1fr}
+  .meals{grid-template-columns:1fr 1fr}
+  .benmari{grid-template-columns:repeat(3,1fr)}
+  .prices{grid-template-columns:1fr}
+  header.top nav a:not(.btn){display:none}
+}
+.hero>*,.split>*,.offline>*,.tray-row>*,.quotes>*{min-width:0}
+@media (max-width:520px){
+  header.top nav .long{display:none}
+  .hero p.small{font-size:13px}
+  .wrap{padding:0 18px}
+  body{font-size:16px}
+  .benmari{grid-template-columns:1fr 1fr}
+  .meals{grid-template-columns:1fr}
+  .cam{padding:12px}
+  .cam .readout{grid-template-columns:repeat(2,1fr)}
+  .tag{font-size:11.5px;padding:5px 7px}
+  .tag b{font-size:12px}
+  .tray .item{width:96px;height:96px;font-size:12px}
+  .offline{padding:24px}
+  section{padding:60px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="logo" href="#" aria-label="Tabak ana sayfa">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#fff" stroke="#1B2528" stroke-width="2"/><circle cx="16" cy="16" r="9" fill="none" stroke="#9BA6A9" stroke-width="1.5"/><path d="M11 16a5 5 0 0 1 10 0" fill="#D8941C"/></svg>
+    Tabak
+  </a>
+  <nav aria-label="Ana menü">
+    <a href="#vitrin">Dene</a>
+    <a href="#rapor">Diyetisyen raporu</a>
+    <a href="#fiyat">Fiyat</a>
+    <a href="#sss">SSS</a>
+    <a class="btn" href="#fiyat"><span class="long">iPhone / Android için </span>indir</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" style="padding-top:34px">
+  <div>
+    <h1>Yemeği tartma. Fotoğrafını çek.</h1>
+    <p class="lede">Tabak, tabağınızdaki karnıyarığı, kaç kaşık pilav aldığınızı, mercimeğin kâse mi kepçe mi olduğunu tanır; besin değerini tahmin eder. Defter tutmazsınız, yasak listesi yoktur. Ne yediğinizi görürsünüz, o kadar.</p>
+    <div class="ctas">
+      <a class="btn" href="#fiyat">Ücretsiz indir</a>
+      <a class="btn ghost" href="#vitrin">Lokanta tepsisinde dene</a>
+    </div>
+    <p class="small"><b>1.400 Türk yemeği</b> tanır · Fotoğraf telefondan çıkmaz · İnternetsiz çalışır</p>
+  </div>
+
+  <figure class="cam" aria-label="Tabak uygulamasının kamera ekranı: karnıyarık, pilav ve cacık tanınmış, toplam 635 kilokalori">
+    <div class="vf">
+      <svg class="plate" viewBox="0 0 400 400" aria-hidden="true">
+        <defs>
+          <radialGradient id="pl" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".8" stop-color="#F1F1EC"/><stop offset="1" stop-color="#D9D9D2"/></radialGradient>
+          <pattern id="rice" width="12" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><ellipse cx="4" cy="3" rx="3.4" ry="1.5" fill="#FFFDF7" stroke="#CDBE9E" stroke-width=".7"/><ellipse cx="10" cy="7" rx="3.4" ry="1.5" fill="#FBF6EA" stroke="#CDBE9E" stroke-width=".7"/></pattern>
+        </defs>
+        <ellipse cx="200" cy="214" rx="168" ry="164" fill="rgba(0,0,0,.28)"/>
+        <circle cx="200" cy="205" r="166" fill="url(#pl)"/>
+        <circle cx="200" cy="205" r="128" fill="none" stroke="#E4E3DC" stroke-width="2"/>
+        <!-- pilav -->
+        <path d="M108 236c-6-40 30-66 66-60 34 6 50 40 40 70-10 30-50 44-78 34-16-6-26-24-28-44z" fill="#EFE6D0"/><path d="M108 236c-6-40 30-66 66-60 34 6 50 40 40 70-10 30-50 44-78 34-16-6-26-24-28-44z" fill="url(#rice)" stroke="#E6DFCF" stroke-width="2"/>
+        <!-- karnıyarık -->
+        <g transform="rotate(-24 250 170)">
+          <ellipse cx="250" cy="170" rx="86" ry="38" fill="#3A2340"/>
+          <ellipse cx="248" cy="166" rx="80" ry="31" fill="#4E2E54"/>
+          <path d="M184 166c20-16 108-18 130 0-20 14-110 16-130 0z" fill="#6E3A23"/>
+          <g fill="#7F4428"><circle cx="210" cy="164" r="5"/><circle cx="232" cy="161" r="6"/><circle cx="262" cy="163" r="5"/><circle cx="286" cy="165" r="5"/></g>
+          <ellipse cx="232" cy="163" rx="13" ry="9" fill="#C63E28"/><ellipse cx="232" cy="163" rx="8" ry="5" fill="#E2593B"/>
+          <ellipse cx="270" cy="164" rx="13" ry="9" fill="#C63E28"/><ellipse cx="270" cy="164" rx="8" ry="5" fill="#E2593B"/>
+          <path d="M296 160c10-4 22-2 28 6-8 0-16 2-26 2z" fill="#4C8A2D"/>
+          <path d="M330 168c8 0 14 3 16 6" stroke="#4C7B2D" stroke-width="5" stroke-linecap="round" fill="none"/>
+        </g>
+        <!-- cacık kâsesi -->
+        <circle cx="262" cy="284" r="52" fill="#E9E9E2" stroke="#CFCFC6" stroke-width="3"/>
+        <circle cx="262" cy="284" r="42" fill="#EEF2E6"/>
+        <g fill="#8DB46A"><rect x="244" y="270" width="7" height="5" rx="1"/><rect x="268" y="276" width="7" height="5" rx="1"/><rect x="256" y="292" width="7" height="5" rx="1"/><rect x="276" y="296" width="6" height="5" rx="1"/><rect x="240" y="292" width="6" height="5" rx="1"/></g>
+        <g stroke="#4F7B39" stroke-width="1.6" stroke-linecap="round"><path d="M250 282l6 3"/><path d="M272 266l5 4"/><path d="M262 304l6-2"/></g>
+        <!-- callout lines -->
+        <g stroke="#fff" stroke-width="1.5" fill="none" stroke-dasharray="3 3" opacity=".9">
+          <path d="M262 132 L300 70"/><path d="M150 232 L70 300"/><path d="M300 300 L345 345"/>
+        </g>
+        <g fill="#fff"><circle cx="262" cy="132" r="4"/><circle cx="150" cy="232" r="4"/><circle cx="300" cy="300" r="4"/></g>
+      </svg>
+      <span class="bracket tl"></span><span class="bracket tr"></span><span class="bracket bl"></span><span class="bracket br"></span>
+      <div class="tag" style="top:9%;right:4%"><b>Karnıyarık · 1 adet</b><span>~240 g · 310 kcal</span></div>
+      <div class="tag" style="top:69%;left:3%"><b>Pirinç pilavı · 5 y. kaşığı</b><span>~150 g · 230 kcal</span></div>
+      <div class="tag" style="bottom:4%;right:13%"><b>Cacık · 1 kâse</b><span>~180 g · 95 kcal</span></div>
+    </div>
+    <div class="readout">
+      <div><small>Enerji</small><strong>635</strong> <small style="display:inline">kcal</small></div>
+      <div><small>Protein</small><strong>21</strong> <small style="display:inline">g</small></div>
+      <div><small>Karbonhidrat</small><strong>68</strong> <small style="display:inline">g</small></div>
+      <div><small>Yağ</small><strong>31</strong> <small style="display:inline">g</small></div>
+    </div>
+    <div class="meta"><span>Salı 13:04 · Öğle</span><span>Tahmin güveni <b>%86</b> · porsiyonu kaydırarak düzelt</span></div>
+  </figure>
+</section>
+
+<section aria-labelledby="gun" style="padding-top:20px">
+  <h2 class="h2" id="gun">Bir gün böyle görünür. Kırmızı çizgi yok.</h2>
+  <p class="sub">Dört fotoğraf, toplam on saniye. Tabak hedefi aştınız demez; günün dengesini gösterir. Akşam neye ihtiyacınız olduğunu siz görürsünüz.</p>
+  <div class="day">
+    <aside>
+      <div class="d">Salı</div>
+      <p>27 Ekim · 4 öğün<br><b style="color:var(--ink)">1.840 kcal</b> · 2 porsiyon sebze</p>
+    </aside>
+    <div class="meals">
+      <div class="meal"><time>08:20</time><h3>Simit, beyaz peynir, 2 çay</h3><p><span class="k">470 kcal</span> · domates eksik</p></div>
+      <div class="meal"><time>13:04</time><h3>Karnıyarık, pilav, cacık</h3><p><span class="k">635 kcal</span> · esnaf lokantası</p></div>
+      <div class="meal"><time>16:30</time><h3>2 mandalina</h3><p><span class="k">70 kcal</span> · ofiste</p></div>
+      <div class="meal"><time>20:10</time><h3>Zeytinyağlı taze fasulye, yoğurt, 1 dilim ekmek</h3><p><span class="k">665 kcal</span> · evde</p></div>
+      <div class="ratio" aria-label="Günün dağılımı: yüzde 17 protein, yüzde 47 karbonhidrat, yüzde 36 yağ">
+        <span style="width:17%;background:var(--maydanoz)"></span><span style="width:47%;background:var(--mercimek)"></span><span style="width:36%;background:var(--steel-3)"></span>
+      </div>
+      <div class="legend"><span><i style="background:var(--maydanoz)"></i>Protein %17</span><span><i style="background:var(--mercimek)"></i>Karbonhidrat %47</span><span><i style="background:var(--steel-3)"></i>Yağ %36</span></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="vitrin-sec" id="vitrin" aria-labelledby="vit">
+  <div class="wrap">
+    <h2 class="h2" id="vit">Esnaf lokantasının vitrini. Tepsinizi doldurun.</h2>
+    <p class="sub">Uygulamada kamera ne yapıyorsa burada siz yapın: vitrinden en fazla dört kap seçin, Tabak toplamı ve dengeyi hesaplasın. Porsiyonlar bir lokanta tabağına göre.</p>
+    <div class="glass">
+      <div class="benmari" id="benmari"></div>
+    </div>
+    <div class="tray-row">
+      <div class="tray" id="tray" aria-live="polite"><p class="empty">Tepsi boş. Vitrinden bir kaba dokunun.</p></div>
+      <div class="tally">
+        <div class="tot" id="kcal">0 <small>kcal</small></div>
+        <div class="bars" aria-hidden="true"><span id="bp" style="width:0;background:#7FB26F"></span><span id="bc" style="width:0;background:var(--mercimek)"></span><span id="bf" style="width:0;background:#9BA6A9"></span></div>
+        <div class="mac"><span>Protein <b id="p">0</b> g</span><span>Karbonhidrat <b id="c">0</b> g</span><span>Yağ <b id="f">0</b> g</span></div>
+        <p class="note" id="note" aria-live="polite">Seçim yaptıkça burada bir cümle belirir. Uyarı değil, gözlem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+<section id="rapor" aria-labelledby="rap">
+  <div class="split">
+    <div>
+      <h2 class="h2" id="rap">Diyetisyeniniz defter değil, özet ister.</h2>
+      <p class="sub" style="margin-bottom:24px">Her cuma Tabak bir sayfalık özet hazırlar. Siz WhatsApp’tan ya da e-postayla gönderirsiniz; diyetisyeninizin uygulamayı yüklemesi gerekmez.</p>
+      <ul class="plain">
+        <li><b>Porsiyon, kalori değil</b>Diyetisyenlerin baktığı birimle: kepçe, kâse, yemek kaşığı, dilim.</li>
+        <li><b>Ev mi, dışarısı mı</b>Lokanta ve ev öğünlerini ayırır; yağ tahmini buna göre değişir.</li>
+        <li><b>Siz düzeltirsiniz, o öğrenir</b>“Yarım porsiyondu” dediğiniz yemekte bir dahakine daha isabetli tahmin eder.</li>
+      </ul>
+    </div>
+    <div class="paper" aria-label="Örnek haftalık rapor">
+      <h3>Haftalık özet · 26 Ekim – 1 Kasım</h3>
+      <p class="who">Gizem Aydın → Dyt. Selin Arı · 23 öğün, 21’i fotoğraflı</p>
+      <table>
+        <tr><td>Günlük ortalama enerji</td><td>1.790 kcal</td></tr>
+        <tr><td>Sebze porsiyonu / gün</td><td>2,4</td></tr>
+        <tr><td>Bakliyat (haftalık)</td><td>4 öğün</td></tr>
+        <tr><td>Dışarıda yenen öğün</td><td>6</td></tr>
+        <tr><td>En sık yemek</td><td>Mercimek çorbası × 4</td></tr>
+        <tr><td>Tatlı</td><td>Sütlaç × 2, baklava × 1</td></tr>
+      </table>
+      <p class="remark">Hafta içi öğle öğünleri dengeli. Akşam ekmek porsiyonu geçen haftadan 1 dilim az.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="off" style="padding-top:20px">
+  <div class="offline">
+    <div>
+      <h2 class="h2" id="off">Tabağınızın fotoğrafı kimsenin sunucusuna gitmez.</h2>
+      <p class="sub" style="margin-bottom:0">Tanıma modeli telefona iner ve orada çalışır: 1.400 yemek, 38 MB. Uçakta, yaylada, şebekenin çekmediği köy düğününde aynı hızda. Fotoğraf isterseniz galeriye bile düşmez; yalnız sayılar kalır. Ne yediğiniz bir reklam profiline dönüşmez, çünkü göndereceğimiz bir yer yok.</p>
+    </div>
+    <div class="status" aria-label="Uçak modunda tanıma durumu">
+      <div class="bar"><span>Uçak modu açık</span><span>Wi-Fi yok · Hücresel yok</span></div>
+      <div class="row"><span>Tanıma süresi</span><b>0,8 sn</b></div>
+      <div class="row"><span>Yemek modeli</span><b>v4.2 · telefonda</b></div>
+      <div class="row"><span>Gönderilen fotoğraf</span><b>0</b></div>
+      <div class="row"><span>Durum</span><b class="ok">Çalışıyor</b></div>
+    </div>
+  </div>
+</section>
+
+<section aria-label="Kullanıcı yorumları">
+  <div class="quotes">
+    <blockquote>
+      <p>“Diyetisyenim artık ‘yine boş bırakmışsın’ demiyor. Fotoğrafı çekip geçiyorum, cuma özeti kendiliğinden hazır.”</p>
+      <footer><b>Gizem Aydın</b>, muhasebeci · Eskişehir</footer>
+    </blockquote>
+    <blockquote class="alt">
+      <p>“Danışanlarımın çoğu defteri ikinci haftada bırakıyordu. Porsiyonu kepçe ve kaşıkla görünce konuşacak gerçek bir şeyimiz oluyor.”</p>
+      <footer><b>Dyt. Selin Arı</b>, serbest diyetisyen · Ankara</footer>
+    </blockquote>
+  </div>
+</section>
+
+<section id="fiyat" aria-labelledby="fy">
+  <h2 class="h2" id="fy">Ücretsiz başlayın. Rapor isterseniz yıllık.</h2>
+  <p class="sub">Abonelik iptali uygulamanın içinden, iki dokunuşla.</p>
+  <div class="prices">
+    <div class="price">
+      <h3>Tabak</h3><div class="amt">0 ₺</div><div class="per">süresiz</div>
+      <ul><li>Sınırsız fotoğraf ve tanıma</li><li>Enerji ve üç makro</li><li>Günlük ve haftalık görünüm</li></ul>
+      <a class="btn ghost" href="#">iPhone için indir</a>
+    </div>
+    <div class="price main">
+      <h3>Tabak Artı</h3><div class="amt">349 ₺</div><div class="per">yıllık · ayda 29 ₺’ye denk</div>
+      <ul><li>Diyetisyene haftalık PDF özet</li><li>Lif, sodyum, şeker ayrıntısı</li><li>Ev tariflerini kaydet, porsiyonu ayarla</li><li>Sağlık uygulamasına aktarım</li></ul>
+      <a class="btn" href="#">14 gün ücretsiz dene</a>
+    </div>
+    <div class="price">
+      <h3>Diyetisyenler için</h3><div class="amt">0 ₺</div><div class="per">danışanınız Artı kullanıyorsa</div>
+      <ul><li>Özetler size e-postayla gelir</li><li>Hesap açmanız gerekmez</li><li>Hangi öğünü gördüğünüzü danışan seçer</li></ul>
+      <a class="btn ghost" href="#">Android için indir</a>
+    </div>
+  </div>
+</section>
+
+<section id="sss" aria-labelledby="ss" style="padding-top:20px">
+  <h2 class="h2" id="ss">Sorulanlar</h2>
+  <div class="faq">
+    <details><summary>Porsiyonu fotoğraftan nasıl bilecek?</summary><p>Tabağın çapını, yanındaki kaşık ya da çatalı ölçek olarak kullanır; telefonunuzda derinlik kamerası varsa yüksekliği de ölçer. Pilavda ve çorbada ±%15 civarında yanılır. Emin olmadığında size “kepçe mi, kâse mi?” diye sorar.</p></details>
+    <details><summary>Annemin karnıyarığı lokantanınkinden yağlı. Bunu bilir mi?</summary><p>Bilemez, ama söyleyebilirsiniz. Her yemekte “az yağlı / normal / bol yağlı” seçeneği var; bir kez “bol” dediğiniz ev yemeğini bir dahakine öyle tahmin eder.</p></details>
+    <details><summary>Bana kalori hedefi koyup kızacak mı?</summary><p>Hayır. Hedef koymak isteğe bağlıdır ve koysanız bile Tabak “aştınız” demez; günün dengesini gösterir. Diyetinizin planını diyetisyeniniz yapar, Tabak yalnız ne yediğinizi görünür kılar.</p></details>
+    <details><summary>Gerçekten internetsiz mi çalışıyor?</summary><p>Evet. Tanıma telefonda yapılır. İnternet yalnızca uygulama güncellemesi ve, siz gönderirseniz, haftalık özetin paylaşımı için kullanılır.</p></details>
+    <details><summary>Hangi yemekleri tanıyor?</summary><p>Esnaf lokantası ve ev mutfağından 1.400 yemek: çorbalar, zeytinyağlılar, pilavlar, kebaplar, börekler, sütlü tatlılar, şerbetliler. Mantıyı, içli köfteyi, kısırı ayırt eder. Tanımadığını sorar, sizden öğrenir.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="row">
+    <span><b style="color:var(--ink)">Tabak</b> · Yemeğin fotoğrafından porsiyon ve besin değeri</span>
+    <span>Destek: merhaba@tabak.app · Gizlilik · KVKK</span>
+  </div>
+  <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+</footer>
+</div>
+
+<script>
+const D=[
+ {n:"Mercimek çorbası",u:"1 kâse",k:210,p:11,c:30,f:5,col:"linear-gradient(180deg,#E7A33A,#C9811C)"},
+ {n:"Kuru fasulye",u:"1 porsiyon",k:290,p:15,c:38,f:9,col:"radial-gradient(circle at 30% 40%,#F3E7CF 0 5px,transparent 6px),radial-gradient(circle at 70% 60%,#F3E7CF 0 5px,transparent 6px),linear-gradient(#B4472B,#8E3420)"},
+ {n:"İzmir köfte",u:"4 köfte",k:340,p:22,c:16,f:21,col:"radial-gradient(circle at 30% 50%,#6A3520 0 12px,transparent 13px),radial-gradient(circle at 72% 45%,#6A3520 0 12px,transparent 13px),linear-gradient(#C24A2C,#9C3A22)"},
+ {n:"Karnıyarık",u:"1 adet",k:310,p:12,c:18,f:22,col:"radial-gradient(ellipse at 50% 50%,#7A3F25 0 18px,transparent 19px),linear-gradient(#4E2E54,#3A2340)"},
+ {n:"Zeytinyağlı taze fasulye",u:"1 porsiyon",k:180,p:4,c:16,f:12,col:"repeating-linear-gradient(70deg,#5E8E35 0 6px,#77A845 6px 10px)"},
+ {n:"Pirinç pilavı",u:"5 y. kaşığı",k:230,p:4,c:44,f:5,col:"radial-gradient(#FFFDF6 1px,transparent 1.5px) 0 0/6px 5px,#F1EADA"},
+ {n:"Bulgur pilavı",u:"5 y. kaşığı",k:200,p:6,c:38,f:4,col:"radial-gradient(#C99A55 1px,transparent 1.5px) 0 0/5px 5px,#B6844A"},
+ {n:"Cacık",u:"1 kâse",k:95,p:6,c:7,f:5,col:"radial-gradient(#7FA75C 1.5px,transparent 2px) 0 0/11px 9px,#EEF2E6"},
+ {n:"Ayran",u:"1 bardak",k:75,p:4,c:6,f:4,col:"linear-gradient(#FBFBF7,#ECEDE6)"},
+ {n:"Sütlaç",u:"1 kâse",k:260,p:7,c:44,f:6,col:"radial-gradient(circle at 50% 30%,#B5652C 0 14px,transparent 15px),linear-gradient(#F7EBD0,#EAD7AF)"}
+];
+const bm=document.getElementById('benmari'),tray=document.getElementById('tray');
+let sel=[];
+D.forEach((d,i)=>{
+  const b=document.createElement('button');b.className='dish';b.type='button';b.setAttribute('aria-pressed','false');
+  b.innerHTML=`<div class="food" style="background:${d.col}"></div><div class="lbl"><b>${d.n}</b><span>${d.u} · ${d.k} kcal</span></div>`;
+  b.addEventListener('click',()=>{
+    const at=sel.indexOf(i);
+    if(at>-1){sel.splice(at,1)}else{if(sel.length>=4){const out=sel.shift();bm.children[out].setAttribute('aria-pressed','false')}sel.push(i)}
+    b.setAttribute('aria-pressed',sel.includes(i)?'true':'false');render();
+  });
+  bm.appendChild(b);
+});
+function render(){
+  if(!sel.length){tray.innerHTML='<p class="empty">Tepsi boş. Vitrinden bir kaba dokunun.</p>'}
+  else tray.innerHTML=sel.map(i=>`<div class="item"><span><b>${D[i].n}</b>${D[i].u}</span></div>`).join('');
+  const t=sel.reduce((a,i)=>({k:a.k+D[i].k,p:a.p+D[i].p,c:a.c+D[i].c,f:a.f+D[i].f}),{k:0,p:0,c:0,f:0});
+  document.getElementById('kcal').innerHTML=t.k.toLocaleString('tr-TR')+' <small>kcal</small>';
+  ['p','c','f'].forEach(x=>document.getElementById(x).textContent=t[x]);
+  const e=t.p*4+t.c*4+t.f*9||1;
+  document.getElementById('bp').style.width=(t.p*4/e*100)+'%';
+  document.getElementById('bc').style.width=(t.c*4/e*100)+'%';
+  document.getElementById('bf').style.width=(t.f*9/e*100)+'%';
+  const names=sel.map(i=>D[i].n);
+  const veg=names.some(n=>/taze fasulye|Cacık|Karnıyarık/.test(n));
+  const leg=names.some(n=>/Mercimek|Kuru fasulye/.test(n));
+  const two=names.filter(n=>/pilav/i.test(n)).length>1;
+  let s;
+  if(!sel.length)s='Seçim yaptıkça burada bir cümle belirir. Uyarı değil, gözlem.';
+  else if(two)s='İki çeşit pilav var; biri yeterince tok tutar. Hangisini seçeceğiniz size kalmış.';
+  else if(leg&&veg)s='Bakliyat ve sebze aynı tepside. Diyetisyenlerin “tam öğle” dediği tabak bu.';
+  else if(!veg&&t.k>500)s='Doyurucu bir tepsi. Akşam sebze ağırlıklı bir tabak günü dengeler.';
+  else if(t.k<300)s='Hafif bir öğün. İkindi acıkırsanız bir meyve yeter.';
+  else s='Dengeli görünüyor. Tabak bunu öğle öğünü olarak günlüğünüze yazar.';
+  document.getElementById('note').textContent=s;
+}
+// başlangıç tepsisi
+[0,2,5,7].forEach(i=>bm.children[i].click());
+</script>
+</body>
+</html>

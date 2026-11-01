@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarla Gözü — Seradaki yaprağa internetsiz teşhis</title>
+<meta name="description" content="Tarla Gözü, domates, biber, hıyar ve patlıcanda yaprak fotoğrafından hastalık ve zararlıyı serada, çekim yokken teşhis eder; ne zaman ilaçlayacağını söyler. Üreticiye ücretsiz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@500;600;700;800&family=PT+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --naylon:#EEF1E7;      /* sera naylonunun süt beyazı ışığı */
+  --naylon-2:#E2E7D8;
+  --yaprak:#1E3A1F;      /* koyu domates yaprağı */
+  --yaprak-2:#2F5A2E;
+  --tuzak:#F2D21B;       /* sarı yapışkan tuzak */
+  --domates:#B8321C;     /* olgun domates */
+  --toprak:#5E4C33;      /* sera toprağı */
+  --metin:#18241A;
+  --soluk:#4A5A49;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--naylon);color:var(--metin);font:400 17px/1.55 "PT Sans",system-ui,sans-serif;
+  /* naylonun dikiş çizgileri */
+  background-image:repeating-linear-gradient(90deg,transparent 0 179px,rgba(30,58,31,.045) 179px 181px);}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--domates);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:"PT Sans Narrow",sans-serif;line-height:1.02;margin:0;letter-spacing:-.01em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* üst çubuk */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 24px/1 "PT Sans Narrow";color:var(--yaprak)}
+.top nav{display:flex;gap:22px;font-weight:500;font-size:15px}
+.top nav a{text-decoration:none;color:var(--soluk)}
+.top nav a:hover{color:var(--yaprak)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 16px/1 "PT Sans";padding:14px 20px;border-radius:4px;text-decoration:none;border:2px solid var(--yaprak)}
+.btn-dolu{background:var(--yaprak);color:#fff}
+.btn-dolu:hover{background:var(--yaprak-2)}
+.btn-bos{background:transparent;color:var(--yaprak)}
+.btn-bos:hover{background:var(--naylon-2)}
+.top .btn{padding:10px 14px;font-size:14px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1.08fr;gap:48px;align-items:start;padding:28px 0 56px}
+.sinyal{display:inline-flex;align-items:center;gap:10px;font:600 14px/1 "PT Sans";color:var(--yaprak);background:#fff;border:1px solid var(--naylon-2);padding:8px 12px;border-radius:3px}
+.bars{display:inline-flex;gap:2px;align-items:flex-end;height:14px}
+.bars i{display:block;width:4px;background:#C5CCBC;border-radius:1px}
+.bars i:nth-child(1){height:4px}.bars i:nth-child(2){height:7px}.bars i:nth-child(3){height:10px}.bars i:nth-child(4){height:14px}
+.hero h1{font-size:clamp(46px,6.4vw,84px);font-weight:800;color:var(--yaprak);margin:22px 0 18px}
+.hero h1 span{display:block;font-weight:600;color:var(--soluk)}
+.hero p.lead{font-size:19px;max-width:30em;margin:0 0 26px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.not{font-size:14px;color:var(--soluk);margin-top:14px}
+
+/* teşhis ekranı */
+.ekran{background:var(--yaprak);color:#EAF0E4;border-radius:10px;padding:14px;box-shadow:0 18px 40px -22px rgba(30,58,31,.6)}
+.ekran-ust{display:flex;justify-content:space-between;font:600 13px/1 "PT Sans";color:#B7C6B1;padding:4px 4px 12px}
+.vizor{position:relative;background:#DDE5D2;border-radius:6px;overflow:hidden;aspect-ratio:400/290}
+.vizor svg{display:block;width:100%;height:100%}
+.koseler span{position:absolute;width:26px;height:26px;border:3px solid var(--tuzak)}
+.koseler span:nth-child(1){top:12px;left:12px;border-right:0;border-bottom:0}
+.koseler span:nth-child(2){top:12px;right:12px;border-left:0;border-bottom:0}
+.koseler span:nth-child(3){bottom:12px;left:12px;border-right:0;border-top:0}
+.koseler span:nth-child(4){bottom:12px;right:12px;border-left:0;border-top:0}
+.etiket{position:absolute;font:700 12px/1.1 "PT Sans";background:var(--tuzak);color:var(--yaprak);padding:4px 6px;border-radius:2px;transition:opacity .3s}
+.sonuc{background:#fff;color:var(--metin);border-radius:6px;margin-top:12px;padding:16px 18px}
+.sonuc .ad{font:700 26px/1.05 "PT Sans Narrow";color:var(--yaprak)}
+.sonuc .lat{font-size:14px;color:var(--soluk);margin-top:2px}
+.olas{display:flex;align-items:center;gap:10px;margin:12px 0 4px;font:600 14px/1 "PT Sans"}
+.olas .cubuk{flex:1;height:8px;background:var(--naylon-2);border-radius:4px;overflow:hidden}
+.olas .cubuk b{display:block;height:100%;background:var(--domates);transition:width .5s}
+.benzer{font-size:14px;color:var(--soluk)}
+.yap{margin:12px 0 0;padding:0;list-style:none;counter-reset:y}
+.yap li{counter-increment:y;display:grid;grid-template-columns:24px 1fr;gap:8px;font-size:15px;padding:7px 0;border-top:1px solid var(--naylon-2)}
+.yap li::before{content:counter(y);font:700 15px/1.4 "PT Sans Narrow";color:var(--domates)}
+.secici{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.secici button{font:600 14px/1 "PT Sans";background:transparent;color:#DCE6D5;border:1.5px solid #5E7F5B;border-radius:3px;padding:9px 12px;cursor:pointer}
+.secici button[aria-pressed="true"]{background:var(--tuzak);color:var(--yaprak);border-color:var(--tuzak)}
+.secici .baslik{width:100%;font-size:13px;color:#B7C6B1}
+
+/* yaprak durumları */
+.lf{fill:url(#saglikli);transition:transform .5s}
+.s-tylcv .lf{fill:url(#sari);transform:scale(.82,.5)}
+.leke{opacity:0;transition:opacity .4s}
+.s-tuta .tuta{opacity:1}
+.s-alt .alt{opacity:1}
+.s-alt .lf{fill:url(#soluk)}
+
+/* sinyal bandı */
+.band{background:var(--tuzak);color:var(--yaprak)}
+.band .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;padding-top:56px;padding-bottom:56px;align-items:center}
+.band h2{font-size:clamp(36px,4.6vw,58px);font-weight:800}
+.band p{font-size:18px;max-width:34em}
+.olcu{display:grid;grid-template-columns:repeat(3,1fr);border-top:3px solid var(--yaprak)}
+.olcu div{padding:14px 10px 0 0}
+.olcu b{display:block;font:800 44px/1 "PT Sans Narrow"}
+.olcu span{font-size:14px;font-weight:600}
+.delik{background-image:radial-gradient(circle at 12px 12px,rgba(30,58,31,.16) 3px,transparent 4px);background-size:120px 120px}
+
+/* ilaçlama saati */
+section{padding:72px 0}
+.bolum-bas{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:end;margin-bottom:30px}
+.bolum-bas h2{font-size:clamp(34px,4.2vw,52px);font-weight:800;color:var(--yaprak)}
+.bolum-bas p{margin:0;max-width:36em}
+.saat{background:#fff;border:1px solid var(--naylon-2);border-radius:8px;padding:22px}
+.saat-ust{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-weight:600;font-size:15px;margin-bottom:16px}
+.saatler{display:grid;grid-template-columns:repeat(16,1fr);gap:3px}
+.sa{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px}
+.sa .k{width:100%;height:64px;border-radius:2px;background:var(--naylon-2);position:relative}
+.sa .k i{position:absolute;left:0;right:0;bottom:0;background:#9FB09B;border-radius:2px}
+.sa.uygun .k{background:#FFF6BF;outline:2px solid var(--tuzak)}
+.sa.uygun .k i{background:var(--yaprak-2)}
+.sa.kotu .k i{background:var(--domates)}
+.sa small{color:var(--soluk);font-size:12px}
+.saat-alt{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;padding-top:18px;border-top:1px solid var(--naylon-2)}
+.saat-alt b{font:700 22px/1.1 "PT Sans Narrow";color:var(--yaprak);display:block}
+.saat-alt span{font-size:14px;color:var(--soluk)}
+.ufak{font-size:14px;color:var(--soluk);margin-top:14px}
+
+/* sınır */
+.sinir{background:var(--yaprak);color:#E8EFE2}
+.sinir .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.sinir h2{font-size:clamp(34px,4.2vw,52px);font-weight:800;color:#fff}
+.sinir ul{list-style:none;margin:0;padding:0}
+.sinir li{padding:16px 0;border-top:1px solid #3F6340;display:grid;grid-template-columns:76px 1fr;gap:14px}
+.sinir li b{font:700 26px/1 "PT Sans Narrow";color:var(--tuzak)}
+.kart{background:#fff;color:var(--metin);border-radius:6px;padding:18px;font-size:15px;margin-top:24px;max-width:430px;border-left:6px solid var(--tuzak)}
+.kart .k1{font:700 20px/1.1 "PT Sans Narrow";color:var(--yaprak)}
+.kart dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:10px 0 0}
+.kart dt{color:var(--soluk)}
+.kart dd{margin:0;font-weight:600}
+
+/* hikâye */
+.hikaye{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:start}
+.hikaye blockquote{margin:0;font:600 clamp(28px,3.2vw,40px)/1.15 "PT Sans Narrow";color:var(--yaprak)}
+.hikaye cite{display:block;font:500 16px/1.4 "PT Sans";font-style:normal;color:var(--soluk);margin-top:18px}
+.defter{border-top:3px solid var(--yaprak)}
+.defter div{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--naylon-2);font-size:15px}
+.defter b{font:700 17px/1.3 "PT Sans Narrow";color:var(--toprak)}
+.ikinci{margin-top:36px;padding-top:20px;border-top:1px dashed #B9C3AE;font-size:16px}
+.ikinci cite{font-style:normal;color:var(--soluk);display:block;margin-top:6px;font-size:14px}
+
+/* ücret */
+.ucret{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.paket{background:#fff;border:1px solid var(--naylon-2);border-radius:8px;padding:26px}
+.paket h3{font-size:28px;color:var(--yaprak)}
+.paket .fiyat{font:800 48px/1 "PT Sans Narrow";margin:12px 0 4px;color:var(--yaprak)}
+.paket .fiyat small{font-size:18px;font-weight:600;color:var(--soluk)}
+.paket ul{padding-left:18px;margin:14px 0 20px}
+.paket li{margin:4px 0}
+.paket.ana{border:2px solid var(--yaprak);background:linear-gradient(var(--tuzak) 0 8px,#fff 8px)}
+
+/* sss */
+.sss details{border-top:1px solid #C9D1BE;padding:18px 0}
+.sss details:last-child{border-bottom:1px solid #C9D1BE}
+.sss summary{cursor:pointer;font:700 23px/1.2 "PT Sans Narrow";color:var(--yaprak);list-style:none;display:flex;justify-content:space-between;gap:16px}
+.sss summary::after{content:"+";font-size:28px;line-height:.9;color:var(--domates)}
+.sss details[open] summary::after{content:"–"}
+.sss summary::-webkit-details-marker{display:none}
+.sss p{margin:10px 0 0;max-width:46em}
+
+footer{background:var(--toprak);color:#EFE8DA;padding:48px 0 28px;font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px}
+footer h2{font-size:34px;color:#fff;max-width:14em}
+footer .btn{border-color:var(--tuzak);background:var(--tuzak);color:var(--yaprak)}
+.imza{width:100%;border-top:1px solid #7A6750;padding-top:16px;margin-top:12px;font-size:13px;color:#D9CDB7}
+.imza a{color:#D9CDB7}
+
+@media (max-width:900px){
+  .hero,.band .wrap,.bolum-bas,.sinir .wrap,.hikaye,.ucret{grid-template-columns:1fr}
+  .top nav{display:none}
+  .saatler{grid-template-columns:repeat(8,1fr);row-gap:12px}
+  .hero{gap:32px}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .saat-alt{grid-template-columns:1fr}
+  .olcu b{font-size:34px}
+  .top .btn{display:none}
+  section{padding:56px 0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#" aria-label="Tarla Gözü ana sayfa">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M3 17C9 7 25 7 31 17 25 27 9 27 3 17Z" fill="#1E3A1F"/><circle cx="17" cy="17" r="6" fill="#F2D21B"/><path d="M17 11c3 3 3 9 0 12" stroke="#1E3A1F" stroke-width="2" fill="none"/></svg>
+      Tarla Gözü
+    </a>
+    <nav aria-label="Sayfa içi">
+      <a href="#sinyal">Çekim yokken</a>
+      <a href="#saat">İlaçlama saati</a>
+      <a href="#sinir">Ne zaman mühendis</a>
+      <a href="#sss">Sorular</a>
+    </nav>
+    <a class="btn btn-dolu" href="#indir">Ücretsiz indir</a>
+  </header>
+
+  <div class="hero-main">
+  <div class="hero">
+    <div>
+      <span class="sinyal"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Sera içinde çekim yok — teşhis yine de telefonda</span>
+      <h1>Yaprak kıvrıldı. Mühendis perşembe gelir. <span>Teşhis şimdi.</span></h1>
+      <p class="lead">Domates, biber, hıyar ve patlıcanda 64 hastalık ve zararlıyı yaprağın fotoğrafından tanır. Hangisinin sökülüp hangisinin kurtarılacağını, ne zaman ilaçlanacağını ve hasattan kaç gün önce durman gerektiğini söyler.</p>
+      <div class="cta" id="indir">
+        <a class="btn btn-dolu" href="#indir">Android için indir</a>
+        <a class="btn btn-bos" href="#indir">iPhone için indir</a>
+      </div>
+      <p class="not">Üreticiye ücretsiz, reklamsız. Kurulum 41 MB; bir kez Wi‑Fi'da indir, sonra serada internet istemez.</p>
+    </div>
+
+    <div class="ekran" aria-label="Uygulamanın teşhis ekranı örneği">
+      <div class="ekran-ust"><span>Sera 3 · Kumluca</span><span>Çevrimdışı · 14:22</span></div>
+      <div class="vizor" id="vizor">
+        <svg id="yaprakSvg" class="s-tylcv" viewBox="0 0 400 290" role="img" aria-labelledby="yaprakBaslik">
+          <title id="yaprakBaslik">Kamerada bir domates yaprağı</title>
+          <defs>
+            <radialGradient id="saglikli" cx="35%" cy="50%" r="70%"><stop offset="0" stop-color="#4E8A3E"/><stop offset="1" stop-color="#2F6A2C"/></radialGradient>
+            <radialGradient id="sari" cx="30%" cy="50%" r="72%"><stop offset="0" stop-color="#6E9A3C"/><stop offset=".62" stop-color="#A9B83A"/><stop offset="1" stop-color="#E4CF3A"/></radialGradient>
+            <radialGradient id="soluk" cx="35%" cy="50%" r="70%"><stop offset="0" stop-color="#5F8A43"/><stop offset="1" stop-color="#6E8240"/></radialGradient>
+            <g id="yc"><path d="M0 0C6-10 14-9 20-14 26-21 34-13 40-19 48-26 56-15 64-18 74-21 80-9 90 0 80 9 74 21 64 18 56 15 48 26 40 19 34 13 26 21 20 14 14 9 6 10 0 0Z"/><path d="M2 0H82M30 0l10-9M30 0l10 9M54 0l10-8M54 0l10 8" stroke="#24502A" stroke-width="1.4" fill="none" opacity=".55"/></g>
+          </defs>
+          <rect width="400" height="290" fill="#D7E0CB"/>
+          <path d="M0 230 Q120 200 400 250 L400 290 0 290Z" fill="#C9D3BC"/>
+          <path d="M40 262 C120 220 230 150 360 40" stroke="#3E6B33" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <g>
+            <g transform="translate(110 222) rotate(-120)"><g class="lf"><use href="#yc"/></g></g>
+            <g transform="translate(118 216) rotate(20)"><g class="lf"><use href="#yc"/></g></g>
+            <g transform="translate(185 172) rotate(-118)"><g class="lf"><use href="#yc"/></g></g>
+            <g transform="translate(192 166) rotate(16)"><g class="lf"><use href="#yc"/></g></g>
+            <g transform="translate(258 116) rotate(-112)"><g class="lf"><use href="#yc"/></g></g>
+            <g transform="translate(266 110) rotate(10)"><g class="lf"><use href="#yc"/></g></g>
+            <g transform="translate(350 48) rotate(-36) scale(1.15)"><g class="lf"><use href="#yc"/></g></g>
+          </g>
+          <!-- domates güvesi galerileri -->
+          <g class="leke tuta" fill="#E9EED8" stroke="#C9D2B2" stroke-width="1">
+            <path d="M210 182c10-6 22-3 26 6 3 8-8 12-16 10-9-2-15-11-10-16Z"/>
+            <path d="M282 126c9-3 18 1 18 8 0 6-10 8-17 6-6-2-7-11-1-14Z"/>
+            <path d="M136 232c7-4 16-2 17 5 1 6-9 8-14 6-5-3-7-8-3-11Z"/>
+            <circle cx="222" cy="189" r="2" fill="#2B2B1E"/><circle cx="289" cy="132" r="2" fill="#2B2B1E"/>
+          </g>
+          <!-- erken yanıklık halkaları -->
+          <g class="leke alt" fill="#6B4A23" stroke="#3B2A15" stroke-width="1.2">
+            <circle cx="214" cy="184" r="9"/><circle cx="214" cy="184" r="5" fill="none"/>
+            <circle cx="290" cy="128" r="7"/><circle cx="290" cy="128" r="3.5" fill="none"/>
+            <circle cx="140" cy="236" r="8"/><circle cx="140" cy="236" r="4" fill="none"/>
+            <circle cx="378" cy="40" r="6"/>
+          </g>
+        </svg>
+        <div class="koseler" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <span class="etiket" id="et1" style="left:52%;top:24%">kenar sararması</span>
+        <span class="etiket" id="et2" style="left:14%;top:56%">yukarı kıvrılma</span>
+      </div>
+      <div class="sonuc" aria-live="polite">
+        <div class="ad" id="sAd">Domates sarı yaprak kıvırcıklık virüsü</div>
+        <div class="lat" id="sLat">TYLCV · taşıyıcısı beyazsinek (Bemisia tabaci)</div>
+        <div class="olas"><span id="sYuzde">%86</span><span class="cubuk"><b id="sCubuk" style="width:86%"></b></span><span>emin</span></div>
+        <div class="benzer" id="sBenzer">Benzeri: sıcaktan fizyolojik kıvrılma %9 — yaprak yeşil kalırsa bu.</div>
+        <ol class="yap" id="sYap">
+          <li>Bu bitkiyi sök, poşete koyup seradan çıkar. Virüsün ilacı yok.</li>
+          <li>Sarı yapışkan tuzak as: 400 m² için 8 tane, bitki boyunda.</li>
+          <li>Beyazsineğe karşı uygulama: yarın 06:30–08:30, rüzgâr 2 m/s.</li>
+        </ol>
+      </div>
+      <div class="secici" role="group" aria-label="Başka bir yaprak dene">
+        <span class="baslik">Başka bir yaprak dene:</span>
+        <button type="button" data-s="tylcv" aria-pressed="true">Kıvrık, sararmış</button>
+        <button type="button" data-s="tuta" aria-pressed="false">Üstünde beyaz yollar</button>
+        <button type="button" data-s="alt" aria-pressed="false">Halkalı kahve leke</button>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<main id="ana">
+
+<div class="band delik" id="sinyal">
+  <div class="wrap">
+    <div>
+      <h2>Naylonun altında sinyal sıfır çubuk. Teşhis bunu umursamaz.</h2>
+      <p>Hastalığı tanıyan model telefonun içinde duruyor. Fotoğraf hiçbir yere gönderilmez: hangi serada ne çıktığını komşu da, tüccar da, hal de öğrenmez. Sen istersen mühendisine kendin gösterirsin.</p>
+    </div>
+    <div class="olcu">
+      <div><b>1,8 sn</b><span>bir yaprağın teşhisi, orta halli telefonda</span></div>
+      <div><b>0 KB</b><span>teşhis sırasında giden veri</span></div>
+      <div><b>64</b><span>hastalık ve zararlı, 4 ürün</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="saat">
+  <div class="wrap">
+    <div class="bolum-bas">
+      <h2>İlaçlama saatini rüzgâra ve hasada göre verir.</h2>
+      <p>Hava tahminini telefon son çektiği yerde — köy kahvesinde, evdeki Wi‑Fi'da — sessizce indirir ve iki gün saklar. Serada çekim olmasa da yarının uygun saatini bilir; son uygulamadan sonra hasada kaç gün kaldığını da sayar.</p>
+    </div>
+    <div class="saat" aria-label="Yarın için saatlik uygunluk">
+      <div class="saat-ust"><span>Yarın, 12 Eylül Perşembe · Mavikent</span><span>Sütun: rüzgâr hızı · Sarı: uygun saat</span></div>
+      <div class="saatler">
+        <div class="sa"><div class="k"><i style="height:30%"></i></div><small>05</small></div>
+        <div class="sa uygun"><div class="k"><i style="height:22%"></i></div><small>06</small></div>
+        <div class="sa uygun"><div class="k"><i style="height:24%"></i></div><small>07</small></div>
+        <div class="sa uygun"><div class="k"><i style="height:30%"></i></div><small>08</small></div>
+        <div class="sa"><div class="k"><i style="height:48%"></i></div><small>09</small></div>
+        <div class="sa kotu"><div class="k"><i style="height:70%"></i></div><small>10</small></div>
+        <div class="sa kotu"><div class="k"><i style="height:82%"></i></div><small>11</small></div>
+        <div class="sa kotu"><div class="k"><i style="height:90%"></i></div><small>12</small></div>
+        <div class="sa kotu"><div class="k"><i style="height:94%"></i></div><small>13</small></div>
+        <div class="sa kotu"><div class="k"><i style="height:88%"></i></div><small>14</small></div>
+        <div class="sa kotu"><div class="k"><i style="height:76%"></i></div><small>15</small></div>
+        <div class="sa"><div class="k"><i style="height:58%"></i></div><small>16</small></div>
+        <div class="sa"><div class="k"><i style="height:44%"></i></div><small>17</small></div>
+        <div class="sa uygun"><div class="k"><i style="height:32%"></i></div><small>18</small></div>
+        <div class="sa uygun"><div class="k"><i style="height:26%"></i></div><small>19</small></div>
+        <div class="sa"><div class="k"><i style="height:20%"></i></div><small>20</small></div>
+      </div>
+      <div class="saat-alt">
+        <div><b>06:00 – 08:30</b><span>En iyi pencere. Rüzgâr 2 m/s, sera içi 24 °C.</span></div>
+        <div><b>10:00 – 15:00 yapma</b><span>Sera 38 °C'yi geçiyor; ilaç yaprağı yakar, arı da dışarıda.</span></div>
+        <div><b>Hasat: 3 gün sonra</b><span>Etiketteki bekleme süresi defterine işlenir, takvim kendisi sayar.</span></div>
+      </div>
+    </div>
+    <p class="ufak">Ürün adı ve doz önermez; ruhsatlı etken maddeleri listeler, dozu her zaman ambalaj etiketinden okumanı söyler.</p>
+  </div>
+</section>
+
+<section class="sinir" id="sinir">
+  <div class="wrap">
+    <div>
+      <h2>Emin olmadığında "emin değilim" der.</h2>
+      <p>Bir telefon, sahada yıllarını geçirmiş ziraat mühendisinin yerini tutmaz. Tarla Gözü onu doğru seraya, doğru gün çağırmana yarar.</p>
+      <div class="kart" aria-label="Mühendise gösterilecek özet kart örneği">
+        <div class="k1">Mühendis için özet · Sera 3</div>
+        <dl>
+          <dt>Ürün</dt><dd>Domates, 9. hafta</dd>
+          <dt>Belirti</dt><dd>Üst yapraklar kıvrık, kenar sarı</dd>
+          <dt>Tahmin</dt><dd>TYLCV %86 · fizyolojik %9</dd>
+          <dt>Yayılım</dt><dd>14 bitkiden 3'ü, kuzey sıra</dd>
+          <dt>Fotoğraf</dt><dd>6 adet, telefonda</dd>
+        </dl>
+      </div>
+    </div>
+    <ul>
+      <li><b>%60↓</b><span>Güven yüzde 60'ın altına düşerse teşhis yerine üç olasılık ve "bir mühendise göster" uyarısı çıkar.</span></li>
+      <li><b>Hızlı</b><span>Bakteriyel solgunluk ya da kanser gibi hızla yayılanlarda uygulama önce "bugün ara" der, sonra açıklar.</span></li>
+      <li><b>Özet</b><span>Yukarıdaki kart çevrimdışı oluşur; çekim olan yere gelince WhatsApp'tan kendin gönderirsin.</span></li>
+      <li><b>Bölge</b><span>Teşhisler senin onayın olmadan hiçbir haritaya, istatistiğe eklenmez.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap hikaye">
+    <div>
+      <blockquote>"Ağustosta herkes 'virüs, sök' dedi. Telefon 'sıcaktan, sökme' dedi. Sulamayı sabaha aldım. O sera bu yıl 11 ton verdi."</blockquote>
+      <cite>Hatice Yıldırım · 3 dönüm cam sera, Kumluca</cite>
+      <div class="ikinci">"Bana gelen fotoğraflar artık teşhisle geliyor. Önce hangi seraya gideceğimi biliyorum."
+        <cite>Murat Ekinci · Serbest ziraat mühendisi, Serik</cite></div>
+    </div>
+    <div class="defter" aria-label="Hatice Hanım'ın sera defterinden">
+      <div><b>4 Ağustos</b><span>Üst yapraklar kıvrık. Uygulama: fizyolojik kıvrılma %71, virüs %18.</span></div>
+      <div><b>5 Ağustos</b><span>Sulama 17:00'den 06:00'ya alındı, gölge filesi çekildi.</span></div>
+      <div><b>12 Ağustos</b><span>Yeni yapraklar düz. Sarı tuzakta beyazsinek az; ilaç atılmadı.</span></div>
+      <div><b>2 Eylül</b><span>İlk hasat, 1,4 ton. Defter: 0 söküm.</span></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="bolum-bas">
+      <h2>Üreticiye ücretsiz.</h2>
+      <p>Reklam yok, satılan veri yok. Masrafı, bölgesine toplu uyarı yayınlamak isteyen birlikler ve kooperatifler karşılıyor.</p>
+    </div>
+    <div class="ucret">
+      <div class="paket ana">
+        <h3>Üretici</h3>
+        <div class="fiyat">0 ₺</div>
+        <ul>
+          <li>4 ürün, 64 hastalık ve zararlı</li>
+          <li>Sınırsız teşhis, çevrimdışı</li>
+          <li>Sera defteri ve hasat aralığı takvimi</li>
+          <li>Mühendis için özet kart</li>
+        </ul>
+        <a class="btn btn-dolu" href="#indir">Ücretsiz indir</a>
+      </div>
+      <div class="paket">
+        <h3>Birlik / kooperatif</h3>
+        <div class="fiyat">4.800 ₺ <small>/ yıl, 200 üyeye kadar</small></div>
+        <ul>
+          <li>Üyelere telefondan telefona (Bluetooth) bölge uyarısı</li>
+          <li>Kendi mühendisinizin adı özet kartta</li>
+          <li>Toplu kurulum için USB paket, Türkçe eğitim videosu</li>
+        </ul>
+        <a class="btn btn-bos" href="#indir">Birliğim için bilgi al</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sss" id="sss" style="padding-top:0">
+  <div class="wrap" style="max-width:860px">
+    <h2 style="font-size:44px;color:var(--yaprak);margin-bottom:18px">Sorulanlar</h2>
+    <details open><summary>Telefonum eski, çalışır mı?</summary><p>Android 9 ve üstü, 3 GB bellekli telefonlarda çalışır. 2019 model bir telefonda bir yaprağın teşhisi yaklaşık 3 saniye sürer.</p></details>
+    <details><summary>Hangi ürünleri tanıyor?</summary><p>Domates, biber, hıyar ve patlıcan. Çilek ve kavun gelecek sezon ekleniyor; güncelleme Wi‑Fi'da 12 MB.</p></details>
+    <details><summary>Fotoğraflarım bir yere gidiyor mu?</summary><p>Hayır. Teşhis telefonda yapılır, fotoğraflar sera defterinde kalır. Uygulamayı silersen hepsi silinir. Birlik paketinde bile kimse senin defterini göremez.</p></details>
+    <details><summary>İlaç adı söylüyor mu?</summary><p>Ticari ürün adı söylemez. Ruhsatlı etken maddeleri ve uygun saati söyler; doz için ambalaj etiketini okumanı ister.</p></details>
+    <details><summary>Ya yanlış teşhis koyarsa?</summary><p>Her teşhiste kaç yüzde emin olduğunu ve benzer görünen ikinci olasılığı gösterir. Söküm gibi geri dönüşü olmayan önerilerde iki farklı yapraktan fotoğraf ister.</p></details>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="wrap">
+    <h2>Bir sonraki kıvrık yaprakta telefonun cebinde olsun.</h2>
+    <div class="cta"><a class="btn" href="#indir">Android için indir</a><a class="btn btn-bos" style="color:#fff;border-color:#fff" href="#indir">iPhone için indir</a></div>
+    <div class="imza">Tarla Gözü · Antalya · destek@tarlagozu.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+const V={
+ tylcv:{ad:"Domates sarı yaprak kıvırcıklık virüsü",lat:"TYLCV · taşıyıcısı beyazsinek (Bemisia tabaci)",y:86,b:"Benzeri: sıcaktan fizyolojik kıvrılma %9 — yaprak yeşil kalırsa bu.",
+   e:[["kenar sararması","52%","24%"],["yukarı kıvrılma","14%","56%"]],
+   yap:["Bu bitkiyi sök, poşete koyup seradan çıkar. Virüsün ilacı yok.","Sarı yapışkan tuzak as: 400 m² için 8 tane, bitki boyunda.","Beyazsineğe karşı uygulama: yarın 06:30–08:30, rüzgâr 2 m/s."]},
+ tuta:{ad:"Domates güvesi",lat:"Tuta absoluta · yaprak içinde galeri açan tırtıl",y:91,b:"Benzeri: yaprak galeri sineği %6 — galeri ince ve kıvrımlıysa bu.",
+   e:[["beyaz galeri","50%","58%"],["tırtıl pisliği","70%","40%"]],
+   yap:["Galerili yaprakları kopar, kapalı poşette at.","Feromon tuzağı as; 3 günde 30'dan fazla kelebek varsa uygulama gerekli.","Uygulama: yarın 18:00–19:30, kelebek akşam uçar."]},
+ alt:{ad:"Erken yanıklık",lat:"Alternaria solani · mantar",y:78,b:"Benzeri: bakteriyel leke %12 — lekeler küçük ve sarı haleliyse bu.",
+   e:[["halkalı leke","50%","60%"],["alt yapraktan başlamış","25%","76%"]],
+   yap:["Alt yaşlı yaprakları temiz makasla al, seradan çıkar.","Yaprağı ıslatan üstten sulamayı bırak, damlaya geç.","Fungisit: yarın 06:00–08:30. Hasada 3 gün varsa bekle."]}
+};
+const svg=document.getElementById('yaprakSvg');
+document.querySelectorAll('.secici button').forEach(b=>b.addEventListener('click',()=>{
+ const k=b.dataset.s,d=V[k];
+ document.querySelectorAll('.secici button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+ svg.setAttribute('class','s-'+k);
+ sAd.textContent=d.ad;sLat.textContent=d.lat;sYuzde.textContent='%'+d.y;sCubuk.style.width=d.y+'%';sBenzer.textContent=d.b;
+ sYap.innerHTML=d.yap.map(t=>'<li>'+t+'</li>').join('');
+ [et1,et2].forEach((el,i)=>{el.textContent=d.e[i][0];el.style.left=d.e[i][1];el.style.top=d.e[i][2];});
+}));
+</script>
+</body>
+</html>

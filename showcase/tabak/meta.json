@@ -1,0 +1,20 @@
+{
+  "slug": "tabak",
+  "name": "Tabak",
+  "interpretation": "Lokanta vitrini",
+  "world": "Esnaf lokantasının çelik benmarisi, buğulu vitrin camı ve beyaz porselen tabağı.",
+  "palette": [
+    "#E4E8E8",
+    "#1B2528",
+    "#D8941C",
+    "#356230",
+    "#9BA6A9",
+    "#2A3134"
+  ],
+  "fonts": [
+    "Archivo"
+  ],
+  "score": 25,
+  "lowest": "Palet/doku",
+  "moment": "Vitrindeki on kaptan dördünü seçip tepsiyi doldurmak; toplam ve denge çubuğu değişir, altında uyarı değil gözlem cümlesi çıkar."
+}

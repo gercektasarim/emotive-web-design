@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menü Okur — Yurt dışında menüyü çeviren, helal ve alerjiye göre işaretleyen uygulama</title>
+<meta name="description" content="Menü Okur, Tokyo'daki el yazısı menüyü çevirir, yemeğin ne olduğunu anlatır ve helal, alerji, vejetaryen kısıtına göre işaretler. İnternetsiz; fotoğraf telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --washi:#F3EFE7; --indigo:#22355A; --indigo-2:#2D4573; --lantern:#C7372F; --hinoki:#D2AE84; --hinoki-2:#B98F62;
+  --ink:#1B1A1D; --muted:#55525A; --ok:#2E7D4F; --warn:#B26A00;
+  --sans:"Instrument Sans", system-ui, sans-serif; --jp:"Noto Serif JP", serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--washi);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55}
+a{color:var(--indigo)}
+:focus-visible{outline:3px solid var(--lantern);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:24px;padding-right:24px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:9}
+
+/* noren curtain = header + headline */
+.noren{background:var(--indigo);color:#fff;position:relative;padding-bottom:44px}
+.noren::after{content:"";position:absolute;left:0;right:0;bottom:0;height:44px;background:repeating-linear-gradient(90deg,var(--indigo) 0 calc(25% - 6px),var(--washi) calc(25% - 6px) 25%)}
+.noren .bar{display:flex;justify-content:space-between;align-items:center;height:70px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;font-size:22px}
+.logo i{width:34px;height:34px;border-radius:50%;background:var(--lantern);display:grid;place-items:center;font-family:var(--jp);font-style:normal;font-weight:900;font-size:17px}
+.noren nav a{color:#D9DEEA;text-decoration:none;margin-left:20px;font-size:16px;white-space:nowrap}
+.noren nav a.dl{background:#fff;color:var(--indigo);padding:9px 16px;border-radius:4px;font-weight:600}
+.noren .head{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:end;padding:36px 0 34px}
+h1{font-size:clamp(40px,5.2vw,70px);line-height:1.02;margin:0;letter-spacing:-.02em;font-weight:700}
+.noren .head p{margin:0;color:#D9DEEA;font-size:19px}
+.mon{position:absolute;right:6%;top:84px;font-family:var(--jp);font-weight:900;font-size:120px;color:rgba(255,255,255,.07);line-height:1;pointer-events:none}
+
+/* menu wall */
+.wall-sec{padding:36px 0 80px}
+.profile{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px}
+.profile span{font-size:15px;color:var(--muted);margin-right:6px}
+.profile button{font:inherit;font-size:15px;font-weight:600;border:2px solid var(--ink);background:#fff;color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+.profile button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.wall{background:linear-gradient(180deg,#5A4433,#4A3829);border-radius:6px;padding:26px 22px 22px;display:grid;grid-template-columns:repeat(7,1fr);gap:12px;box-shadow:inset 0 0 0 6px #3B2C20}
+.strip{all:unset;cursor:pointer;background:linear-gradient(90deg,var(--hinoki) 0%, #DDBE97 50%, var(--hinoki) 100%);border-radius:3px;min-height:270px;display:flex;flex-direction:column;align-items:center;padding:14px 6px 58px;position:relative;box-shadow:0 4px 0 #2F2219}
+.strip:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.strip[aria-pressed="true"]{box-shadow:0 0 0 4px #fff,0 4px 0 #2F2219}
+.strip .jp{writing-mode:vertical-rl;font-family:var(--jp);font-weight:900;font-size:30px;color:#1B1A1D;letter-spacing:.06em;flex:1}
+.strip .yen{font-family:var(--jp);font-weight:600;font-size:15px;color:#3B2C20;writing-mode:vertical-rl;margin-top:8px}
+.strip .ar{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);background:#fff;border-radius:8px;padding:6px 8px;width:calc(100% + 10px);text-align:center;font-size:13px;line-height:1.25;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.strip .ar b{display:block;font-size:14px}
+.badge{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;border-radius:99px;padding:2px 8px;color:#fff}
+.badge.ok{background:var(--ok)}.badge.warn{background:var(--warn)}.badge.no{background:var(--lantern)}
+.detail{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.detail .card{background:#fff;border-radius:6px;padding:22px 24px;border-top:6px solid var(--indigo)}
+.detail .card h2{margin:0;font-size:26px}
+.detail .card .r{font-family:var(--jp);font-weight:600;color:var(--muted);font-size:17px}
+.detail .card p{margin:10px 0 0}
+.why{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px;font-size:16px}
+.why li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.lantern{background:var(--lantern);color:#fff;border-radius:6px;padding:22px 24px;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+.lantern .jp{font-family:var(--jp);font-weight:600;font-size:24px;line-height:1.5}
+.lantern small{font-size:15px;color:#FBE2DF}
+.lantern .hint{font-size:14px;color:#FBE2DF}
+
+section{padding:96px 0}
+h2.s{font-size:clamp(32px,3.8vw,50px);line-height:1.06;letter-spacing:-.02em;margin:0 0 18px;font-weight:700;max-width:20ch}
+.lead{font-size:20px;color:var(--muted);max-width:56ch}
+
+.explain{background:#fff}
+.ex-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.bowl{position:relative}
+.bowl svg{width:100%;height:auto;display:block}
+.tags{display:grid;gap:10px;margin-top:22px}
+.tags div{display:grid;grid-template-columns:120px 1fr;gap:14px;border-bottom:1px solid #E6E0D6;padding-bottom:10px}
+.tags b{font-weight:600}
+
+.offline{background:var(--indigo);color:#fff}
+.offline h2{color:#fff}
+.offline .lead{color:#D9DEEA}
+.off-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.status{background:var(--indigo-2);border-radius:6px;padding:20px 22px;font-size:16px}
+.status div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.15)}
+.status div:last-child{border-bottom:0}
+.status .x{color:#FFB3AE;font-weight:600}
+.status .v{color:#A6E3BF;font-weight:600}
+
+.places{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.places span{background:#fff;border:1px solid #DED7CB;border-radius:4px;padding:8px 14px;font-size:16px}
+.places span b{font-family:var(--jp);margin-right:6px;font-weight:600}
+
+.voice .wrap{display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:start}
+.chop{width:96px;height:96px;border-radius:6px;background:var(--lantern);color:#fff;font-family:var(--jp);font-weight:900;font-size:40px;display:grid;place-items:center;transform:rotate(-4deg)}
+.voice blockquote{margin:0;font-size:clamp(22px,2.4vw,30px);line-height:1.38;font-weight:500;max-width:38ch}
+.voice cite{display:block;font-style:normal;color:var(--muted);font-size:17px;margin-top:14px}
+
+.price{background:#fff}
+.pr{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:32px;max-width:860px}
+.pr > div{border:2px solid #DED7CB;border-radius:6px;padding:24px}
+.pr .m{border-color:var(--indigo)}
+.pr h3{margin:0;font-size:22px}
+.pr .amt{font-size:48px;font-weight:700;letter-spacing:-.02em;margin:4px 0}
+.pr .amt small{font-size:16px;font-weight:400;color:var(--muted)}
+.pr ul{padding-left:20px;margin:0 0 18px;color:var(--muted)}
+.btn{display:inline-block;padding:13px 20px;border-radius:4px;font-weight:600;text-decoration:none;font-size:17px}
+.btn.i{background:var(--indigo);color:#fff}
+.btn.o{border:2px solid var(--ink);color:var(--ink)}
+
+.faq details{border-bottom:1px solid #DED7CB;padding:16px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:20px}
+.faq p{margin:10px 0 0;color:var(--muted);max-width:66ch}
+
+footer{background:var(--ink);color:#C9C6CE;padding:36px 0 28px;font-size:15px}
+footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer .made{margin-top:18px;font-size:13px}
+footer .made a{color:#A9A6AE}
+
+@media (max-width:980px){
+  .wall{grid-template-columns:repeat(4,1fr);row-gap:30px}
+  .strip{min-height:260px}
+}
+@media (max-width:900px){
+  .noren nav a:not(.dl){display:none}
+  .noren .head,.detail,.ex-grid,.off-grid{grid-template-columns:1fr}
+  .pr{grid-template-columns:1fr}
+  .mon{display:none}
+  section{padding:72px 0}
+}
+@media (max-width:520px){
+  .wrap{padding-left:16px;padding-right:16px}
+  .wall{grid-template-columns:repeat(4,1fr);padding:16px 10px 26px;gap:8px;row-gap:34px}
+  .strip{min-height:200px}
+  .strip .jp{font-size:19px}
+  .strip{padding-bottom:52px}
+  .strip .yen{font-size:12px}
+  .strip .ar{font-size:11px;padding:5px 4px}
+  .strip .ar b{font-size:12px}
+  .badge{font-size:10px;padding:1px 6px}
+  .voice .wrap{grid-template-columns:1fr}
+  .tags div{grid-template-columns:1fr;gap:0}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe geç</a>
+<div class="noren">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="#"><i aria-hidden="true">食</i>Menü Okur</a>
+      <nav aria-label="Ana menü"><a href="#anlatir">Ne olduğunu anlatır</a><a href="#internetsiz">İnternetsiz</a><a href="#fiyat">Fiyat</a><a class="dl" href="#fiyat">İndir</a></nav>
+    </div>
+    <div class="head">
+      <h1>Duvardaki menüyü oku. Ne yiyeceğini sen seç.</h1>
+      <div><p>Kamerayı tut: Menü Okur el yazısı menüyü çevirir, yemeğin ne olduğunu anlatır, helal ve alerji kısıtına göre işaretler. Garsona sorulacak cümleyi de Japonca yazar.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><a class="btn" style="background:#fff;color:var(--indigo)" href="#fiyat">iPhone için indir</a><a class="btn" style="border:2px solid #fff;color:#fff" href="#fiyat">Android için indir</a></div></div>
+    </div>
+  </div>
+  <div class="mon" aria-hidden="true">品書</div>
+</div>
+
+<main id="ana">
+<section class="wall-sec">
+  <div class="wrap">
+    <div class="profile" role="group" aria-label="Beslenme profili">
+      <span>Profilin:</span>
+      <button type="button" data-k="halal" aria-pressed="true">Helal</button>
+      <button type="button" data-k="peanut" aria-pressed="true">Yer fıstığı alerjisi</button>
+      <button type="button" data-k="gluten" aria-pressed="false">Glütensiz</button>
+      <button type="button" data-k="veg" aria-pressed="false">Vejetaryen</button>
+    </div>
+    <div class="wall" id="wall" role="group" aria-label="Shinjuku'da bir izakayanın duvar menüsü; her şeride dokunarak açıklamasını görün"></div>
+    <div class="detail">
+      <div class="card" aria-live="polite">
+        <h2 id="dName">Tonkotsu rāmen</h2>
+        <div class="r" id="dJp">豚骨ラーメン · ¥950</div>
+        <p id="dDesc">12 saat kaynatılmış domuz kemiği suyunda erişte. Bulanık beyaz rengi tavuk suyuna benzer, ama değildir.</p>
+        <ul class="why" id="dWhy"></ul>
+      </div>
+      <div class="lantern">
+        <small>Garsona göster</small>
+        <div class="jp" lang="ja" id="dAsk">この料理に豚肉、アルコール、ピーナッツは入っていますか？</div>
+        <div class="hint" id="dAskTr">"Bu yemekte domuz eti, alkol veya yer fıstığı var mı?"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="explain" id="anlatir">
+  <div class="wrap ex-grid">
+    <div class="bowl">
+      <svg viewBox="0 0 480 360" role="img" aria-label="Tantanmen kâsesi çizimi: susam ve yer fıstığı ezmesi işaretli">
+        <ellipse cx="240" cy="300" rx="190" ry="26" fill="#E6DED1"/>
+        <path d="M60 170 Q240 360 420 170Z" fill="#22355A"/>
+        <ellipse cx="240" cy="170" rx="180" ry="44" fill="#C9572B"/>
+        <ellipse cx="240" cy="170" rx="160" ry="34" fill="#D9743F"/>
+        <g stroke="#F3D79A" stroke-width="5" fill="none" stroke-linecap="round"><path d="M150 170 q30 -16 60 0 t60 0"/><path d="M170 182 q30 -14 60 0 t60 0"/></g>
+        <circle cx="300" cy="160" r="22" fill="#6B4A2E"/><circle cx="185" cy="155" r="14" fill="#5B8C3A"/><circle cx="205" cy="148" r="11" fill="#5B8C3A"/>
+        <g fill="#F7F2E8"><circle cx="270" cy="178" r="2.5"/><circle cx="280" cy="172" r="2.5"/><circle cx="262" cy="168" r="2.5"/><circle cx="290" cy="182" r="2.5"/></g>
+        <line x1="300" y1="160" x2="390" y2="70" stroke="#1B1A1D" stroke-width="1.5"/>
+        <rect x="340" y="40" width="130" height="30" rx="15" fill="#B26A00"/><text x="405" y="60" font-family="Instrument Sans" font-weight="700" font-size="13" fill="#fff" text-anchor="middle">fıstık ezmesi?</text>
+        <line x1="275" y1="175" x2="120" y2="70" stroke="#1B1A1D" stroke-width="1.5"/>
+        <rect x="30" y="40" width="130" height="30" rx="15" fill="#2E7D4F"/><text x="95" y="60" font-family="Instrument Sans" font-weight="700" font-size="13" fill="#fff" text-anchor="middle">susam ezmesi</text>
+      </svg>
+    </div>
+    <div>
+      <h2 class="s">Çevirmez yalnız; ne olduğunu anlatır.</h2>
+      <p class="lead">"Tantanmen" çevirisi bir şey söylemez. Menü Okur yemeğin nereden geldiğini, içinde genelde ne olduğunu ve neyin değişebileceğini anlatır.</p>
+      <div class="tags">
+        <div><b>Ne?</b><span>Sichuan kökenli, Japonya'ya uyarlanmış acılı, kremamsı susamlı erişte çorbası.</span></div>
+        <div><b>Genelde</b><span>Domuz kıyma, susam ezmesi, acı yağ, pak choi.</span></div>
+        <div><b>Dikkat</b><span>Bazı dükkânlar susam ezmesine yer fıstığı ezmesi karıştırır. Menüde yazmaz; mutlaka sor.</span></div>
+        <div><b>Benzeri</b><span>Fıstıksız ve domuzsuz istersen: "shio rāmen" tavuk ya da deniz ürünü suyu ile; dükkâna sor.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="offline" id="internetsiz">
+  <div class="wrap off-grid">
+    <div>
+      <h2 class="s">Shinjuku'nun bodrum katında, roaming kapalı.</h2>
+      <p class="lead">En iyi izakayalar merdivenle inilen, telefonun çekmediği yerlerdir. Menü Okur'un okuma, çeviri ve içerik bilgisi telefonda; internet gerekmez. Menünün fotoğrafı hiçbir sunucuya gitmez, beslenme profilin de: helal ya da alerji bilgin yalnız senin telefonunda.</p>
+    </div>
+    <div class="status" role="img" aria-label="Telefon durumu: hücresel veri kapalı, Wi-Fi yok, Menü Okur 7 yemeği 2,1 saniyede okudu, gönderilen veri 0 bayt">
+      <div><span>Hücresel veri</span><span class="x">kapalı</span></div>
+      <div><span>Wi-Fi</span><span class="x">yok</span></div>
+      <div><span>Menü okundu</span><span class="v">7 yemek · 2,1 sn</span></div>
+      <div><span>Gönderilen</span><span class="v">0 bayt</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="s">El yazısı, tebeşir tahta, plastik yemek maketi.</h2>
+    <p class="lead">Basılı menü kolaydır. Menü Okur duvara asılı tahta şeritleri, tebeşir tahtasını, vitrin etiketlerini ve el yazısını okumak için eğitildi. 14 dil paketi, her biri ayrı indirilir.</p>
+    <div class="places">
+      <span><b lang="ja">日本</b>Japonya</span><span><b lang="ko">한국</b>Güney Kore</span><span><b lang="zh">中国</b>Çin, Tayvan</span><span><b lang="th">ไทย</b>Tayland</span><span><b lang="vi">Việt</b>Vietnam</span><span><b lang="ka">ქარ</b>Gürcistan</span><span><b lang="el">Ελλ</b>Yunanistan</span><span><b lang="ru">Рус</b>Rusya</span>
+    </div>
+  </div>
+</section>
+
+<section class="voice" style="background:#fff">
+  <div class="wrap">
+    <div class="chop" aria-hidden="true" lang="ja">安心</div>
+    <div>
+      <blockquote>"Osaka'da bir köşe dükkânda menü sadece el yazısıydı. Yer fıstığına alerjim var, helal de yiyorum; eskiden 7-Eleven sandviçiyle idare ederdim. Menü Okur iki yemeği işaretledi, garsona Japonca cümleyi gösterdim, kadın mutfağa gidip sordu. Hayatımın en iyi tai shioyaki'sini yedim."</blockquote>
+      <cite>Merve Aydoğan · İstanbul · iç mimar, iki haftalık Japonya gezisi</cite>
+    </div>
+  </div>
+</section>
+
+<section class="price" id="fiyat">
+  <div class="wrap">
+    <h2 class="s">Bir kâse rāmenden ucuz.</h2>
+    <div class="pr">
+      <div><h3>Dene</h3><div class="amt">0 ₺</div><ul><li>7 gün tüm özellikler</li><li>1 dil paketi</li></ul><a class="btn o" href="#">Ücretsiz başla</a></div>
+      <div class="m"><h3>Menü Okur</h3><div class="amt">179 ₺ <small>tek seferlik</small></div><ul><li>14 dil paketi, internetsiz</li><li>Helal, alerji, vejetaryen, glütensiz profiller</li><li>Garsona sorulacak cümleler</li></ul><a class="btn i" href="#">Satın al</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" style="padding-top:20px">
+  <div class="wrap">
+    <h2 class="s">Sorular</h2>
+    <details><summary>Alerjim ciddi. Uygulamaya güvenebilir miyim?</summary><p>Menü Okur menüde yazanı ve o yemekte genelde ne olduğunu söyler; mutfağın o gün ne kullandığını bilemez. Ciddi alerjide "dikkat" işaretini her zaman garsona sorun; uygulama bunun için Japonca cümleyi hazırlar. Adrenalin kaleminizi yanınızda taşıyın.</p></details>
+    <details><summary>Helal işareti neye göre veriliyor?</summary><p>Domuz ve türevleri, alkol (mirin, sake ile marine) ve hayvansal jelatin aranır. Etin helal kesim olup olmadığı menüden anlaşılamaz; bu durumda "dikkat" görürsünüz ve dükkâna sorulacak cümle hazırdır.</p></details>
+    <details><summary>Menünün fotoğrafı saklanıyor mu?</summary><p>Hayır. Okuma bitince kare silinir. İsterseniz yalnız çeviriyi, yemek adlarıyla birlikte "yediklerim" listesine kaydedebilirsiniz.</p></details>
+    <details><summary>Hangi telefonlarda çalışır?</summary><p>iPhone XS ve sonrası, son 4 yılın Android telefonlarının çoğu. Dil paketi başına 180–300 MB.</p></details>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="row"><b style="color:#fff">Menü Okur</b><span>itadakimasu@menuokur.app</span></div>
+    <div class="made"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  // her yemek için: [jp, okunuş/Türkçe ad, fiyat, açıklama, {halal,peanut,gluten,veg: [durum, neden]}]
+  var M=[
+    ['焼き鳥','Yakitori','¥180','Kömür ateşinde tavuk şiş; tare sosu (soya, mirin, şeker) ile.',{halal:['warn','Tavuk helal kesim mi bilinmez; tare sosunda mirin (alkol) var'],peanut:['ok','Yer fıstığı yok'],gluten:['no','Soya sosu buğday içerir'],veg:['no','Tavuk']}],
+    ['枝豆','Edamame','¥380','Haşlanmış genç soya fasulyesi, deniz tuzu. Bira yanında ilk gelen tabak.',{halal:['ok','Yalnız fasulye ve tuz'],peanut:['ok','Yer fıstığı yok'],gluten:['ok','Glüten yok'],veg:['ok','Bitkisel']}],
+    ['鯛の塩焼き','Tai no shioyaki','¥1.200','Tuzla ızgara bütün çipura, limon ve rendelenmiş turp ile.',{halal:['ok','Balık, tuz; sos yok'],peanut:['ok','Yer fıstığı yok'],gluten:['ok','Glüten yok'],veg:['no','Balık']}],
+    ['豚骨ラーメン','Tonkotsu rāmen','¥950','12 saat kaynatılmış domuz kemiği suyunda erişte. Bulanık beyaz rengi tavuk suyuna benzer, ama değildir.',{halal:['no','Domuz kemiği suyu ve chāshū (domuz eti)'],peanut:['ok','Genelde yer fıstığı yok'],gluten:['no','Buğday eriştesi'],veg:['no','Domuz']}],
+    ['担々麺','Tantanmen','¥1.000','Susam ezmeli, acılı erişte çorbası; domuz kıyma ile.',{halal:['no','Domuz kıyma'],peanut:['warn','Bazı dükkânlar susam ezmesine fıstık ezmesi katar'],gluten:['no','Buğday eriştesi'],veg:['no','Domuz']}],
+    ['冷奴','Hiyayakko','¥350','Soğuk tofu; zencefil, yeşil soğan, üstünde ince balık pulu (katsuobushi), soya sosu.',{halal:['warn','Tofu ve balık pulu sorunsuz; bazı soya soslarında alkol bulunur'],peanut:['ok','Yer fıstığı yok'],gluten:['warn','Soya sosu buğday içerir; sossuz isteyebilirsin'],veg:['warn','Balık pulu var; "katsuobushi nashi" de']}],
+    ['唐揚げ','Karaage','¥680','Zencefil, soya ve sake ile marine edilip kızartılmış tavuk.',{halal:['warn','Sake ile marine (alkol); kesim bilinmez'],peanut:['ok','Yer fıstığı yok'],gluten:['no','Buğday unu ve soya sosu'],veg:['no','Tavuk']}]
+  ];
+  var ASK={halal:['豚肉','アルコール','domuz eti','alkol'],peanut:['ピーナッツ',null,'yer fıstığı',null],gluten:['小麦',null,'buğday',null],veg:['肉や魚',null,'et veya balık',null]};
+  var LBL={ok:'uygun',warn:'sor',no:'uygun değil'},ORD={ok:0,warn:1,no:2};
+  var prof={halal:true,peanut:true,gluten:false,veg:false},sel=3;
+  var wall=document.getElementById('wall');
+  function verdict(m){var v='ok',why=[];Object.keys(prof).forEach(function(k){if(prof[k]){var s=m[4][k];why.push([k,s]);if(ORD[s[0]]>ORD[v])v=s[0]}});return {v:v,why:why}}
+  var NAMES={halal:'Helal',peanut:'Yer fıstığı',gluten:'Glüten',veg:'Vejetaryen'};
+  function render(){
+    wall.innerHTML='';
+    M.forEach(function(m,i){
+      var r=verdict(m),b=document.createElement('button');b.type='button';b.className='strip';b.setAttribute('aria-pressed',i===sel);
+      b.setAttribute('aria-label',m[1]+', '+m[2]+', profiline göre '+LBL[r.v]);
+      b.innerHTML='<span class="jp" lang="ja">'+m[0]+'</span><span class="yen">'+m[2]+'</span><span class="ar"><b>'+m[1]+'</b><span class="badge '+r.v+'">'+LBL[r.v]+'</span></span>';
+      b.addEventListener('click',function(){sel=i;render()});wall.appendChild(b);
+    });
+    var m=M[sel],r=verdict(m);
+    document.getElementById('dName').textContent=m[1];
+    document.getElementById('dJp').textContent=m[0]+' · '+m[2];
+    document.getElementById('dDesc').textContent=m[3];
+    document.getElementById('dWhy').innerHTML=r.why.length?r.why.map(function(w){return '<li><span class="badge '+w[1][0]+'">'+NAMES[w[0]]+': '+LBL[w[1][0]]+'</span><span>'+w[1][1]+'</span></li>'}).join(''):'<li>Profil seçilmedi.</li>';
+    var jp=[],tr=[];Object.keys(prof).forEach(function(k){if(prof[k]){jp.push(ASK[k][0]);tr.push(ASK[k][2]);if(ASK[k][1]){jp.push(ASK[k][1]);tr.push(ASK[k][3])}}});
+    document.getElementById('dAsk').textContent=jp.length?'この料理に'+jp.join('、')+'は入っていますか？':'おすすめは何ですか？';
+    document.getElementById('dAskTr').textContent=tr.length?'"Bu yemekte '+tr.join(', ').replace(/, ([^,]*)$/,' veya $1')+' var mı?"':'"Ne önerirsiniz?"';
+  }
+  document.querySelectorAll('.profile button').forEach(function(b){b.addEventListener('click',function(){var k=b.dataset.k;prof[k]=!prof[k];b.setAttribute('aria-pressed',prof[k]);render()})});
+  render();
+})();
+</script>
+</body>
+</html>

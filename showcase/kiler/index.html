@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiler — Maydanoz bu hafta çöpe gitmesin</title>
+<meta name="description" content="Kiler buzdolabı kamerası ve market fişinden evde ne olduğunu, neyin ne zaman bozulacağını takip eder; önce bitmesi gerekenlerle akşam menüsü önerir. Ne yediğiniz telefonunuzdan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700;800&family=Alegreya+Sans:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --kraft:#D6BF98;
+  --kraft-deep:#B99A6B;
+  --receipt:#FCFCF8;
+  --ink:#2A2824;
+  --sub:#5B5346;
+  --parsley:#356F33;
+  --parsley-soft:#DCEAD3;
+  --tomato:#B83A26;
+  --tomato-soft:#F6DCD5;
+  --lemon:#EBC93E;
+  --shelf:#EEF3F3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--kraft);color:var(--ink);font-family:"Alegreya Sans",system-ui,sans-serif;font-size:19px;line-height:1.55;
+  background-image:radial-gradient(rgba(90,60,20,.07) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.12) 1px,transparent 1.2px);background-size:7px 7px,11px 11px;background-position:0 0,3px 5px}
+.mono{font-family:"Courier Prime",ui-monospace,monospace}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--tomato);outline-offset:3px}
+h1,h2,h3{font-family:"Alegreya",Georgia,serif;font-weight:800;line-height:1.05;letter-spacing:-.01em}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 17px/1 "Alegreya Sans",sans-serif;padding:15px 22px;border-radius:999px;text-decoration:none;border:2px solid var(--ink);cursor:pointer;background:transparent;color:var(--ink)}
+.btn-ink{background:var(--ink);color:#FCFCF8}
+.btn-ink:hover{background:#000}
+.btn:not(.btn-ink):hover{background:rgba(255,255,255,.35)}
+
+.top .wrap{display:flex;justify-content:space-between;align-items:center;height:70px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Alegreya";font-weight:800;font-size:25px;text-decoration:none}
+.top nav{display:flex;gap:24px;font-size:17px;font-weight:500}
+.top nav a{text-decoration:none;color:#3f392f}
+.top nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding:26px 0 80px}
+.hero h1{font-size:clamp(46px,6.6vw,96px);max-width:12ch}
+.hero .row{display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:end}
+.hero .lead{font-size:21px;max-width:28em;margin-top:18px;color:#3a342b}
+.hero .ctas{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.hero .ctas .btn{justify-content:center}
+.hero .ctas small{font-size:15.5px;color:var(--ink);font-weight:500;text-align:center}
+
+.board{display:grid;grid-template-columns:330px 1fr;gap:34px;margin-top:44px;align-items:start}
+.receipt{background:var(--receipt);font-family:"Courier Prime",monospace;font-size:13.5px;line-height:1.5;padding:22px 20px 30px;box-shadow:0 25px 40px -25px rgba(60,40,10,.55);transform:rotate(-1.5deg);position:relative}
+.receipt::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:10px;background:linear-gradient(-45deg,transparent 7px,var(--receipt) 0) 0 0/14px 10px repeat-x,linear-gradient(45deg,transparent 7px,var(--receipt) 0) 0 0/14px 10px repeat-x}
+.receipt .c{text-align:center}
+.receipt hr{border:0;border-top:1px dashed #9a9488;margin:8px 0}
+.receipt .it{display:grid;grid-template-columns:1fr auto 52px;gap:8px;align-items:center;position:relative}
+.receipt .it .stamp{justify-self:end;line-height:1.4;white-space:nowrap;font-family:"Alegreya Sans";font-weight:700;font-size:12px;padding:0 6px;border-radius:3px;transform:rotate(-4deg);border:1.5px solid}
+.stamp.r{color:var(--tomato);border-color:var(--tomato);background:#fff}
+.stamp.y{color:#7a5d00;border-color:#b8960c;background:#fff}
+.stamp.g{color:var(--parsley);border-color:var(--parsley);background:#fff}
+.receipt .it .p{min-width:0}
+.receipt .tot{display:flex;justify-content:space-between;font-weight:700;font-size:16px}
+
+.fridge{background:var(--receipt);border-radius:22px;padding:22px 24px;box-shadow:0 25px 40px -30px rgba(60,40,10,.6)}
+.fridge-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.fridge-head h2{font-size:26px}
+.daypick{display:flex;gap:6px;flex-wrap:wrap}
+.daypick button{font:700 15px/1 "Alegreya Sans";padding:10px 13px;border-radius:999px;border:1.5px solid #cfc6b6;background:#fff;cursor:pointer;color:var(--ink)}
+.daypick button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.shelves{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;background:var(--shelf);border-radius:14px;padding:16px;border:1px solid #dbe4e4}
+.item{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;font-size:16.5px;padding:4px 0}
+.item .bar{height:10px;border-radius:5px;background:#d8dfdf;overflow:hidden}
+.item .bar i{display:block;height:100%;border-radius:5px;transition:width .5s,background .5s}
+.item small{display:block;font-size:13.5px;color:var(--sub)}
+.item.used{opacity:.45}
+.item.used span:first-child{text-decoration:line-through}
+.menu{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-top:16px;border-top:2px dashed #cfc6b6;padding-top:16px}
+.plate{width:84px;height:84px}
+.menu small{font-size:14.5px;color:var(--sub);display:block}
+.menu h3{font-size:27px;margin:2px 0 6px}
+.menu p{font-size:16.5px}
+.menu .uses{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.menu .uses span{font-size:13.5px;font-weight:700;background:var(--parsley-soft);color:#24502a;border-radius:999px;padding:2px 10px}
+.menu .uses span.last{background:var(--tomato-soft);color:#8c2a1a}
+.waste{margin-top:14px;font-size:15.5px;color:var(--sub)}
+.waste b{color:var(--parsley)}
+
+section{padding:96px 0}
+.h2{font-size:clamp(36px,4.6vw,62px);max-width:16ch}
+.intro{font-size:20px;max-width:34em;margin-top:16px;color:#3a342b}
+
+/* how */
+.how{background:var(--receipt)}
+.how .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:46px}
+.how article h3{font-size:25px;margin:14px 0 8px}
+.how article p{font-size:17px;color:var(--sub)}
+.how svg{width:100%;height:150px;display:block;background:var(--shelf);border-radius:16px}
+
+/* bin */
+.bin .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.ledger{background:var(--receipt);padding:26px 26px 30px;font-family:"Courier Prime",monospace;font-size:15.5px;box-shadow:0 25px 40px -30px rgba(60,40,10,.6)}
+.ledger h3{font-family:"Courier Prime";font-weight:700;font-size:16px;margin-bottom:12px;letter-spacing:.04em}
+.ledger .r{display:grid;grid-template-columns:1fr auto auto;gap:18px;padding:6px 0;border-bottom:1px dashed #cfc6b6}
+.ledger .r span:nth-child(2){color:var(--tomato);text-decoration:line-through}
+.ledger .r span:nth-child(3){color:var(--parsley);font-weight:700}
+.ledger .big{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;font-weight:700}
+.ledger .big b{font-size:30px;color:var(--parsley)}
+
+/* secret */
+.secret{background:var(--parsley);color:#F1F6EC}
+.secret .h2{color:#fff}
+.secret .intro{color:#D9E8D2}
+.secret .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.secret ul{list-style:none;display:grid;gap:14px;margin-top:26px}
+.secret li{font-size:18px;padding-left:28px;position:relative}
+.secret li::before{content:"";position:absolute;left:0;top:8px;width:14px;height:14px;border-radius:50% 0 50% 0;background:var(--lemon)}
+.jar{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.25);border-radius:22px;padding:24px}
+.jar p{font-size:17px;color:#E3EEDC}
+.jar .q{font-family:"Alegreya";font-size:24px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.25}
+.jar .stat{display:flex;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px dashed rgba(255,255,255,.3);font-family:"Courier Prime";font-size:15px}
+
+/* voices + price */
+.vp .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+.vp blockquote p{font-family:"Alegreya";font-weight:700;font-size:clamp(26px,2.8vw,36px);line-height:1.22}
+.vp blockquote footer{margin-top:18px;font-size:17px;color:#3f392f}
+.vp blockquote footer b{color:var(--ink)}
+.tag{background:var(--receipt);padding:26px;transform:rotate(1deg);box-shadow:0 25px 40px -30px rgba(60,40,10,.6);position:relative}
+.tag::before{content:"";position:absolute;top:14px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--kraft);box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
+.tag h2{font-size:28px;margin-top:20px;text-align:center}
+.tag .row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed #cfc6b6;font-size:17px}
+.tag .row b{font-family:"Courier Prime";font-size:19px;white-space:nowrap}
+.tag .ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;justify-content:center}
+
+.faq .cols{display:grid;grid-template-columns:1fr 1fr;gap:26px 56px;margin-top:40px}
+.faq h3{font-size:22px;margin-bottom:6px;line-height:1.2}
+.faq p{font-size:17px;color:#3a342b}
+
+footer.site{border-top:2px dashed var(--kraft-deep);padding:30px 0 40px;font-size:16px;color:var(--ink)}
+footer.site .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.site .credit{width:100%;margin-top:10px;font-family:"Courier Prime";font-size:13.5px}
+footer.site .credit a{text-decoration:none}
+footer.site .credit a:hover{text-decoration:underline}
+
+@media (max-width:1000px){
+  .top nav{display:none}
+  .hero .row,.board,.bin .grid,.secret .grid,.vp .grid{grid-template-columns:minmax(0,1fr)}
+  .receipt{max-width:340px;margin:0 auto;width:100%}
+  .how .grid{grid-template-columns:minmax(0,1fr)}
+  .faq .cols{grid-template-columns:minmax(0,1fr)}
+  .hero .ctas{flex-direction:row;flex-wrap:wrap}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  body{font-size:17.5px}
+  section{padding:66px 0}
+  .hero{padding:12px 0 56px}
+  .shelves{grid-template-columns:minmax(0,1fr)}
+  .fridge{padding:18px 14px}
+  .item{grid-template-columns:1fr 90px}
+  .menu{grid-template-columns:minmax(0,1fr)}
+  .plate{width:64px;height:64px}
+  .board{order:2}
+  .hero .ctas small{text-align:left;width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="6" y="3" width="18" height="24" rx="3" fill="#FCFCF8" stroke="#2A2824" stroke-width="2"/><path d="M6 12h18" stroke="#2A2824" stroke-width="2"/><path d="M10 7v2M10 16v4" stroke="#2A2824" stroke-width="2" stroke-linecap="round"/><path d="M19 22c-2-3-1-6 2-8 1 3 0 6-2 8z" fill="#356F33"/></svg>Kiler</a>
+    <nav aria-label="Ana menü"><a href="#cop">Çöp defteri</a><a href="#sir">Kilerin sırrı</a><a href="#fiyat">Fiyat</a></nav>
+    <a class="btn btn-ink" href="#fiyat" style="padding:11px 18px">İndir</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="row">
+      <div>
+        <h1 id="h1">Maydanoz bu hafta çöpe gitmiyor.</h1>
+        <p class="lead">Kiler market fişini ve buzdolabının içini okur; neyin ne zaman bozulacağını bilir. Her akşam önce bitmesi gerekenlerle bir yemek önerir. Siz de bilirsiniz ki bu hafta hiçbir şey ziyan olmadı.</p>
+      </div>
+      <div class="ctas"><a class="btn btn-ink" href="#fiyat">iPhone için indir</a><a class="btn" href="#fiyat">Android için indir</a><small>Ne yediğiniz telefonunuzdan çıkmaz</small></div>
+    </div>
+
+    <div class="board">
+      <div class="receipt" aria-label="Okunan market fişi ve her ürüne basılan son gün damgaları">
+        <p class="c"><b>SEMT PAZARI + MARKET</b><br>Cumartesi 07.11.2026 · 11:42</p>
+        <hr>
+        <div class="it"><span class="p">MAYDANOZ 1 DEMET</span><span>25,00</span><span class="stamp y">Çar</span></div>
+        <div class="it"><span class="p">DEREOTU 1 DEMET</span><span>25,00</span><span class="stamp r">Sal</span></div>
+        <div class="it"><span class="p">DOMATES 1,2 KG</span><span>66,00</span><span class="stamp g">Cum</span></div>
+        <div class="it"><span class="p">ISPANAK 1 KG</span><span>55,00</span><span class="stamp r">Sal</span></div>
+        <div class="it"><span class="p">TAVUK BUT 1 KG</span><span>189,00</span><span class="stamp r">Pzt</span></div>
+        <div class="it"><span class="p">MANTAR 250 G</span><span>54,90</span><span class="stamp y">Çar</span></div>
+        <div class="it"><span class="p">YOĞURT 1 KG</span><span>89,90</span><span class="stamp g">17 Kas</span></div>
+        <div class="it"><span class="p">SÜT 1 L</span><span>42,50</span><span class="stamp g">Paz</span></div>
+        <div class="it"><span class="p">KAŞAR 400 G</span><span>210,00</span><span class="stamp g">Ara</span></div>
+        <div class="it"><span class="p">LAVAŞ 6'LI</span><span>35,00</span><span class="stamp y">Cum</span></div>
+        <div class="it"><span class="p">LİMON 4 AD</span><span>30,00</span><span class="stamp g">21 Kas</span></div>
+        <hr>
+        <p class="tot"><span>TOPLAM</span><span>822,30</span></p>
+        <p class="c" style="margin-top:8px;font-size:12.5px">KİLER: 11 ürün okundu · telefonda</p>
+        <p style="margin-top:10px;font-family:'Alegreya Sans';font-size:14px;line-height:1.4;color:#3a342b">Fiş yoksa sesli not ya da tezgâh fotoğrafı; buzdolabı kamerası isteğe bağlı.</p>
+      </div>
+
+      <div class="fridge" aria-label="Buzdolabı ve günün menüsü">
+        <div class="fridge-head">
+          <h2>Buzdolabında şu an</h2>
+          <div class="daypick" role="group" aria-label="Gün seç">
+            <button aria-pressed="true" data-d="0">Pzt 9</button><button aria-pressed="false" data-d="1">Sal 10</button><button aria-pressed="false" data-d="2">Çar 11</button><button aria-pressed="false" data-d="3">Per 12</button><button aria-pressed="false" data-d="4">Cum 13</button>
+          </div>
+        </div>
+        <div class="shelves" id="shelves"></div>
+        <div class="menu" aria-live="polite">
+          <svg class="plate" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="40" fill="#fff" stroke="#cfc6b6" stroke-width="2"/><circle cx="42" cy="42" r="28" fill="none" stroke="#e7e1d5" stroke-width="2"/><g id="food"></g></svg>
+          <div>
+            <small id="mDay">Pazartesi akşamı · 35 dk · 2 kişi</small>
+            <h3 id="mName">Fırında limonlu tavuk but, ıspanak salatası</h3>
+            <p id="mWhy">Tavuk bugün son gün. Ispanağın yarısı salataya, kalanı yarına.</p>
+            <div class="uses" id="mUses"></div>
+          </div>
+        </div>
+        <p class="waste" id="waste">Bu hafta çöpe giden: <b>0 ₺</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bin" id="cop" aria-labelledby="h-cop">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-cop">Çöpe giden para da bir fiştir.</h2>
+        <p class="intro">Kiler, bozulup atılanları da kaydeder. İlk ay çoğu çift şaşırır: atılanlar neredeyse hep aynı beş ürün. İkinci aydan sonra alışveriş listesi de değişiyor; daha az ama yetecek kadar.</p>
+        <p class="intro">Utanmak yerine bilmek. Ay sonunda kısa bir özet: ne kurtardınız, ne gitti, gelecek ay neyi yarım alın.</p>
+      </div>
+      <div class="ledger" aria-label="Çöp defteri: Ekim ile Kasım karşılaştırması">
+        <h3>ÇÖP DEFTERİ · EKİM → KASIM</h3>
+        <div class="r"><span>Maydanoz, dereotu</span><span>200,00</span><span>25,00</span></div>
+        <div class="r"><span>Ispanak, marul</span><span>165,00</span><span>0,00</span></div>
+        <div class="r"><span>Yarım yoğurt</span><span>90,00</span><span>0,00</span></div>
+        <div class="r"><span>Bayatlayan ekmek</span><span>120,00</span><span>20,00</span></div>
+        <div class="r"><span>Unutulan tavuk</span><span>189,00</span><span>0,00</span></div>
+        <div class="big"><span>Bu ay kurtarılan</span><b>719 ₺</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secret" id="sir" aria-labelledby="h-sir">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-sir">Kilerin sırrı kilerde kalır.</h2>
+        <p class="intro">Buzdolabınız çok şey anlatır: diyetiniz, hastalığınız, bütçeniz, kimlerin yemeğe geldiği, ramazanda sahura kalkıp kalkmadığınız. Bu yüzden Kiler fişi de raf karesini de telefonda okur. Hiçbir market, reklamcı ya da bizim sunucumuz ne aldığınızı bilmez.</p>
+        <ul>
+          <li>Kamera kareleri işlendikten sonra silinir</li>
+          <li>Fişin yalnız ürün satırları kalır; kart numarası, mağaza adresi okunmaz</li>
+          <li>Hesap yok; iki telefon ev ağı üzerinden eşleşir</li>
+        </ul>
+      </div>
+      <div class="jar">
+        <p class="q">“Neden bir yemek uygulaması internetsiz çalışsın?”</p>
+        <p>Çünkü menü önerisi sizin dolabınızdan çıkar, internetten değil. 2.400 Türk mutfağı tarifi uygulamanın içinde; elinizde ne varsa onunla eşleşir.</p>
+        <div class="stat"><span>Tarifler</span><span>2.400 · telefonda</span></div>
+        <div class="stat"><span>Tanınan ürün</span><span>1.150 · pazar dahil</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="vp" id="fiyat" aria-label="Kullanıcı yorumu ve fiyat">
+  <div class="wrap">
+    <div class="grid">
+      <blockquote>
+        <p>“Her pazar maydanoz alıp her perşembe çöpe atıyorduk; biri çöpü dökerken öbürü bakmıyordu. Şimdi çarşamba akşamı maydanozlu bir şey pişiyor. Küçük bir şey ama içimiz rahat.”</p>
+        <footer><b>Zeynep ve Onur Kılıç</b> · Bornova, İzmir · ikisi de öğretmen, 2+1, haftada bir pazar</footer>
+      </blockquote>
+      <div class="tag">
+        <h2>Fiyat etiketi</h2>
+        <div class="row"><span>Fiş okuma, son gün takibi, menü önerisi</span><b>0 ₺</b></div>
+        <div class="row"><span>Buzdolabı kamerası (kapı içi, pilli)</span><b>890 ₺</b></div>
+        <div class="row"><span>Çöp defteri + iki telefonla paylaşım</span><b>99 ₺ · bir kez</b></div>
+        <div class="ctas"><a class="btn btn-ink" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="h-sss">
+  <div class="wrap">
+    <h2 class="h2" id="h-sss">Sık sorulanlar</h2>
+    <div class="cols">
+      <div><h3>Kamera olmadan da olur mu?</h3><p>Olur. Fiş ve sesli notla da çalışır; kamera yalnızca “ben unuttum” kısmını üstlenir. Kullanıcıların yarısı kamerasız kullanıyor.</p></div>
+      <div><h3>Son günleri nereden biliyor?</h3><p>Ürünün türünden, alım gününden ve açılıp açılmadığından. Paketli üründe tarihi fişten değil, kamera karesinden okur. Tahmini her zaman “yaklaşık” diye gösterir; koklamak yine sizin işiniz.</p></div>
+      <div><h3>Menüler hep aynı mı olur?</h3><p>Hayır. Son iki haftada ne pişirdiğinizi bilir, tekrar etmez. “Bu akşam fırın açmak istemiyorum” derseniz 20 dakikalık tencere yemeklerine geçer.</p></div>
+      <div><h3>Pazardan alınan fişsiz ürünler?</h3><p>Pazar dönüşü tezgâha dizip tek fotoğraf çekin ya da sayın. Kiler 1.150 ürünü tanır; demet, kilo, tane ayrımını kendisi yapar.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Kiler · İzmir · mutfakta yapıldı</span>
+    <span>merhaba@kiler.app</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // expiry: day index from Mon(0); used: day index when consumed
+  var I=[
+    {n:'Tavuk but',k:'tavuk',exp:0,life:2,used:0},
+    {n:'Dereotu',k:'dereotu',exp:1,life:3,used:1},
+    {n:'Ispanak',k:'ispanak',exp:1,life:3,used:1},
+    {n:'Maydanoz',k:'maydanoz',exp:2,life:4,used:2},
+    {n:'Mantar',k:'mantar',exp:2,life:4,used:2},
+    {n:'Lavaş',k:'lavas',exp:4,life:6,used:4},
+    {n:'Domates',k:'domates',exp:4,life:6,used:3},
+    {n:'Süt',k:'sut',exp:6,life:8,used:9},
+    {n:'Yoğurt',k:'yogurt',exp:8,life:10,used:9},
+    {n:'Kaşar',k:'kasar',exp:20,life:22,used:9}
+  ];
+  var dn=['Pazartesi','Salı','Çarşamba','Perşembe','Cuma'];
+  var M=[
+    {t:'35 dk · 2 kişi',n:'Fırında limonlu tavuk but, ıspanak salatası',w:'Tavuk bugün son gün. Ispanağın yarısı salataya, kalanı yarına.',u:[['Tavuk',1],['Ispanak',0],['Limon',0]],c:['#C98A4A','#356F33']},
+    {t:'25 dk · 2 kişi',n:'Yoğurtlu ıspanak kavurması, dereotlu pilav',w:'Ispanak ve dereotu yarın sararır. Yoğurdun ilk yarısı da burada açılır.',u:[['Ispanak',1],['Dereotu',1],['Yoğurt',0]],c:['#356F33','#F2EEE2']},
+    {t:'30 dk · 2 kişi',n:'Mantar sote, maydanozlu bulgur pilavı',w:'İşte o maydanoz. Bu akşam bitiyor, çöpe değil tencereye.',u:[['Maydanoz',1],['Mantar',1],['Domates',0]],c:['#8A6A4A','#C9A55A']},
+    {t:'15 dk · 2 kişi',n:'Menemen, yanında lavaş',w:'Domatesler yumuşadı; menemen için tam kıvamında.',u:[['Domates',1],['Lavaş',0],['Yumurta',0]],c:['#B83A26','#EBC93E']},
+    {t:'20 dk · 2 kişi',n:'Kaşarlı lavaş dürüm, cacık',w:'Son lavaşlar ve yoğurt. Hafta bitti, çöpe giden: 0 ₺.',u:[['Lavaş',1],['Kaşar',0],['Yoğurt',0]],c:['#E7C67A','#F2EEE2']}
+  ];
+  var sh=document.getElementById('shelves');
+  function color(left,life){var r=left/life; if(left<=1)return '#B83A26'; if(r<.5)return '#C27612'; return '#356F33';}
+  function draw(d){
+    var h='';
+    I.forEach(function(it){var used=it.used<d, left=it.exp-d+1, w=Math.max(4,Math.min(100,left/it.life*100));
+      var lbl=used?'kullanıldı':(left<=1?'bugün son gün':left+' gün');
+      h+='<div class="item'+(used?' used':'')+'"><span>'+it.n+'<small>'+lbl+'</small></span><span class="bar"><i style="width:'+(used?0:w)+'%;background:'+color(left,it.life)+'"></i></span></div>';});
+    sh.innerHTML=h;
+    var m=M[d];
+    document.getElementById('mDay').textContent=dn[d]+' akşamı · '+m.t;
+    document.getElementById('mName').textContent=m.n;document.getElementById('mWhy').textContent=m.w;
+    document.getElementById('mUses').innerHTML=m.u.map(function(x){return '<span class="'+(x[1]?'last':'')+'">'+x[0]+(x[1]?' · son gün':'')+'</span>'}).join('');
+    document.getElementById('food').innerHTML='<ellipse cx="36" cy="40" rx="16" ry="12" fill="'+m.c[0]+'"/><ellipse cx="50" cy="48" rx="12" ry="9" fill="'+m.c[1]+'"/><circle cx="46" cy="34" r="3" fill="#356F33"/><circle cx="30" cy="50" r="2.5" fill="#356F33"/>';
+  }
+  var bs=[].slice.call(document.querySelectorAll('.daypick button'));
+  bs.forEach(function(b){b.addEventListener('click',function(){bs.forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');draw(+b.dataset.d);});});
+  draw(0);
+})();
+</script>
+</body>
+</html>

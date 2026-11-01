@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sesim — Sesinizi kaybetmeden kaydedin, yazdıklarınızı kendi sesiniz okusun</title>
+<meta name="description" content="ALS ve gırtlak kanseri tanısı alanlar için ses bankası. Sesinizi evde kaydedersiniz, kişisel ses modeliniz telefonunuzda oluşur, yazdıklarınızı kendi sesinizle okur. Ses modeli cihazdan çıkmaz. Tanı raporuyla ücretsiz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dusk:#F4F1F6;     /* akşamüstü oda ışığı */
+  --ink:#2A2340;      /* koyu çivit-mürdüm, gece */
+  --soft:#5A5470;
+  --line:#DDD7E6;
+  --saffron:#B8661A;  /* sesin rengi: dalga formu (yalnız şekil) */
+  --saffron-ink:#9A5210;
+  --white:#FFFFFF;
+  --lav:#E6E0EE;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--dusk);color:var(--ink);font:400 1.2rem/1.7 "Nunito Sans",system-ui,sans-serif;overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+a{color:var(--saffron-ink);text-underline-offset:.2em}
+:focus-visible{outline:3px solid var(--ink);outline-offset:4px;border-radius:4px}
+.skip{position:absolute;left:1rem;top:-6rem;background:var(--ink);color:#fff;padding:1rem 1.2rem;border-radius:6px;z-index:9}
+.skip:focus{top:1rem}
+.wrap{max-width:1120px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+h1,h2,h3{font-family:"Literata",Georgia,serif;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2.3rem,4.4vw,3.4rem);font-weight:400;max-width:20ch}
+h2{font-size:clamp(1.8rem,3.3vw,2.5rem);font-weight:400;max-width:22ch}
+h3{font-size:1.3rem}
+p{max-width:60ch}
+.soft{color:var(--soft)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 1.5rem;border-radius:8px;font:700 1.1rem "Nunito Sans";text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.light{background:transparent;color:var(--ink)}
+
+header{border-bottom:1px solid var(--line)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:84px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--ink);font:600 1.5rem "Literata"}
+.call{display:flex;flex-direction:column;align-items:flex-end;font-size:1rem;line-height:1.3}
+.call a{font-weight:700;font-size:1.15rem;color:var(--ink);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.call a:hover{text-decoration:underline}
+
+/* hero */
+.hero{padding:4rem 0 5rem}
+.hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero .lede{font-size:1.3rem;margin:1.4rem 0 2rem}
+.ctas{display:flex;gap:.8rem;flex-wrap:wrap}
+.reassure{margin-top:1.4rem;font-size:1.05rem;color:var(--soft)}
+
+.player{background:var(--white);border-radius:14px;padding:1.8rem;box-shadow:0 1px 0 var(--line),0 18px 40px -24px rgba(42,35,64,.35)}
+.voice-id{display:flex;align-items:center;gap:.9rem;padding-bottom:1.1rem;border-bottom:1px solid var(--line)}
+.voice-id .av{width:48px;height:48px;border-radius:50%;background:var(--lav);display:grid;place-items:center;font:600 1.2rem "Literata"}
+.voice-id b{display:block;font-size:1.1rem}
+.voice-id span{font-size:.95rem;color:var(--soft)}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.2rem 0 1rem}
+.chips button{min-height:48px;padding:.4rem 1rem;border-radius:24px;border:2px solid var(--line);background:var(--dusk);color:var(--ink);font:600 1rem "Nunito Sans";cursor:pointer;text-align:left}
+.chips button[aria-pressed="true"]{border-color:var(--ink);background:var(--white)}
+.typed{font:400 1.45rem/1.45 "Literata";min-height:4.4em;padding:.4rem 0}
+.typed span{transition:color .15s}
+.typed span.lit{color:var(--saffron-ink);text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.25em}
+.wave{display:block;width:100%;height:64px;margin:.6rem 0 1rem}
+.wave rect{fill:#CFC6DD;transition:fill .1s}
+.wave rect.on{fill:var(--saffron)}
+.play-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.play-row small{color:var(--soft);font-size:.95rem}
+
+/* first weeks */
+.weeks{background:var(--white);padding:6rem 0}
+.weeks .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start}
+.weeks p{margin-top:1.1rem}
+.calc{background:var(--dusk);border-radius:14px;padding:1.8rem}
+.calc label{display:block;font-weight:700;margin-bottom:.6rem}
+.calc input[type=range]{width:100%;height:44px;accent-color:var(--ink)}
+.calc output{display:block;font:400 1.6rem/1.35 "Literata";margin-top:1rem}
+.calc .scale{display:flex;justify-content:space-between;font-size:.95rem;color:var(--soft)}
+.calc .fine{font-size:1rem;color:var(--soft);margin-top:.9rem}
+
+/* steps */
+.steps{padding:6rem 0}
+.steps ol{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-top:2.8rem;counter-reset:s}
+.steps li{counter-increment:s;padding-top:1.2rem;border-top:1px solid var(--ink)}
+.steps li::before{content:counter(s) ". adım";display:block;font-size:.98rem;font-weight:700;color:var(--soft);margin-bottom:.5rem}
+.steps li p{margin-top:.6rem;color:var(--soft)}
+.sample{margin-top:1rem;background:var(--white);border-left:3px solid var(--saffron);padding:.8rem 1rem;font:italic 400 1.05rem/1.5 "Literata"}
+
+/* partner */
+.partner{padding:6rem 0;background:var(--lav)}
+.partner .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem}
+.partner ul{list-style:none}
+.partner li{padding:1.1rem 0;border-bottom:1px solid #cfc7dc}
+.partner li b{display:block}
+.partner li span{color:var(--soft)}
+
+/* privacy */
+.yours{background:var(--ink);color:var(--dusk);padding:6rem 0}
+.yours :focus-visible{outline-color:#fff}
+.yours .wrap{max-width:860px}
+.yours h2{font-size:clamp(2rem,4vw,3rem);max-width:18ch}
+.yours p{margin-top:1.3rem;color:#D8D2E6;font-size:1.25rem}
+.yours .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.8rem;border-top:1px solid #4a4262;padding-top:1.8rem}
+.yours .facts b{display:block;font:400 1.7rem "Literata";color:#fff}
+.yours .facts span{font-size:1rem;color:#D8D2E6}
+
+/* price */
+.price{padding:6rem 0}
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.card{background:var(--white);border-radius:14px;padding:2rem;border:1px solid var(--line)}
+.card .amt{font:400 2.8rem/1 "Literata";margin:.7rem 0 .4rem}
+.card ul{margin:1.1rem 0 1.5rem 1.2rem}
+.card li{padding:.25rem 0}
+
+.quote{padding:5rem 0;border-top:1px solid var(--line)}
+.quote blockquote{font:italic 400 clamp(1.5rem,3vw,2.2rem)/1.4 "Literata";max-width:30ch}
+.quote figcaption{margin-top:1.3rem;color:var(--soft)}
+
+.faq{padding:4rem 0 6rem}
+.faq .wrap{max-width:860px}
+details{border-bottom:1px solid var(--line);background:transparent}
+summary{cursor:pointer;min-height:64px;display:flex;align-items:center;gap:1rem;font:600 1.2rem "Literata";padding:.9rem 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";font:400 1.5rem "Nunito Sans";width:1.4rem;color:var(--saffron-ink);flex:none}
+details[open] summary::before{content:"–"}
+details p{padding:0 0 1.4rem 2.4rem;color:var(--soft)}
+
+footer{border-top:1px solid var(--line);padding:3rem 0 2rem;font-size:1rem;color:var(--soft)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+footer .credit{margin-top:2rem;font-size:.9rem}
+footer .credit a{color:var(--soft)}
+
+@media (max-width:900px){
+  .hero .wrap,.weeks .wrap,.partner .wrap,.price .wrap{grid-template-columns:minmax(0,1fr);gap:2.4rem}
+  .steps ol,.yours .facts{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 1rem}
+  .call{align-items:flex-start}
+  .hero{padding:2.4rem 0 4rem}
+  .player{padding:1.2rem}
+  .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Sesim ana sayfa">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#2A2340"/><g stroke="#F4F1F6" stroke-width="2.4" stroke-linecap="round"><path d="M9 15v4M13 11v12M17 8v18M21 12v10M25 15v4"/></g></svg>
+      Sesim
+    </a>
+    <div class="call">
+      <span class="soft">Ses bankası danışmanı, hafta içi 09–19</span>
+      <a href="tel:+908500000737">0 850 000 07 37</a>
+    </div>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <h1 id="h1">Sesiniz değişmeden kaydedin. Yazdıklarınızı yıllarca kendi sesiniz okusun.</h1>
+      <p class="lede">ALS ya da gırtlak kanseri tanısından sonra ilk sorulardan biri budur: “Sesim ne olacak?” Sesim, sesinizi evinizde kaydetmenize ve kişisel ses modelinizi telefonunuzda oluşturmanıza yardım eder.</p>
+      <div class="ctas">
+        <a class="btn dark" href="#ucret">Kayda bugün başlayın</a>
+        <a class="btn light" href="#ilk">İlk haftalar için plan</a>
+      </div>
+      <p class="reassure">Tanı raporuyla ücretsiz. Kayıt günde 15 dakikayla başlar; yorulduğunuzda ara verirsiniz.</p>
+    </div>
+
+    <div class="player" role="region" aria-labelledby="pl-h">
+      <h2 id="pl-h" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Örnek: Murat Aksoy'un ses modeli</h2>
+      <div class="voice-id">
+        <span class="av" aria-hidden="true">M</span>
+        <div><b>Murat'ın sesi</b><span>1.412 cümleden oluşturuldu · Mart 2026 · bu telefonda</span></div>
+      </div>
+      <div class="chips" role="group" aria-label="Kayıtlı cümleler">
+        <button type="button" aria-pressed="true" data-i="0">Torununa</button>
+        <button type="button" aria-pressed="false" data-i="1">Doktora</button>
+        <button type="button" aria-pressed="false" data-i="2">Nurten'e</button>
+      </div>
+      <p class="typed" id="typed" aria-live="polite"></p>
+      <svg class="wave" id="wave" viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="play-row">
+        <button class="btn dark" type="button" id="play">Murat'ın sesiyle oku</button>
+        <small id="pnote">Göz takibiyle yazıldı · 38 sn</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="weeks" id="ilk" aria-labelledby="w-h">
+  <div class="wrap">
+    <div>
+      <h2 id="w-h">Acele değil, düzen gerekiyor</h2>
+      <p>Ses bankası için en iyi zaman, sesiniz henüz yormuyorken. Bu çoğu zaman tanıdan sonraki ilk aylardır. Panik yapmanıza gerek yok; her gün biraz, aynı saatte, aynı sandalyede.</p>
+      <p class="soft">Kaydı sabahları yapmanızı öneriyoruz: ses telleri dinlenmiş, ev sessizdir. Kayıt sırasında bir bardak ılık su yanınızda dursun.</p>
+      <p class="soft">Kısa sürede ameliyat (larenjektomi) planlandıysa bunu bize söyleyin; daha az cümleyle hızlı bir model kuran yolu açarız.</p>
+    </div>
+    <div class="calc">
+      <label for="mins">Günde kaç dakika kayıt yapabilirsiniz?</label>
+      <input type="range" id="mins" min="5" max="45" step="5" value="15" aria-describedby="res">
+      <div class="scale" aria-hidden="true"><span>5 dk</span><span>45 dk</span></div>
+      <output id="res" for="mins" aria-live="polite"></output>
+      <p class="fine">Doğal bir model için 800 cümle yeterli, 1.500 cümle sesinizin gülüşünü ve vurgusunu da yakalar. Ortalama bir cümle, tekrarlarla 25 saniye sürer.</p>
+    </div>
+  </div>
+</section>
+
+<section class="steps" aria-labelledby="st-h">
+  <div class="wrap">
+    <h2 id="st-h">Üç adımda sizin sesiniz</h2>
+    <ol>
+      <li><h3>Okuyun</h3><p>Ekranda bir cümle çıkar, siz okursunuz. Gazete haberinden, masallardan, sizin yazdığınız mesajlardan. Kendi sık kullandığınız sözleri de ekleyebilirsiniz.</p><p class="sample">“Kahvemi şekersiz istiyorum, bir de yanına su.”</p></li>
+      <li><h3>Telefon gece çalışır</h3><p>Kayıt bitince telefonu şarja takın. Ses modeliniz gece boyunca, 6–8 saatte telefonun içinde oluşur. İnternete bağlanmaz.</p></li>
+      <li><h3>Yazın, o okusun</h3><p>Klavyeyle, göz takip cihazıyla ya da hazır cümlelerden seçin. Telefon, tablet ya da konuşma cihazınız sizin sesinizle okur.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="partner" aria-labelledby="pa-h">
+  <div class="wrap">
+    <div>
+      <h2 id="pa-h">Eşiniz için de yazdık</h2>
+      <p style="margin-top:1rem" class="soft">Kayıtların çoğu iki kişiyle yapılır. Bu süreçte yorulan sadece hasta değil.</p>
+    </div>
+    <ul>
+      <li><b>Cümleyi o okutabilir</b><span>Eşinizin telefonu “kayıt yardımcısı” olur: sırayı tutar, tekrar ister, bugünlük bitti der.</span></li>
+      <li><b>Yedeği evde kalır</b><span>Ses modeli şifreli olarak yalnız ailenizin seçtiği bir USB belleğe ya da eşinizin telefonuna yedeklenir.</span></li>
+      <li><b>Eski kayıtlar da işe yarar</b><span>Düğün videosu, sesli mesajlar: sesin henüz değişmediği kayıtlar modele eklenebilir.</span></li>
+      <li><b>Bir danışman yanınızda</b><span>İlk oturumu ses bankası danışmanımızla telefonda birlikte yaparsınız; ücretsiz, 30 dakika.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="yours" aria-labelledby="y-h">
+  <div class="wrap">
+    <h2 id="y-h">Sesiniz kimsenin kopyalayamayacağı yerde durur.</h2>
+    <p>Ses kopyalama dolandırıcılığının arttığı bir dönemde, en kişisel şeyinizi bir sunucuya emanet etmenizi istemiyoruz. Kayıtlarınız ve ses modeliniz telefonunuzdan hiç çıkmaz; biz de dahil kimse onlara erişemez.</p>
+    <p>Hastanede yatarken, Wi-Fi'nin çekmediği yoğun bakım katında, uçakta: sesiniz her yerde, internetsiz sizinle konuşur.</p>
+    <div class="facts">
+      <div><b>0</b><span>sunucuya giden kayıt</span></div>
+      <div><b>Yalnız siz</b><span>modeli kullanabilir; yüz ya da parmak izi kilidiyle</span></div>
+      <div><b>Size ait</b><span>model dosyası; istediğiniz an silebilir ya da başka cihaza taşıyabilirsiniz</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="price" id="ucret" aria-labelledby="pr-h">
+  <div class="wrap">
+    <div>
+      <h2 id="pr-h">Tanı raporuyla ücretsiz</h2>
+      <p style="margin-top:1.1rem" class="soft">ALS (motor nöron hastalığı), gırtlak kanseri ya da sesi kalıcı etkileyecek başka bir tanı aldıysanız, nörolog ya da KBB hekiminizin raporunun fotoğrafı yeterli. Rapor telefonda doğrulanır, bize gönderilmez.</p>
+    </div>
+    <div class="card">
+      <h3>Sesim</h3>
+      <p class="amt">0 ₺ <span style="font:600 1.05rem 'Nunito Sans'" class="soft">raporla</span></p>
+      <p class="soft">Rapor yoksa tek seferlik 690 ₺</p>
+      <ul>
+        <li>Sınırsız kayıt, kişisel ses modeli</li>
+        <li>Göz takip cihazları ve konuşma cihazlarıyla uyum</li>
+        <li>Eşinizin telefonu için kayıt yardımcısı</li>
+        <li>Ses bankası danışmanıyla 30 dakikalık ilk görüşme</li>
+      </ul>
+      <div class="ctas"><a class="btn dark" href="#">iPhone için indir</a><a class="btn light" href="#">Android için indir</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Bir eşin sözü">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Murat artık konuşamıyor. Ama torunumuza akşam masal okuduğunda, odadan gelen ses hâlâ onun sesi. Deniz farkı bilmiyor bile.”</blockquote>
+      <figcaption><b style="color:var(--ink)">Nurten Aksoy</b>, eşi Murat'a 2024'te ALS tanısı kondu · Kocaeli, İzmit</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="sss-h">
+  <div class="wrap">
+    <h2 id="sss-h" style="margin-bottom:1.4rem">Aklınızdaki sorular</h2>
+    <details><summary>Sesim değişmeye başladı. Geç mi kaldım?</summary><p>Çoğu zaman hayır. Model, sesinizin hâlâ net olan özelliklerini öne alır; eski video ve sesli mesajlarınız da eklenebilir. Danışmanımız ilk görüşmede sesinizi dinleyip size dürüst bir tahmin verir.</p></details>
+    <details><summary>Kaç cümle kaydetmem gerekiyor?</summary><p>800 cümle doğal bir ses için yeterli. 1.500 cümleye ulaşırsanız gülüşünüz, soru tonunuz, vurgunuz da gelir. Uygulama ilerlemenizi gösterir, kaldığınız yerden devam edersiniz.</p></details>
+    <details><summary>Ses tamamen benim gibi mi çıkacak?</summary><p>Yakınlarınız sesinizi tanır; ama bir kayıt kadar kusursuz değildir. Bazı uzun kelimelerde makine tınısı duyulabilir. Bunu baştan söylemek istiyoruz.</p></details>
+    <details><summary>Göz takip cihazımla kullanabilir miyim?</summary><p>Evet. Tobii, Irisbond ve sistemin kendi göz kontrolüyle çalışır. Sık kullandığınız cümleleri tek bakışla seçilecek düğmelere koyabilirsiniz.</p></details>
+    <details><summary>Bu bir tedavi mi?</summary><p>Hayır. Sesim hastalığın seyrini değiştirmez; konuşma yetisini kaybettiğinizde kendi sesinizle iletişim kurmanızı sağlar. Tedaviniz için hekiminizle ve konuşma terapistinizle görüşün.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--ink)">Sesim</b> · nöroloji ve KBB hekimleri, konuşma terapistleriyle hazırlandı<br>bilgi@sesim.app · 0 850 000 07 37</div>
+    <div><a href="#">Hekiminiz için bilgi notu (PDF)</a> · <a href="#">KVKK</a> · <a href="#">Erişilebilirlik</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var T=[
+    ['Deniz, doğum günün kutlu olsun. Dedeni hiç unutma, seni çok seviyorum.','Göz takibiyle yazıldı · 38 sn'],
+    ['Doktor Bey, ağrım sabahları artıyor, gece iki kez uyandım.','Hazır cümleden düzenlendi · 12 sn'],
+    ['Nurten, bugün çok yoruldun. Biraz otur, çayını ben söyleyeyim.','Göz takibiyle yazıldı · 41 sn']
+  ];
+  var typed=document.getElementById('typed'),wave=document.getElementById('wave'),cur=0,timer=null;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bars=[];for(var i=0;i<60;i++){var h=8+Math.abs(Math.sin(i*.55)*30+Math.sin(i*1.7)*14);var r=document.createElementNS('http://www.w3.org/2000/svg','rect');r.setAttribute('x',i*5);r.setAttribute('width',3);r.setAttribute('y',32-h/2);r.setAttribute('height',h);r.setAttribute('rx',1.5);wave.appendChild(r);bars.push(r)}
+  function render(n){
+    cur=n;stop();
+    typed.innerHTML=T[n][0].split(' ').map(function(w){return '<span>'+w+'</span>'}).join(' ');
+    document.getElementById('pnote').textContent=T[n][1];
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null}bars.forEach(function(b){b.classList.remove('on')});typed.querySelectorAll('span').forEach(function(s){s.classList.remove('lit')});document.getElementById('play').textContent="Murat'ın sesiyle oku"}
+  document.getElementById('play').addEventListener('click',function(){
+    if(timer){stop();return}
+    var ws=typed.querySelectorAll('span'),k=0,n=ws.length;
+    if(reduce){ws.forEach(function(s){s.classList.add('lit')});bars.forEach(function(b){b.classList.add('on')});return}
+    this.textContent='Durdur';
+    timer=setInterval(function(){
+      ws.forEach(function(s){s.classList.remove('lit')});
+      if(k>=n){stop();return}
+      ws[k].classList.add('lit');
+      var upto=Math.round((k+1)/n*bars.length);bars.forEach(function(b,j){b.classList.toggle('on',j<upto)});k++;
+    },380);
+  });
+  document.querySelectorAll('.chips button').forEach(function(b){b.addEventListener('click',function(){
+    document.querySelectorAll('.chips button').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');render(+b.dataset.i);
+  })});
+  render(0);
+
+  var m=document.getElementById('mins'),res=document.getElementById('res');
+  function calc(){var v=+m.value,perDay=Math.floor(v*60/25),d800=Math.ceil(800/perDay),d1500=Math.ceil(1500/perDay);
+    res.textContent='Günde '+v+' dakika ≈ '+perDay+' cümle. 800 cümle '+wk(d800)+', 1.500 cümle '+wk(d1500)+' sürer.';}
+  function wk(d){return d<=7?d+' günde':(Math.round(d/7*2)/2).toString().replace('.',',')+' haftada'}
+  m.addEventListener('input',calc);calc();
+})();
+</script>
+</body>
+</html>

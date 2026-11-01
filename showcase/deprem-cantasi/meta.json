@@ -1,0 +1,20 @@
+{
+  "slug": "deprem-cantasi",
+  "name": "Artçı",
+  "interpretation": "Mutfak masasındaki plan",
+  "world": "Bir pazar akşamı mutfak masasında yazdırılmış aile planı, kapı yanında çanta, çocuğun düdüğü ve mahallenin yeşil toplanma alanı tabelası.",
+  "palette": [
+    "#F3F4F1",
+    "#1D2A2E",
+    "#1E6B4A",
+    "#DDE6E0",
+    "#B9501C"
+  ],
+  "fonts": [
+    "Merriweather",
+    "Merriweather Sans"
+  ],
+  "score": 27,
+  "lowest": "Tanınabilirlik",
+  "moment": "Şebeke anahtarı kapalıyken dört an (sarsıntıda, bitince, enkaz altında, buluşma) sekmeleri aynen çalışır; buluşmada aile üyelerinin durumu telefondan telefona atlayarak görünür."
+}

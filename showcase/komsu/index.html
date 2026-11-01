@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Komşu — Babanızın gündelik düzeni bozulursa tek bir mesaj</title>
+<meta name="description" content="Komşu, tek yaşayan babanızın çaydanlık, kapı ve ışık düzenini öğrenir. Düzen bozulursa size ve dilerseniz alt kattaki komşuya tek bir mesaj atar. Kamera yok, mikrofon yok; her şey evdeki kutuda kalır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --snow:#F5F6F3; --white:#FFFFFF; --tile:#1F6F7A; --tile-dk:#16545C; --tile-soft:#DCEDEE; --tea:#9B2C1F; --amber:#E3A72F; --coal:#23262A; --soft:#4F555B; --line:#DCDFDA;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--snow);color:var(--coal);font-family:Nunito,system-ui,sans-serif;font-size:21px;line-height:1.6}
+a{color:var(--tile-dk)}
+:focus-visible{outline:3px solid var(--tea);outline-offset:3px;border-radius:6px}
+h1,h2,h3{margin:0;line-height:1.15;font-weight:800}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:26px;text-decoration:none;color:var(--coal)}
+.top nav{display:flex;gap:26px;font-size:18px;font-weight:600}
+.top nav a{text-decoration:none;color:var(--coal)}
+.top nav a:hover{text-decoration:underline}
+
+/* hero */
+.hero{padding:30px 0 70px}
+.hero h1{font-size:clamp(36px,4.4vw,58px);max-width:22ch}
+.hero h1 span{color:var(--tile)}
+.hero .lead{margin-top:20px;font-size:22px;color:var(--soft);max-width:52ch}
+
+.day{margin-top:44px;background:var(--white);border-radius:24px;padding:26px 28px 24px;border:1px solid var(--line)}
+.day-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.day-head b{font-size:22px}
+.day-head b small{display:block;font-size:16px;font-weight:600;color:var(--soft)}
+.toggle{display:inline-flex;background:var(--snow);border-radius:40px;padding:5px;border:1px solid var(--line)}
+.toggle button{font:700 17px Nunito,sans-serif;border:0;background:transparent;padding:10px 18px;border-radius:30px;cursor:pointer;color:var(--soft)}
+.toggle button[aria-pressed="true"]{background:var(--coal);color:#fff}
+.ribbon{position:relative;margin:30px 0 8px;height:150px}
+.ev.side .lbl{position:absolute;top:2px;right:calc(50% + 32px);width:130px;margin:0;text-align:right}
+.tileband{height:22px;background-color:#16545C;background-image:radial-gradient(circle at 50% 50%,#E3A72F 0 3px,transparent 3.5px),radial-gradient(circle at 0 0,#DCEDEE 0 7px,transparent 7.5px),radial-gradient(circle at 100% 100%,#DCEDEE 0 7px,transparent 7.5px),radial-gradient(circle at 100% 0,#DCEDEE 0 7px,transparent 7.5px),radial-gradient(circle at 0 100%,#DCEDEE 0 7px,transparent 7.5px);background-size:22px 22px}
+.ribbon .sky{position:absolute;left:0;right:0;top:64px;height:22px;border-radius:12px;background:linear-gradient(90deg,#2D3A48 0%,#2D3A48 22%,#E9C981 27%,#F7EFD9 40%,#F7EFD9 66%,#E9B46C 76%,#2D3A48 84%,#2D3A48 100%)}
+.ev{position:absolute;top:0;transform:translateX(-50%);text-align:center;width:110px;transition:opacity .35s}
+.ev .ic{width:46px;height:46px;border-radius:50%;background:var(--white);border:3px solid var(--tile);display:grid;place-items:center;margin:0 auto}
+.ev .ic svg{width:24px;height:24px}
+.ev .stem{width:2px;height:16px;background:var(--tile);margin:0 auto}
+.ev .lbl{margin-top:30px;font-size:15px;line-height:1.3;color:var(--soft)}
+.ev .lbl b{display:block;color:var(--coal);font-size:17px}
+.ev.miss .ic{border-color:var(--tea);border-style:dashed;background:#FBEDEA}
+.ev.miss .stem{background:var(--tea)}
+.ev.miss .lbl b{color:var(--tea)}
+.ticks{display:flex;justify-content:space-between;font-size:14px;color:var(--soft);margin-top:6px}
+.msg{margin-top:22px;display:none;align-items:flex-start;gap:16px;background:#FBEDEA;border-radius:16px;padding:18px 20px}
+.msg.show{display:flex;animation:in .4s}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg .av{flex:none;width:44px;height:44px;border-radius:12px;background:var(--tea);display:grid;place-items:center}
+.msg b{display:block;font-size:16px;color:var(--tea)}
+.msg p{font-size:20px;font-weight:600}
+.calm{margin-top:22px;display:flex;align-items:center;gap:12px;font-size:19px;font-weight:600;color:var(--tile-dk)}
+.calm i{width:14px;height:14px;border-radius:50%;background:var(--tile)}
+.calm.hide{display:none}
+
+section{padding:88px 0}
+.h2{font-size:clamp(32px,3.6vw,46px);max-width:22ch}
+.lede{margin-top:16px;color:var(--soft);max-width:56ch}
+
+/* one message */
+.one .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:40px;align-items:start}
+.notsent{list-style:none;margin:0;padding:0}
+.notsent li{padding:12px 0 12px 36px;border-bottom:1px solid var(--line);position:relative;color:var(--soft)}
+.notsent li::before{content:"";position:absolute;left:4px;top:24px;width:18px;height:2px;background:var(--soft)}
+.sent{background:var(--white);border:2px solid var(--tile);border-radius:20px;padding:24px 26px}
+.sent b{font-size:16px;color:var(--tile-dk)}
+.sent p{font-size:22px;font-weight:700;margin-top:6px}
+.sent .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.sent .acts span{background:var(--tile-soft);color:var(--tile-dk);font-weight:700;border-radius:30px;padding:8px 16px;font-size:17px}
+.one h3{font-size:22px;margin-bottom:10px}
+
+/* sensors */
+.sensors{background:var(--tile);color:#fff}
+.sensors .h2{color:#fff}
+.sensors .lede{color:#D4E8EA}
+.objs{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:44px}
+.obj{border-top:2px solid rgba(255,255,255,.35);padding-top:20px}
+.obj svg{display:block;margin-bottom:14px}
+.obj h3{font-size:24px}
+.obj p{color:#D4E8EA;font-size:19px;margin-top:6px}
+.dignity{margin-top:48px;background:var(--tile-dk);border-radius:20px;padding:26px 30px;font-size:22px;font-weight:600;max-width:820px}
+
+/* ring */
+.ring .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;margin-top:40px;align-items:center}
+.ring svg{width:100%;height:auto;display:block}
+.ring svg text{font-family:Nunito,sans-serif}
+.order{list-style:none;margin:0;padding:0;counter-reset:o}
+.order li{counter-increment:o;display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.order li::before{content:counter(o);width:36px;height:36px;border-radius:50%;background:var(--tile-soft);color:var(--tile-dk);font-weight:800;display:grid;place-items:center}
+.order b{display:block}
+.order span{color:var(--soft);font-size:18px}
+
+/* proof */
+.box{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.box .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.box p{color:var(--soft)}
+.box p+p{margin-top:14px}
+.device{background:var(--snow);border-radius:24px;padding:30px;display:flex;gap:24px;align-items:center}
+.device dl{margin:0;font-size:18px}
+.device dt{font-weight:800}
+.device dd{margin:0 0 10px;color:var(--soft)}
+
+.quote{padding:84px 0}
+.quote figure{margin:0;max-width:900px}
+.quote blockquote{margin:0;font-size:clamp(25px,2.8vw,34px);line-height:1.4;font-weight:600}
+.quote figcaption{margin-top:20px;color:var(--soft);font-size:18px}
+
+.price{background:var(--white)}
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.set{border:2px solid var(--coal);border-radius:24px;padding:30px}
+.set h3{font-size:26px}
+.set .amt{font-size:52px;font-weight:800;margin:6px 0}
+.set .amt small{font-size:19px;font-weight:600;color:var(--soft)}
+.set ul{padding-left:22px;margin:14px 0 24px}
+.set li+li{margin-top:4px}
+.btn{display:inline-block;background:var(--tea);color:#fff;font:800 20px Nunito,sans-serif;padding:15px 28px;border-radius:40px;text-decoration:none}
+.btn:hover{background:#82241a}
+.faq details{border-bottom:1px solid var(--line);padding:16px 0}
+.faq summary{cursor:pointer;font-weight:700;font-size:21px}
+.faq details p{margin-top:8px;color:var(--soft);font-size:19px}
+
+footer{padding:34px 0;font-size:17px;color:var(--soft)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 30px}
+footer .credit{flex-basis:100%;font-size:14px}
+
+@media (max-width:960px){
+  .top nav{display:none}
+  .one .grid,.ring .grid,.box .wrap,.price .wrap{grid-template-columns:1fr;gap:36px}
+  .objs{grid-template-columns:1fr;gap:20px}
+}
+@media (max-width:700px){
+  .day{padding:20px 16px}
+  .ribbon{height:auto;margin-top:20px}
+  .ribbon .sky{display:none}
+  .ev{position:static;transform:none;width:auto;display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:center;text-align:left;padding:8px 0;border-bottom:1px solid var(--line)}
+  .ev .stem{display:none}
+  .ev.side .lbl{position:static;width:auto;text-align:left}
+  .ev .ic{margin:0}
+  .ev .lbl{margin:0;font-size:16px}
+  .ticks{display:none}
+}
+@media (max-width:520px){
+  body{font-size:20px}
+  .wrap{padding:0 16px}
+  .toggle button{padding:9px 12px;font-size:16px}
+  section{padding:62px 0}
+  .device{flex-direction:column;align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">
+      <svg width="32" height="28" viewBox="0 0 32 28" aria-hidden="true"><path d="M3 13L16 3l13 10v13H3z" fill="#1F6F7A"/><rect x="12" y="15" width="8" height="11" rx="1" fill="#F5F6F3"/><circle cx="25" cy="7" r="4" fill="#E3A72F"/></svg>
+      Komşu
+    </a>
+    <nav aria-label="Sayfa içi"><a href="#mesaj">Tek mesaj</a><a href="#sensor">Kamera yok</a><a href="#halka">Komşu halkası</a><a href="#fiyat">Fiyat</a></nav>
+  </header>
+</div>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <h1>Babanızın çaydanlığı her sabah 07:05'te kaynar. <span>Kaynamadığı gün, tek bir mesaj gelir.</span></h1>
+    <p class="lead">Komşu, Sivas'ta tek başına yaşayan babanızın gündelik düzenini öğrenir: ışık, çaydanlık, kapı. Gün her zamanki gibi geçiyorsa sizi rahatsız etmez. Bir şey ters giderse önce size, dilerseniz alt kattaki komşuya haber verir.</p>
+
+    <div class="day" aria-label="Uygulama ekranı: babanın günü">
+      <div class="day-head">
+        <b>Rıza Bey'in günü<small>Sivas, Kardeşler Mahallesi · bugün</small></b>
+        <div class="toggle" role="group" aria-label="Gün görünümü">
+          <button type="button" id="tNormal" aria-pressed="true">Sıradan bir gün</button>
+          <button type="button" id="tOff" aria-pressed="false">Bir sabah ters giderse</button>
+        </div>
+      </div>
+      <div class="ribbon" id="ribbon">
+        <div class="sky" aria-hidden="true"></div>
+        <div class="ev side" style="left:25%"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z" fill="none" stroke="#1F6F7A" stroke-width="2"/></svg></div><div class="stem"></div><p class="lbl"><b>06:40</b>yatak odası ışığı</p></div>
+        <div class="ev" id="kettle" style="left:29.5%"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h12l1-9H4zM8 11V8a3 3 0 0 1 6 0v3M18 13h2a1 1 0 0 1 0 4h-2" fill="none" stroke="#1F6F7A" stroke-width="2" stroke-linejoin="round"/></svg></div><div class="stem"></div><p class="lbl"><b id="kTime">07:05</b><span id="kTxt">çaydanlık</span></p></div>
+        <div class="ev" id="door1" style="left:40%"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V3h12v18M3 21h18M14 12h1" fill="none" stroke="#1F6F7A" stroke-width="2"/></svg></div><div class="stem"></div><p class="lbl"><b>09:30</b>kapı · çarşıya</p></div>
+        <div class="ev" id="door2" style="left:51%"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V3h12v18M3 21h18M14 12h1" fill="none" stroke="#1F6F7A" stroke-width="2"/></svg></div><div class="stem"></div><p class="lbl"><b>12:15</b>kapı · eve döndü</p></div>
+        <div class="ev" id="tv" style="left:72%"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="#1F6F7A" stroke-width="2"/><path d="M8 21h8" stroke="#1F6F7A" stroke-width="2"/></svg></div><div class="stem"></div><p class="lbl"><b>17:20</b>salon prizi · TV</p></div>
+        <div class="ev" id="night" style="left:91%"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z" fill="none" stroke="#1F6F7A" stroke-width="2"/></svg></div><div class="stem"></div><p class="lbl"><b>22:40</b>ışıklar söndü</p></div>
+      </div>
+      <div class="ticks" aria-hidden="true"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+      <p class="calm" id="calm"><i aria-hidden="true"></i>Bugün her şey alışıldığı gibi. Size bir şey gönderilmedi.</p>
+      <div class="msg" id="msg" role="status">
+        <div class="av" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z" fill="#fff"/></svg></div>
+        <div><b>Komşu · 09:00 · Murat'a</b><p>Babanın çaydanlığı bu sabah henüz açılmadı; normalde 07:05. Yatak odası ışığı 06:40'ta yandı. Aramak ister misin? Fadime Hanım'a da haber vereyim mi?</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="one" id="mesaj">
+  <div class="wrap">
+    <h2 class="h2">Kırk bildirim değil, gerektiğinde tek mesaj</h2>
+    <p class="lede">Babanızı gün boyu raporlamak bir güven değil, bir yüktür; hem size hem ona. Komşu yalnızca düzen bozulduğunda konuşur.</p>
+    <div class="grid">
+      <div>
+        <h3>Gönderilmeyenler</h3>
+        <ul class="notsent">
+          <li>“Babanız buzdolabını 6 kez açtı.”</li>
+          <li>“Babanız bugün 2 saat televizyon izledi.”</li>
+          <li>“Babanız 23:10'da hâlâ uyanık.”</li>
+          <li>Haftalık “aktivite puanı”, yüzdeler, grafikler.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Gönderilen tek tür mesaj</h3>
+        <div class="sent">
+          <b>Komşu · Cuma 13:40</b>
+          <p>Babanın kapısı 09:30'da açıldı ama dört saattir dönmedi. Genelde 12:15'te eve gelir.</p>
+          <div class="acts"><span>Babamı ara</span><span>Fadime Hanım'a sor</span><span>Sorun yok</span></div>
+        </div>
+        <p style="margin-top:14px;color:var(--soft);font-size:18px">“Sorun yok” derseniz Komşu bunu da öğrenir: Cuma namazı, pazar günü, bayram ziyareti.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tileband" aria-hidden="true"></div>
+<section class="sensors" id="sensor">
+  <div class="wrap">
+    <h2 class="h2">Evde kamera yok, mikrofon yok. Üç küçük nesne var.</h2>
+    <p class="lede">Hiçbiri görüntü ya da ses toplamaz. Yalnızca “açıldı, kapandı, yandı, söndü” bilgisini evdeki kutuya söyler.</p>
+    <div class="objs">
+      <div class="obj"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="14" y="10" width="36" height="44" rx="8" fill="none" stroke="#fff" stroke-width="3"/><circle cx="26" cy="28" r="3" fill="#fff"/><circle cx="38" cy="28" r="3" fill="#fff"/><circle cx="32" cy="44" r="3" fill="#E3A72F"/></svg><h3>Çaydanlık prizi</h3><p>Çaydanlığın fişi buna takılır. Sabah çayı, öğle çayı, akşam çayı: Rıza Bey'in günü üç demlikle geçer.</p></div>
+      <div class="obj"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="16" y="6" width="26" height="52" rx="2" fill="none" stroke="#fff" stroke-width="3"/><rect x="44" y="24" width="6" height="16" rx="2" fill="#E3A72F"/><circle cx="36" cy="32" r="2.5" fill="#fff"/></svg><h3>Kapı mıknatısı</h3><p>Dış kapının kenarına yapışır. Çıkış ve dönüşü bilir; kimin geldiğini bilmez.</p></div>
+      <div class="obj"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><path d="M24 44h16M26 52h12M32 8a14 14 0 0 0-9 24.5c1.5 1.5 2 3.5 2 5.5h14c0-2 .5-4 2-5.5A14 14 0 0 0 32 8z" fill="none" stroke="#fff" stroke-width="3"/><circle cx="32" cy="22" r="4" fill="#E3A72F"/></svg><h3>İki ampul</h3><p>Yatak odası ve banyo. Sabah kalkışı, gece banyoya gidişi bu ikisinden anlar.</p></div>
+    </div>
+    <p class="dignity">Babanız evinde izlenmiyor. Komşu yalnızca çayın demlendiğini bilir; ne izlediğini, kiminle konuştuğunu, nasıl oturduğunu bilmez.</p>
+  </div>
+</section>
+
+<section class="ring" id="halka">
+  <div class="wrap">
+    <h2 class="h2">Siz 700 kilometre uzaktasınız. Fadime Hanım bir kat aşağıda.</h2>
+    <p class="lede">Eskiden mahallede herkes birbirinin ışığına bakardı. Komşu bu halkayı geri kurar: sizin seçtiğiniz, babanızın da onayladığı birkaç kişi.</p>
+    <div class="grid">
+      <svg viewBox="0 0 420 380" role="img" aria-label="Komşu halkası: ortada Rıza Bey'in evi, çevresinde Fadime Hanım, bakkal Hasan, oğlu Murat ve kızı Elif.">
+        <circle cx="210" cy="190" r="150" fill="none" stroke="#DCDFDA" stroke-width="2" stroke-dasharray="4 8"/>
+        <circle cx="210" cy="190" r="80" fill="none" stroke="#DCDFDA" stroke-width="2" stroke-dasharray="4 8"/>
+        <circle cx="210" cy="190" r="44" fill="#1F6F7A"/><text x="210" y="186" text-anchor="middle" fill="#fff" font-size="15" font-weight="800">Rıza Bey</text><text x="210" y="205" text-anchor="middle" fill="#D4E8EA" font-size="13">Sivas</text>
+        <circle cx="210" cy="110" r="30" fill="#E3A72F"/><text x="210" y="106" text-anchor="middle" font-size="13" font-weight="800" fill="#23262A">Fadime</text><text x="210" y="122" text-anchor="middle" font-size="11" fill="#23262A">alt kat</text>
+        <circle cx="286" cy="226" r="28" fill="#F1D79F"/><text x="286" y="222" text-anchor="middle" font-size="13" font-weight="800" fill="#23262A">Hasan</text><text x="286" y="238" text-anchor="middle" font-size="11" fill="#23262A">bakkal</text>
+        <circle cx="72" cy="120" r="34" fill="#9B2C1F"/><text x="72" y="116" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">Murat</text><text x="72" y="133" text-anchor="middle" font-size="11" fill="#fff">İstanbul</text>
+        <circle cx="340" cy="320" r="32" fill="#C26F64"/><text x="340" y="316" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">Elif</text><text x="340" y="333" text-anchor="middle" font-size="11" fill="#fff">Ankara</text>
+      </svg>
+      <ol class="order">
+        <li><div><b>Murat (oğlu), İstanbul</b><span>İlk mesaj ona gider. Babasını arar.</span></div></li>
+        <li><div><b>Fadime Hanım, alt kat</b><span>Murat 15 dakikada cevap vermezse “Rıza Bey'in kapısını çalar mısınız?” diye sorulur. 3 dakikada kapıdadır.</span></div></li>
+        <li><div><b>Elif (kızı), Ankara</b><span>Bilgi olarak haber alır; sırayı kendisi de üstlenebilir.</span></div></li>
+        <li><div><b>Bakkal Hasan</b><span>Yalnızca “Rıza Bey bugün ekmek almaya geldi mi?” sorusu için. Rıza Bey istedi.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="box">
+  <div class="wrap">
+    <div>
+      <h2 class="h2" style="margin-bottom:18px">Babanızın düzeni, babanızın evinde öğrenilir</h2>
+      <p>Hangi saatte ne olduğunu öğrenen, mutfak dolabının üstündeki küçük kutu. Veriler orada kalır, hiçbir sunucuda bir “Rıza Bey profili” oluşmaz.</p>
+      <p>Sivas'ta kış fırtınasında internet giderse kutu kendi SIM kartıyla düz SMS atar. Elektrik kesilirse 8 saat pille dayanır.</p>
+    </div>
+    <div class="device">
+      <svg width="120" height="96" viewBox="0 0 120 96" aria-hidden="true"><rect x="10" y="20" width="100" height="60" rx="14" fill="#fff" stroke="#23262A" stroke-width="3"/><circle cx="34" cy="50" r="6" fill="#1F6F7A"/><path d="M52 44h40M52 56h28" stroke="#DCDFDA" stroke-width="4" stroke-linecap="round"/></svg>
+      <dl><dt>Evdeki kutu</dt><dd>düzeni öğrenir, karar verir</dd><dt>Dışarı çıkan</dt><dd>yalnızca mesajın kendisi</dd><dt>İnternet yoksa</dt><dd>SMS ile</dd></dl>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Babam ‘ben kimseye yük olmam’ der, telefonu da açmaz bazen. Bir sabah mesaj geldi: çaydanlık açılmamış. Fadime teyze çıktı baktı, babamın tansiyonu düşmüş, yatıyormuş. Ambulansı o çağırdı. Ben İstanbul'dan bunu nasıl bilecektim?”</blockquote>
+      <figcaption>Murat Erdem · İstanbul, inşaat mühendisi. Babası Rıza Bey 80 yaşında, Sivas'ta tek başına yaşıyor.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="price" id="fiyat">
+  <div class="wrap">
+    <div class="set">
+      <h3>Komşu ev seti</h3>
+      <p class="amt">1.890 ₺ <small>bir kez</small></p>
+      <ul><li>Evdeki kutu, SIM kart dahil</li><li>Çaydanlık prizi, kapı mıknatısı, 2 ampul</li><li>4 kişilik komşu halkası</li><li>SMS hattı ilk yıl ücretsiz, sonra yılda 240 ₺</li></ul>
+      <a class="btn" href="#">Babamın evine gönderin</a>
+      <p style="margin-top:14px;font-size:17px;color:var(--soft)">Kargo Sivas dahil her ile 2 iş günü. Kurulum için telefonda birlikte adım adım.</p>
+    </div>
+    <div class="faq">
+      <details><summary>Babam “beni izliyorsunuz” derse?</summary><p>Ona ilk günden kutunun ne bildiğini gösterin: yalnızca çaydanlık, kapı, ışık. Kendi telefonundan ya da kutunun üstündeki düğmeden haftalığına kapatabilir. Kurulumda onay ekranı ondan geçer.</p></details>
+      <details><summary>Düzeni değişken, her gün aynı değil.</summary><p>Komşu ilk iki haftada öğrenir; pazar sabahları geç kalkmasını, cuma öğleyin camiye gitmesini ayrı tutar. Emin olmadığı günlerde susar.</p></details>
+      <details><summary>Fadime Hanım uygulama kullanmıyor.</summary><p>Gerek yok. Komşu ona düz SMS atar ya da sesli arar: “Rıza Bey'in kapısını çalar mısınız?”</p></details>
+      <details><summary>Acil durumda ambulans çağırır mı?</summary><p>Hayır. Komşu bir acil çağrı sistemi değildir; düzenin bozulduğunu fark eder ve insanlara haber verir. Acil durumda 112'yi arayın.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Komşu · Sivas ve İstanbul · merhaba@komsu.app</span>
+    <span>KVKK · Aile onay formu</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var n=document.getElementById('tNormal'),o=document.getElementById('tOff'),k=document.getElementById('kettle'),
+      kt=document.getElementById('kTime'),kx=document.getElementById('kTxt'),msg=document.getElementById('msg'),calm=document.getElementById('calm'),
+      later=['door1','door2','tv','night'].map(function(id){return document.getElementById(id)});
+  function set(off){
+    n.setAttribute('aria-pressed',String(!off));o.setAttribute('aria-pressed',String(off));
+    k.classList.toggle('miss',off);kt.textContent=off?'07:05 ?':'07:05';kx.textContent=off?'çaydanlık açılmadı':'çaydanlık';
+    later.forEach(function(e){e.style.opacity=off?'.25':'1'});
+    msg.classList.toggle('show',off);calm.classList.toggle('hide',off);
+  }
+  n.addEventListener('click',function(){set(false)});o.addEventListener('click',function(){set(true)});
+})();
+</script>
+</body>
+</html>

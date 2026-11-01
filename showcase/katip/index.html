@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kâtip — Toplantı tutanağı, dizüstünüzden çıkmadan</title>
+<meta name="description" content="Kâtip toplantıları dizüstü bilgisayarınızda yazıya döker; kararları ve görevleri çıkarır. Ses ve metin şirket ağına bile çıkmaz. Gizli projeler için.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --graphite:#22303A; --ink:#1B2329; --paper:#F6F6F2; --sheet:#FFFFFF;
+  --rule:#D9DBD5; --muted:#5B6770; --green:#2F6B57; --red:#A8392A; --green-soft:#E3EEE8; --red-soft:#F5E4E0;
+  --serif:"Source Serif 4", Georgia, serif; --sans:"Public Sans", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+/* top */
+.top{border-bottom:1px solid var(--rule);background:var(--paper)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.brand b{font:600 22px/1 var(--serif);letter-spacing:-.01em}
+.brand span{font-size:13px;color:var(--muted)}
+.top nav{display:flex;gap:26px;font-size:15px}
+.top nav a{text-decoration:none;color:var(--muted)}
+.top nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:4px;font:600 15px/1 var(--sans);text-decoration:none;border:1.5px solid var(--graphite)}
+.btn.solid{background:var(--graphite);color:#fff}
+.btn.solid:hover{background:#111a20}
+.btn.line:hover{background:#fff}
+/* hero */
+.hero{padding:56px 0 72px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr);gap:56px;align-items:start}
+.door{font-size:13px;color:var(--muted);display:inline-flex;gap:8px;align-items:center;border:1px solid var(--rule);padding:6px 10px;border-radius:3px;background:#fff}
+.door i{width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block}
+h1{font:600 clamp(36px,4.4vw,54px)/1.08 var(--serif);letter-spacing:-.02em;margin:22px 0 18px}
+.lede{font-size:19px;color:#36424a;max-width:30em}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 18px}
+.small{font-size:14px;color:var(--muted)}
+/* minutes sheet */
+.sheet{background:var(--sheet);border:1px solid var(--rule);box-shadow:0 1px 0 #e6e7e1, 0 18px 40px -28px rgba(20,30,40,.35);border-radius:3px}
+.sheet-head{display:flex;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid var(--rule);font-size:13px;color:var(--muted);flex-wrap:wrap}
+.sheet-head strong{color:var(--ink);font:600 16px/1.3 var(--serif)}
+.rec{display:inline-flex;align-items:center;gap:6px;color:var(--red);font-weight:600}
+.rec::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+.sheet-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}
+.transcript{padding:18px 22px;border-right:1px solid var(--rule);height:390px;overflow:hidden;position:relative}
+.transcript::after{content:"";position:absolute;left:0;right:0;top:0;height:40px;background:linear-gradient(#fff,rgba(255,255,255,0))}
+.tl{display:grid;grid-template-columns:44px 74px 1fr;gap:8px;font-size:14.5px;line-height:1.5;padding:6px 0;border-bottom:1px dotted #e5e6e1}
+.tl time{color:#6f7a82;font-variant-numeric:tabular-nums;font-size:13px;padding-top:1px}
+.tl .who{font-weight:600;font-size:13px;padding-top:1px}
+.tl p{margin:0;font-family:var(--serif);font-size:15.5px}
+.tl mark{background:var(--green-soft);color:inherit;padding:0 2px}
+.tl mark.t{background:var(--red-soft)}
+.extract{padding:18px 20px;background:#FBFBF9}
+.extract h3{font:600 14px/1.3 var(--sans);margin:0 0 8px;display:flex;justify-content:space-between}
+.extract h3 span{color:var(--muted);font-weight:500}
+.extract ul{list-style:none;margin:0 0 20px;padding:0}
+.extract li{font:400 15px/1.45 var(--serif);padding:8px 0 8px 12px;border-left:3px solid var(--green);margin-bottom:6px;background:#fff}
+.extract li.task{border-color:var(--red)}
+.extract li small{display:block;font:500 12.5px/1.4 var(--sans);color:var(--muted);margin-top:2px}
+.extract li.new{animation:land .5s ease-out}
+@keyframes land{from{transform:translateX(-10px);opacity:0}to{transform:none;opacity:1}}
+.sheet-foot{display:flex;gap:18px;flex-wrap:wrap;justify-content:space-between;padding:12px 22px;border-top:1px solid var(--rule);font-size:13px;color:var(--muted)}
+.sheet-foot b{color:var(--green)}
+/* sections */
+section{padding:84px 0;border-top:1px solid var(--rule)}
+h2{font:600 clamp(28px,3vw,38px)/1.15 var(--serif);letter-spacing:-.015em;margin:0 0 16px;max-width:22em}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start}
+.prose p{max-width:34em;color:#33404a}
+.disk{background:var(--graphite);color:#E9ECEA;border-radius:4px;padding:22px 24px;font:400 14px/1.75 ui-monospace,Menlo,Consolas,monospace}
+.disk .k{color:#9FB4AB}
+.disk .ok{color:#9ED2B8}
+.disk hr{border:0;border-top:1px solid #3a4852;margin:12px 0}
+.checks{list-style:none;padding:0;margin:22px 0 0}
+.checks li{padding:12px 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:150px 1fr;gap:16px;font-size:15.5px}
+.checks li b{font-weight:600}
+/* after */
+.after{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--rule);background:#fff;margin-top:34px}
+.after > div{padding:26px 24px;border-right:1px solid var(--rule)}
+.after > div:last-child{border-right:0}
+.after h3{font:600 19px/1.3 var(--serif);margin:0 0 8px}
+.after p{margin:0;font-size:15.5px;color:#3c4850}
+.after .when{font-size:13px;color:var(--muted);display:block;margin-bottom:12px}
+/* quote */
+.quote{background:var(--graphite);color:#F1F2EE;border-top:0}
+.quote blockquote{margin:0;max-width:820px;font:400 clamp(24px,2.6vw,32px)/1.35 var(--serif)}
+.quote cite{display:block;font:400 15px/1.5 var(--sans);font-style:normal;margin-top:22px;color:#C7CFCB}
+/* pricing */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:30px}
+.plan{background:#fff;border:1px solid var(--rule);padding:26px 24px;border-radius:3px;display:flex;flex-direction:column}
+.plan.pick{border:2px solid var(--graphite)}
+.plan h3{font:600 18px/1.3 var(--sans);margin:0}
+.price{font:600 34px/1.1 var(--serif);margin:14px 0 4px}
+.price small{font:400 14px var(--sans);color:var(--muted)}
+.plan ul{padding:0 0 0 18px;margin:14px 0 22px;font-size:15px;color:#3c4850}
+.plan .btn{margin-top:auto;justify-content:center}
+/* faq */
+details{border-top:1px solid var(--rule);padding:16px 0}
+details:last-child{border-bottom:1px solid var(--rule)}
+summary{cursor:pointer;font:600 18px/1.4 var(--serif);list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::after{content:"+";font-family:var(--sans);color:var(--muted)}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;max-width:46em;color:#3c4850}
+footer{padding:40px 0 30px;border-top:1px solid var(--rule);font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.credit{margin-top:22px;font-size:12px}
+.credit a{color:var(--muted)}
+@media (max-width:960px){
+  .hero-grid,.two{grid-template-columns:1fr;gap:36px}
+  .plans,.after{grid-template-columns:1fr}
+  .after > div{border-right:0;border-bottom:1px solid var(--rule)}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .top nav{display:none}
+  .sheet-body{grid-template-columns:1fr}
+  .transcript{border-right:0;border-bottom:1px solid var(--rule);height:300px}
+  .tl{grid-template-columns:40px 1fr}
+  .tl .who{grid-column:2}
+  .tl p{grid-column:1/-1}
+  .checks li{grid-template-columns:1fr;gap:4px}
+  section{padding:60px 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><b>Kâtip</b><span>toplantı tutanağı</span></a>
+    <nav aria-label="Ana menü"><a href="#nerede">Kayıt nerede kalıyor</a><a href="#sonra">Toplantıdan sonra</a><a href="#lisans">Lisans</a><a href="#sss">Sorular</a></nav>
+    <a class="btn line" href="#lisans">Deneme sürümü</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" style="border-top:0">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="door"><i aria-hidden="true"></i>Toplantı odası 3 · Kapalı oturum</span>
+      <h1>Toplantıya katılın. Tutanağı Kâtip tutsun.</h1>
+      <p class="lede">Kâtip konuşmayı dizüstünüzde yazıya döker, kimin ne dediğini ayırır, kararları ve görevleri toplantı biterken önünüze koyar. Ses de metin de o bilgisayardan çıkmaz.</p>
+      <div class="cta">
+        <a class="btn solid" href="#lisans">14 gün ücretsiz dene</a>
+        <a class="btn line" href="#nerede">Bilgi güvenliği notu</a>
+      </div>
+      <p class="small">macOS (M1 ve sonrası) ve Windows 11 · 16 GB bellek · Türkçe ve İngilizce karışık konuşmayı tanır</p>
+    </div>
+
+    <div class="sheet" aria-label="Kâtip ekranından örnek: canlı tutanak">
+      <div class="sheet-head">
+        <div><strong>Kestane — haftalık ilerleme</strong><br>Salı 4 Kasım · 4 katılımcı · Wi-Fi kapalı</div>
+        <span class="rec" id="clock">Kayıt 00:31:42</span>
+      </div>
+      <div class="sheet-body">
+        <div class="transcript" id="transcript" aria-live="off"></div>
+        <div class="extract">
+          <h3>Kararlar <span id="kc">0</span></h3>
+          <ul id="kararlar"></ul>
+          <h3>Görevler <span id="gc">0</span></h3>
+          <ul id="gorevler"></ul>
+        </div>
+      </div>
+      <div class="sheet-foot"><span>Dosya: ~/Kâtip/2026-11-04 Kestane.ktp · 41 MB</span><span>Giden veri: <b>0 bayt</b></span></div>
+    </div>
+  </div>
+</section>
+
+<section id="nerede">
+  <div class="wrap two">
+    <div class="prose">
+      <h2>Kayıt nerede? Sizin çantanızda.</h2>
+      <p>Gizli bir projede “şu yapay zekâ servisine toplantıyı yükleyelim” cümlesi bilgi güvenliği ekibinden geri döner. Haklı olarak.</p>
+      <p>Kâtip’in konuşma tanıma ve özetleme modeli kurulumla birlikte diske iner. Toplantı sırasında Wi-Fi’ı kapatın, kablo çekin; tutanak aynı hızda yazılır. Ses dosyası, metin ve çıkarılan görevler tek bir şifreli dosyada durur. Silerseniz gider.</p>
+      <ul class="checks">
+        <li><b>Ağ çağrısı</b><span>Yok. Lisans doğrulaması bile çevrimdışı anahtar dosyasıyla yapılır.</span></li>
+        <li><b>Şifreleme</b><span>AES-256, anahtar cihazın güvenli bölgesinde (Secure Enclave / TPM).</span></li>
+        <li><b>Saklama</b><span>Ses için varsayılan 30 gün, sonra otomatik silinir. Metin sizde kalır.</span></li>
+        <li><b>Denetim</b><span>Her açılış ve dışa aktarma, cihazdaki denetim kaydına yazılır.</span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="disk" role="img" aria-label="Kâtip ağ izleyicisi: toplantı boyunca dışarı giden veri sıfır bayt">
+        <span class="k">toplantı</span>   Kestane — haftalık ilerleme<br>
+        <span class="k">süre</span>       52 dk 08 sn<br>
+        <span class="k">model</span>      katip-tr-medium · yerel · 1,6 GB<br>
+        <span class="k">işlemci</span>    Apple M2 · Neural Engine<br>
+        <hr>
+        <span class="k">giden bağlantı</span>   <span class="ok">0</span><br>
+        <span class="k">giden veri</span>       <span class="ok">0 bayt</span><br>
+        <span class="k">dns sorgusu</span>      <span class="ok">0</span><br>
+        <hr>
+        <span class="k">dosya</span>      ~/Kâtip/2026-11-04 Kestane.ktp<br>
+        <span class="k">şifre</span>      AES-256 · anahtar: Secure Enclave
+      </div>
+      <p class="small" style="margin-top:14px">Bu ekran Kâtip’in içinde, “Ağ izleyici” sekmesindedir. Bilgi güvenliği ekibinize toplantı sonunda gösterebilirsiniz.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sonra">
+  <div class="wrap">
+    <h2>Toplantı bittiğinde elinizde ne olur?</h2>
+    <p style="max-width:40em;color:#3c4850">Not alan biri olmadığı için herkes masada. Kapı kapandıktan sonraki on dakika şöyle geçer:</p>
+    <div class="after">
+      <div><span class="when">Toplantı biterken</span><h3>Kararlar listesi</h3><p>“Teslim tarihi 28 Kasım’a çekildi” gibi cümleler kararlar sütununa düşer; kimin söylediği ve dakikası yanında yazar.</p></div>
+      <div><span class="when">İki dakika sonra</span><h3>Görev dağılımı</h3><p>“Selin, test raporunu Perşembe’ye kadar atar mısın?” — sahibi ve tarihi ile görev olur. Tek tıkla e-posta taslağı ya da CSV.</p></div>
+      <div><span class="when">İstediğiniz zaman</span><h3>Aranabilir tutanak</h3><p>Üç ay sonra “sensör tedarikçisi ne demişti?” diye arayın; ilgili dakikaya gider, sesi oradan dinlersiniz.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>“Eskiden toplantının yarısında not alıyordum, öbür yarısında ne yazdığımı okuyamıyordum. Şimdi masaya bakıp konuşuyorum; tutanak kapıdan çıkmadan hazır.”</blockquote>
+    <cite>Deniz Arıkan — Proje yöneticisi, savunma elektroniği tedarikçisi, Ankara</cite>
+  </div>
+</section>
+
+<section id="lisans">
+  <div class="wrap">
+    <h2>Lisans</h2>
+    <p style="max-width:40em;color:#3c4850">Bulut aboneliği yok, çünkü bulut yok. Bir kez kurarsınız; güncellemeler yıllık bakım ile gelir.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>Kişisel</h3>
+        <div class="price">2.490 ₺ <small>tek seferlik</small></div>
+        <ul><li>1 bilgisayar</li><li>Sınırsız toplantı süresi</li><li>1 yıl güncelleme</li></ul>
+        <a class="btn line" href="#">Satın al</a>
+      </div>
+      <div class="plan pick">
+        <h3>Ekip</h3>
+        <div class="price">1.750 ₺ <small>kişi başı / yıl</small></div>
+        <ul><li>5 kişiden itibaren</li><li>Ortak terim sözlüğü (proje adları, kısaltmalar)</li><li>Kurulum paketi (MDM / Intune)</li></ul>
+        <a class="btn solid" href="#">14 gün ücretsiz dene</a>
+      </div>
+      <div class="plan">
+        <h3>Kurum</h3>
+        <div class="price">Teklif</div>
+        <ul><li>İnternete hiç bağlanmayan ağlar için kurulum</li><li>Kaynak kod incelemesi ve güvenlik raporu</li><li>Yerinde eğitim</li></ul>
+        <a class="btn line" href="#">Görüşme isteyin</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sss">
+  <div class="wrap two">
+    <h2>Bilgi güvenliği ekibinizin soracakları</h2>
+    <div>
+      <details open><summary>Kâtip hiç internete bağlanmıyor mu?</summary><p>Hayır. Güncellemeleri bile isterseniz imzalı dosya olarak indirip USB ile kurabilirsiniz. Uygulama çalışırken ağ izleyicisi giden bağlantıyı sayar; sıfırdan farklıysa uyarır.</p></details>
+      <details><summary>Katılımcıların izni gerekiyor mu?</summary><p>Evet. KVKK gereği kayıt başlarken Kâtip ekrana ve sohbet penceresine bir bilgilendirme notu koyar. Onay vermeyen katılımcının sesi tutanakta “katılımcı 3” olarak yazılır, ses kaydı tutulmaz.</p></details>
+      <details><summary>Ne kadar doğru yazıyor?</summary><p>Dört kişilik, yankısız bir odada Türkçe konuşmada kelime doğruluğu %94 civarındadır. Proje adlarını ve kısaltmaları sözlüğe eklerseniz yükselir. Kararları yazmadan önce bir göz atmanızı öneririz.</p></details>
+      <details><summary>Çevrimiçi toplantılarda çalışır mı?</summary><p>Teams, Zoom ve Meet’in hoparlör çıkışını ve sizin mikrofonunuzu ayrı ayrı dinler. Toplantı servisine bot eklenmez.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Kâtip · Ankara · destek@katip.app</span>
+    <span>Gizlilik: Bu sitede çerez yok. Uygulamada da yok.</span>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var lines=[
+    ["31:12","Mert","Sensör kartları hâlâ gümrükte, en erken 20 Kasım dedi tedarikçi.",null],
+    ["31:30","Ayşe","O zaman sahada test 28 Kasım’dan önce olmaz.",null],
+    ["31:41","Deniz","Tamam, saha testini <mark>28 Kasım’a alıyoruz</mark>, müşteriye ben yazarım.",["k","Saha testi 28 Kasım’a ertelendi","Deniz · 31:41"]],
+    ["32:05","Selin","Laboratuvar testleri bitti, rapor yarın hazır olur.",null],
+    ["32:14","Deniz","Selin, <mark class=\"t\">raporu Perşembe’ye kadar ortak klasöre</mark> koyar mısın?",["g","Test raporunu ortak klasöre koy","Selin · Perşembe 6 Kasım"]],
+    ["32:40","Mert","Yedek tedarikçi olarak İzmir’deki firmayı da arayayım mı?",null],
+    ["32:48","Deniz","Ara, <mark class=\"t\">Cuma’ya fiyat al</mark>. Ama ana tedarikçiyle devam.",["g","Yedek tedarikçiden fiyat al","Mert · Cuma 7 Kasım"]],
+    ["33:10","Ayşe","Bir de yazılım tarafında sürüm 2.3’ü dondurmamız lazım.",null],
+    ["33:19","Deniz","Evet, <mark>2.3 bu akşam donduruluyor</mark>, sonrası sadece hata düzeltme.",["k","Yazılım sürüm 2.3 donduruldu","Deniz · 33:19"]]
+  ];
+  var T=document.getElementById('transcript'),K=document.getElementById('kararlar'),G=document.getElementById('gorevler'),kc=0,gc=0,i=0;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function add(l,animate){
+    var d=document.createElement('div');d.className='tl';
+    d.innerHTML='<time>'+l[0]+'</time><span class="who">'+l[1]+'</span><p>'+l[2]+'</p>';
+    T.appendChild(d);
+    while(T.children.length>9)T.removeChild(T.firstChild);
+    if(l[3]){var li=document.createElement('li');if(l[3][0]==='g')li.className='task';if(animate)li.className+=' new';
+      li.innerHTML=l[3][1]+'<small>'+l[3][2]+'</small>';
+      if(l[3][0]==='k'){K.appendChild(li);kc++;document.getElementById('kc').textContent=kc}else{G.appendChild(li);gc++;document.getElementById('gc').textContent=gc}}
+  }
+  if(reduce){lines.forEach(function(l){add(l,false)});return;}
+  for(;i<4;i++)add(lines[i],false);
+  var sec=31*60+42,c=document.getElementById('clock');
+  setInterval(function(){sec++;c.textContent='Kayıt 00:'+String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')},1000);
+  var iv=setInterval(function(){ if(i>=lines.length){clearInterval(iv);return;} add(lines[i++],true); },1700);
+})();
+</script>
+</body>
+</html>

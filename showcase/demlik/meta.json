@@ -1,0 +1,21 @@
+{
+  "slug": "demlik",
+  "name": "Demlik",
+  "interpretation": "Tavşan kanı ve pirinç kadran",
+  "world": "Sabah mutfağında ince belli bardaktan geçen tavşan kanı ışık, çaydanlık buharı ve pirinç tepsi.",
+  "palette": [
+    "#191513",
+    "#B5321C",
+    "#E0612F",
+    "#C9A15A",
+    "#EEEAE6",
+    "#A3ABAF"
+  ],
+  "fonts": [
+    "Red Hat Display",
+    "Red Hat Mono"
+  ],
+  "score": 28,
+  "lowest": "Palet/doku",
+  "moment": "Demleme süresini kaydırınca kameradaki ince belli bardağın açık sarıdan tavşan kanına, sonra demli ve acıya dönmesi; her aşamada ne yapılacağını söyler."
+}

@@ -1,0 +1,20 @@
+{
+  "slug": "prova",
+  "name": "Prova",
+  "interpretation": "Prova metni",
+  "world": "Tiyatro provası: fosforlu kalemle işaretli replikler, yönetmenin kırmızı kalemi, kişiler listesi; kapısını kapatmış, aramaya basamayan bir genç.",
+  "palette": [
+    "#FFFFFF",
+    "#151515",
+    "#FFE45C",
+    "#D63A22",
+    "#1E7F52"
+  ],
+  "fonts": [
+    "Archivo",
+    "Nunito"
+  ],
+  "score": 26,
+  "lowest": "Duygu yolculuğu",
+  "moment": "Nuri Usta'ya üç replikten birini seçmek: cevabı, kırmızı kalem notu ve düşen nabız çubuğu."
+}

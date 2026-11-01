@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yürüyüş Arkadaşı — Cebinizdeki telefonla yeniden sokağa</title>
+<meta name="description" content="Cebinizdeki telefon adım uzunluğunuzu ve dengenizi izler; buzlu günleri önceden söyler, düşme riski artınca evde yapılacak denge egzersizleri önerir. Yürüyüşünüz telefonunuzdan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;500;600&family=Encode+Sans+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --curb:#E7E5DF; --curb-2:#D6D3CA; --sign:#1D4E89; --park:#3E6B3A; --coat:#B9501C; --ink:#1C2124; --soft:#4E5558; --white:#FFFFFF; --ice:#DCEAF3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--curb);color:var(--ink);font-family:"Encode Sans",system-ui,sans-serif;font-size:21px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--coat);outline-offset:3px;border-radius:3px}
+h1,h2,h3{font-family:"Encode Sans Condensed",sans-serif;font-weight:700;line-height:1.05;margin:0}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0}
+.plate{display:inline-flex;align-items:center;gap:10px;background:var(--sign);color:#fff;border:3px solid #fff;outline:2px solid var(--sign);border-radius:6px;padding:4px 16px;font-family:"Encode Sans Condensed",sans-serif;font-weight:600;font-size:24px;text-decoration:none}
+.top nav{display:flex;gap:26px;font-size:19px;font-weight:500}
+.top nav a{text-decoration:none}
+.top nav a:hover{text-decoration:underline}
+
+.hero{padding:26px 0 80px}
+.hero .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.hero h1{font-size:clamp(46px,5.6vw,80px);text-transform:none;letter-spacing:-.005em}
+.hero .lead{margin-top:22px;font-size:23px;max-width:32ch;color:var(--soft)}
+.facts{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:10px}
+.facts li{display:flex;gap:12px;align-items:flex-start;font-size:20px}
+.facts svg{flex:none;margin-top:4px}
+.actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.btn{display:inline-block;font:600 20px "Encode Sans",sans-serif;padding:15px 26px;border-radius:6px;text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn.go{background:var(--park);border-color:var(--park);color:#fff}
+.btn.go:hover{background:#335a30}
+.btn.line{background:transparent}
+.btn.line:hover{background:var(--white)}
+
+.mapcard{background:var(--white);border-radius:10px;padding:18px 18px 16px;border:1px solid var(--curb-2)}
+.mapcard .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:0 4px 10px}
+.mapcard .hd b{font-family:"Encode Sans Condensed",sans-serif;font-size:24px;font-weight:600}
+.mapcard .hd span{font-size:16px;color:var(--soft)}
+.map{width:100%;height:auto;display:block;border-radius:6px}
+.map text{font-family:"Encode Sans",sans-serif;font-size:17px;font-weight:500;fill:#3a4144}
+.stop{cursor:pointer}
+.stop circle.dot{fill:#fff;stroke:var(--park);stroke-width:4;transition:r .2s}
+.stop.on circle.dot{fill:var(--park);r:11}
+.stop:focus{outline:none}.stop:focus-visible circle.dot{stroke:var(--coat)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.stats div{background:var(--curb);border-radius:6px;padding:8px 10px}
+.stats small{display:block;font-size:14px;color:var(--soft)}
+.stats b{font-family:"Encode Sans Condensed",sans-serif;font-size:26px;font-weight:600}
+.stopinfo{margin-top:10px;border-left:5px solid var(--park);padding:8px 12px;font-size:18px;min-height:66px}
+.stopinfo b{font-weight:600}
+
+section{padding:90px 0}
+.h2{font-size:clamp(36px,4.2vw,56px);max-width:20ch}
+.lede{margin-top:14px;color:var(--soft);max-width:54ch}
+
+/* pocket measures */
+.pocket{background:var(--white)}
+.pocket .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:44px;align-items:center}
+.measures{list-style:none;margin:0;padding:0}
+.measures li{padding:18px 0;border-top:2px solid var(--ink)}
+.measures li:last-child{border-bottom:2px solid var(--ink)}
+.measures h3{font-size:28px;font-weight:600}
+.measures p{color:var(--soft);font-size:19px;margin-top:4px}
+.chart svg{width:100%;height:auto;display:block}
+.chart text{font-family:"Encode Sans",sans-serif;font-size:14px;fill:#4E5558}
+.chart figcaption{font-size:17px;color:var(--soft);margin-top:8px}
+
+/* winter */
+.winter{background:var(--ice)}
+.winter .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.alert{background:var(--white);border-radius:10px;border-top:8px solid var(--sign);padding:26px 28px;box-shadow:0 14px 28px -20px rgba(29,78,137,.5)}
+.alert .when{font-size:16px;color:var(--soft)}
+.alert strong{display:block;font-family:"Encode Sans Condensed",sans-serif;font-size:34px;line-height:1.1;margin:8px 0 12px;font-weight:700}
+.alert p{font-size:20px}
+.alert .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.alert .row span{background:var(--curb);border-radius:30px;padding:8px 14px;font-size:17px;font-weight:500}
+
+/* exercises */
+.ex ol{list-style:none;margin:44px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;counter-reset:e}
+.ex li{background:var(--white);border-radius:10px;padding:24px;counter-increment:e;position:relative}
+.ex li::before{content:counter(e);position:absolute;top:18px;right:20px;font-family:"Encode Sans Condensed",sans-serif;font-size:44px;font-weight:700;color:var(--curb-2)}
+.ex svg{display:block;margin-bottom:14px}
+.ex h3{font-size:28px;font-weight:600}
+.ex p{color:var(--soft);font-size:19px;margin-top:6px}
+.ex .dur{display:inline-block;margin-top:12px;font-weight:600;color:var(--park);font-size:18px}
+.ex .safe{margin-top:26px;font-size:19px;color:var(--soft);max-width:66ch}
+
+/* who knows */
+.who .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.notice{background:var(--white);border-radius:10px;padding:22px 24px;border:1px solid var(--curb-2)}
+.notice+.notice{margin-top:16px}
+.notice b{display:block;font-size:16px;color:var(--soft);font-weight:500}
+.notice p{font-size:21px;margin-top:4px}
+.who .copy p{color:var(--soft)}
+.who .copy p+p{margin-top:16px}
+
+/* proof */
+.proof{background:var(--sign);color:#fff}
+.proof .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
+.proof .h2{color:#fff}
+.proof p{color:#D7E3F1}
+.proof .lede{color:#D7E3F1}
+.proof ul{list-style:none;margin:0;padding:0;font-size:20px}
+.proof li{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.25)}
+
+.quote{padding:84px 0}
+.quote blockquote{margin:0;font-family:"Encode Sans Condensed",sans-serif;font-weight:500;font-size:clamp(30px,3.4vw,44px);line-height:1.2;max-width:24em}
+.quote cite{display:block;margin-top:20px;font-style:normal;color:var(--soft);font-size:19px}
+
+.price{background:var(--white)}
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.price .big{font-family:"Encode Sans Condensed",sans-serif;font-size:72px;font-weight:700;line-height:1;color:var(--park)}
+.price ul{padding-left:22px;margin:18px 0 26px}
+.price li+li{margin-top:6px}
+.faq details{border-bottom:2px solid var(--curb-2);padding:16px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:21px}
+.faq details p{margin-top:8px;color:var(--soft);font-size:19px}
+
+footer{padding:34px 0;font-size:17px;color:var(--soft)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 30px}
+footer .credit{flex-basis:100%;font-size:14px}
+
+@media (max-width:960px){
+  .top nav{display:none}
+  .hero .wrap,.pocket .grid,.winter .wrap,.who .wrap,.proof .wrap,.price .wrap{grid-template-columns:1fr;gap:36px}
+  .ex ol{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  body{font-size:20px}
+  .wrap{padding:0 16px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .mapcard{padding:12px}
+  section{padding:64px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="plate" href="#">
+      <svg width="20" height="24" viewBox="0 0 20 24" aria-hidden="true"><circle cx="11" cy="3.5" r="3" fill="#fff"/><path d="M10 8l-3 7 4 2-2 6M10 8l4 5 4 1M7 15l-4 2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      Yürüyüş Arkadaşı
+    </a>
+    <nav aria-label="Sayfa içi"><a href="#olcer">Ne ölçer</a><a href="#kis">Kış günleri</a><a href="#egzersiz">Egzersizler</a><a href="#fiyat">Ücret</a></nav>
+  </header>
+</div>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Kapının önünden başlayın. Telefon cebinizde, yanınızda yürür.</h1>
+      <p class="lead">Geçen kış düştüyseniz dışarı çıkmak eskisi gibi değildir. Yürüyüş Arkadaşı adımlarınızı dinler, nerede zorlandığınızı söyler ve sizi yavaş yavaş yeniden sokağa çıkarır.</p>
+      <ul class="facts">
+        <li><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="#3E6B3A"/><path d="M6 11l3.5 3.5L16 8" fill="none" stroke="#fff" stroke-width="2.5"/></svg>Kaldırım buzlanacaksa bir gün önceden söyler.</li>
+        <li><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="#3E6B3A"/><path d="M6 11l3.5 3.5L16 8" fill="none" stroke="#fff" stroke-width="2.5"/></svg>Adımınız kısalırsa evde 8 dakikalık denge çalışması verir.</li>
+        <li><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="#3E6B3A"/><path d="M6 11l3.5 3.5L16 8" fill="none" stroke="#fff" stroke-width="2.5"/></svg>Saat, bileklik gerekmez. Ücretsiz.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn go" href="#fiyat">Telefonuma kurayım</a>
+        <a class="btn line" href="#egzersiz">Denge egzersizleri</a>
+      </div>
+    </div>
+
+    <div class="mapcard" aria-label="Uygulama ekranı: bugünkü mahalle yürüyüşü">
+      <div class="hd"><b>Bugünkü tur · Kalaba</b><span>Salı, 09:05 – 09:41</span></div>
+      <svg class="map" viewBox="0 0 600 360" role="group" aria-label="Mahalle haritası, beş durak. Durağa dokunarak o bölümün özetini görün.">
+        <rect width="600" height="360" fill="#F2F1EC"/>
+        <g fill="#E1DED5"><rect x="20" y="20" width="150" height="90" rx="4"/><rect x="200" y="20" width="160" height="90" rx="4"/><rect x="390" y="20" width="190" height="90" rx="4"/><rect x="20" y="150" width="150" height="90" rx="4"/><rect x="200" y="150" width="160" height="90" rx="4"/><rect x="20" y="280" width="340" height="62" rx="4"/></g>
+        <rect x="390" y="150" width="190" height="192" rx="6" fill="#CFE0C6"/>
+        <g fill="#9DBE92"><circle cx="430" cy="190" r="14"/><circle cx="520" cy="210" r="18"/><circle cx="470" cy="300" r="16"/><circle cx="545" cy="300" r="12"/></g>
+        <text x="410" y="334" style="fill:#2f5a2c">Kuğulu bahçe</text>
+        <text x="112" y="150" style="font-size:14px">Kalaba Cd.</text><text x="270" y="270" text-anchor="end" style="font-size:14px">Yokuş Sk.</text>
+        <path d="M95 128 L280 128 L280 262 L470 262 L470 128 L380 128" fill="none" stroke="#3E6B3A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+        <path d="M280 200 L280 262" fill="none" stroke="#B9501C" stroke-width="7" stroke-linecap="round"/>
+        <g class="stop on" tabindex="0" role="button" aria-pressed="true" data-i="0"><circle class="dot" cx="95" cy="128" r="10"/><text x="68" y="104">Ev</text></g>
+        <g class="stop" tabindex="0" role="button" aria-pressed="false" data-i="1"><circle class="dot" cx="230" cy="128" r="10"/><text x="210" y="104">Fırın</text></g>
+        <g class="stop" tabindex="0" role="button" aria-pressed="false" data-i="2"><circle class="dot" cx="280" cy="230" r="10"/><text x="296" y="236">Yokuş</text></g>
+        <g class="stop" tabindex="0" role="button" aria-pressed="false" data-i="3"><circle class="dot" cx="470" cy="200" r="10"/><text x="488" y="206">Bank</text></g>
+        <g class="stop" tabindex="0" role="button" aria-pressed="false" data-i="4"><circle class="dot" cx="380" cy="128" r="10"/><text x="330" y="104">Kahvehane</text></g>
+      </svg>
+      <div class="stats">
+        <div><small>Adım</small><b>2.840</b></div>
+        <div><small>Süre</small><b>36 dk</b></div>
+        <div><small>Adım boyu</small><b>56 cm</b></div>
+        <div><small>Denge</small><b style="color:var(--park)">iyi</b></div>
+      </div>
+      <p class="stopinfo" id="stopinfo" aria-live="polite"><b>Ev, 09:05.</b> Çıkışta adımlar ilk 2 dakika kısa, sonra açıldı. Hava 6°, kuru.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pocket" id="olcer">
+  <div class="wrap">
+    <h2 class="h2">Ceketin iç cebinde üç şeyi ölçer</h2>
+    <p class="lede">Telefonun içindeki hareket algılayıcıları her adımı hisseder. Bir adımı bir öncekine, bugünü geçen aya göre karşılaştırır; sizi başkalarıyla değil, kendinizle kıyaslar.</p>
+    <div class="grid">
+      <ul class="measures">
+        <li><h3>Adım boyu</h3><p>Kısalan adım, çoğu zaman korkunun ya da yorgunluğun ilk işaretidir. Siz fark etmeden önce o fark eder.</p></li>
+        <li><h3>Ritim düzeni</h3><p>Adımlarınız saat gibi mi, yoksa duraksıyor mu? Düzensizlik yokuşta, kalabalıkta, akşama doğru artabilir.</p></li>
+        <li><h3>Sağ-sol denge</h3><p>Bir bacağınızı kayırıyorsanız, dizinize ya da kalçanıza yük biniyor olabilir. Doktorunuza göstermek için ay sonunda bir sayfa hazırlar.</p></li>
+      </ul>
+      <figure class="chart" style="margin:0">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Sekiz haftada adım boyu 49 santimetreden 56 santimetreye çıktı.">
+          <g stroke="#E1DED5"><line x1="50" y1="40" x2="500" y2="40"/><line x1="50" y1="110" x2="500" y2="110"/><line x1="50" y1="180" x2="500" y2="180"/><line x1="50" y1="250" x2="500" y2="250"/></g>
+          <g text-anchor="end"><text x="42" y="44">60 cm</text><text x="42" y="114">55</text><text x="42" y="184">50</text><text x="42" y="254">45</text></g>
+          <polyline points="70,194 130,208 190,180 250,166 310,152 370,138 430,124 490,96" fill="none" stroke="#3E6B3A" stroke-width="4" stroke-linejoin="round"/>
+          <g fill="#3E6B3A"><circle cx="70" cy="194" r="6"/><circle cx="130" cy="208" r="6"/><circle cx="190" cy="180" r="6"/><circle cx="250" cy="166" r="6"/><circle cx="310" cy="152" r="6"/><circle cx="370" cy="138" r="6"/><circle cx="430" cy="124" r="6"/><circle cx="490" cy="96" r="8"/></g>
+          <line x1="160" y1="40" x2="160" y2="260" stroke="#B9501C" stroke-dasharray="5 5" stroke-width="2"/>
+          <text x="166" y="58" style="fill:#B9501C;font-weight:600">denge egzersizi başladı</text>
+          <g text-anchor="middle"><text x="70" y="282">1. hf</text><text x="190" y="282">3. hf</text><text x="310" y="282">5. hf</text><text x="490" y="282">8. hf</text></g>
+          <text x="478" y="84" text-anchor="end" style="font-weight:600;fill:#1C2124">56 cm</text>
+        </svg>
+        <figcaption>Hüseyin Bey'in sekiz haftası: 49 cm'den 56 cm'ye.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="winter" id="kis">
+  <div class="wrap">
+    <div>
+      <h2 class="h2">Buzlu sabahı bir gün önceden bilirsiniz</h2>
+      <p class="lede">Kendi yürüdüğünüz sokakları tanır; hangisinin gölgede kaldığını, hangisinin yokuş olduğunu. Hava eksiye düşecekse saati ve yolu değiştirmenizi önerir.</p>
+    </div>
+    <div class="alert" role="note" aria-label="Örnek kış uyarısı">
+      <p class="when">Pazartesi akşamı, 20:30 · yarın için</p>
+      <strong>Yarın sabah −4°. Yokuş Sokak gölgede, buzlanabilir.</strong>
+      <p>Turunuzu öğleden sonra 13:00'e alın, fırına Kalaba Caddesi'nden gidin. Bastonunuzun buz ucunu takmayı unutmayın.</p>
+      <div class="row"><span>13:00'e kur</span><span>Yolu değiştir</span><span>Bugün evde çalış</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="ex" id="egzersiz">
+  <div class="wrap">
+    <h2 class="h2">Mutfak tezgâhına tutunarak, günde 8 dakika</h2>
+    <p class="lede">Adım boyunuz iki hafta üst üste kısalırsa, uygulama bu üç çalışmayı sırayla önerir. Her birini sesli anlatır ve sayar.</p>
+    <ol>
+      <li>
+        <svg width="90" height="110" viewBox="0 0 90 110" aria-hidden="true"><rect x="2" y="44" width="30" height="6" fill="#D6D3CA"/><circle cx="50" cy="14" r="8" fill="none" stroke="#1C2124" stroke-width="3"/><path d="M50 22v38M50 32l-18 14M50 32l14 16M50 60v40M50 60l14 14" fill="none" stroke="#1C2124" stroke-width="3" stroke-linecap="round"/></svg>
+        <h3>Tek ayak üstünde</h3><p>Tezgâha iki elle tutunun, bir ayağınızı hafifçe kaldırın. On saniye, sonra öbür ayak.</p><span class="dur">3 tekrar · her ayak</span>
+      </li>
+      <li>
+        <svg width="90" height="110" viewBox="0 0 90 110" aria-hidden="true"><rect x="0" y="102" width="90" height="4" fill="#D6D3CA"/><circle cx="45" cy="14" r="8" fill="none" stroke="#1C2124" stroke-width="3"/><path d="M45 22v38M45 32l-16 18M45 32l16 18M45 60l-4 40M45 60l6 40" fill="none" stroke="#1C2124" stroke-width="3" stroke-linecap="round"/><path d="M30 104h12M48 104h12" stroke="#3E6B3A" stroke-width="3"/></svg>
+        <h3>Topuk-parmak yürüyüş</h3><p>Koridorda, duvara yakın; bir ayağın topuğu öbürünün parmağına değsin. On adım.</p><span class="dur">2 tur · koridor boyu</span>
+      </li>
+      <li>
+        <svg width="90" height="110" viewBox="0 0 90 110" aria-hidden="true"><path d="M10 60h34v44M10 60v44M10 30v30" fill="none" stroke="#D6D3CA" stroke-width="5"/><circle cx="54" cy="22" r="8" fill="none" stroke="#1C2124" stroke-width="3"/><path d="M54 30l-8 28M50 42l18 8M46 58h18l2 40" fill="none" stroke="#1C2124" stroke-width="3" stroke-linecap="round"/></svg>
+        <h3>Sandalyeden kalkış</h3><p>Kollu sandalyeye oturun, elleri kullanmadan kalkmaya çalışın. Zorlanırsanız kollardan destek alın.</p><span class="dur">5 kez · 2 set</span>
+      </li>
+    </ol>
+    <p class="safe">Göğüs ağrısı, baş dönmesi ya da yeni bir ağrı olursa durun. Bu çalışmalar fizyoterapistlerin evde önerdiği temel denge hareketleridir; doktorunuz başka bir şey söylediyse onu dinleyin.</p>
+  </div>
+</section>
+
+<section class="who">
+  <div class="wrap">
+    <div class="copy">
+      <h2 class="h2" style="margin-bottom:20px">Önce size söyler. Oğlunuza ancak siz isterseniz.</h2>
+      <p>Yürüyüşünüz sizin. Uygulama bir şey fark ettiğinde ilk haberi siz alırsınız; oğlunuza ya da kızınıza haftalık özet gitsin mi, ona siz karar verirsiniz.</p>
+      <p>Yolda düşerseniz ve kalkmazsanız, 60 saniye sonra seçtiğiniz kişiyi arar. Gerisi tamamen size ait.</p>
+    </div>
+    <div>
+      <div class="notice"><b>Size · Perşembe 18:10</b><p>Bu hafta adımlarınız biraz kısaldı (56 → 53 cm). Yarın sabah 8 dakikalık denge çalışması ister misiniz?</p></div>
+      <div class="notice"><b>Oğlunuz Serkan'a · Pazar, haftalık özet (izin verildi)</b><p>Babanız bu hafta 5 gün yürüdü, toplam 14.200 adım. Denge iyi.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="proof">
+  <div class="wrap">
+    <div>
+      <h2 class="h2">Nereye yürüdüğünüzü yalnızca siz bilirsiniz</h2>
+      <p class="lede" style="margin-top:18px">Adımları sayan da, yürüyüşü yorumlayan da cebinizdeki telefon. Rotanız, eviniz, kahvehaneye kaçta gittiğiniz hiçbir sunucuya gönderilmez. Köyde, yaylada, çekim olmayan yolda da ölçer.</p>
+    </div>
+    <ul>
+      <li>Konum: yalnızca telefonda</li>
+      <li>Hesap açmak: gerekmez</li>
+      <li>Reklam: yok</li>
+      <li>İnternet: yalnız hava durumu için</li>
+    </ul>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>“Geçen ocak fırının önünde buzda düştüm, bileğim kırıldı. Sonra üç ay kapıdan çıkmadım. Şimdi sabah telefon ‘bugün yol kuru’ diyor, çıkıyorum. Kahvehaneye kadar gidiyorum, kimseye muhtaç olmadan.”</blockquote>
+    <cite>Hüseyin Doğan, 72 · Ankara, Kalaba. Emekli belediye otobüsü şoförü.</cite>
+  </div>
+</section>
+
+<section class="price" id="fiyat">
+  <div class="wrap">
+    <div>
+      <p class="big">Ücretsiz</p>
+      <ul>
+        <li>Android 9 ve üzeri, iPhone 8 ve üzeri</li>
+        <li>Büyük yazı, sesli anlatım, tek ekran</li>
+        <li>Belediye ve aile sağlığı merkezleri için toplu kurulum desteği</li>
+      </ul>
+      <a class="btn go" href="#">Telefonuma kurayım</a>
+    </div>
+    <div class="faq">
+      <details><summary>Telefonu hangi cebe koymalıyım?</summary><p>Pantolonun ön cebi en doğru ölçümü verir; ceketin iç cebi de olur. Çantada taşırsanız yalnız adım sayar, denge ölçmez.</p></details>
+      <details><summary>Bastonla yürüyorum, ölçüm bozulur mu?</summary><p>Hayır. Kurulumda bastonla yürüdüğünüzü söylersiniz, ölçümü buna göre yapar.</p></details>
+      <details><summary>Doktoruma gösterebilir miyim?</summary><p>Ay sonunda tek sayfalık bir özet hazırlar: adım boyu, ritim, dinlenme molaları. Ekrandan gösterir ya da yazdırırsınız.</p></details>
+      <details><summary>Düşmeyi engeller mi?</summary><p>Hiçbir uygulama düşmeyi tamamen engelleyemez. Riskin arttığı günleri fark edip size söyler ve dengenizi güçlendirmeniz için yol gösterir.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Yürüyüş Arkadaşı · Ankara · merhaba@yuruyusarkadasi.app</span>
+    <span>Gizlilik · Sağlık uyarısı</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var info=[
+    '<b>Ev, 09:05.</b> Çıkışta adımlar ilk 2 dakika kısa, sonra açıldı. Hava 6°, kuru.',
+    '<b>Fırın, 09:12 · 640 adım.</b> Adımlar düzenli, 57 cm. Ekmek kuyruğunda 4 dk beklediniz.',
+    '<b>Yokuş Sokak, 09:18.</b> Adımlar 48 cm\'ye kısaldı, ritim biraz bozuldu. Normal: yokuşta herkes yavaşlar. Turuncu çizgi orası.',
+    '<b>Kuğulu bahçe, 09:27.</b> Bankta 3 dakika dinlendiniz. Kalkışta denge iyi.',
+    '<b>Kahvehane, 09:41.</b> Tur bitti. Geçen salıya göre 6 dakika daha uzun yürüdünüz.'
+  ];
+  var stops=[].slice.call(document.querySelectorAll('.stop')),box=document.getElementById('stopinfo');
+  function pick(s){stops.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false')});s.classList.add('on');s.setAttribute('aria-pressed','true');box.innerHTML=info[+s.dataset.i]}
+  stops.forEach(function(s){s.addEventListener('click',function(){pick(s)});s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(s)}})});
+})();
+</script>
+</body>
+</html>

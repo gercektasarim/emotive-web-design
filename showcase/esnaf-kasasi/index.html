@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Esnaf Kasası — Yarın kaç ekmek, kaç süt, kaç simit? Bakkalın sipariş defteri</title>
+<meta name="description" content="Esnaf Kasası mahalle bakkalının kasa satışlarından yarın ve hafta sonu ne kadar ekmek, süt ve simit alınacağını tahmin eder. Satış bilgisi kasadan çıkmaz; internet şart değil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Rubik:wght@400;500;600;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --red:#C8222C; --red-d:#9E1A22; --bread:#E9A93B; --bread-l:#FBE7BE; --milk:#FFFDF8; --shelf:#2F5E3A;
+  --ink:#2A1E17; --soft:#5A4A3E; --line:#E7DCC9;
+  --slab:"Alfa Slab One", Rockwell, serif; --body:"Rubik", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--milk);color:var(--ink);font:400 18px/1.6 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--shelf);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+/* awning */
+.awning{background:var(--red);color:#fff}
+.awning .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:16px;padding-bottom:16px;gap:16px}
+.sign{font:400 30px/1 var(--slab);letter-spacing:.01em;text-decoration:none}
+.sign small{font:500 13px var(--body);display:block;letter-spacing:.06em;opacity:.9;margin-top:4px}
+.awning nav{display:flex;gap:22px;font-weight:500;font-size:16px}
+.awning nav a{text-decoration:none}
+.stripes{height:30px;background:radial-gradient(circle at 50% 0,var(--red) 0 27px,transparent 28px) 0 0/112px 30px repeat-x,radial-gradient(circle at 50% 0,#fff 0 25px,#D8C9AE 25.5px 27px,transparent 28px) 56px 0/112px 30px repeat-x}
+.btn{display:inline-block;font:700 17px/1 var(--body);padding:15px 22px;border-radius:8px;text-decoration:none;background:var(--shelf);color:#fff;border:2px solid var(--shelf)}
+.btn.l{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+/* hero */
+.hero{padding:44px 0 80px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:52px;align-items:start}
+h1{font:400 clamp(38px,4.8vw,62px)/1.06 var(--slab);margin:10px 0 20px;color:var(--ink)}
+.lede{font-size:20px;color:var(--soft);max-width:28em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 14px}
+.fine{font-size:15px;color:var(--soft)}
+/* order slip */
+.slip{background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:8px 8px 0 var(--bread)}
+.slip-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;border-bottom:2px dashed var(--line);flex-wrap:wrap}
+.slip-h b{font:400 20px var(--slab)}
+.slip-h span{font-size:14px;color:var(--soft)}
+.pick{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px 4px}
+.pick button{font:600 15px var(--body);padding:9px 14px;border-radius:999px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.pick button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.pick .sep{width:1px;background:var(--line);margin:0 4px}
+.items{padding:6px 18px 8px}
+.it{display:grid;grid-template-columns:92px 1fr 90px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.it:last-child{border-bottom:0}
+.it .nm{font-weight:600}
+.it .nm small{display:block;font-weight:400;font-size:13px;color:var(--soft)}
+.track{height:14px;background:#F3EDE2;border-radius:7px;position:relative;overflow:hidden}
+.fill{position:absolute;inset:0 auto 0 0;background:var(--bread);border-radius:7px;transition:width .5s ease}
+.last{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--red)}
+.qty{font:400 30px/1 var(--slab);text-align:right;font-variant-numeric:tabular-nums}
+.qty small{display:block;white-space:nowrap;font:500 12.5px var(--body);color:var(--soft);margin-top:4px}
+.why{margin:0;padding:12px 18px 16px;background:var(--bread-l);border-radius:0 0 12px 12px;font-size:15.5px}
+.why b{color:var(--red-d)}
+/* two sides */
+section{padding:88px 0}
+h2{font:400 clamp(30px,3.6vw,46px)/1.1 var(--slab);margin:0 0 18px;max-width:18em}
+.sides{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin-top:30px;border:2px solid var(--ink);border-radius:14px;overflow:hidden}
+.sides > div{padding:30px}
+.sides .a{background:#F3EDE2}
+.sides .b{background:#fff;border-left:2px solid var(--ink)}
+.sides h3{font:700 21px var(--body);margin:0 0 8px}
+.sides p{margin:0;color:var(--soft)}
+.sides .n{font:400 46px/1 var(--slab);margin:16px 0 6px}
+/* calendar */
+.cal{background:var(--shelf);color:#F4EFE3}
+.cal h2{color:#fff}
+.cal p.l{color:#D8E3D6;max-width:36em}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin-top:34px}
+.day{background:rgba(255,255,255,.08);border-radius:10px;padding:14px 12px;min-height:150px}
+.day b{font:400 20px var(--slab);display:block}
+.day span{display:block;font-size:14.5px;line-height:1.4;margin-top:8px;color:#E6EEE3}
+.day em{display:inline-block;font-style:normal;font:600 13px var(--body);background:var(--bread);color:var(--ink);padding:3px 8px;border-radius:5px;margin-top:10px}
+/* defter */
+.defter .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.book{background:#FFF8E8;border:2px solid var(--ink);border-radius:6px 14px 14px 6px;padding:26px 28px 22px 46px;position:relative;background-image:repeating-linear-gradient(#FFF8E8 0 33px,#E9D9B9 33px 34px);font-size:17px;line-height:34px}
+.book::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:2px;background:var(--red)}
+.book p{margin:0}
+.book .r{display:flex;justify-content:space-between}
+.book .t{font-weight:600}
+/* quote */
+.quote{background:var(--bread-l)}
+.quote blockquote{margin:0;font:400 clamp(24px,2.8vw,36px)/1.3 var(--slab);max-width:26em}
+.quote cite{display:block;font:500 16px var(--body);font-style:normal;margin-top:18px;color:var(--soft)}
+/* price */
+.prices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;max-width:860px;margin-top:28px}
+.pr{border:2px solid var(--ink);border-radius:14px;padding:26px;background:#fff}
+.pr.on{box-shadow:8px 8px 0 var(--red)}
+.pr h3{margin:0;font:700 19px var(--body)}
+.pr .amt{font:400 44px/1.1 var(--slab);margin:10px 0 4px}
+.pr ul{padding-left:20px;color:var(--soft)}
+details{border-top:2px dashed var(--line);padding:16px 0}
+summary{font:600 19px var(--body);cursor:pointer}
+details p{color:var(--soft);max-width:44em;margin:8px 0 0}
+footer{background:var(--ink);color:#E8DCC6;padding:34px 0;font-size:15px}
+footer .bye{font:400 24px var(--slab);color:var(--bread);display:block;margin-bottom:8px}
+footer .credit{margin-top:10px;font-size:12.5px}
+@media (max-width:960px){
+  .hero .wrap,.defter .wrap{grid-template-columns:1fr}
+  .days{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .awning nav{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .sides{grid-template-columns:1fr}
+  .sides .b{border-left:0;border-top:2px solid var(--ink)}
+  .days{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .prices{grid-template-columns:1fr}
+  .it{grid-template-columns:72px 1fr 84px;gap:10px}
+  .qty{font-size:24px}
+  section{padding:64px 0}
+}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="awning">
+  <div class="wrap">
+    <a class="sign" href="#">Esnaf Kasası<small>BAKKALIN SİPARİŞ DEFTERİ</small></a>
+    <nav aria-label="Ana menü"><a href="#takvim">Neye bakar</a><a href="#defter">Defter sizde</a><a href="#fiyat">Fiyat</a></nav>
+  </div>
+</div>
+<div class="stripes" aria-hidden="true"></div>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Akşam ekmek artmasın, sabah raf boş kalmasın.</h1>
+      <p class="lede">Esnaf Kasası, kasanızdaki satışlara bakıp yarın kaç ekmek, kaç süt, kaç simit söylemeniz gerektiğini hesaplar. Cuma namazını, maç akşamını, yağmuru, ay başını da hesaba katar.</p>
+      <div class="cta"><a class="btn" href="#fiyat">Bir ay bedava dene</a><a class="btn l" href="#takvim">Nasıl hesaplıyor?</a></div>
+      <p class="fine">Mevcut yazar kasanızın satış kaydını okur ya da tezgâhtaki telefona barkod okutursunuz. İnternet şart değil.</p>
+    </div>
+
+    <div class="slip" aria-label="Örnek: yarınki sipariş tahmini">
+      <div class="slip-h"><b>Yarınki sipariş</b><span>Cebeci Bakkalı · kasa kapanışı 22:10</span></div>
+      <div class="pick" role="group" aria-label="Gün ve hava seçimi">
+        <button type="button" data-d="0" aria-pressed="false">Cuma</button>
+        <button type="button" data-d="1" aria-pressed="true">Cumartesi</button>
+        <button type="button" data-d="2" aria-pressed="false">Pazar</button>
+        <span class="sep" aria-hidden="true"></span>
+        <button type="button" id="rain" aria-pressed="false">Yağmur var</button>
+      </div>
+      <div class="items" id="items"></div>
+      <p class="why" id="why"></p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap">
+    <h2>Her akşamın iki derdi var.</h2>
+    <div class="sides">
+      <div class="a"><h3>Ekmek arttı</h3><p>Fırına geri vermediğiniz her ekmek cepten gider. Kimisi bayatı tavuğa verir, kimisi çöpe; ikisi de zarar.</p><div class="n">23</div><p>Geçen ay ortalama, akşam başına artan ekmek. Ayda yaklaşık 9.600 ₺.</p></div>
+      <div class="b"><h3>Raf boş kaldı</h3><p>Sabah 10’da süt bitti, müşteri karşıdaki zincir markete gitti. Bir kere gider, alışır.</p><div class="n">4 gün</div><p>Ayda sütün öğleden önce bittiği gün sayısı. Esnaf Kasası’yla ilk ayda 1’e iniyor.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cal" id="takvim">
+  <div class="wrap">
+    <h2>Mahallenin takvimine bakar.</h2>
+    <p class="l">Sadece geçen haftanın satışı değil; mahallenizin bir haftasında olan her şey. Bunları siz zaten biliyorsunuz. Esnaf Kasası sizin yerinize sayar.</p>
+    <div class="days">
+      <div class="day"><b>Pzt</b><span>Hafta başı, sakin. Sabah okul önü simit.</span><em>Simit +15</em></div>
+      <div class="day"><b>Salı</b><span>Pazar kuruluyor, sebze bakkala gelmez.</span><em>Ekmek −8</em></div>
+      <div class="day"><b>Çrş</b><span>Maç akşamı: çekirdek, gazoz, cips.</span><em>Çekirdek ×3</em></div>
+      <div class="day"><b>Prş</b><span>Yarın maaş günü; ay sonu cebi boş.</span><em>Süt −4</em></div>
+      <div class="day"><b>Cuma</b><span>Namaz çıkışı pide, ay başı alışverişi.</span><em>Pide +20</em></div>
+      <div class="day"><b>Cmt</b><span>Kahvaltı sofrası: yumurta, peynir, simit.</span><em>Yumurta +3 koli</em></div>
+      <div class="day"><b>Pazar</b><span>Sabah 8’de kuyruk; öğleden sonra ölü.</span><em>Ekmek sabaha</em></div>
+    </div>
+  </div>
+</section>
+
+<section class="defter" id="defter">
+  <div class="wrap">
+    <div>
+      <h2>Defter tezgâhta kalır.</h2>
+      <p style="color:var(--soft)">Ne sattığınız, kime veresiye verdiğiniz, hangi gün ne kadar kazandığınız sizin bilginizdir. Esnaf Kasası bu hesabı tezgâhtaki telefonun ya da kasanın içinde yapar; satışlarınız hiçbir sunucuya, toptancıya, zincir markete gitmez.</p>
+      <p style="color:var(--soft)">İnternet kesilse de sabahki sipariş listesi hazırdır. Fırıncıya, sütçüye mesajla göndermek isterseniz tek dokunuş.</p>
+    </div>
+    <div class="book" role="img" aria-label="Sipariş defteri sayfası: fırına ve sütçüye yarınki sipariş">
+      <p class="t">Cumartesi siparişi · 15 Kasım</p>
+      <p class="r"><span>Fırın (Özkan Usta)</span><span>182 ekmek · 12 pide</span></p>
+      <p class="r"><span>Simitçi Bekir</span><span>78 simit · 20 poğaça</span></p>
+      <p class="r"><span>Sütçü</span><span>38 litre · 8 koli yumurta</span></p>
+      <p class="r"><span>Gazete</span><span>14</span></p>
+      <p class="r"><span>Gönderilme</span><span>05:30, mesajla</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>“Otuz yıldır göz kararı sipariş verdim, hep ya artıyordu ya yetmiyordu. Şimdi akşam kasayı kapatınca telefon söylüyor; ekmek dolabı akşam dokuzda boşalıyor, tam kararında.”</blockquote>
+    <cite>Hüseyin Yıldız — Yıldız Bakkaliyesi, Cebeci / Ankara · 1994’ten beri</cite>
+  </div>
+</section>
+
+<section id="fiyat">
+  <div class="wrap">
+    <h2>Fiyat</h2>
+    <div class="prices">
+      <div class="pr on"><h3>Aylık</h3><div class="amt">99 ₺</div><ul><li>İlk ay bedava</li><li>Sınırsız ürün</li><li>Fırıncı ve sütçüye mesajla sipariş</li></ul><a class="btn" href="#">Android için indir</a></div>
+      <div class="pr"><h3>Bir kere al, hep kullan</h3><div class="amt">1.990 ₺</div><ul><li>Tek seferlik ödeme</li><li>Yazar kasa bağlantı kablosu dahil</li><li>Kurulumu mahallenize gelip yapıyoruz (Ankara, İstanbul, İzmir)</li></ul><a class="btn l" href="#">Bizi arayın</a></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:10px">
+  <div class="wrap" style="max-width:860px">
+    <h2>Bakkalların sorduğu</h2>
+    <details open><summary>Yazar kasam eski, olur mu?</summary><p>2016 sonrası yeni nesil ödeme kaydedici cihazların satış raporunu okuyoruz. Kasanız bağlanmıyorsa tezgâhtaki telefona barkod okutmanız yeterli; Esnaf Kasası iki haftada öğrenir.</p></details>
+    <details><summary>Kaç günde doğru tahmin eder?</summary><p>İlk hafta göz kararınıza yakın söyler. Üçüncü haftadan sonra geçen yılın verisi olmasa da mahallenizin ritmini yakalar. Her sabah “dün ne arttı” diye sorar; siz söyledikçe düzelir.</p></details>
+    <details><summary>Telefonda yazılar büyük mü?</summary><p>Evet. Rakamlar büyük, menü üç düğme. İsterseniz sipariş sesli de okunur.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap"><span class="bye">Hayırlı işler, bol kazançlar.</span>Esnaf Kasası · Cebeci, Ankara · destek@esnafkasasi.com · 0312 000 00 00
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var items=[
+    {k:"Ekmek",u:"adet",b:[150,176,210],last:[163,170,224],max:240},
+    {k:"Simit",u:"adet",b:[52,72,96],last:[48,80,90],max:110},
+    {k:"Süt",u:"litre",b:[30,35,41],last:[27,38,36],max:50},
+    {k:"Yumurta",u:"koli",b:[5,7,11],last:[6,6,12],max:14}
+  ];
+  var why=[
+    "Cuma: <b>namaz çıkışı</b> ekmek ve pide artıyor. Ay başı olduğu için süt geçen Cuma’dan 3 litre fazla.",
+    "Cumartesi: <b>kahvaltı günü</b>. Geçen Cumartesi simit 11’de bitti, bu yüzden 8 fazla.",
+    "Pazar: satışın <b>%70’i sabah 8–11 arası</b>. Ekmeği tek seferde değil, ikinci servis 10:00’da söyleyin."
+  ];
+  var d=1,rain=false,box=document.getElementById('items'),w=document.getElementById('why');
+  items.forEach(function(it,i){var r=document.createElement('div');r.className='it';
+    r.innerHTML='<div class="nm">'+it.k+'<small>'+it.u+'</small></div><div class="track"><div class="fill" id="fl'+i+'"></div><div class="last" id="ls'+i+'" title="Geçen hafta satılan"></div></div><div class="qty"><span id="q'+i+'"></span><small id="s'+i+'"></small></div>';box.appendChild(r)});
+  function draw(){items.forEach(function(it,i){var q=Math.round(it.b[d]*(rain?(it.k==="Simit"?0.85:1.08):1));
+      document.getElementById('q'+i).textContent=q;document.getElementById('fl'+i).style.width=(q/it.max*100)+'%';
+      document.getElementById('ls'+i).style.left=(it.last[d]/it.max*100)+'%';
+      document.getElementById('s'+i).textContent='geçen hf '+it.last[d]});
+    w.innerHTML=why[d]+(rain?' <b>Yağmur:</b> millet markete gitmez, bakkala uğrar; ekmek ve süt %8 fazla, simitçi önünde kuyruk olmaz, simit az.':'')}
+  [].forEach.call(document.querySelectorAll('[data-d]'),function(b){b.addEventListener('click',function(){d=+b.dataset.d;[].forEach.call(document.querySelectorAll('[data-d]'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});draw()})});
+  document.getElementById('rain').addEventListener('click',function(){rain=!rain;this.setAttribute('aria-pressed',rain?'true':'false');draw()});
+  draw();
+})();
+</script>
+</body>
+</html>

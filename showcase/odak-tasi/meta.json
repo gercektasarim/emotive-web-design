@@ -1,0 +1,20 @@
+{
+  "slug": "odak-tasi",
+  "name": "Odak Taşı",
+  "interpretation": "Masaüstündeki taş",
+  "world": "Gündüz masası: 23 açık sekme, yarım KDV beyannamesi, kenarda sarı yapışkan not ve avuçta pürüzsüz bir dere taşı.",
+  "palette": [
+    "#F1F0EB",
+    "#2B2E33",
+    "#8E918A",
+    "#F4D65E",
+    "#4C6B57"
+  ],
+  "fonts": [
+    "Bricolage Grotesque",
+    "Atkinson Hyperlegible"
+  ],
+  "score": 27,
+  "lowest": "Tanınabilirlik",
+  "moment": "\"23 sekmeyi işlere göre topla\" düğmesiyle sekmelerin üç iş yığınına (Beyanname, Bodrum tatili, Merak ettiklerin) ayrılması."
+}

@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enerji Bekçisi — Faturanın içinde hangi cihaz var, görün</title>
+<meta name="description" content="Enerji Bekçisi sayacınızın ışığını okuyup elektrik faturanızı cihaz cihaz ayırır: ısıtıcı ne yaktı, termosifon ne yaktı. Veriler telefonunuzda kalır. Kiracı dostu, sayaca dokunmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;500;700;900&family=Chivo+Mono:wght@400;500;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --panel:#E3E5E0;
+  --paper:#FFFFFF;
+  --ink:#1B1E1D;
+  --steel:#545A57;
+  --rule:#C9CCC5;
+  --lcd:#C5D2B2;
+  --lcd-ink:#1F2A17;
+  --warn:#D9531E;
+  --heat:#D9531E;
+  --water:#B7832A;
+  --fridge:#3F6F82;
+  --wash:#6F6198;
+  --light:#7C8B3A;
+  --oven:#A0533F;
+  --idle:#8C918D;
+  --ok:#2F6A4C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--panel);color:var(--ink);font-family:"Chivo",system-ui,sans-serif;font-size:17.5px;line-height:1.55}
+.mono{font-family:"Chivo Mono",ui-monospace,monospace}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+.wrap{max-width:1220px;margin:0 auto;padding:0 32px}
+h1,h2,h3{font-weight:900;letter-spacing:-.02em;line-height:1.05}
+
+.bar{background:var(--ink);color:#E9EBE6;font-size:14.5px}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;height:60px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px;text-decoration:none;letter-spacing:-.01em}
+.bar nav{display:flex;gap:26px}
+.bar nav a{text-decoration:none;color:#BFC3BD}
+.bar nav a:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 16px/1 "Chivo",sans-serif;padding:15px 22px;border-radius:4px;text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:#000}
+.btn-line{background:transparent;color:var(--ink)}
+.btn-line:hover{background:#fff}
+.btn-warn{background:var(--warn);border-color:var(--warn);color:#fff}
+.bar .btn{padding:10px 16px;font-size:14.5px;border-color:#E9EBE6;background:#E9EBE6;color:var(--ink)}
+
+/* hero */
+.hero{padding:56px 0 70px}
+.hero .meta{font-family:"Chivo Mono",monospace;font-size:14px;color:var(--steel);display:flex;flex-wrap:wrap;gap:6px 24px;margin-bottom:20px}
+.hero h1{font-size:clamp(40px,6vw,82px);max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--warn)}
+.hero .lead{font-size:20px;max-width:36em;margin-top:22px;color:#30342f}
+.split{margin-top:46px;background:var(--paper);border:1px solid var(--rule);border-radius:6px}
+.split-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:16px 22px;border-bottom:1px solid var(--rule);font-family:"Chivo Mono",monospace;font-size:13.5px;color:var(--steel)}
+.split-head b{color:var(--ink);font-weight:700}
+.stack{display:flex;height:84px;margin:22px 22px 0;border-radius:3px;overflow:hidden}
+.stack div{position:relative;height:100%;min-width:0}
+.stack div+div{border-left:2px solid #fff}
+.stack span{position:absolute;left:10px;top:10px;font:700 13px/1.2 "Chivo Mono",monospace;color:#fff;white-space:nowrap}
+.rows{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:0 22px;border-top:0}
+.row{padding:16px 16px 18px 0;border-bottom:1px solid #ECEDEA}
+.row .nm{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15.5px}
+.row .nm i{width:10px;height:10px;border-radius:2px;flex:none}
+.row .v{font-family:"Chivo Mono",monospace;font-size:14px;color:var(--steel);margin-top:4px}
+.row .v b{color:var(--ink);font-weight:700}
+.verdict{display:grid;grid-template-columns:1.2fr 1fr auto;gap:30px;align-items:center;padding:22px;border-top:1px solid var(--rule);background:#F7F8F5}
+.total{font-family:"Chivo Mono",monospace}
+.total small{display:block;font-size:13px;color:var(--steel)}
+.total strong{font-size:clamp(36px,4vw,52px);font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.tip{font-size:16.5px;border-left:4px solid var(--ok);padding-left:16px}
+.tip b{color:var(--ok)}
+
+section{padding:96px 0}
+.h2{font-size:clamp(34px,4.4vw,58px);max-width:18ch}
+.intro{font-size:19px;max-width:36em;margin-top:18px;color:#30342f}
+
+/* meter */
+.meter{background:var(--ink);color:#E9EBE6}
+.meter .intro{color:#C3C7C1}
+.meter .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;margin-top:50px;align-items:center}
+.lcd{background:var(--lcd);color:var(--lcd-ink);border-radius:10px;padding:18px 20px 14px;box-shadow:inset 0 0 0 6px #A9B798,inset 0 0 30px rgba(0,0,0,.12);font-family:"Chivo Mono",monospace}
+.lcd-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}
+.lcd-w{font-size:44px;font-weight:700;letter-spacing:-.02em}
+.lcd svg{width:100%;height:170px;display:block}
+.lcd .tags{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;margin-top:6px}
+.sig{list-style:none;display:grid;gap:18px}
+.sig li{border-top:1px solid #3c403e;padding-top:14px}
+.sig b{display:block;font-size:18px;color:#fff}
+.sig span{font-size:15.5px;color:#C3C7C1}
+
+/* simulator */
+.sim .grid{display:grid;grid-template-columns:1fr 420px;gap:44px;margin-top:50px;align-items:start}
+.habits{display:grid;gap:12px}
+.habit{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;cursor:pointer}
+.habit:hover{border-color:var(--steel)}
+.habit input{appearance:none;-webkit-appearance:none;width:46px;height:26px;border-radius:13px;background:#C9CCC5;position:relative;cursor:pointer;flex:none;margin:0}
+.habit input::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.habit input:checked{background:var(--ok)}
+.habit input:checked::after{left:23px}
+.habit input:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+.habit b{display:block;font-size:16.5px}
+.habit small{display:block;font-size:14.5px;color:var(--steel);margin-top:2px}
+.habit .save{font-family:"Chivo Mono",monospace;font-size:14px;font-weight:700;color:var(--ok);white-space:nowrap}
+.readout{position:sticky;top:20px;background:var(--ink);color:#fff;border-radius:6px;padding:26px}
+.readout .lcd{margin-bottom:18px}
+.readout .lcd .lcd-w{font-size:52px}
+.readout dl{display:grid;grid-template-columns:1fr auto;gap:8px 12px;font-family:"Chivo Mono",monospace;font-size:14.5px}
+.readout dt{color:#BFC3BD}
+.readout dd{text-align:right}
+.readout .big{font-size:22px;font-weight:700;color:#9FD6B5}
+.readout p{font-size:14px;color:#BFC3BD;margin-top:16px;line-height:1.5}
+
+/* proof */
+.proof .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:10px;align-items:start}
+.day{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:22px}
+.day h3{font-size:16px;font-family:"Chivo Mono",monospace;font-weight:500;color:var(--steel);margin-bottom:12px}
+.day svg{width:100%;height:auto;display:block}
+.day .reads{list-style:none;margin-top:14px;display:grid;gap:8px;font-size:15px}
+.day .reads li{display:grid;grid-template-columns:90px 1fr;gap:10px}
+.day .reads time{font-family:"Chivo Mono",monospace;color:var(--steel);font-size:13.5px;padding-top:1px}
+.facts{list-style:none;display:grid;gap:22px;margin-top:30px}
+.facts li{display:grid;grid-template-columns:120px 1fr;gap:18px;border-top:2px solid var(--ink);padding-top:14px}
+.facts strong{font-family:"Chivo Mono",monospace;font-size:24px;font-weight:700}
+.facts span{font-size:16.5px}
+
+/* device */
+.device{background:var(--paper);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.device .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.device svg{width:100%;max-width:440px;height:auto;display:block;margin:0 auto}
+.specs{margin-top:26px;border-top:1px solid var(--rule)}
+.specs div{display:grid;grid-template-columns:200px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);font-size:16px}
+.specs dt{color:var(--steel)}
+
+/* quote + price */
+.qp .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch}
+.q{background:var(--ink);color:#fff;border-radius:6px;padding:36px}
+.q p{font-size:clamp(21px,2.1vw,27px);font-weight:500;line-height:1.35}
+.q footer{margin-top:22px;font-size:15px;color:#BFC3BD}
+.q .num{display:flex;gap:30px;margin-top:26px;font-family:"Chivo Mono",monospace;font-size:14px;color:#BFC3BD;flex-wrap:wrap}
+.q .num b{display:block;font-size:26px;color:#fff}
+.price{background:var(--paper);border:2px solid var(--ink);border-radius:6px;padding:34px}
+.price h2{font-size:30px}
+.price .amt{font-family:"Chivo Mono",monospace;font-size:54px;font-weight:700;letter-spacing:-.03em;margin:14px 0 0}
+.price .sub{color:var(--steel);font-size:15px}
+.price ul{list-style:none;margin:20px 0 26px;display:grid;gap:8px;font-size:16px}
+.price li{padding-left:22px;position:relative}
+.price li::before{content:"";position:absolute;left:0;top:10px;width:10px;height:3px;background:var(--ok)}
+.price .ctas{display:flex;flex-wrap:wrap;gap:10px}
+
+/* faq */
+.faq dl{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.faq div{border-top:1px solid var(--rule);padding:20px 0 24px}
+.faq dt{font-weight:700;font-size:18.5px;margin-bottom:8px}
+.faq dd{font-size:16.5px;color:#30342f}
+
+footer.site{background:var(--ink);color:#BFC3BD;padding:36px 0 40px;font-size:14.5px}
+footer.site .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer.site .credit{width:100%;margin-top:12px;font-family:"Chivo Mono",monospace;font-size:12.5px}
+footer.site .credit a{color:#9DA29C;text-decoration:none}
+footer.site .credit a:hover{color:#fff;text-decoration:underline}
+
+@media (max-width:1000px){
+  .bar nav{display:none}
+  .rows{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .verdict{grid-template-columns:minmax(0,1fr)}
+  .meter .grid,.sim .grid,.proof .grid,.device .grid,.qp .grid{grid-template-columns:minmax(0,1fr)}
+  .readout{position:static}
+  .faq dl{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  body{font-size:16.5px}
+  .hero{padding:34px 0 50px}
+  section{padding:70px 0}
+  .stack{height:56px;margin:16px 14px 0}
+  .stack span{display:none}
+  .rows{margin:0 14px}
+  .split-head,.verdict{padding:14px}
+  .lcd-w{font-size:34px}
+  .facts li{grid-template-columns:minmax(0,1fr);gap:4px}
+  .specs div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .habit{grid-template-columns:auto minmax(0,1fr);}
+  .habit .save{grid-column:2}
+  .q,.price{padding:24px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3" fill="none" stroke="#E9EBE6" stroke-width="2"/><path d="M13 5 8 13h4l-1 6 5-8h-4z" fill="#D9531E"/></svg>Enerji Bekçisi</a>
+    <nav aria-label="Ana menü"><a href="#sayac">Sayaç ne duyar</a><a href="#hesap">Faturayı yeniden yaz</a><a href="#veri">Veri kimde</a><a href="#okuyucu">Okuyucu</a><a href="#fiyat">Fiyat</a></nav>
+    <a class="btn" href="#fiyat">Okuyucuyu al</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <p class="meta"><span>Aralık faturası · 1+1 kiralık, Keçiören</span><span>683 kWh · çok zamanlı tarife</span></p>
+    <h1 id="h1">2.185 ₺’lik faturanın <em>931 ₺’si</em> tek bir cihazdan.</h1>
+    <p class="lead">Enerji Bekçisi sayacınızın ışığını okur, faturanızı cihaz cihaz ayırır ve hangi alışkanlığın ne kadar tuttuğunu söyler. Sayaca dokunmaz; veriler telefonunuzdan çıkmaz.</p>
+
+    <div class="split" aria-label="Uygulama ekranı: Aralık faturasının cihazlara göre dağılımı">
+      <div class="split-head"><span><b>Aralık 2026</b> · 1–31 Aralık · 31 gün</span><span>birim fiyat 3,20 ₺/kWh (vergiler dahil)</span></div>
+      <div class="stack" aria-hidden="true">
+        <div style="flex:291;background:var(--heat)"><span>Isıtıcı %43</span></div>
+        <div style="flex:156;background:var(--water)"><span>Termosifon %23</span></div>
+        <div style="flex:61;background:var(--wash)"><span>Çamaşır</span></div>
+        <div style="flex:54;background:var(--light)"><span>Işık·TV</span></div>
+        <div style="flex:48;background:var(--fridge)"></div>
+        <div style="flex:47;background:var(--oven)"></div>
+        <div style="flex:26;background:var(--idle)"></div>
+      </div>
+      <div class="rows">
+        <div class="row"><p class="nm"><i style="background:var(--heat)"></i>Yağlı radyatör</p><p class="v"><b>931 ₺</b> · 291 kWh · gecede 9,4 saat</p></div>
+        <div class="row"><p class="nm"><i style="background:var(--water)"></i>Termosifon</p><p class="v"><b>499 ₺</b> · 156 kWh · 24 saat açık</p></div>
+        <div class="row"><p class="nm"><i style="background:var(--wash)"></i>Çamaşır + bulaşık</p><p class="v"><b>195 ₺</b> · 61 kWh · 23 yıkama</p></div>
+        <div class="row"><p class="nm"><i style="background:var(--light)"></i>Aydınlatma, TV, modem</p><p class="v"><b>173 ₺</b> · 54 kWh</p></div>
+        <div class="row"><p class="nm"><i style="background:var(--fridge)"></i>Buzdolabı</p><p class="v"><b>154 ₺</b> · 48 kWh · normal</p></div>
+        <div class="row"><p class="nm"><i style="background:var(--oven)"></i>Fırın, kettle</p><p class="v"><b>150 ₺</b> · 47 kWh</p></div>
+        <div class="row"><p class="nm"><i style="background:var(--idle)"></i>Bekleme (stand-by)</p><p class="v"><b>83 ₺</b> · 26 kWh · gece 35 W</p></div>
+        <div class="row"><p class="nm"><i style="background:#fff;border:1px solid var(--rule)"></i>Tanınmayan</p><p class="v"><b>0 ₺</b> · %0,4 altında</p></div>
+      </div>
+      <div class="verdict">
+        <p class="total"><small>Toplam</small><strong>2.185,60 ₺</strong></p>
+        <p class="tip"><b>İlk öneri:</b> radyatör gece 02:00’den sonra boş salonu ısıtıyor. Yatak odasına alıp termostatı 3’e indirin: ayda yaklaşık <b>310 ₺</b>.</p>
+        <span style="display:grid;gap:8px;justify-items:start"><a class="btn btn-ink" href="#hesap">Kendi faturamı hesapla</a><small class="mono" style="font-size:12.5px;color:#545A57">Okuyucu 690 ₺ · uygulama ücretsiz</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="meter" id="sayac" aria-labelledby="h-sayac">
+  <div class="wrap">
+    <h2 class="h2" id="h-sayac">Her cihaz sayaçta başka bir iz bırakır.</h2>
+    <p class="intro">Sayacın ön yüzündeki kırmızı ışık her watt-saatte bir yanıp söner. Okuyucu bu yanıp sönmeyi saniyede onlarca kez ölçer; telefonunuzdaki model de çekilen gücün açılıp kapanma biçiminden hangi cihazın çalıştığını ayırır.</p>
+    <div class="grid">
+      <div class="lcd" role="img" aria-label="Sayaç ekranı: 21:00 ile 21:30 arası anlık güç grafiği; buzdolabı döngüsü, kettle sıçraması ve radyatör termostatının aç-kapa dişleri">
+        <div class="lcd-top"><span>ANLIK GÜÇ · 21:00–21:30</span><span>CANLI</span></div>
+        <div class="lcd-w" id="lcdW">2.318 W</div>
+        <svg viewBox="0 0 600 170" preserveAspectRatio="none" aria-hidden="true">
+          <g stroke="#1F2A17" stroke-opacity=".15"><path d="M0 42h600M0 84h600M0 126h600"/></g>
+          <path d="M0 150 H40 V140 H120 V150 H150 V92 H190 V82 H230 V92 H270 V82 H310 V92 H350 V82 H360 V30 H392 V82 H430 V92 H470 V140 H520 V150 H560 V140 H600" fill="none" stroke="#1F2A17" stroke-width="3" stroke-linejoin="round"/>
+          <g font-family="Chivo Mono" font-size="12" fill="#1F2A17"><text x="44" y="132">buzdolabı</text><text x="196" y="72">radyatör termostatı</text><text x="398" y="40">kettle</text></g>
+        </svg>
+        <div class="tags"><span>▮ 120 W buzdolabı kompresörü</span><span>▮ 2.000 W radyatör, 40 sn aç / 40 sn kapa</span><span>▮ 2.200 W kettle, 3 dk</span></div>
+      </div>
+      <ul class="sig">
+        <li><b>Radyatör: testere dişi</b><span>Termostat açıp kapadıkça 2 kW’lık düzenli basamaklar. Odanın soğuduğunu bu dişlerin sıklaşmasından anlar.</span></li>
+        <li><b>Termosifon: uzun düz blok</b><span>Su ısındıkça yarım saat sabit 2 kW, sonra gün boyu kısa “ısı tutma” atımları.</span></li>
+        <li><b>Buzdolabı: sakin dalga</b><span>Her 40 dakikada 15 dakikalık 120 W döngü. Döngü uzarsa contayı kontrol etmenizi söyler.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sim" id="hesap" aria-labelledby="h-hesap">
+  <div class="wrap">
+    <h2 class="h2" id="h-hesap">Ocak faturasını şimdiden yeniden yazın.</h2>
+    <p class="intro">Aralık verisinden yola çıkarak uygulamanın önerdiği alışkanlıkları açın ya da kapatın. Hesap, sizin evinizin ölçülmüş tüketimiyle yapılır; ortalama bir evle değil.</p>
+    <div class="grid">
+      <div class="habits" id="habits">
+        <label class="habit"><input type="checkbox" data-kwh="96" data-tl="0" checked><span><b>Radyatörü yatak odasına alın, termostat 3</b><small>Salon gece 02:00 sonrası boş; 9,4 saat yerine ~6 saat çalışır.</small></span><span class="save">−307 ₺</span></label>
+        <label class="habit"><input type="checkbox" data-kwh="84" data-tl="0" checked><span><b>Termosifonu zamanlayıcıya bağlayın</b><small>Sabah 06:00 ve akşam 19:00’da birer saat. Gün boyu ısı tutma biter.</small></span><span class="save">−269 ₺</span></label>
+        <label class="habit"><input type="checkbox" data-kwh="0" data-tl="58"><span><b>Çamaşır ve bulaşığı 22:00’den sonra</b><small>Çok zamanlı tarifede gece fiyatı gündüzün yaklaşık yarısı.</small></span><span class="save">−58 ₺</span></label>
+        <label class="habit"><input type="checkbox" data-kwh="38" data-tl="0"><span><b>Balkon kapısının altına fitil</b><small>Radyatör dişleri kapının yanındaki odada %13 sık. Fitil: 85 ₺.</small></span><span class="save">−122 ₺</span></label>
+        <label class="habit"><input type="checkbox" data-kwh="14" data-tl="0"><span><b>TV ünitesini gece prizden kesin</b><small>Uydu alıcısı ve konsol gece 35 W çekiyor.</small></span><span class="save">−45 ₺</span></label>
+      </div>
+      <aside class="readout" aria-live="polite">
+        <div class="lcd"><div class="lcd-top"><span>OCAK TAHMİNİ</span><span>31 GÜN</span></div><div class="lcd-w" id="newBill">1.609 ₺</div></div>
+        <dl>
+          <dt>Aralık</dt><dd>2.185,60 ₺</dd>
+          <dt>Ocak tahmini</dt><dd id="newBill2">1.609,60 ₺</dd>
+          <dt>Tüketim</dt><dd id="newKwh">503 kWh</dd>
+          <dt>Aylık fark</dt><dd class="big" id="diff">−576 ₺</dd>
+        </dl>
+        <p>Hava sıcaklığı Aralık’a yakın giderse geçerli. Uygulama ay ortasında gerçek tüketimle tahmini karşılaştırır ve sapmayı söyler.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="proof" id="veri" aria-labelledby="h-veri">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-veri">Sayacınız ne zaman evde olduğunuzu bilir. Biz bilmeyiz.</h2>
+        <p class="intro">Saatlik tüketim bir evin günlüğüdür: kaçta uyandığınız, ne zaman tatile çıktığınız, gece kaçta eve geldiğiniz. Bu yüzden hesap telefonunuzda yapılır; okuyucu yalnızca sizin telefonunuzla, Bluetooth üzerinden konuşur. Ev sahibinize ya da dağıtım şirketine bir şey gitmez.</p>
+        <ul class="facts">
+          <li><strong>0</strong><span>sunucu. Hesabınız yok, e-postanız yok.</span></li>
+          <li><strong>12 ay</strong><span>veri telefonda tutulur; istediğiniz an tek dokunuşla silinir.</span></li>
+          <li><strong>CSV</strong><span>Dışa aktarmak isterseniz dosya sizin elinizden çıkar, bizim üzerimizden değil.</span></li>
+        </ul>
+      </div>
+      <div class="day" role="img" aria-label="Bir günün saatlik tüketim grafiği ve grafikten okunabilecek kişisel bilgiler">
+        <h3>Salı · saatlik tüketim · yalnız bu telefonda</h3>
+        <svg viewBox="0 0 480 160" aria-hidden="true">
+          <g fill="#3F6F82">
+            <rect x="4" y="140" width="16" height="16"/><rect x="24" y="142" width="16" height="14"/><rect x="44" y="140" width="16" height="16"/><rect x="64" y="142" width="16" height="14"/><rect x="84" y="141" width="16" height="15"/><rect x="104" y="140" width="16" height="16"/>
+            <rect x="124" y="60" width="16" height="96" fill="#D9531E"/><rect x="144" y="92" width="16" height="64" fill="#B7832A"/>
+            <rect x="164" y="138" width="16" height="18"/><rect x="184" y="140" width="16" height="16"/><rect x="204" y="141" width="16" height="15"/><rect x="224" y="140" width="16" height="16"/><rect x="244" y="139" width="16" height="17"/><rect x="264" y="140" width="16" height="16"/><rect x="284" y="141" width="16" height="15"/><rect x="304" y="138" width="16" height="18"/>
+            <rect x="324" y="96" width="16" height="60" fill="#B7832A"/><rect x="344" y="70" width="16" height="86" fill="#A0533F"/><rect x="364" y="40" width="16" height="116" fill="#D9531E"/><rect x="384" y="36" width="16" height="120" fill="#D9531E"/><rect x="404" y="46" width="16" height="110" fill="#D9531E"/><rect x="424" y="58" width="16" height="98" fill="#D9531E"/><rect x="444" y="70" width="16" height="86" fill="#D9531E"/>
+          </g>
+          <path d="M0 157h480" stroke="#1B1E1D"/>
+          <g font-family="Chivo Mono" font-size="11" fill="#545A57"><text x="0" y="12">00</text><text x="120" y="12">06</text><text x="240" y="12">12</text><text x="360" y="12">18</text><text x="452" y="12">23</text></g>
+        </svg>
+        <ul class="reads">
+          <li><time>06:00–08:00</time><span>Uyanış, duş, kahvaltı.</span></li>
+          <li><time>08:00–16:00</time><span>Evde kimse yok; yalnız buzdolabı.</span></li>
+          <li><time>17:30</time><span>Eve dönüş. Kimin bilmesi gerekir? Sizden başka kimsenin.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="device" id="okuyucu" aria-labelledby="h-oku">
+  <div class="wrap">
+    <div class="grid">
+      <svg viewBox="0 0 440 360" role="img" aria-label="Elektrik sayacının ön yüzü ve kırmızı ışığın üstüne yapıştırılmış yuvarlak optik okuyucu">
+        <rect x="70" y="20" width="300" height="320" rx="14" fill="#F2F3F0" stroke="#9EA39E" stroke-width="2"/>
+        <rect x="100" y="56" width="240" height="70" rx="6" fill="#C5D2B2" stroke="#A9B798" stroke-width="4"/>
+        <text x="122" y="104" font-family="Chivo Mono" font-size="34" font-weight="700" fill="#1F2A17">018324.6</text>
+        <text x="306" y="104" font-family="Chivo Mono" font-size="13" fill="#1F2A17">kWh</text>
+        <text x="100" y="156" font-family="Chivo Mono" font-size="12" fill="#545A57">T1  T2  T3     1000 imp/kWh</text>
+        <circle cx="300" cy="200" r="7" fill="#D9531E"/>
+        <circle cx="300" cy="200" r="34" fill="#1B1E1D" opacity=".92"/>
+        <circle cx="300" cy="200" r="24" fill="none" stroke="#545A57" stroke-width="2"/>
+        <circle cx="300" cy="200" r="4" fill="#9FD6B5"/>
+        <path d="M300 234 C300 280 360 290 380 330" fill="none" stroke="#1B1E1D" stroke-width="5" stroke-linecap="round"/>
+        <rect x="100" y="240" width="120" height="60" rx="4" fill="none" stroke="#C9CCC5" stroke-width="2"/>
+        <text x="110" y="262" font-family="Chivo Mono" font-size="11" fill="#545A57">MÜHÜR</text>
+        <text x="110" y="282" font-family="Chivo Mono" font-size="11" fill="#545A57">dokunulmaz</text>
+        <text x="206" y="210" font-family="Chivo" font-size="13" font-weight="700" fill="#1B1E1D">okuyucu</text>
+      </svg>
+      <div>
+        <h2 class="h2" id="h-oku">Kiracı dostu: sayaca yapışır, mühüre dokunmaz.</h2>
+        <p class="intro">Okuyucu, sayacın kırmızı ışığının üstüne yeniden yapışabilen bir pedle tutunur. Sigorta kutusunu açmak, elektrikçi çağırmak ya da ev sahibinden izin almak gerekmez. Taşınırken söküp yanınıza alırsınız.</p>
+        <dl class="specs">
+          <div><dt>Uyumlu sayaçlar</dt><dd>Ön yüzünde imp/kWh ışığı olan tüm elektronik sayaçlar</dd></div>
+          <div><dt>Pil</dt><dd>2 × AA, yaklaşık 14 ay</dd></div>
+          <div><dt>Bağlantı</dt><dd>Yalnız Bluetooth, telefonunuzla; Wi-Fi ve SIM yok</dd></div>
+          <div><dt>Sayaç dolabı uzaksa</dt><dd>Okuyucu 30 güne kadar kendi belleğinde tutar; yanından geçince aktarır</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="qp" id="fiyat" aria-label="Kullanıcı deneyimi ve fiyat">
+  <div class="wrap">
+    <div class="grid">
+      <blockquote class="q">
+        <p>“Ocak faturası geldiğinde zarfı açmadan önce ne yazacağını biliyordum. 1.640 ₺ çıktı, uygulama 1.610 demişti. İlk kez faturayı ben yönettim.”</p>
+        <footer><b style="color:#fff">Merve Toprak</b> · Keçiören, Ankara · kiracı, 1+1, elektrikli ısınma</footer>
+        <div class="num"><span><b>−545 ₺</b>Ocak / Aralık</span><span><b>2</b>alışkanlık değişti</span></div>
+      </blockquote>
+      <div class="price">
+        <h2>Okuyucu bir kez alınır.</h2>
+        <p class="amt">690 ₺</p>
+        <p class="sub">okuyucu + uygulama · abonelik yok · kargo dahil</p>
+        <ul>
+          <li>Cihaz cihaz aylık döküm ve fatura tahmini</li>
+          <li>Alışkanlık önerileri ve tutarları</li>
+          <li>Çok zamanlı tarife hesabı (gündüz / puant / gece)</li>
+          <li>Taşınırken yeni eve aynı okuyucu</li>
+          <li>30 gün içinde iade, sorgusuz</li>
+        </ul>
+        <div class="ctas"><a class="btn btn-warn" href="#">Okuyucuyu sipariş et</a><a class="btn btn-line" href="#">Uygulamayı indir</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="h-sss">
+  <div class="wrap">
+    <h2 class="h2" id="h-sss">Sık sorulanlar</h2>
+    <dl>
+      <div><dt>Sayacım ortak koridorda, dairemin içinde değil.</dt><dd>Sorun değil. Okuyucu 30 güne kadar veriyi kendinde tutar; kapıdan çıkarken telefonunuz yanından geçince otomatik aktarılır.</dd></div>
+      <div><dt>Ayrıştırma ne kadar doğru?</dt><dd>Radyatör, termosifon, fırın ve kettle gibi 1 kW üstü cihazlarda aylık toplamda %5 civarı sapma. Küçük cihazları tek tek değil, grup olarak (“aydınlatma, TV, modem”) gösteriyoruz; uydurmuyoruz.</dd></div>
+      <div><dt>Doğalgazla ısınıyorum, işime yarar mı?</dt><dd>Elektrik faturası için yarar: termosifon, kurutma makinesi, bekleme tüketimi. Doğalgazı ölçmez.</dd></div>
+      <div><dt>Elektrik dağıtım şirketinin onayı gerekir mi?</dt><dd>Hayır. Okuyucu sayaca bağlanmaz; yalnızca ışığına bakar. Mühüre, kapağa, kabloya dokunmaz.</dd></div>
+      <div><dt>İnternet kesilirse?</dt><dd>Hiçbir şey değişmez. Okuyucu ve telefon arasında internet yok; hesap telefonda yapılır.</dd></div>
+      <div><dt>Ev arkadaşlarımla paylaşabilir miyim?</dt><dd>Evet: aylık dökümü telefonunuzda PDF olarak üretip istediğiniz kişiye siz gönderirsiniz. “Kim ne kadar yaktı” tartışması da biter.</dd></div>
+    </dl>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Enerji Bekçisi · Ankara, Ostim</span>
+    <span>destek@enerjibekcisi.com.tr · 0312 386 42 17 · hafta içi 09:00–18:00</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var base=683, rate=3.2, baseTl=2185.6;
+  var boxes=[].slice.call(document.querySelectorAll('#habits input'));
+  function fmt(n){return n.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function calc(){
+    var kwh=base, extra=0;
+    boxes.forEach(function(b){if(b.checked){kwh-=+b.dataset.kwh;extra+=+b.dataset.tl;}});
+    var tl=kwh*rate-extra;
+    document.getElementById('newBill').textContent=Math.round(tl).toLocaleString('tr-TR')+' ₺';
+    document.getElementById('newBill2').textContent=fmt(tl)+' ₺';
+    document.getElementById('newKwh').textContent=kwh+' kWh';
+    document.getElementById('diff').textContent='−'+Math.round(baseTl-tl).toLocaleString('tr-TR')+' ₺';
+  }
+  boxes.forEach(function(b){b.addEventListener('change',calc)});
+  calc();
+  // live meter number flicker
+  var w=document.getElementById('lcdW'), vals=[2318,2322,2131,2309,2315,122,2320];
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){var i=0;setInterval(function(){i=(i+1)%vals.length;w.textContent=vals[i].toLocaleString('tr-TR')+' W';},1400);}
+})();
+</script>
+</body>
+</html>

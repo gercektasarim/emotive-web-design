@@ -1,0 +1,21 @@
+{
+  "slug": "ne-pisirsem",
+  "name": "Ne Pişirsem",
+  "interpretation": "Buzdolabı ışığı",
+  "world": "Akşam yedide isli, loş mutfakta açılan buzdolabının soğuk beyaz ışığı ve cam rafları.",
+  "palette": [
+    "#1C1612",
+    "#EEF6FB",
+    "#F6B323",
+    "#5B3466",
+    "#E8C79A",
+    "#2A211B"
+  ],
+  "fonts": [
+    "Gabarito",
+    "Libre Franklin"
+  ],
+  "score": 27,
+  "lowest": "Palet/doku",
+  "moment": "Buzdolabındaki dokuz malzemeye dokunup bitenleri çıkarmak; altındaki üç yemek önerisi anında yeniden sıralanır."
+}

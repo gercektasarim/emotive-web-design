@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sınav Ritmi — YKS'ye kadar her gün neyi tekrar edeceğini söyleyen plan</title>
+<meta name="description" content="Sınav Ritmi unutma eğrisine göre kişisel tekrar planı kurar ve YKS adayına bugün hangi konuyu tekrar edeceğini söyler. Denemelerin ve netlerin telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Saira:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --kagit:#FFFDFB;
+  --form:#FBEAEA;
+  --murekkep:#C23A52;
+  --kursun:#1C1C21;
+  --gri:#605E67;
+  --cizgi:#EDC9CF;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--kagit);color:var(--kursun);font-family:"Saira",system-ui,sans-serif;font-size:18px;line-height:1.55}
+:focus-visible{outline:3px solid var(--kursun);outline-offset:3px;border-radius:3px}
+a{color:var(--kursun)}
+.c{font-family:"Saira Condensed",sans-serif}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+header{max-width:1160px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--murekkep)}
+.logo{font-family:"Saira Condensed";font-weight:700;font-size:26px;text-transform:uppercase;letter-spacing:1px;color:var(--murekkep);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo .b{width:18px;height:18px;border-radius:50%;background:var(--kursun);box-shadow:22px 0 0 -2px #fff,22px 0 0 0 var(--murekkep)}
+.logo span:last-child{margin-left:22px}
+header nav a{margin-left:22px;text-decoration:none;font-weight:500;font-size:16px}
+header nav a:hover{color:var(--murekkep)}
+.btn{display:inline-block;font:inherit;font-weight:600;padding:12px 20px;border-radius:4px;background:var(--kursun);color:#fff;text-decoration:none;border:2px solid var(--kursun);cursor:pointer}
+.btn:hover{background:var(--murekkep);border-color:var(--murekkep)}
+.btn.ac{background:transparent;color:var(--kursun)}
+.btn.ac:hover{background:var(--kursun);color:#fff}
+header nav a.btn{color:#fff}
+
+/* hero */
+.hero{display:grid;grid-template-columns:.95fr 1.05fr;gap:56px;padding-top:44px;padding-bottom:80px;align-items:start}
+.sayac{display:flex;align-items:flex-end;gap:16px;margin-bottom:18px}
+.sayac b{font-family:"Saira Condensed";font-weight:700;font-size:clamp(96px,13vw,170px);line-height:.8;color:var(--murekkep);letter-spacing:-3px}
+.sayac span{font-family:"Saira Condensed";font-weight:600;font-size:22px;line-height:1.1;text-transform:uppercase;letter-spacing:1px;padding-bottom:6px}
+.hero h1{font-family:"Saira Condensed";font-weight:700;font-size:clamp(38px,4.6vw,60px);line-height:1;margin:0 0 18px;letter-spacing:-.5px}
+.hero p{margin:0 0 24px;max-width:42ch}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.kucuk{font-size:15px;color:var(--gri);margin-top:14px}
+
+.optik{background:var(--form);border:2px solid var(--murekkep);border-radius:4px;color:var(--murekkep)}
+.optik-ust{display:grid;grid-template-columns:1fr auto;padding:12px 16px;border-bottom:2px solid var(--murekkep);gap:10px}
+.optik-ust b{font-family:"Saira Condensed";font-size:20px;letter-spacing:1px;text-transform:uppercase}
+.optik-ust span{font-size:14px;align-self:center}
+.optik-ust .ad{grid-column:1/-1;color:var(--kursun);font-size:15px;font-weight:500}
+.satir{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--cizgi)}
+.satir:last-child{border-bottom:0}
+.satir .no{font-family:"Saira Condensed";font-weight:600;font-size:18px}
+.satir .konu{color:var(--kursun)}
+.satir .konu b{font-weight:600;display:block;line-height:1.3}
+.satir .konu small{color:var(--gri);font-size:14px}
+.balon{display:flex;gap:6px}
+.balon i{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--murekkep);display:grid;place-items:center;font-style:normal;font-size:11px;font-family:"Saira Condensed";font-weight:600;background:#fff}
+.balon i.d{background:var(--kursun);border-color:var(--kursun);color:var(--kursun)}
+.optik-alt{display:flex;justify-content:space-between;gap:10px;padding:10px 16px;border-top:2px solid var(--murekkep);font-size:14px;flex-wrap:wrap}
+
+section{padding:90px 0}
+h2{font-family:"Saira Condensed";font-weight:700;font-size:clamp(34px,4.4vw,56px);line-height:1;margin:0 0 16px;letter-spacing:-.5px;max-width:20ch}
+.ac-m{max-width:58ch;color:#33323A}
+.pembe{background:var(--form);border-top:2px solid var(--murekkep);border-bottom:2px solid var(--murekkep)}
+
+/* iki hafta */
+.haftalar{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:36px}
+.hf{background:#fff;border:1.5px solid var(--cizgi);border-radius:4px;padding:22px}
+.hf h3{font-family:"Saira Condensed";font-size:26px;margin:0 0 4px;font-weight:600}
+.hf .alt{color:var(--gri);font-size:15px;margin:0 0 14px}
+.gunler{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.gun span{overflow-wrap:anywhere}
+.gun{min-height:150px;border:1px solid #E6E2E4;border-radius:3px;padding:6px 5px;font-size:12px;line-height:1.25;display:flex;flex-direction:column;gap:4px}
+.gun b{font-family:"Saira Condensed";font-size:14px;color:var(--gri)}
+.gun span{background:#F2F0F2;border-radius:2px;padding:2px 4px}
+.panik .gun span:nth-child(3n){background:#FBD9DE}
+.ritim .gun span.t{background:var(--kursun);color:#fff}
+.ritim .gun span.y{background:#fff;border:1px solid var(--kursun)}
+.hf .sonuc{margin-top:14px;font-size:16px;border-top:1px dashed var(--cizgi);padding-top:10px}
+.hf .sonuc b{font-family:"Saira Condensed";font-size:22px}
+
+/* eğri */
+.egri{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;align-items:start}
+.secim{display:flex;flex-direction:column;gap:8px;margin-top:24px}
+.secim button{font:inherit;text-align:left;padding:12px 14px;border:1.5px solid var(--kursun);background:#fff;border-radius:4px;cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+.secim button[aria-pressed="true"]{background:var(--kursun);color:#fff}
+.secim button small{color:inherit;opacity:.75}
+.grafik{background:#fff;border:2px solid var(--kursun);border-radius:4px;padding:22px}
+.grafik .bas{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.grafik .bas b{font-family:"Saira Condensed";font-size:26px;font-weight:600}
+.grafik .bas span{font-size:15px;color:var(--gri)}
+.grafik svg{display:block;width:100%;height:auto;margin-top:10px}
+.grafik svg text{font-family:"Saira";font-size:13px;fill:#605E67}
+.grafik .durum{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center;border-top:1px solid #E6E2E4;padding-top:14px;margin-top:6px}
+.grafik .durum p{margin:0;font-size:16px}
+.grafik .durum p b{color:var(--murekkep)}
+
+/* deneme */
+.deneme{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.sonuc-kagit{background:#fff;border:1.5px solid #D9D6D8;box-shadow:6px 6px 0 var(--form);padding:22px;font-size:15px}
+.sonuc-kagit table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sonuc-kagit th,.sonuc-kagit td{text-align:left;padding:7px 6px;border-bottom:1px solid #EEE}
+.sonuc-kagit th{font-family:"Saira Condensed";font-size:15px;color:var(--gri);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.sonuc-kagit td.r{text-align:right}
+.sonuc-kagit .y{color:var(--murekkep);font-weight:600}
+.sonuc-kagit .not{margin:12px 0 0;font-size:15px;color:var(--kursun);background:var(--form);padding:10px 12px}
+.yerel{list-style:none;padding:0;margin:20px 0 0}
+.yerel li{padding:10px 0 10px 30px;position:relative;border-bottom:1px solid #EEE}
+.yerel li::before{content:"";position:absolute;left:0;top:15px;width:16px;height:16px;border-radius:50%;background:var(--kursun)}
+
+.alinti{border-left:6px solid var(--murekkep);padding-left:30px;max-width:900px}
+.alinti blockquote{margin:0;font-family:"Saira Condensed";font-weight:500;font-size:clamp(28px,3.4vw,42px);line-height:1.15}
+.alinti p{color:var(--gri);margin:14px 0 0;font-size:16px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+.fk{border:2px solid var(--kursun);padding:28px;border-radius:4px;background:#fff}
+.fk .t{font-family:"Saira Condensed";font-weight:700;font-size:56px;line-height:1;margin:6px 0 0}
+.fk .t small{font-family:"Saira";font-weight:400;font-size:16px;color:var(--gri)}
+.fk ul{padding-left:20px;margin:14px 0 20px}
+details{border-bottom:1px solid #E6E2E4;padding:16px 0}
+details:first-child{border-top:2px solid var(--kursun)}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:#33323A}
+footer{border-top:2px solid var(--murekkep);padding:32px 0;color:var(--gri);font-size:15px}
+footer .r{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--gri)}
+.credit{margin-top:14px;font-size:13px}
+
+@media (max-width:920px){
+  header nav a:not(.btn){display:none}
+  .hero,.egri,.deneme,.fiyat{grid-template-columns:1fr;gap:34px}
+  .haftalar{grid-template-columns:1fr}
+  section{padding:64px 0}
+}
+@media (max-width:480px){
+  .balon{gap:3px}
+  .balon i{width:18px;height:18px;font-size:9px}
+  .satir{grid-template-columns:22px 1fr;row-gap:6px}
+  .satir .balon{grid-column:2}
+  .gun{min-height:0;font-size:13px;padding:5px}
+  .gunler{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+  .hf{padding:16px}
+  .alinti{padding-left:18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#" aria-label="Sınav Ritmi ana sayfa"><span class="b" aria-hidden="true"></span><span>Sınav Ritmi</span></a>
+  <nav aria-label="Ana menü">
+    <a href="#hafta">Panik mi ritim mi</a>
+    <a href="#egri">Unutma eğrisi</a>
+    <a href="#deneme">Denemeler</a>
+    <a href="#fiyat">Fiyat</a>
+    <a class="btn" href="#fiyat">İndir</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div>
+    <div class="sayac"><b>200</b><span>gün<br>kaldı</span></div>
+    <h1>Bugün 4 konu. Gerisi bekleyebilir.</h1>
+    <p>Her şeye birden çalışınca hiçbir şey kalmıyor. Sınav Ritmi her konuyu ne zaman unutmaya başlayacağını hesaplar ve sana yalnız bugün tekrar etmen gerekenleri söyler. Kalan zamanı yeni konuya ayırırsın.</p>
+    <div class="cta"><a class="btn" href="#fiyat">iPhone için indir</a><a class="btn ac" href="#fiyat">Android için indir</a></div>
+    <p class="kucuk">TYT ve AYT (SAY, EA, SÖZ, DİL) · internetsiz çalışır · netlerin telefondan çıkmaz</p>
+  </div>
+
+  <div class="optik" aria-label="Bugünkü tekrar listesi, optik form görünümünde">
+    <div class="optik-ust"><b>Bugün tekrar et</b><span>Salı, 9 Aralık</span><span class="ad">Zeynep · 12. sınıf · Sayısal · 37 konu takipte</span></div>
+    <div class="satir"><span class="no">1</span><span class="konu"><b>TYT Mat · Yaş problemleri</b><small>son tekrar 6 gün önce · hatırlama tahmini %58</small></span><span class="balon" aria-label="5 üzerinden 3"><i class="d">A</i><i class="d">B</i><i class="d">C</i><i>D</i><i>E</i></span></div>
+    <div class="satir"><span class="no">2</span><span class="konu"><b>AYT Fizik · Elektrik alan</b><small>son tekrar 3 gün önce · %61 · denemede 2 yanlış</small></span><span class="balon" aria-label="5 üzerinden 3"><i class="d">A</i><i class="d">B</i><i class="d">C</i><i>D</i><i>E</i></span></div>
+    <div class="satir"><span class="no">3</span><span class="konu"><b>AYT Kimya · Mol kavramı</b><small>son tekrar 11 gün önce · %49</small></span><span class="balon" aria-label="5 üzerinden 2"><i class="d">A</i><i class="d">B</i><i>C</i><i>D</i><i>E</i></span></div>
+    <div class="satir"><span class="no">4</span><span class="konu"><b>TYT Türkçe · Paragrafta ana düşünce</b><small>son tekrar 2 gün önce · %70 · kısa tekrar</small></span><span class="balon" aria-label="5 üzerinden 4"><i class="d">A</i><i class="d">B</i><i class="d">C</i><i class="d">D</i><i>E</i></span></div>
+    <div class="optik-alt"><span>Tahmini süre: 1 sa 35 dk</span><span>Bugün bekleyebilir: 37 konu</span></div>
+  </div>
+</div>
+
+<section class="pembe" id="hafta">
+  <div class="wrap">
+    <h2>Aynı hafta, iki farklı çalışma.</h2>
+    <p class="ac-m">200 gün kala çoğu aday paniğe kapılır: her gün yeni konu, her akşam bir deneme, hiç tekrar yok. Üç hafta sonra ilk konular unutulmuş olur. Ritimde yeni konu yine çalışılır; ama her gün, unutulmak üzere olan birkaç konu da kısa bir tekrarla geri gelir.</p>
+    <div class="haftalar">
+      <div class="hf panik" aria-label="Panik haftası: her gün farklı yeni konular, tekrar yok">
+        <h3>Panik haftası</h3><p class="alt">14 yeni konu · 0 tekrar · 4 deneme</p>
+        <div class="gunler">
+          <div class="gun"><b>Pzt</b><span>Türev</span><span>Paragraf</span><span>Deneme</span></div>
+          <div class="gun"><b>Sal</b><span>Mol</span><span>Optik</span></div>
+          <div class="gun"><b>Çar</b><span>İntegral</span><span>Tarih</span><span>Deneme</span></div>
+          <div class="gun"><b>Per</b><span>Hücre</span><span>Elektrik</span></div>
+          <div class="gun"><b>Cum</b><span>Limit</span><span>Coğrafya</span><span>Deneme</span></div>
+          <div class="gun"><b>Cmt</b><span>Asit-baz</span><span>Deneme</span></div>
+          <div class="gun"><b>Paz</b><span>Hepsi?</span></div>
+        </div>
+        <p class="sonuc">3 hafta sonra hatırlanan: <b>~%35</b></p>
+      </div>
+      <div class="hf ritim" aria-label="Ritim haftası: her gün bir iki yeni konu ve kısa tekrarlar">
+        <h3>Ritim haftası</h3><p class="alt">9 yeni konu · 23 kısa tekrar · 2 deneme</p>
+        <div class="gunler">
+          <div class="gun"><b>Pzt</b><span class="y">Türev</span><span class="t">Problemler</span><span class="t">Paragraf</span></div>
+          <div class="gun"><b>Sal</b><span class="y">Mol</span><span class="t">Türev</span><span class="t">Elektrik</span></div>
+          <div class="gun"><b>Çar</b><span class="y">İntegral</span><span class="t">Mol</span><span>Deneme</span></div>
+          <div class="gun"><b>Per</b><span class="y">Hücre</span><span class="t">Türev</span><span class="t">Optik</span></div>
+          <div class="gun"><b>Cum</b><span class="y">Limit</span><span class="t">İntegral</span><span class="t">Mol</span></div>
+          <div class="gun"><b>Cmt</b><span>Deneme</span><span class="t">Analiz</span></div>
+          <div class="gun"><b>Paz</b><span class="t">Hafif tekrar</span><span>Dinlen</span></div>
+        </div>
+        <p class="sonuc">3 hafta sonra hatırlanan: <b>~%80</b> · siyah = tekrar, çerçeveli = yeni</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="egri">
+  <div class="wrap egri">
+    <div>
+      <h2>Her konunun kendi unutma eğrisi var.</h2>
+      <p class="ac-m">Kolay bulduğun konu yavaş, zor bulduğun konu hızlı unutulur. Sınav Ritmi her tekrardan sonra eğriyi senin cevaplarına göre yeniden çizer. Bir konuyu tekrar et ve ne olduğuna bak:</p>
+      <div class="secim" role="group" aria-label="Konu seç">
+        <button type="button" aria-pressed="true" data-i="0">Yaş problemleri <small>%58</small></button>
+        <button type="button" aria-pressed="false" data-i="1">Mol kavramı <small>%49</small></button>
+        <button type="button" aria-pressed="false" data-i="2">Paragrafta ana düşünce <small>%70</small></button>
+      </div>
+    </div>
+    <div class="grafik">
+      <div class="bas"><b id="gbas">Yaş problemleri</b><span id="galt">4 tekrar · son: 6 gün önce</span></div>
+      <svg viewBox="0 0 600 260" role="img" aria-labelledby="gbas" id="svg">
+        <g stroke="#EEE"><line x1="40" y1="30" x2="590" y2="30"/><line x1="40" y1="120" x2="590" y2="120"/><line x1="40" y1="210" x2="590" y2="210"/></g>
+        <line x1="40" y1="210" x2="590" y2="210" stroke="#1C1C21" stroke-width="1.5"/>
+        <text x="4" y="34">%100</text><text x="10" y="124">%50</text><text x="16" y="214">%0</text>
+        <path id="egriYol" fill="none" stroke="#C23A52" stroke-width="3.5" stroke-linejoin="round"/>
+        <line id="bugun" y1="22" y2="214" stroke="#1C1C21" stroke-dasharray="4 4"/>
+        <text id="bugunYazi" y="248" font-weight="600">bugün</text>
+        <text x="40" y="248">40 gün önce</text>
+        <text x="540" y="248">+14 gün</text>
+        <circle id="nokta" r="6" fill="#1C1C21"/>
+      </svg>
+      <div class="durum" aria-live="polite"><p id="gdurum">Şu an hatırlama tahmini <b>%58</b>. Bugün tekrar etmezsen 4 gün içinde %45'in altına iner.</p><button class="btn" id="tekrar" type="button">Bugün tekrar ettim</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="pembe" id="deneme">
+  <div class="wrap deneme">
+    <div>
+      <h2>Deneme sonucunu okut, yanlışlar plana girsin.</h2>
+      <p class="ac-m">Dershane ya da yayın denemesinin sonuç kâğıdının fotoğrafını çek. Sınav Ritmi yanlış ve boşları konulara dağıtır, o konuların eğrisini öne çeker. Hepsi telefonda olur.</p>
+      <ul class="yerel">
+        <li>Netlerin, sıralama tahminin ve sonuç kâğıtların hiçbir sunucuya gitmez.</li>
+        <li>Dershane, okul ya da veli senin izin vermediğin hiçbir şeyi görmez.</li>
+        <li>Kütüphanede, yurtta, internet kotası bittiğinde de çalışır.</li>
+      </ul>
+    </div>
+    <div class="sonuc-kagit" aria-label="Okutulmuş deneme sonucu örneği">
+      <table>
+        <thead><tr><th>TYT Deneme 7 · 6 Aralık</th><th class="r">D</th><th class="r">Y</th><th class="r">B</th><th class="r">Net</th></tr></thead>
+        <tbody>
+          <tr><td>Türkçe</td><td class="r">33</td><td class="r">5</td><td class="r">2</td><td class="r">31,75</td></tr>
+          <tr><td>Sosyal</td><td class="r">14</td><td class="r">4</td><td class="r">2</td><td class="r">13,00</td></tr>
+          <tr><td>Matematik</td><td class="r">26</td><td class="r y">7</td><td class="r">7</td><td class="r">24,25</td></tr>
+          <tr><td>Fen</td><td class="r">13</td><td class="r">3</td><td class="r">4</td><td class="r">12,25</td></tr>
+          <tr><td><b>Toplam</b></td><td class="r"><b>86</b></td><td class="r"><b>19</b></td><td class="r"><b>15</b></td><td class="r"><b>81,25</b></td></tr>
+        </tbody>
+      </table>
+      <p class="not">Matematikteki 7 yanlışın 4'ü <b>yaş ve işçi problemleri</b>. “Yaş problemleri” yarın değil bugün tekrar listesine alındı.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap alinti">
+    <blockquote>“Ekim'de her gün 10 saat çalışıp hiçbir şeyi hatırlamıyordum. Şimdi günde yarım saatim tekrara gidiyor, gerisi yeni konuya. TYT netim 64'ten 81'e çıktı ve geceleri uyuyabiliyorum.”</blockquote>
+    <p>Zeynep Kaplan · Diyarbakır · 12. sınıf, sayısal</p>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:20px">
+  <div class="wrap fiyat">
+    <div>
+      <h2>Sınava kadar bir kez öde.</h2>
+      <div class="fk">
+        <p class="t">349 ₺ <small>YKS'ye kadar · tek seferlik</small></p>
+        <ul><li>TYT + AYT bütün alanlar</li><li>Sınırsız deneme okutma</li><li>Günlük tekrar listesi ve unutma eğrileri</li><li>İlk 7 gün ücretsiz</li></ul>
+        <div class="cta"><a class="btn" href="#">iPhone için indir</a><a class="btn ac" href="#">Android için indir</a></div>
+      </div>
+    </div>
+    <div>
+      <details open><summary>Ders programımı mı değiştiriyor?</summary><p>Hayır. Sen ve öğretmenin hangi konuyu ne zaman çalışacağını belirlersiniz; Sınav Ritmi yalnız tekrarları yerleştirir. Günlük tekrar süresi ayarlanabilir, varsayılanı 60–90 dakika.</p></details>
+      <details><summary>Konu listesi güncel mi?</summary><p>Güncel YKS konu listesine göre hazırlanır; müfredat değişirse uygulama güncellemesiyle gelir.</p></details>
+      <details><summary>Bir gün tekrarı atlarsam ne olur?</summary><p>Hiçbir şey çökmez. Ertesi günün listesi yeniden hesaplanır, en acil olanlar öne alınır. Kırmızı uyarı, ceza, seri kaybetme yok.</p></details>
+      <details><summary>Mezun ya da tekrar giren adaylar için de uygun mu?</summary><p>Evet. Geçen yılın konularını “önceden çalışılmış” olarak işaretlersin; eğriler ilk kontrol testiyle başlar.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="r"><span>Sınav Ritmi · Her gün biraz, her şey değil.</span><span>destek@sinavritmi.app · Gizlilik · KVKK</span></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  // gün -40..+14 → x 40..590 ; tutma 0..1 → y 210..30
+  const X=d=>40+(d+40)*(550/54), Y=r=>210-r*180;
+  const K=[
+    {ad:'Yaş problemleri',alt:'4 tekrar · son: 6 gün önce',rev:[-40,-33,-20,-6],s:[2,3,4.5,6.06],now:.58,next:9},
+    {ad:'Mol kavramı',alt:'3 tekrar · son: 11 gün önce',rev:[-38,-28,-11],s:[3,5,8.5],now:.49,next:6},
+    {ad:'Paragrafta ana düşünce',alt:'5 tekrar · son: 2 gün önce',rev:[-40,-35,-26,-14,-2],s:[1,1.5,2,2.5,3.08],now:.70,next:13}
+  ];
+  let cur=0,done=false;
+  const $=id=>document.getElementById(id);
+  function path(k,extra){
+    const rev=k.rev.slice(),s=k.s.slice();
+    if(extra){rev.push(0);s.push(s[s.length-1]*1.6)}
+    let d='',first=true;
+    for(let t=-40;t<=14;t+=0.5){
+      let i=-1;for(let j=0;j<rev.length;j++)if(rev[j]<=t)i=j;
+      const r=i<0?1:Math.exp(-(t-rev[i])/s[i]*0.55);
+      d+=(first?'M':'L')+X(t).toFixed(1)+' '+Y(r).toFixed(1)+' ';first=false;
+      if(i>=0&&rev.includes(t)&&t!==-40){}
+    }
+    return d;
+  }
+  function ret(k,t){let i=-1;for(let j=0;j<k.rev.length;j++)if(k.rev[j]<=t)i=j;return i<0?1:Math.exp(-(t-k.rev[i])/k.s[i]*0.55)}
+  function draw(){
+    const k=K[cur];k.now=ret(k,0);
+    $('egriYol').setAttribute('d',path(k,done));
+    const bx=X(0);$('bugun').setAttribute('x1',bx);$('bugun').setAttribute('x2',bx);$('bugunYazi').setAttribute('x',bx-18);
+    const r=done?1:k.now;$('nokta').setAttribute('cx',bx);$('nokta').setAttribute('cy',Y(r));
+    $('gbas').textContent=k.ad;$('galt').textContent=done?k.alt.replace(/son: .*/,'son: bugün'):k.alt;
+    $('gdurum').innerHTML=done?'Tekrar kaydedildi. Eğri artık daha yavaş iniyor; sıradaki tekrar <b>'+k.next+' gün sonra</b>.':'Şu an hatırlama tahmini <b>%'+Math.round(k.now*100)+'</b>. Bugün tekrar etmezsen birkaç gün içinde %45\'in altına iner.';
+    $('tekrar').textContent=done?'Geri al':'Bugün tekrar ettim';
+  }
+  document.querySelectorAll('.secim button').forEach(b=>b.addEventListener('click',()=>{cur=+b.dataset.i;done=false;document.querySelectorAll('.secim button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()}));
+  $('tekrar').addEventListener('click',()=>{done=!done;draw()});
+  draw();
+})();
+</script>
+</body>
+</html>

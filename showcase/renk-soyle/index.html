@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Renk Söyle — Kameranı tut, rengin adını söylesin</title>
+<meta name="description" content="Renk körleri için: kamerayı kabloya, domatese, haritaya tut; Renk Söyle rengin adını ve ne anlama geldiğini söyler. Şantiyede internetsiz çalışır. Tek seferlik 149 ₺.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --panel:#E3E4E0;     /* RAL 7035 pano gövdesi */
+  --steel:#C9CBC5;
+  --black:#111214;     /* pano etiketi, siyah kablo */
+  --lcd:#B9C3A3;       /* ölçü aleti ekranı */
+  --lcd-ink:#1E2416;
+  --grey:#4A4D50;
+  --orange:#F26B1D;    /* tehlike etiketi (yalnız zemin) */
+  --orange-ink:#A33F00;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--panel);color:var(--black);font:400 1.2rem/1.55 "IBM Plex Sans Condensed",system-ui,sans-serif;overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+a{color:var(--black);text-decoration-thickness:2px;text-underline-offset:.2em}
+:focus-visible{outline:4px solid var(--black);outline-offset:3px;box-shadow:0 0 0 7px var(--orange)}
+.skip{position:absolute;left:1rem;top:-6rem;background:var(--black);color:#fff;padding:1rem;z-index:9}
+.skip:focus{top:1rem}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+.mono{font-family:"IBM Plex Mono",monospace}
+h1,h2,h3{font-weight:700;line-height:1.02;letter-spacing:-.01em}
+h1{font-size:clamp(2.6rem,5.8vw,4.6rem);text-transform:none;max-width:14ch}
+h2{font-size:clamp(2rem,4vw,3rem);max-width:20ch}
+h3{font-size:1.35rem;line-height:1.15}
+p{max-width:60ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:0 1.6rem;font:700 1.15rem "IBM Plex Sans Condensed";text-decoration:none;background:var(--black);color:#fff;border:3px solid var(--black);border-radius:3px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--black)}
+
+header .wrap{display:flex;justify-content:space-between;align-items:center;min-height:76px;gap:1rem;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.45rem;text-decoration:none}
+.logo .lbl{font:600 .8rem "IBM Plex Mono";border:2px solid var(--black);padding:.1rem .4rem}
+
+/* hero */
+.hero{padding:2rem 0 4rem}
+.hero .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:3rem;align-items:start}
+.hero .lede{font-size:1.35rem;margin:1.3rem 0 1.8rem;max-width:30ch}
+.hero .fine{margin-top:1rem;font-size:1.02rem;color:var(--grey)}
+.device{background:var(--black);border-radius:10px;padding:1rem;color:#fff}
+.scenes{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
+.scenes button,.tgl{min-height:48px;padding:0 1rem;border-radius:3px;border:2px solid #55585c;background:transparent;color:#fff;font:600 1rem "IBM Plex Mono";cursor:pointer}
+.scenes button[aria-pressed="true"]{background:#fff;color:var(--black);border-color:#fff}
+.vf{position:relative;border-radius:4px;overflow:hidden;background:#2a2c2e;aspect-ratio:16/9}
+.vf svg.scene{width:100%;height:100%;display:block}
+.vf.cvd svg.scene{filter:url(#deut)}
+.cross{position:absolute;inset:0;pointer-events:none}
+.targets{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.8rem}
+.targets button{min-height:48px;min-width:48px;padding:0 .9rem;border:2px solid #55585c;background:#1c1e20;color:#fff;font:600 1rem "IBM Plex Mono";border-radius:3px;cursor:pointer}
+.targets button[aria-pressed="true"]{border-color:var(--orange);box-shadow:inset 0 0 0 2px var(--orange)}
+.lcd{margin-top:.9rem;background:var(--lcd);color:var(--lcd-ink);border-radius:4px;padding:1rem 1.1rem;font-family:"IBM Plex Mono";box-shadow:inset 0 2px 6px rgba(0,0,0,.25)}
+.lcd .name{font-size:2rem;font-weight:600;line-height:1.1;letter-spacing:.02em}
+.lcd .mean{font-size:1.1rem;margin-top:.3rem}
+.lcd .meta{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.9rem;margin-top:.6rem;border-top:1px dashed #6d7660;padding-top:.5rem}
+.dev-foot{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:.8rem}
+.tgl[aria-pressed="true"]{background:var(--orange);color:var(--black);border-color:var(--orange)}
+.dev-foot small{color:#c9cbc5;font-size:.95rem}
+
+/* confusions */
+.mix{background:#fff;padding:5.5rem 0;border-top:6px solid var(--black)}
+.mix-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:2.6rem;border:2px solid var(--black)}
+.mix-grid article{padding:1.5rem;border-right:2px solid var(--black)}
+.mix-grid article:last-child{border-right:0}
+.pair{display:flex;gap:.4rem;margin-bottom:1rem}
+.pair span{flex:1;height:56px;border:2px solid var(--black);display:flex;align-items:flex-end;padding:.25rem .4rem;font:600 .85rem "IBM Plex Mono";color:#fff}
+.mix-grid p{margin-top:.5rem;color:var(--grey);font-size:1.08rem}
+
+/* modes */
+.modes{padding:5.5rem 0}
+.modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2.6rem}
+.mode{background:#fff;border:2px solid var(--black);border-radius:3px;padding:1.5rem}
+.mode .k{font:600 .95rem "IBM Plex Mono";background:var(--black);color:#fff;display:inline-block;padding:.15rem .5rem;margin-bottom:.8rem}
+.mode p{margin-top:.5rem;color:var(--grey);font-size:1.08rem}
+.mode .eg{margin-top:1rem;font-family:"IBM Plex Mono";font-size:.98rem;background:var(--lcd);color:var(--lcd-ink);padding:.6rem .8rem;border-radius:3px}
+
+/* site proof */
+.site{background:var(--black);color:var(--panel);padding:5.5rem 0}
+.site :focus-visible{outline-color:#fff}
+.site .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.site p{margin-top:1.1rem;color:#d5d7d2}
+table{width:100%;border-collapse:collapse;font-family:"IBM Plex Mono";font-size:1rem}
+caption{text-align:left;font:700 1.2rem "IBM Plex Sans Condensed";margin-bottom:.8rem;color:#fff}
+th,td{text-align:left;padding:.75rem .5rem;border-bottom:1px solid #3a3c3f}
+th{color:#c9cbc5;font-weight:400}
+td:last-child,th:last-child{text-align:right}
+.hazard{height:14px;background:repeating-linear-gradient(-45deg,var(--orange) 0 14px,var(--black) 14px 28px)}
+
+/* offer */
+.offer{padding:5.5rem 0}
+.offer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.box{border:3px solid var(--black);padding:2rem;border-radius:3px;background:#fff}
+.box.free{background:transparent}
+.box .amt{font:600 3rem/1 "IBM Plex Mono";margin:.6rem 0 .4rem}
+.box ul{list-style:none;margin:1.1rem 0 1.5rem}
+.box li{padding:.45rem 0;border-bottom:1px solid var(--steel)}
+.box li::before{content:"✓ ";font-weight:700}
+
+.quote{padding:4.5rem 0;border-top:2px solid var(--black)}
+.quote blockquote{font-size:clamp(1.6rem,3.2vw,2.4rem);font-weight:500;line-height:1.25;max-width:28ch}
+.quote figcaption{margin-top:1rem;color:var(--grey);font-family:"IBM Plex Mono";font-size:1rem}
+
+.faq{padding:4rem 0 5rem}
+.faq .wrap{max-width:900px}
+details{border-top:2px solid var(--black)}
+details:last-of-type{border-bottom:2px solid var(--black)}
+summary{cursor:pointer;min-height:64px;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-weight:700;font-size:1.22rem;list-style:none;padding:.8rem 0}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"[+]";font:600 1rem "IBM Plex Mono"}
+details[open] summary::after{content:"[−]"}
+details p{padding-bottom:1.3rem;color:var(--grey)}
+.again{padding:0 0 5rem}
+.again .wrap{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;border:3px solid var(--black);padding:2rem;background:var(--lcd);color:var(--lcd-ink)}
+
+footer{background:var(--black);color:#c9cbc5;padding:2.5rem 0 2rem;font-size:1rem}
+footer a{color:#fff}
+footer :focus-visible{outline-color:#fff}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+footer .credit{margin-top:1.8rem;font-size:.9rem}
+
+@media (max-width:920px){
+  .hero .wrap,.site .wrap,.offer .wrap{grid-template-columns:minmax(0,1fr);gap:2.4rem}
+  .mix-grid,.modes-grid{grid-template-columns:1fr}
+  .mix-grid article{border-right:0;border-bottom:2px solid var(--black)}
+  .mix-grid article:last-child{border-bottom:0}
+}
+@media (max-width:560px){
+  .wrap{padding:0 1rem}
+  .device{padding:.7rem;margin:0 -.4rem}
+  .lcd .name{font-size:1.6rem}
+  .btn{width:100%}
+  header .btn{width:auto;min-height:48px;font-size:1rem;padding:0 1rem}
+  .again .wrap{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="deut"><feColorMatrix type="matrix" values="0.367 0.861 -0.228 0 0  0.280 0.673 0.047 0 0  -0.012 0.043 0.969 0 0  0 0 0 1 0"/></filter>
+</svg>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Renk Söyle ana sayfa">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="14" fill="none" stroke="#111214" stroke-width="3"/><path d="M17 1v8M17 25v8M1 17h8M25 17h8" stroke="#111214" stroke-width="3"/><circle cx="17" cy="17" r="4" fill="#F26B1D"/></svg>
+      Renk Söyle <span class="lbl">RS-1</span>
+    </a>
+    <a class="btn" href="#teklif">149 ₺ · indir</a>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <h1 id="h1">Kameranı tut. Rengin adını söylesin.</h1>
+      <p class="lede">Kahverengi mi yeşil mi, olgun mu ham mı, kırmızı hat mı turuncu hat mı. Renk Söyle adını söyler, ne anlama geldiğini de.</p>
+      <a class="btn" href="#teklif">iPhone ya da Android için indir</a>
+      <p class="fine">Kırmızı-yeşil (protan, döteran) ve mavi-sarı (tritan) renk körlüğü için. İnternet gerekmez.</p>
+    </div>
+
+    <div class="device" role="region" aria-labelledby="dev-h">
+      <h2 id="dev-h" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Deneme: bir hedef seç, Renk Söyle ne derdi gör</h2>
+      <div class="scenes" role="group" aria-label="Sahne">
+        <button type="button" aria-pressed="true" data-s="buat">Buat kutusu</button>
+        <button type="button" aria-pressed="false" data-s="tezgah">Pazar tezgâhı</button>
+        <button type="button" aria-pressed="false" data-s="dolap">Gömlekler</button>
+      </div>
+      <div class="vf" id="vf">
+        <svg class="scene" id="scene" viewBox="0 0 320 180" aria-hidden="true"></svg>
+        <svg class="cross" viewBox="0 0 320 180" preserveAspectRatio="none" aria-hidden="true"><g stroke="#fff" stroke-width="1.5" fill="none" opacity=".9"><path d="M10 10h18M10 10v18M310 10h-18M310 10v18M10 170h18M10 170v-18M310 170h-18M310 170v-18"/></g><g id="ring" stroke="#F26B1D" stroke-width="3" fill="none"><circle r="13"/><path d="M-22 0h-8M22 0h8M0 -22v-8M0 22v8"/></g></svg>
+      </div>
+      <div class="targets" role="group" aria-label="Hedef" id="targets"></div>
+      <div class="lcd" aria-live="polite" id="lcd"></div>
+      <div class="dev-foot">
+        <button class="tgl" type="button" id="cvd" aria-pressed="false">Döteranop gözüyle gör</button>
+        <small>Uçak modu · görüntü kaydedilmez</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mix" aria-labelledby="mix-h">
+  <div class="wrap">
+    <h2 id="mix-h">Karıştırdıkların tesadüf değil. Hep aynı çiftler.</h2>
+    <div class="mix-grid">
+      <article>
+        <div class="pair" aria-hidden="true"><span style="background:#7A4A1E">KAH</span><span style="background:#4E7D2C">YEŞ</span></div>
+        <h3>Kahverengi ve yeşil</h3>
+        <p>Faz kablosu ile toprak kablosunun yeşil şeridi. Yanlış klemens, yanlış sigorta.</p>
+      </article>
+      <article>
+        <div class="pair" aria-hidden="true"><span style="background:#C4302B">KIR</span><span style="background:#6E9B2E">YEŞ</span></div>
+        <h3>Kırmızı ve yeşil</h3>
+        <p>Olgun domates, köfteni pişmiş mi, şarj ışığı doldu mu. Gündelik ama bitmeyen.</p>
+      </article>
+      <article>
+        <div class="pair" aria-hidden="true"><span style="background:#3A4FB5">MAV</span><span style="background:#7B3FA0">MOR</span></div>
+        <h3>Mavi ve mor</h3>
+        <p>Metro haritasında M2 ile M7, Excel'de iki seri, çocuğun boya kalemi.</p>
+      </article>
+    </div>
+    <p style="margin-top:1.4rem;color:var(--grey)">Erkeklerin yaklaşık 12'de biri bir tür renk körlüğüyle yaşıyor. Çoğu, renk sormanın utancını da biliyor.</p>
+  </div>
+</section>
+
+<section class="modes" aria-labelledby="mo-h">
+  <div class="wrap">
+    <h2 id="mo-h">Üç düğme. Hepsi tek elle.</h2>
+    <div class="modes-grid">
+      <article class="mode"><span class="k">SÖYLE</span><h3>Ortadakinin adı</h3><p>Hedef halkasının içindeki rengi söyler; konuya göre anlamını ekler.</p><p class="eg">MAVİ · nötr (N)</p></article>
+      <article class="mode"><span class="k">AYIR</span><h3>Yalnız bir renk kalsın</h3><p>“Kırmızı” de; ekranda yalnız kırmızılar kalır, gerisi griye döner. Haritada hat, grafikte seri bulmak için.</p><p class="eg">AYIR: kırmızı · 4 bölge</p></article>
+      <article class="mode"><span class="k">KIYASLA</span><h3>Bu ikisi aynı mı?</h3><p>İki noktaya dokun. Aynı renk mi, ton farkı mı, tamamen ayrı mı söyler.</p><p class="eg">Ceket lacivert · pantolon siyah · farklı</p></article>
+    </div>
+  </div>
+</section>
+
+<div class="hazard" role="presentation"></div>
+<section class="site" aria-labelledby="si-h">
+  <div class="wrap">
+    <div>
+      <h2 id="si-h">Bodrum katta, şantiyede, çekmeyen yerde.</h2>
+      <p>Elektrik panosu çoğu zaman merdiven altında, kazan dairesinde, bitmemiş bir binanın üçüncü katındadır; telefon orada çekmez. Renk Söyle'nin renk modeli telefonun içinde çalışır, internet istemez.</p>
+      <p>Kameranın gördüğü kare hiçbir yere gitmez, kaydedilmez. Müşterinin evinin içi, panonun fotoğrafı telefonundan çıkmaz.</p>
+    </div>
+    <table>
+      <caption>Kablo rengi doğruluğu, 2.400 deneme</caption>
+      <thead><tr><th scope="col">Işık</th><th scope="col">Doğru ad</th></tr></thead>
+      <tbody>
+        <tr><td>Gün ışığı</td><td>%99,1</td></tr>
+        <tr><td>Floresan (pano odası)</td><td>%98,4</td></tr>
+        <tr><td>Telefon feneri</td><td>%97,8</td></tr>
+        <tr><td>Sarı akkor ampul</td><td>%96,2</td></tr>
+        <tr><td>Çok karanlık</td><td>Ad vermez, “ışık yetersiz” der</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<div class="hazard" role="presentation"></div>
+
+<section class="offer" id="teklif" aria-labelledby="of-h">
+  <div class="wrap" style="display:block;margin-bottom:2rem"><h2 id="of-h">Bir kez al, takımında hep olsun</h2></div>
+  <div class="wrap">
+    <article class="box">
+      <h3>Renk Söyle</h3>
+      <p class="amt">149 ₺</p>
+      <p style="color:var(--grey)">Tek seferlik · abonelik yok</p>
+      <ul>
+        <li>Söyle, Ayır, Kıyasla sınırsız</li>
+        <li>Kablo standartları: IEC (yeni) ve eski Türk renkleri</li>
+        <li>1.350 renk adı, Türkçe</li>
+        <li>Kilit ekranından tek dokunuşla açılır</li>
+      </ul>
+      <a class="btn" href="#">iPhone için indir</a> <a class="btn ghost" href="#" style="margin-top:.5rem">Android için indir</a>
+    </article>
+    <article class="box free">
+      <h3>Önce dene</h3>
+      <p class="amt">0 ₺</p>
+      <p style="color:var(--grey)">Günde 20 renk sorgusu, süresiz</p>
+      <ul>
+        <li>Yalnız Söyle modu</li>
+        <li>Reklam yok, hesap yok</li>
+        <li>İstediğin gün 149 ₺ ile tam sürüme geç</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı sözü">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Yirmi yıldır kabloyu ucundaki yazıdan ya da çırağa sorarak bağlıyordum. Şimdi soruyorum ama telefona. Çırak da rahatladı.”</blockquote>
+      <figcaption>Serkan Öztürk, 41 · elektrik ustası, döteranop · Gaziantep</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="sss-h">
+  <div class="wrap">
+    <h2 id="sss-h" style="margin-bottom:1.4rem">Sorular</h2>
+    <details><summary>Eski binalarda kablo renkleri farklı. Bilir mi?</summary><p>Evet. 2004 öncesi Türk standardında faz siyah, nötr açık mavi, toprak sarı-yeşil olabilir; eski tesisat modunda Renk Söyle anlamları buna göre söyler. Yine de: renge değil ölçü aletine güven, gerilimi her zaman ölç.</p></details>
+    <details><summary>Hangi renk körlüğü türümü bilmiyorum.</summary><p>Uygulamada 3 dakikalık bir tarama var. Tanı değildir ama hangi çiftleri karıştırdığını gösterir ve uyarıları ona göre ayarlar. Kesin sonuç için göz hekimine başvur.</p></details>
+    <details><summary>Kıyafette işe yarar mı?</summary><p>Kıyasla modu tam bunun için. Ceketi ve pantolonu yan yana tut; “lacivert ve siyah, farklı” ya da “ikisi de koyu gri, uyumlu” der.</p></details>
+    <details><summary>Ekran rengini de okur mu?</summary><p>Evet, ekran görüntüsü üzerinde de çalışır: grafikler, haritalar, oyun arayüzü. Paylaş menüsünden Renk Söyle'yi seç.</p></details>
+  </div>
+</section>
+
+<section class="again" aria-label="İndir">
+  <div class="wrap">
+    <p class="mono" style="font-size:1.3rem;font-weight:600">KAHVERENGİ · faz (L1) · emin</p>
+    <a class="btn" href="#teklif">Renk Söyle'yi indir · 149 ₺</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:#fff">Renk Söyle</b> · İstanbul, Kâğıthane · destek@renksoyle.app</div>
+    <div><a href="#">KVKK</a> · <a href="#">Erişilebilirlik beyanı</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var S={
+    buat:{svg:'<rect width="320" height="180" fill="#8d8f8a"/><rect x="40" y="18" width="240" height="144" rx="6" fill="#d9dad5" stroke="#6f716c" stroke-width="3"/>'+
+      '<path d="M60 162 C70 120 80 100 110 80" stroke="#7A4A1E" stroke-width="11" fill="none" stroke-linecap="round"/>'+
+      '<path d="M120 162 C125 120 140 100 160 80" stroke="#3A6FC4" stroke-width="11" fill="none" stroke-linecap="round"/>'+
+      '<path d="M180 162 C185 120 196 100 210 80" stroke="#4E9A2C" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M180 162 C185 120 196 100 210 80" stroke="#E2C21C" stroke-width="11" fill="none" stroke-dasharray="9 9"/>'+
+      '<path d="M240 162 C245 120 252 100 262 80" stroke="#1d1e1f" stroke-width="11" fill="none" stroke-linecap="round"/>'+
+      '<rect x="92" y="58" width="190" height="26" rx="3" fill="#f2f2ee" stroke="#6f716c" stroke-width="2"/><g fill="#9a9c97"><rect x="104" y="64" width="14" height="14"/><rect x="152" y="64" width="14" height="14"/><rect x="200" y="64" width="14" height="14"/><rect x="250" y="64" width="14" height="14"/></g>',
+      t:[['Sol kablo',85,120,'KAHVERENGİ','faz (L1)','#7A4A1E',96],['İkinci kablo',137,120,'AÇIK MAVİ','nötr (N)','#3A6FC4',98],['Üçüncü kablo',196,120,'SARI-YEŞİL','toprak (PE)','#4E9A2C',97],['Sağ kablo',251,120,'SİYAH','faz (L2)','#1d1e1f',95]]},
+    tezgah:{svg:'<rect width="320" height="180" fill="#6e5a43"/><rect x="0" y="110" width="320" height="70" fill="#8b6f50"/>'+
+      '<circle cx="80" cy="100" r="30" fill="#C4302B"/><circle cx="160" cy="98" r="30" fill="#D9862A"/><circle cx="240" cy="100" r="30" fill="#6E9B2E"/>'+
+      '<g fill="#3f6b1f"><path d="M72 72 l8 -8 l8 8z"/><path d="M152 70 l8 -8 l8 8z"/><path d="M232 72 l8 -8 l8 8z"/></g>',
+      t:[['Sol domates',80,100,'KIRMIZI','olgun, bugün ye','#C4302B',97],['Orta domates',160,98,'TURUNCU-KIRMIZI','2-3 güne olgun','#D9862A',91],['Sağ domates',240,100,'AÇIK YEŞİL','ham, salata için erken','#6E9B2E',96]]},
+    dolap:{svg:'<rect width="320" height="180" fill="#cfc9bd"/><path d="M0 26h320" stroke="#7d776c" stroke-width="4"/>'+
+      '<path d="M50 30 l-26 18 l10 18 l12 -6 v96 h64 v-96 l12 6 l10 -18 l-26 -18 q-26 14 -56 0z" fill="#1F2A44" transform="translate(-6 0)"/>'+
+      '<path d="M50 30 l-26 18 l10 18 l12 -6 v96 h64 v-96 l12 6 l10 -18 l-26 -18 q-26 14 -56 0z" fill="#7B3FA0" transform="translate(98 0)"/>'+
+      '<path d="M50 30 l-26 18 l10 18 l12 -6 v96 h64 v-96 l12 6 l10 -18 l-26 -18 q-26 14 -56 0z" fill="#3A4FB5" transform="translate(196 0)"/>',
+      t:[['Sol gömlek',72,100,'LACİVERT','koyu; gri pantolonla uyar','#1F2A44',94],['Orta gömlek',176,100,'MOR','mavi değil; dikkat','#7B3FA0',93],['Sağ gömlek',274,100,'SAKS MAVİSİ','orta ton, bej ile uyar','#3A4FB5',95]]}
+  };
+  var scene=document.getElementById('scene'),ring=document.getElementById('ring'),lcd=document.getElementById('lcd'),tg=document.getElementById('targets'),cur='buat';
+  function pick(k){
+    var t=S[cur].t[k];ring.setAttribute('transform','translate('+t[1]+' '+t[2]+')');
+    lcd.innerHTML='<div class="name">'+t[3]+'</div><div class="mean">'+t[4]+'</div><div class="meta"><span>'+t[5].toUpperCase()+'</span><span>emin %'+t[6]+'</span><span>0,2 sn · cihazda</span></div>';
+    tg.querySelectorAll('button').forEach(function(b,i){b.setAttribute('aria-pressed',i===k)});
+  }
+  function load(s){
+    cur=s;scene.innerHTML=S[s].svg;
+    tg.innerHTML=S[s].t.map(function(t,i){return '<button type="button" aria-pressed="false" data-k="'+i+'">'+t[0]+'</button>'}).join('');
+    tg.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){pick(+b.dataset.k)})});
+    pick(0);
+  }
+  document.querySelectorAll('.scenes button').forEach(function(b){b.addEventListener('click',function(){
+    document.querySelectorAll('.scenes button').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');load(b.dataset.s)})});
+  document.getElementById('cvd').addEventListener('click',function(){var on=this.getAttribute('aria-pressed')!=='true';this.setAttribute('aria-pressed',on);document.getElementById('vf').classList.toggle('cvd',on);this.textContent=on?'Normal görüşe dön':'Döteranop gözüyle gör'});
+  load('buat');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "slug": "bisiklet-gozu",
+  "name": "Arka Göz",
+  "interpretation": "Gün ışığında şerit",
+  "world": "İstanbul'da mavi boyalı bisiklet şeridi, stop lambası kırmızısı ve sele altına kelepçeli eski bir telefon.",
+  "palette": [
+    "#F2F3F5",
+    "#202328",
+    "#E0242D",
+    "#2550C8",
+    "#FFB020"
+  ],
+  "fonts": [
+    "Fira Sans Condensed",
+    "Fira Sans"
+  ],
+  "score": 27,
+  "lowest": "Konudan gelen palet/doku",
+  "moment": "Otobüs, taksi ya da yakın geçiş seçince araç şeritte yaklaşır, gidondaki üç LED yanar ve titreşim deseni yazıya döker."
+}

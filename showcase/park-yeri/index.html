@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Park Nerede — Otoparkta arabanızın katını ve sütununu hatırlar</title>
+<meta name="description" content="Arabadan inince kat ve sütunu kendiliğinden kaydeder, dönüşte sizi asansörden arabanıza yürütür. Bodrum katta internet gerekmez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Public+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --concrete:#C7C6C1; --concrete-2:#B4B3AE; --concrete-dark:#8E8D88;
+  --paint:#F4C400; --ink:#151515; --white:#FAFAF7;
+  --b1:#2E8B57; --b2:#F4C400; --b3:#2B6FC2;
+  --disp:"Big Shoulders Display", Impact, sans-serif; --sans:"Public Sans", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--concrete);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:var(--ink)}
+:focus-visible{outline:4px solid var(--ink);outline-offset:3px;box-shadow:0 0 0 8px var(--paint)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:24px;padding-right:24px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:var(--paint);padding:8px;z-index:9}
+
+.bar{display:flex;justify-content:space-between;align-items:center;height:70px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:900;font-size:30px;text-decoration:none;text-transform:uppercase;letter-spacing:.02em}
+.logo span{background:var(--ink);color:var(--paint);width:40px;height:40px;display:grid;place-items:center;border-radius:4px;font-size:28px}
+.bar .get{font-weight:800;text-decoration:none;background:var(--ink);color:var(--paint);padding:10px 18px;border-radius:4px}
+
+/* HERO: a concrete column with painted level mark */
+.hero{padding:26px 0 0}
+.hero-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:40px;align-items:stretch}
+.column{position:relative;background:#BDBCB7;border-radius:6px;overflow:hidden;min-height:600px;
+  box-shadow:inset -40px 0 60px rgba(0,0,0,.14), inset 30px 0 40px rgba(255,255,255,.12)}
+.column .stripe{position:absolute;left:0;right:0;height:120px;background:repeating-linear-gradient(-45deg,var(--paint) 0 34px,var(--ink) 34px 68px)}
+.column .stripe.bottom{bottom:0}
+.column .lvl{position:absolute;left:0;right:0;top:120px;bottom:120px;background:var(--paint);display:flex;flex-direction:column;justify-content:center;padding:0 34px}
+.column .lvl .floor{font-family:var(--disp);font-weight:900;font-size:clamp(150px,20vw,260px);line-height:.8;letter-spacing:-.02em}
+.column .lvl .col{font-family:var(--disp);font-weight:900;font-size:clamp(48px,5.4vw,76px);line-height:1;margin-top:10px;display:flex;align-items:center;gap:14px}
+.column .lvl .col i{display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--ink)}
+.column .scuff{position:absolute;inset:0;background:radial-gradient(40% 18% at 80% 72%, rgba(0,0,0,.12), transparent 70%),radial-gradient(30% 10% at 20% 30%, rgba(0,0,0,.08), transparent 70%);pointer-events:none}
+.hero-text{display:flex;flex-direction:column;justify-content:center;padding:20px 0}
+h1{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(52px,6.6vw,96px);line-height:1;margin:0 0 22px;letter-spacing:.005em}
+.lede{font-size:21px;max-width:38ch;margin:0 0 26px}
+.notif{background:var(--white);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:44px 1fr;gap:14px;box-shadow:0 14px 30px rgba(0,0,0,.18);max-width:470px;margin-bottom:28px}
+.notif .ic{width:44px;height:44px;border-radius:10px;background:var(--ink);color:var(--paint);font-family:var(--disp);font-weight:900;display:grid;place-items:center;font-size:24px}
+.notif .t{font-weight:800}
+.notif .s{font-size:16px;color:#3B3B3B}
+.notif .time{font-size:13px;color:#555;float:right}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;font-weight:800;text-decoration:none;padding:15px 22px;border-radius:4px;font-size:17px}
+.btn.y{background:var(--paint);color:var(--ink);border:3px solid var(--ink)}
+.btn.k{background:var(--ink);color:var(--paint);border:3px solid var(--ink)}
+
+section{padding:96px 0}
+h2{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(40px,5vw,68px);line-height:1;margin:0 0 18px;max-width:18ch}
+.lead{font-size:20px;max-width:56ch}
+
+/* steps as painted floor arrows */
+.floorband{background:#4A4A47;color:var(--white);border-top:16px solid;border-image:repeating-linear-gradient(-45deg,var(--paint) 0 18px,var(--ink) 18px 36px) 16}
+.floorband h2{color:var(--white)}
+.arrows{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.arrow{position:relative;background:var(--white);color:var(--ink);padding:26px 26px 26px 26px;clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%);min-height:200px}
+.arrow b{display:block;font-family:var(--disp);font-weight:900;font-size:34px;text-transform:uppercase;line-height:1;margin-bottom:10px}
+.arrow p{margin:0;max-width:24ch;font-size:17px}
+.arrow:last-child{background:var(--paint)}
+
+/* the moment: garage plan */
+.finder{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start}
+.levels{display:flex;gap:8px;margin:24px 0 16px}
+.levels button{font-family:var(--disp);font-weight:900;font-size:30px;width:72px;height:60px;border:3px solid var(--ink);border-radius:4px;cursor:pointer;background:var(--white);color:var(--ink)}
+.levels button[aria-pressed="true"]{color:var(--ink)}
+.levels button[data-l="B1"][aria-pressed="true"]{background:var(--b1);color:#fff}
+.levels button[data-l="B2"][aria-pressed="true"]{background:var(--b2)}
+.levels button[data-l="B3"][aria-pressed="true"]{background:var(--b3);color:#fff}
+.go{font:inherit;font-weight:800;font-size:18px;padding:15px 22px;border-radius:4px;border:3px solid var(--ink);background:var(--ink);color:var(--paint);cursor:pointer}
+.status{margin-top:16px;font-weight:600;min-height:54px}
+.plan{background:#3E3E3B;border-radius:8px;padding:14px;position:relative}
+.plan svg{display:block;width:100%;height:auto}
+.plan .tagline{position:absolute;top:14px;right:18px;font-family:var(--disp);font-weight:900;font-size:22px;color:var(--white)}
+#route{stroke-dasharray:1200;stroke-dashoffset:1200;transition:stroke-dashoffset 1.6s ease-out}
+#route.on{stroke-dashoffset:0}
+
+/* proof */
+.proof{background:var(--white)}
+.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.sensors{display:grid;gap:0;border:3px solid var(--ink);border-radius:6px;overflow:hidden}
+.sensors div{display:grid;grid-template-columns:140px 1fr;gap:16px;padding:16px 18px;border-top:2px solid #DDDCD6;align-items:center}
+.sensors div:first-child{border-top:0}
+.sensors b{font-family:var(--disp);font-weight:900;font-size:26px;text-transform:uppercase}
+.sensors span{font-size:16px}
+.sensors .res{background:var(--paint)}
+
+.quote{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
+.quote .ticket{background:var(--white);border:2px dashed var(--ink);padding:18px 20px;font-family:var(--disp);font-weight:700;font-size:20px;line-height:1.2;transform:rotate(-3deg);text-transform:uppercase}
+.quote .ticket b{display:block;font-size:40px;font-weight:900}
+.quote blockquote{margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:600;line-height:1.35;max-width:36ch}
+.quote cite{display:block;font-style:normal;font-size:16px;margin-top:14px;font-weight:400}
+
+.price{background:var(--ink);color:var(--white)}
+.price h2{color:var(--paint)}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px;max-width:880px}
+.pp{border:3px solid #5A5A57;border-radius:6px;padding:24px}
+.pp.y{border-color:var(--paint)}
+.pp h3{font-family:var(--disp);font-size:30px;text-transform:uppercase;margin:0}
+.pp .amt{font-family:var(--disp);font-weight:900;font-size:60px;line-height:1;margin:8px 0 12px;color:var(--paint)}
+.pp .amt small{font-family:var(--sans);font-size:16px;font-weight:400;color:#CFCFCA}
+.pp ul{margin:0 0 20px;padding-left:20px;color:#DCDCD6}
+
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:28px 48px;margin-top:30px}
+.faq h3{margin:0 0 6px;font-size:19px}
+.faq p{margin:0}
+
+footer{padding:34px 0 28px;font-size:15px;border-top:3px solid var(--ink)}
+footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer .made{margin-top:16px;font-size:13px}
+footer .made a{color:#2E2E2C}
+
+@media (max-width:900px){
+  .hero-grid,.finder,.proof-grid{grid-template-columns:1fr}
+  .column{min-height:380px}
+  .column .stripe{height:60px}.column .lvl{top:60px;bottom:60px}
+  .hero-grid .column{order:2}
+  .arrows{grid-template-columns:1fr}
+  .arrow{clip-path:polygon(0 0,100% 0,100% 82%,50% 100%,0 82%);padding-bottom:50px;min-height:0}
+  .price-grid,.faq{grid-template-columns:1fr}
+  section{padding:70px 0}
+}
+@media (max-width:480px){
+  .wrap{padding-left:16px;padding-right:16px}
+  .lede{font-size:19px}
+  .sensors div{grid-template-columns:1fr;gap:2px}
+  .quote{grid-template-columns:1fr}
+  .quote .ticket{justify-self:start}
+}
+@media (prefers-reduced-motion:reduce){#route{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe geç</a>
+<header class="wrap bar">
+  <a class="logo" href="#"><span aria-hidden="true">P</span>Park Nerede</a>
+  <a class="get" href="#fiyat">İndir</a>
+</header>
+<main id="ana">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <h1>Arabanız B2'de, C14 sütununun yanında.</h1>
+      <p class="lede">Park Nerede, motoru kapatıp indiğiniz anda katı ve sütunu kendiliğinden hatırlar. Poşetlerle döndüğünüzde asansörden arabanıza adım adım götürür.</p>
+      <div class="notif" role="img" aria-label="Telefon bildirimi: Arabanız B2 katında, C14 sütunu, sarı bölge. 3 numaralı asansörden inin, sağa 40 metre.">
+        <div class="ic" aria-hidden="true">P</div>
+        <div><span class="time">şimdi</span><div class="t">Arabanız: B2 · Sütun C14 · Sarı bölge</div><div class="s">3 numaralı asansörle B2'ye inin, kapıdan sağa 40 m.</div></div>
+      </div>
+      <div class="btns"><a class="btn k" href="#fiyat">iPhone için indir</a><a class="btn y" href="#fiyat">Android için indir</a></div>
+    </div>
+    <div class="column" aria-hidden="true">
+      <div class="stripe"></div>
+      <div class="lvl"><div class="floor">B2</div><div class="col"><i></i>C14</div></div>
+      <div class="stripe bottom"></div>
+    </div>
+  </div>
+</section>
+
+<section class="floorband">
+  <div class="wrap">
+    <h2>Hiçbir şeye basmanız gerekmez.</h2>
+    <p class="lead" style="color:#E2E2DD">Fotoğraf çekmeyi unutursunuz, not almayı unutursunuz. Park Nerede unutmaz; çünkü sizden bir şey istemez.</p>
+    <div class="arrows">
+      <div class="arrow"><b>Motor durdu</b><p>Araç Bluetooth'u koptu ya da yürümeye başladınız: park ettiniz demektir.</p></div>
+      <div class="arrow"><b>Kat + sütun</b><p>Basınç sensörü kaç kat indiğinizi, kamera yanından geçtiğiniz sütun tabelasını okur.</p></div>
+      <div class="arrow"><b>B2 · C14</b><p>Tek satır kaydedilir. Fotoğraf değil, konum değil: yalnız kat ve sütun.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="bul">
+  <div class="wrap finder">
+    <div>
+      <h2>Poşetler elinizde. Nereye?</h2>
+      <p class="lead">AVM'den çıktınız, asansörün önündesiniz. Hangi kat olduğunu deneyin, sonra uygulamanın sizi nasıl götürdüğünü görün.</p>
+      <div class="levels" role="group" aria-label="Kat seçimi">
+        <button type="button" data-l="B1" aria-pressed="false">B1</button>
+        <button type="button" data-l="B2" aria-pressed="false">B2</button>
+        <button type="button" data-l="B3" aria-pressed="false">B3</button>
+      </div>
+      <button class="go" id="go" type="button">Arabama götür</button>
+      <p class="status" id="status" aria-live="polite">Bir kat seçin; tahmininiz doğru mu bakalım.</p>
+    </div>
+    <div class="plan">
+      <span class="tagline" id="planLvl">B2</span>
+      <svg viewBox="0 0 640 420" role="img" aria-label="B2 kat planı: asansörden C14 sütunundaki arabaya giden yol">
+        <rect x="0" y="0" width="640" height="420" fill="#4A4A47"/>
+        <g id="cols" fill="#8E8D88"></g>
+        <g fill="none" stroke="#FAFAF7" stroke-width="2" opacity=".55">
+          <path d="M40 120 H600 M40 300 H600"/>
+        </g>
+        <g id="slots" stroke="#FAFAF7" stroke-width="2" opacity=".35"></g>
+        <rect x="20" y="180" width="70" height="60" rx="4" fill="#151515"/>
+        <text x="55" y="216" fill="#F4C400" font-family="Big Shoulders Display" font-weight="900" font-size="20" text-anchor="middle">ASN 3</text>
+        <g id="car" transform="translate(452 312)"><rect width="34" height="58" rx="8" fill="#F4C400"/><rect x="5" y="10" width="24" height="12" rx="3" fill="#151515"/></g>
+        <path id="route" d="M90 210 H300 V210 H470 V300" fill="none" stroke="#F4C400" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="470" y="400" fill="#FAFAF7" font-family="Public Sans" font-weight="800" font-size="16" text-anchor="middle">C14</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="proof">
+  <div class="wrap proof-grid">
+    <div>
+      <h2>Bodrum üçte telefon çekmez. Gerek yok.</h2>
+      <p class="lead">Park Nerede GPS'e de internete de dayanmaz; zaten yer altında ikisi de yoktur. Telefonun basınç sensörü kaç kat indiğinizi, kamera sütun tabelasını okur, hepsi telefonun içinde olur. Okunan kare hemen silinir; kaydedilen tek şey "B2 · C14". Arabanızın nerede durduğunu bir sunucu bilmez.</p>
+    </div>
+    <div class="sensors" role="img" aria-label="Kullanılan sensörler ve sonuç: basınç sensörü 2 kat aşağı, kamera C14 tabelası, adım sayar asansöre 38 adım; sonuç B2 C14">
+      <div><b>Basınç</b><span>+0,7 hPa · girişten 2 kat aşağı</span></div>
+      <div><b>Kamera</b><span>sütun tabelası okundu: "C14" · kare silindi</span></div>
+      <div><b>Adım</b><span>asansöre 38 adım, sola</span></div>
+      <div><b>İnternet</b><span>kullanılmadı</span></div>
+      <div class="res"><b>Kayıt</b><span><strong>B2 · C14 · sarı bölge · 14.37</strong></span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap quote">
+    <div class="ticket" aria-hidden="true">Otopark fişi<b>2 sa 41 dk</b>giriş 11.56</div>
+    <div>
+      <blockquote>"İki çocuk, altı poşet, bir bebek arabası. Eskiden B1'le B2'yi karıştırır, yirmi dakika dolaşırdım. Şimdi asansörün önünde telefona bakıyorum, 'sağa 40 metre' diyor. Bu kadar."</blockquote>
+      <cite>Gülşen Taşkın · Ankara · iki çocuk annesi, hafta sonları Ankamall'da</cite>
+    </div>
+  </div>
+</section>
+
+<section class="price" id="fiyat">
+  <div class="wrap">
+    <h2>Bir otopark ücretinden ucuz.</h2>
+    <div class="price-grid">
+      <div class="pp"><h3>Park Nerede</h3><div class="amt">0 ₺</div><ul><li>Kat ve sütunu otomatik kaydetme</li><li>Asansörden arabaya yönlendirme</li><li>Sınırsız park</li></ul><a class="btn y" href="#">Ücretsiz indir</a></div>
+      <div class="pp y"><h3>Artı</h3><div class="amt">99 ₺ <small>tek seferlik</small></div><ul><li>Otopark süre ve ücret sayacı</li><li>Ailede 3 araç, 6 telefon</li><li>Akıllı saatte "sağa 40 m"</li></ul><a class="btn y" href="#">Artı'yı al</a></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:70px">
+  <div class="wrap">
+    <h2>Kısa sorular</h2>
+    <div class="faq">
+      <div><h3>Sütun tabelası olmayan otoparklarda?</h3><p>Kat yine kaydedilir; sütun yerine asansöre göre yön ve adım sayısı tutulur: "B2, asansörden çıkınca sola 38 adım".</p></div>
+      <div><h3>Açık otoparkta, sokakta?</h3><p>Yer üstündeyseniz GPS konumu da kaydedilir ve harita gösterilir; bu da yalnız telefonunuzda kalır.</p></div>
+      <div><h3>Kamerayı hep açık mı tutuyor?</h3><p>Hayır. Park ettiğinizi anladıktan sonraki 60 saniye, telefon elinizdeyken kısa kareler alır; tabelayı okuyunca kapanır.</p></div>
+      <div><h3>Hangi AVM'lerde çalışır?</h3><p>Her yerde. Sütun ve bölge adlarını tabelalardan okuduğu için önceden tanımlı bir otopark listesi gerekmez.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="row"><b>Park Nerede</b><span>destek@parknerede.app</span></div>
+    <div class="made"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  var cols=document.getElementById('cols'),slots=document.getElementById('slots'),NS='http://www.w3.org/2000/svg';
+  for(var x=150;x<=600;x+=110){[60,360].forEach(function(y){var r=document.createElementNS(NS,'rect');r.setAttribute('x',x-12);r.setAttribute('y',y-12);r.setAttribute('width',24);r.setAttribute('height',24);cols.appendChild(r)})}
+  for(var x=110;x<=610;x+=38){[[20,120],[300,400]].forEach(function(p){var l=document.createElementNS(NS,'line');l.setAttribute('x1',x);l.setAttribute('x2',x);l.setAttribute('y1',p[0]);l.setAttribute('y2',p[1]);slots.appendChild(l)})}
+  var pick=null,btns=document.querySelectorAll('.levels button'),st=document.getElementById('status'),route=document.getElementById('route'),lv=document.getElementById('planLvl');
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    btns.forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');pick=b.dataset.l;
+    st.textContent=pick==='B2'?'Doğru tahmin. Ama tahmin etmek zorunda değilsiniz.':pick+' mi? Çoğumuz böyle dolaşırız. Arabanız B2\'de.';
+  })});
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){route.classList.add('on');io.disconnect()}},{threshold:.4});io.observe(route.closest('svg'))}else route.classList.add('on');
+  document.getElementById('go').addEventListener('click',function(){
+    lv.textContent='B2';route.classList.remove('on');void route.getBoundingClientRect();route.classList.add('on');
+    st.textContent='3 numaralı asansörle B2\'ye inin. Kapıdan çıkınca düz 58 m, sonra sağa: C14, sarı araç. Yaklaşık 1 dakika.';
+  });
+})();
+</script>
+</body>
+</html>

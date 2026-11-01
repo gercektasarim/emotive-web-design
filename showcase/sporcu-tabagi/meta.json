@@ -1,0 +1,21 @@
+{
+  "slug": "sporcu-tabagi",
+  "name": "Sporcu Tabağı",
+  "interpretation": "Halter barı ve kauçuk zemin",
+  "world": "Salonun siyah kauçuk zemini, renkli bumper plakalar, magnezyum tozu ve kâğıt antrenman defteri.",
+  "palette": [
+    "#131313",
+    "#F2F0EA",
+    "#D7282F",
+    "#2B63D6",
+    "#F2C230",
+    "#2E9E4F"
+  ],
+  "fonts": [
+    "Big Shoulders Display",
+    "Barlow"
+  ],
+  "score": 28,
+  "lowest": "Palet/doku",
+  "moment": "Antrenman günü ve vücut ağırlığı değişince barın iki ucundaki renkli plakaların protein, karbonhidrat, yağ ve lif gramına göre kalınlaşması; altındaki dört Türk mutfağı öğününün değişmesi."
+}

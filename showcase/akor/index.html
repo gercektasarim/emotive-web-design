@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akor — Gitarı dolaptan indir, gerisini Akor dinler</title>
+<meta name="description" content="Akor, gitarda ve bağlamada çaldığın akoru, perdeyi ve ritmi dinleyip tanır; hangi telin boğuk çıktığını söyler, şarkıyı yavaşlatıp seninle birlikte çalar. Kayıtların telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Figtree:wght@400;500;700;800&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --kenar:#3A120B;   /* sunburst cilanın koyu kenarı */
+  --kizil:#8E3214;
+  --amber:#E39B3A;   /* sunburst ortası */
+  --kemik:#F2E6D0;   /* kemik eşik */
+  --klavye:#1C1210;  /* gül ağacı klavye */
+  --tel:#C9C2B6;
+  --yesil:#7FC08A;
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--kenar);color:var(--kemik);font:400 18px/1.6 "Figtree",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:3px}
+h1,h2,h3{font-family:"Alfa Slab One",serif;font-weight:400;line-height:1;margin:0;letter-spacing:.005em}
+.w{max-width:1200px;margin:0 auto;padding:0 28px}
+
+.sahne{background:radial-gradient(ellipse 70% 85% at 50% 36%,var(--amber) 0,#C66A22 30%,var(--kizil) 58%,var(--kenar) 100%);padding-bottom:70px;position:relative}
+.ust{display:flex;justify-content:space-between;align-items:center;padding:22px 0;gap:16px}
+.logo{font:400 28px/1 "Alfa Slab One";text-decoration:none;display:flex;align-items:center;gap:10px}
+.ust nav{display:flex;gap:24px;font-weight:700;font-size:15px}
+.ust nav a{text-decoration:none}
+.ust nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.sahne h1{font-size:clamp(38px,8vw,120px);text-align:center;color:var(--kenar);margin:40px auto 0;max-width:12ch;text-shadow:0 2px 0 rgba(255,230,190,.35)}
+.sahne .alt{text-align:center;max-width:34em;margin:22px auto 0;font-size:20px;color:#2A0C06;font-weight:500}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-block;font:800 17px/1 "Figtree";padding:16px 24px;border-radius:999px;text-decoration:none;border:2px solid var(--kenar);color:var(--kenar);background:transparent;cursor:pointer}
+.btn.dolu{background:var(--kenar);color:var(--kemik)}
+.btn.dolu:hover{background:#561B10}
+.btn:hover{background:rgba(58,18,11,.12)}
+
+/* klavye */
+.sap{margin-top:56px;background:var(--klavye);border-radius:6px;box-shadow:0 30px 50px -30px #000;padding:18px 18px 8px;color:var(--kemik)}
+.sap svg{display:block;width:100%;height:auto}
+.tel{transition:transform .1s}
+.titre .tel{animation:titre .09s linear 14 alternate}
+.titre .tel.bogus{animation:titre .14s linear 6 alternate}
+@keyframes titre{from{transform:translateY(-1.4px)}to{transform:translateY(1.4px)}}
+.tel.bogus{stroke:#FF8A5B}
+.panel{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:22px;margin-top:16px;padding:16px 4px 10px;border-top:1px solid #3B2A24;align-items:start}
+.akorlar{display:flex;flex-wrap:wrap;gap:8px}
+.akorlar button{font:400 20px/1 "Alfa Slab One";min-width:58px;padding:12px 12px;border-radius:8px;border:2px solid #5A4038;background:transparent;color:var(--kemik);cursor:pointer}
+.akorlar button[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:var(--kenar)}
+.panel .et{font-size:14px;color:#BBA898;margin-bottom:8px;display:block}
+.duyulan{font-size:17px;line-height:1.45;min-height:4.4em}
+.duyulan b{font:400 26px/1 "Alfa Slab One";color:var(--amber);display:block;margin-bottom:6px}
+.duyulan.temiz b{color:var(--yesil)}
+.cal{margin-top:12px;background:var(--kemik);color:var(--kenar);border-color:var(--kemik)}
+.cal:hover{background:#fff}
+.tempo input{width:100%;accent-color:var(--amber);height:30px}
+.tempo .bpm{font:400 34px/1 "Alfa Slab One"}
+.tempo .bpm small{font:500 15px "Figtree";color:#BBA898}
+.tempo p{margin:6px 0 0;font-size:14px;color:#BBA898}
+
+section{padding:96px 0}
+.acik{background:var(--kemik);color:var(--kenar)}
+.liste-bas{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.liste-bas h2{font-size:clamp(36px,4.8vw,64px)}
+.liste-bas p{font-size:19px}
+.setlist{background:#FFFDF8;color:#1E1A18;padding:30px 30px 26px;transform:rotate(1.2deg);box-shadow:0 18px 30px -24px rgba(0,0,0,.55);position:relative}
+.setlist::before,.setlist::after{content:"";position:absolute;top:-12px;width:92px;height:28px;background:rgba(150,150,140,.55)}
+.setlist::before{left:24px;transform:rotate(-6deg)}
+.setlist::after{right:24px;transform:rotate(5deg)}
+.setlist h3{font-size:30px;margin-bottom:12px}
+.setlist ol{margin:0;padding:0;list-style:none;counter-reset:h}
+.setlist li{counter-increment:h;display:grid;grid-template-columns:96px 1fr;gap:10px;padding:12px 0;border-bottom:2px solid #1E1A18}
+.setlist li::before{content:"Hafta " counter(h);font:400 18px/1.3 "Alfa Slab One";color:var(--kizil)}
+.setlist li b{display:block;font-size:19px}
+.kutular{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px}
+.kutu{text-align:center;font:400 18px "Alfa Slab One";color:var(--kenar)}
+.kutu svg{display:block;width:74px;height:90px;margin-top:6px}
+
+.baglama{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:center}
+.baglama h2{font-size:clamp(34px,4.4vw,58px);color:var(--amber)}
+.baglama svg{display:block;width:100%;height:auto}
+.baglama .kucuk{font-size:15px;color:#D9C6B2}
+
+.oda{background:#2A0C06}
+.oda .w{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:center}
+.oda h2{font-size:clamp(34px,4.4vw,58px)}
+.oda ul{list-style:none;margin:0;padding:0}
+.oda li{padding:16px 0;border-top:1px solid #5A2A1C;display:grid;grid-template-columns:180px 1fr;gap:14px}
+.oda li b{color:var(--amber);font-weight:800}
+
+.soz{text-align:center;max-width:900px;margin:0 auto}
+.soz blockquote{margin:0;font:400 clamp(26px,3.4vw,42px)/1.2 "Alfa Slab One";color:var(--kemik)}
+.soz cite{display:block;margin-top:18px;font-style:normal;color:#D9C6B2;font-size:16px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:34px}
+.fp{border:2px solid #5A2A1C;border-radius:14px;padding:30px}
+.fp.tam{background:var(--kemik);color:var(--kenar);border-color:var(--kemik)}
+.fp h3{font-size:28px}
+.fp .tl{font:400 52px/1 "Alfa Slab One";margin:14px 0 4px}
+.fp .tl small{font:500 16px "Figtree"}
+.fp ul{padding-left:20px;margin:14px 0 24px}
+.fp .btn{border-color:var(--kemik);color:var(--kemik)}
+.fp.tam .btn{background:var(--kenar);color:var(--kemik);border-color:var(--kenar)}
+
+.sss details{border-top:1px solid #5A2A1C;padding:18px 0}
+.sss details:last-child{border-bottom:1px solid #5A2A1C}
+.sss summary{cursor:pointer;font:400 22px/1.3 "Alfa Slab One"}
+.sss p{margin:8px 0 0;color:#E4D4C2;max-width:44em}
+
+footer{background:radial-gradient(ellipse 60% 120% at 50% 100%,var(--kizil),var(--kenar) 70%);padding:64px 0 30px;text-align:center}
+footer h2{font-size:clamp(34px,5vw,64px)}
+footer .cta .btn{border-color:var(--kemik);color:var(--kemik)}
+footer .cta .btn.dolu{background:var(--kemik);color:var(--kenar)}
+footer .imza{margin-top:40px;font-size:14px;color:#D9C6B2}
+
+@media (max-width:900px){
+  .panel,.liste-bas,.baglama,.oda .w,.fiyat{grid-template-columns:1fr}
+  .ust nav{display:none}
+}
+@media (max-width:520px){
+  .w{padding:0 16px}
+  .sap{padding:10px 8px 6px;margin-left:-8px;margin-right:-8px}
+  .sap-ic{overflow-x:auto}
+  .sap svg{width:700px;max-width:none}
+  .setlist{padding:24px 18px}
+  .setlist li{grid-template-columns:1fr}
+  .oda li{grid-template-columns:1fr;gap:2px}
+  section{padding:64px 0}
+}
+</style>
+</head>
+<body>
+<header class="sahne">
+  <div class="w">
+    <div class="ust">
+      <a class="logo" href="#"><svg width="30" height="34" viewBox="0 0 30 34" aria-hidden="true"><path d="M15 2v12" stroke="#3A120B" stroke-width="4"/><ellipse cx="15" cy="20" rx="9" ry="7" fill="#3A120B"/><ellipse cx="15" cy="27" rx="12" ry="7" fill="#3A120B"/><circle cx="15" cy="23" r="3" fill="#E39B3A"/></svg>Akor</a>
+      <nav aria-label="Sayfa içi"><a href="#plan">Dört hafta</a><a href="#baglama">Bağlama</a><a href="#fiyat">Fiyat</a><a href="#sss">Sorular</a></nav>
+    </div>
+    <h1>Gitarı dolaptan indir.</h1>
+    <p class="alt">Akor, çaldığın akoru ve ritmi dinler; hangi telin boğuk çıktığını söyler, şarkıyı yavaşlatıp seninle birlikte çalar. Gitar ve bağlama için. Kimse duymaz.</p>
+    <div class="cta"><a class="btn dolu" href="#fiyat">Ücretsiz indir</a><a class="btn" href="#plan">İlk dört hafta</a></div>
+
+    <div class="sap" aria-label="Gitar klavyesi; akor seç ve çal, denenebilir örnek">
+      <div class="sap-ic">
+      <svg id="klavye" viewBox="0 0 1000 220" role="img" aria-labelledby="kT"><title id="kT">Gitar klavyesinin ilk yedi perdesi; seçilen akorun parmak yerleri</title>
+        <rect x="0" y="16" width="1000" height="188" fill="#2A1A15"/>
+        <rect x="34" y="12" width="10" height="196" fill="#EDE3CF"/>
+        <g stroke="#A9A39A" stroke-width="4">
+          <line x1="198" y1="16" x2="198" y2="204"/><line x1="348" y1="16" x2="348" y2="204"/><line x1="490" y1="16" x2="490" y2="204"/><line x1="623" y1="16" x2="623" y2="204"/><line x1="749" y1="16" x2="749" y2="204"/><line x1="868" y1="16" x2="868" y2="204"/><line x1="980" y1="16" x2="980" y2="204"/>
+        </g>
+        <g fill="#E8E0D2" opacity=".85"><circle cx="419" cy="110" r="9"/><circle cx="686" cy="110" r="9"/><circle cx="924" cy="110" r="9"/></g>
+        <g font-family="Figtree" font-size="12" fill="#8D7C70" text-anchor="middle"><text x="119" y="216">1</text><text x="273" y="216">2</text><text x="419" y="216">3</text><text x="556" y="216">4</text><text x="686" y="216">5</text><text x="808" y="216">6</text><text x="924" y="216">7</text></g>
+        <g id="teller"></g>
+        <g id="parmaklar"></g>
+      </svg>
+      </div>
+      <div class="panel">
+        <div>
+          <span class="et">Akor seç</span>
+          <div class="akorlar" role="group" aria-label="Akorlar">
+            <button type="button" data-a="Em" aria-pressed="false">Em</button>
+            <button type="button" data-a="Am" aria-pressed="true">Am</button>
+            <button type="button" data-a="C" aria-pressed="false">C</button>
+            <button type="button" data-a="G" aria-pressed="false">G</button>
+            <button type="button" data-a="D" aria-pressed="false">D</button>
+          </div>
+          <button type="button" class="btn cal" id="cal">Çal, Akor dinlesin</button>
+        </div>
+        <div>
+          <span class="et">Akor ne duydu</span>
+          <div class="duyulan" id="duyulan" aria-live="polite"><b>La minör</b>Parmakları yerleştir ve "Çal"a bas. Akor altı teli ayrı ayrı dinler.</div>
+        </div>
+        <div class="tempo">
+          <span class="et">Şarkıyı yavaşlat, ses inceltmeden</span>
+          <div class="bpm"><output id="bpmOut" for="tempo">64</output> <small>vuruş/dk · aslı 92</small></div>
+          <input id="tempo" type="range" min="50" max="100" value="70" aria-label="Şarkı hızı, yüzde">
+          <p id="tempoNot">%70 hızda. Geçişlerin rahatlayınca Akor hızı kendiliğinden %5 artırır.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="acik" id="plan">
+  <div class="w liste-bas">
+    <div>
+      <h2>Parmaklar hatırlar. Sadece biraz zaman ister.</h2>
+      <p>Yirmi yıl sonra ilk akşam parmak uçların sızlar, geçişler yavaştır; bu normal. Akor seni boş bir müzik dersiyle değil, gençken çaldığın dört akorla karşılar ve dört haftada ilk şarkıyı baştan sona çaldırır. Günde on beş dakika.</p>
+      <div class="kutular" aria-label="İlk haftanın akorları">
+        <div class="kutu">Em<svg viewBox="0 0 74 90" aria-hidden="true"><g stroke="#3A120B" stroke-width="1.6" fill="none"><rect x="7" y="14" width="60" height="70"/><path d="M7 31.5h60M7 49h60M7 66.5h60M19 14v70M31 14v70M43 14v70M55 14v70"/><path d="M7 14h60" stroke-width="5"/></g><g fill="#3A120B"><circle cx="19" cy="40" r="5"/><circle cx="31" cy="40" r="5"/></g><g fill="none" stroke="#3A120B" stroke-width="1.4"><circle cx="7" cy="6" r="3"/><circle cx="43" cy="6" r="3"/><circle cx="55" cy="6" r="3"/><circle cx="67" cy="6" r="3"/></g></svg></div>
+        <div class="kutu">Am<svg viewBox="0 0 74 90" aria-hidden="true"><g stroke="#3A120B" stroke-width="1.6" fill="none"><rect x="7" y="14" width="60" height="70"/><path d="M7 31.5h60M7 49h60M7 66.5h60M19 14v70M31 14v70M43 14v70M55 14v70"/><path d="M7 14h60" stroke-width="5"/></g><g fill="#3A120B"><circle cx="31" cy="40" r="5"/><circle cx="43" cy="40" r="5"/><circle cx="55" cy="23" r="5"/></g><path d="M4 3l6 6M10 3l-6 6" stroke="#3A120B" stroke-width="1.4"/></svg></div>
+        <div class="kutu">G<svg viewBox="0 0 74 90" aria-hidden="true"><g stroke="#3A120B" stroke-width="1.6" fill="none"><rect x="7" y="14" width="60" height="70"/><path d="M7 31.5h60M7 49h60M7 66.5h60M19 14v70M31 14v70M43 14v70M55 14v70"/><path d="M7 14h60" stroke-width="5"/></g><g fill="#3A120B"><circle cx="7" cy="58" r="5"/><circle cx="19" cy="40" r="5"/><circle cx="67" cy="58" r="5"/></g></svg></div>
+        <div class="kutu">D<svg viewBox="0 0 74 90" aria-hidden="true"><g stroke="#3A120B" stroke-width="1.6" fill="none"><rect x="7" y="14" width="60" height="70"/><path d="M7 31.5h60M7 49h60M7 66.5h60M19 14v70M31 14v70M43 14v70M55 14v70"/><path d="M7 14h60" stroke-width="5"/></g><g fill="#3A120B"><circle cx="43" cy="40" r="5"/><circle cx="55" cy="58" r="5"/><circle cx="67" cy="40" r="5"/></g></svg></div>
+      </div>
+    </div>
+    <div class="setlist" aria-label="Dört haftalık dönüş listesi">
+      <h3>Dönüş listesi</h3>
+      <ol>
+        <li><span><b>Em, Am, G, D</b>Telleri değiştir, akort et. Her akoru tek tek temiz çıkar.</span></li>
+        <li><span><b>Geçişler</b>Em → G → D, bir saniyenin altına. Akor süreyi tutar.</span></li>
+        <li><span><b>Ritim</b>Aşağı, aşağı, yukarı, yukarı, aşağı. Telefon vuruşları sayar.</span></li>
+        <li><span><b>İlk şarkı</b>Kendi seçtiğin şarkı, %70 hızda baştan sona; sonra %100.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="baglama">
+  <div class="w baglama">
+    <div>
+      <h2>Bağlamada da perdeyi duyar.</h2>
+      <p>Kısa sap, uzun sap; bağlama düzeni, bozuk düzen, misket. Akor koma perdelerini de tanır: "si bemol 2" ile "si" arasındaki farkı söyler, perdenin yeri yanlış bağlandıysa bile.</p>
+      <p class="kucuk">Gitar ve bağlama aynı uygulamada, ayrı defterle.</p>
+    </div>
+    <svg viewBox="0 0 640 170" role="img" aria-labelledby="bT"><title id="bT">Kısa sap bağlama klavyesi, koma perdeleri ince çizgiyle; çalınan perde işaretli</title>
+      <rect x="0" y="40" width="640" height="90" rx="6" fill="#1C1210"/>
+      <rect x="10" y="36" width="8" height="98" fill="#EDE3CF"/>
+      <g stroke="#A9A39A" stroke-width="3"><path d="M74 40v90M150 40v90M196 40v90M262 40v90M330 40v90M372 40v90M432 40v90M494 40v90M532 40v90M590 40v90"/></g>
+      <g stroke="#A9A39A" stroke-width="1.4" opacity=".7"><path d="M118 40v90M228 40v90M352 40v90M466 40v90"/></g>
+      <g stroke="#C9C2B6"><path d="M0 62h640M0 66h640" stroke-width="1.4"/><path d="M0 85h640M0 89h640" stroke-width="1.8"/><path d="M0 108h640M0 112h640" stroke-width="2.2"/></g>
+      <circle cx="173" cy="87" r="13" fill="#E39B3A"/><text x="173" y="92" text-anchor="middle" font-family="Alfa Slab One" font-size="14" fill="#3A120B">2</text>
+      <g font-family="Figtree" font-size="14" fill="#F2E6D0"><text x="120" y="24">koma perdesi</text><path d="M150 28l-24 10" stroke="#F2E6D0"/><text x="196" y="160">Duyulan: si bemol 2 · temiz</text></g>
+    </svg>
+  </div>
+</section>
+
+<section class="oda">
+  <div class="w">
+    <div>
+      <h2>Kırk yaşında acemi gibi çalmak utandırır. Kimse duymasın.</h2>
+      <p>Akor dinlediğini telefonun içinde dinler. Kayıt yapmaz, sesini bir sunucuya göndermez; yanlış basılmış her akor seninle telefonun arasında kalır. Yavaşlattığın şarkı da kendi telefonundaki dosyadır.</p>
+    </div>
+    <ul>
+      <li><b>Dinleme</b><span>Telefonda, kayıt tutmadan. Uçak modunda da çalışır.</span></li>
+      <li><b>Şarkılar</b><span>Kendi müzik dosyaların; hiçbir yere yüklenmez.</span></li>
+      <li><b>İlerleme</b><span>Kaç gün çaldın, geçiş süren; yalnız sende.</span></li>
+      <li><b>Hesap</b><span>Gerekmez.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="w soz">
+    <blockquote>"Gitarı yirmi bir yıl sonra dolaptan indirdim, telleri paslanmıştı. Üçüncü hafta kızım gelip yanıma oturdu, şarkının sözlerini o söyledi."</blockquote>
+    <cite>Levent Koç · 43 · inşaat mühendisi, Eskişehir</cite>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:0">
+  <div class="w">
+    <h2 style="font-size:clamp(34px,4.6vw,60px);text-align:center">Akort ve ilk akorlar bizden.</h2>
+    <div class="fiyat">
+      <div class="fp"><h3>Akort</h3><div class="tl">0 ₺</div><ul><li>Gitar ve bağlama akort aleti</li><li>8 temel akor, tel tel geri bildirim</li><li>Dönüş listesinin ilk haftası</li></ul><a class="btn" href="#">Ücretsiz indir</a></div>
+      <div class="fp tam"><h3>Sahne</h3><div class="tl">199 ₺ <small>bir kere</small></div><ul><li>Bütün akorlar, barreler, bağlama düzenleri</li><li>Şarkı yavaşlatma ve birlikte çalma</li><li>Ritim sayacı ve dört haftalık dönüş</li><li>Ailede 5 kişiye kadar</li></ul><a class="btn" href="#">Sahneye çık</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sss" id="sss" style="padding-top:0">
+  <div class="w" style="max-width:860px">
+    <h2 style="font-size:40px;margin-bottom:14px">Sorular</h2>
+    <details open><summary>Nota bilmem gerekiyor mu?</summary><p>Hayır. Akorlar parmak resmiyle gösterilir, ritim "aşağı, yukarı" diye söylenir. İstersen notaya da geçersin.</p></details>
+    <details><summary>Tellerim yıllardır değişmedi, önemli mi?</summary><p>Akor ilk açılışta telleri dinler; ölmüş tel sesini tanır ve hangi kalınlıkta tel alman gerektiğini söyler. Eski tel akortta kalmaz, seni boşuna üzer.</p></details>
+    <details><summary>Elektro gitarda çalışır mı?</summary><p>Evet, amfiden ya da doğrudan telefon mikrofonuyla. Kulaklıkla çalıyorsan uygulama kablolu girişten de dinler.</p></details>
+    <details><summary>Kendi şarkımı nasıl eklerim?</summary><p>Telefonundaki bir müzik dosyasını seçersin; Akor akorları telefonda çıkarır, yavaşlatır, sen çalarken takip eder.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <h2>Bu akşam on beş dakika.</h2>
+    <div class="cta"><a class="btn dolu" href="#fiyat">Ücretsiz indir</a><a class="btn" href="#plan">Dönüş listesi</a></div>
+    <div class="imza">Akor · Eskişehir · merhaba@akor.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+ const FRET=[40,198,348,490,623,749,868,980];
+ const Y=[190,158,126,94,62,30]; // E A D G B e (kalından inceye)
+ const AD=["Mi (6)","La (5)","Re (4)","Sol (3)","Si (2)","Mi (1)"];
+ const A={
+  Em:{ad:"Mi minör",p:[0,2,2,0,0,0],f:[0,2,3,0,0,0],b:-1,m:"Temiz. Altı telin altısı da çınlıyor. Şimdi G'ye geç."},
+  Am:{ad:"La minör",p:[-1,0,2,2,1,0],f:[0,0,2,3,1,0],b:4,m:"2. tel (Si) boğuk: işaret parmağın 1. perdede komşu teline yaslanmış. Parmağı dikleştir, ucuyla bas."},
+  C:{ad:"Do majör",p:[-1,3,2,0,1,0],f:[0,3,2,0,1,0],b:0,m:"6. tel çalınmamalı ama çınlıyor. Başparmağınla kalın teli hafifçe sustur."},
+  G:{ad:"Sol majör",p:[3,2,0,0,0,3],f:[2,1,0,0,0,3],b:-1,m:"Temiz. Em'den geçiş 1,8 saniye sürdü; ilk hafta hedefi 1 saniye."},
+  D:{ad:"Re majör",p:[-1,-1,0,2,3,2],f:[0,0,0,1,3,2],b:5,m:"1. tel (Mi) boğuk: orta parmağın 2. perdenin telinden biraz uzakta. Perde teline yaklaştır."}
+ };
+ let ak="Am";
+ const tg=document.getElementById('teller'),pg=document.getElementById('parmaklar'),du=document.getElementById('duyulan'),svg=document.getElementById('klavye');
+ function ciz(bogus){
+  const a=A[ak];
+  tg.innerHTML=Y.map((y,i)=>'<line class="tel'+(bogus&&a.b===i?' bogus':'')+'" x1="40" y1="'+y+'" x2="1000" y2="'+y+'" stroke="#C9C2B6" stroke-width="'+(3.4-i*0.45)+'"/>').join('');
+  let s='';a.p.forEach((f,i)=>{const y=Y[i];
+   if(f<0)s+='<path d="M10 '+(y-7)+'l14 14M24 '+(y-7)+'l-14 14" stroke="#E39B3A" stroke-width="3"/>';
+   else if(f===0)s+='<circle cx="17" cy="'+y+'" r="7" fill="none" stroke="#F2E6D0" stroke-width="2.5"/>';
+   else{const x=(FRET[f-1]+FRET[f])/2;s+='<circle cx="'+x+'" cy="'+y+'" r="15" fill="'+(bogus&&a.b===i?'#FF8A5B':'#E39B3A')+'"/><text x="'+x+'" y="'+(y+6)+'" text-anchor="middle" font-family="Alfa Slab One" font-size="16" fill="#3A120B">'+a.f[i]+'</text>';}});
+  pg.innerHTML=s;
+ }
+ function sec(k){ak=k;document.querySelectorAll('.akorlar button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.a===k));svg.classList.remove('titre');ciz(false);du.className='duyulan';du.innerHTML='<b>'+A[k].ad+'</b>Parmakları yerleştir ve "Çal"a bas. Akor altı teli ayrı ayrı dinler.';}
+ document.querySelectorAll('.akorlar button').forEach(b=>b.addEventListener('click',()=>sec(b.dataset.a)));
+ document.getElementById('cal').addEventListener('click',()=>{
+  const a=A[ak];ciz(true);svg.classList.remove('titre');void svg.getBoundingClientRect();svg.classList.add('titre');
+  du.className='duyulan'+(a.b<0?' temiz':'');du.innerHTML='<b>'+a.ad+(a.b<0?' · temiz':' · '+AD[a.b]+' boğuk')+'</b>'+a.m;
+ });
+ const t=document.getElementById('tempo'),bo=document.getElementById('bpmOut'),tn=document.getElementById('tempoNot');
+ function tempo(){const v=+t.value;bo.textContent=Math.round(92*v/100);tn.textContent=v===100?'Aslı hızında. Artık şarkıyla birlikte çalıyorsun.':'%'+v+' hızda. Geçişlerin rahatlayınca Akor hızı kendiliğinden %5 artırır.';}
+ t.addEventListener('input',tempo);tempo();ciz(false);
+})();
+</script>
+</body>
+</html>

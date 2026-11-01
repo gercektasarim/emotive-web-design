@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ev Güvende — Kedi için çalmayan, yabancıyı kaçırmayan kamera</title>
+<meta name="description" content="Ev Güvende güvenlik kamerası görüntüsünü buluta göndermeden evdeki cihazda inceler; kedi, kurye, komşu ve yabancıyı ayırır, gereksiz alarm vermez. Görüntü evden çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;500;600&family=Chivo+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mist:#161B19;
+  --paper:#1D2421;
+  --ink:#E2E8E4;
+  --sub:#A9B4AE;
+  --ir-0:#0F1312;
+  --ir-1:#59635F;
+  --ir-2:#A3ADA8;
+  --calm:#9CC3B2;
+  --calm-soft:#26332F;
+  --cat:#D9A55A;
+  --alert:#F08A7A;
+  --line:#343E3A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--mist);color:var(--ink);font-family:"Chivo",system-ui,sans-serif;font-size:18px;line-height:1.6;font-weight:400}
+.mono{font-family:"Chivo Mono",ui-monospace,monospace}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--calm);outline-offset:3px}
+h1,h2,h3{font-weight:300;line-height:1.1;letter-spacing:-.02em}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 16px/1 "Chivo",sans-serif;padding:15px 22px;border-radius:2px;text-decoration:none;border:1px solid var(--ink);cursor:pointer;background:transparent;color:var(--ink)}
+.btn-ink{background:var(--ink);color:#121614;border-color:var(--ink)}
+.btn-ink:hover{background:#fff}
+.btn:not(.btn-ink):hover{background:var(--paper)}
+
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:500;font-size:19px;text-decoration:none;letter-spacing:-.01em}
+.top nav{display:flex;gap:28px;font-size:15px}
+.top nav a{text-decoration:none;color:var(--sub)}
+.top nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding:40px 0 90px;background:radial-gradient(60% 50% at 12% 0%,rgba(156,195,178,.10),transparent 70%)}
+.hero .grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
+.morning{font-family:"Chivo Mono";font-size:14px;color:var(--sub);margin-bottom:22px}
+.hero h1{font-size:clamp(42px,5.2vw,72px)}
+.hero h1 b{font-weight:500}
+.hero .lead{font-size:19px;color:var(--sub);margin:24px 0 30px;max-width:30em}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.tally{margin-top:36px;border-top:1px solid var(--line)}
+.tally div{display:grid;grid-template-columns:1fr auto auto;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:16px;align-items:center}
+.tally span:nth-child(2){font-family:"Chivo Mono";font-size:15px}
+.tally span:nth-child(3){font-family:"Chivo Mono";font-size:13px;color:var(--sub);min-width:86px;text-align:right}
+.tally .al span:nth-child(3){color:var(--alert)}
+
+.viewer{background:var(--ir-0);border-radius:4px;padding:14px;color:#D8DEDB;border:1px solid #2A3330;box-shadow:0 40px 80px -40px #000}
+.vhead{display:flex;justify-content:space-between;font-family:"Chivo Mono";font-size:12.5px;color:#9FA9A4;margin-bottom:10px;gap:10px}
+.frame{position:relative;border-radius:2px;overflow:hidden;aspect-ratio:16/10;background:#2A302E}
+.frame svg{position:absolute;inset:0;width:100%;height:100%}
+.osd{position:absolute;left:10px;top:8px;font-family:"Chivo Mono";font-size:12px;color:#E8EDEA;text-shadow:0 1px 2px #000}
+.osd.r{left:auto;right:10px}
+.box{position:absolute;border:2px solid #E8EDEA;transition:all .5s cubic-bezier(.3,1,.4,1)}
+.box span{position:absolute;left:-2px;top:-24px;background:#E8EDEA;color:var(--ir-0);font:500 12px/1 "Chivo Mono";padding:5px 7px;white-space:nowrap}
+.box.alert{border-color:#F08A7A}
+.box.alert span{background:#F08A7A}
+.decision{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:#262D2B;padding:14px 16px;margin-top:12px;border-radius:2px}
+.decision .dot{width:12px;height:12px;border-radius:50%;margin-top:7px;background:#8FB3C8}
+.decision.al .dot{background:#F08A7A}
+.decision b{font-weight:500;color:#fff;display:block}
+.decision p{font-size:15px;color:#BFC8C4}
+.timeline{margin-top:14px}
+.tl-bar{position:relative;height:44px;border-top:1px solid #3A4240;border-bottom:1px solid #3A4240}
+.tl-ev{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:2px solid var(--ir-0);background:#7D8A85;cursor:pointer;padding:0}
+.tl-ev.cat{background:#D9A55A}
+.tl-ev.pkg{background:#8FB3C8}
+.tl-ev.who{background:#F08A7A}
+.tl-ev.nb{background:#B7C6BF}
+.tl-ev[aria-pressed="true"]{box-shadow:0 0 0 3px #fff;z-index:2}
+.tl-ev:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.tl-hours{display:flex;justify-content:space-between;font-family:"Chivo Mono";font-size:11.5px;color:#8F9A95;margin-top:6px}
+.tl-legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12.5px;color:#AFB9B4;margin-top:8px}
+.tl-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+
+section{padding:100px 0}
+.h2{font-size:clamp(34px,4vw,54px);max-width:18ch}
+.intro{font-size:19px;color:var(--sub);max-width:36em;margin-top:16px}
+
+/* reasons table */
+.why{background:var(--paper)}
+table.rules{width:100%;border-collapse:collapse;margin-top:44px;font-size:16.5px}
+.rules th{text-align:left;font-weight:500;font-size:13.5px;color:var(--sub);padding:12px 14px;border-bottom:1px solid var(--ink)}
+.rules td{padding:18px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.rules td:first-child{font-weight:500;white-space:nowrap}
+.rules .act{font-family:"Chivo Mono";font-size:14px;white-space:nowrap}
+.rules .act.q{color:var(--calm)}
+.rules .act.a{color:var(--alert)}
+.rules small{display:block;color:var(--sub);font-size:14.5px}
+.tablewrap{overflow-x:auto}
+
+/* house */
+.house .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.diagram{width:100%;height:auto;display:block;background:#E2E8E4;border-radius:4px;padding:8px}
+.house ul{list-style:none;margin-top:28px;display:grid;gap:0;border-top:1px solid var(--line)}
+.house li{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:16.5px}
+.house li strong{font-weight:500;font-family:"Chivo Mono";font-size:20px}
+
+/* real */
+.real{background:#DCE3DF;color:#16201C}
+.real .h2{color:#0F1714}
+.real .intro{color:#3D4A45}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:50px;border-top:1px solid #9AA8A2}
+.steps div{padding:22px 22px 0 0;border-right:1px solid #9AA8A2;margin-right:22px}
+.steps div:last-child{border-right:0;margin-right:0}
+.steps time{font-family:"Chivo Mono";font-size:13.5px;color:#2C5E4E}
+.steps b{display:block;font-weight:500;font-size:19px;margin:6px 0 6px;color:#0F1714}
+.steps p{font-size:15.5px;color:#3D4A45}
+
+/* quote price */
+.qp .grid{display:grid;grid-template-columns:minmax(0,1fr);gap:50px}
+.qp blockquote{max-width:32em;border-left:2px solid var(--calm);padding-left:28px}
+.price{display:grid;grid-template-columns:auto 1fr;gap:6px 40px;align-items:start}
+.price h2{grid-row:span 4;max-width:9em}
+.price .ctas{grid-column:2}
+.qp blockquote p{font-size:clamp(24px,2.6vw,34px);font-weight:300;line-height:1.35;letter-spacing:-.01em}
+.qp blockquote footer{margin-top:18px;font-size:16px;color:var(--sub)}
+.qp blockquote footer b{font-weight:500;color:var(--ink)}
+.price{background:var(--paper);border:1px solid var(--line);padding:28px}
+.price h2{font-size:26px;font-weight:400}
+.price .r{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
+.price .r b{font-family:"Chivo Mono";font-weight:500;white-space:nowrap}
+.price .ctas{margin-top:22px}
+
+.faq .cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0;margin-top:40px;max-width:820px;border-top:1px solid var(--line)}
+.faq .cols>div{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--line)}
+.faq h3{font-size:19px;font-weight:500;letter-spacing:-.01em;margin-bottom:6px;line-height:1.3}
+.faq p{font-size:16.5px;color:var(--sub)}
+
+footer.site{border-top:1px solid var(--line);padding:32px 0 40px;font-size:15px;color:var(--sub)}
+footer.site .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.site .credit{width:100%;margin-top:10px;font-family:"Chivo Mono";font-size:12.5px}
+footer.site .credit a{text-decoration:none}
+footer.site .credit a:hover{text-decoration:underline}
+
+@media (max-width:1000px){
+  .top nav{display:none}
+  .hero .grid,.house .grid,.qp .grid{grid-template-columns:minmax(0,1fr)}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps div:nth-child(2){border-right:0;margin-right:0}
+  .faq .cols>div{grid-template-columns:minmax(0,1fr);gap:4px}
+  .price{grid-template-columns:minmax(0,1fr)}
+  .price h2{grid-row:auto}
+  .price .ctas{grid-column:1}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  body{font-size:17px}
+  section{padding:68px 0}
+  .hero{padding:20px 0 60px}
+  .steps{grid-template-columns:minmax(0,1fr)}
+  .steps div{border-right:0!important;margin-right:0!important;padding-bottom:16px;border-bottom:1px solid #9AA8A2}
+  .house li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .rules td,.rules th{padding:12px 8px}
+  .rules td:first-child{white-space:normal}
+  .box span{font-size:11px}
+  .top .btn{padding:10px 14px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M3 12 13 4l10 8v11H3z" fill="none" stroke="#E2E8E4" stroke-width="2"/><path d="M10 23v-6h6v6" fill="none" stroke="#E2E8E4" stroke-width="2"/><circle cx="13" cy="12.5" r="1.8" fill="#9CC3B2"/></svg>Ev Güvende</a>
+    <nav aria-label="Ana menü"><a href="#neden">Neden çalmadı</a><a href="#evde">Görüntü nerede</a><a href="#gercek">Gerçekten biri gelirse</a><a href="#fiyat">Fiyat</a></nav>
+    <a class="btn btn-ink" href="#fiyat">İndir</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <p class="morning">Salı sabahı, 07:12 · gece özeti</p>
+        <h1 id="h1">Dün gece 23 hareket oldu. Sizi <b>bir kez</b> uyandırmaya değerdi.</h1>
+        <p class="lead">Ev Güvende kameranızın gördüğünü evinizdeki cihazda inceler. Pamuk’un bahçe duvarındaki gece turu için çalmaz; kapınızda 40 saniye duran bir yabancı için çalar. Görüntü buluta gitmez, evden çıkmaz.</p>
+        <div class="ctas"><a class="btn btn-ink" href="#fiyat">iPhone için indir</a><a class="btn" href="#fiyat">Android için indir</a></div>
+        <div class="tally" aria-label="Gecenin dökümü">
+          <div><span>Kedi (Pamuk ve sokaktan bir misafir)</span><span>9</span><span>sessiz</span></div>
+          <div><span>Rüzgârda dal, far ışığı</span><span>11</span><span>yok sayıldı</span></div>
+          <div><span>Komşu (Ahmet Bey, köpeğiyle)</span><span>1</span><span>sessiz</span></div>
+          <div><span>Kurye</span><span>1</span><span>sabah notu</span></div>
+          <div class="al"><span>Tanınmayan kişi, bahçe kapısı</span><span>1</span><span>bildirim</span></div>
+        </div>
+      </div>
+
+      <div class="viewer" aria-label="Gece kaydı görüntüleyici: zaman çizelgesindeki olaylara dokunun">
+        <div class="vhead"><span>BAHÇE KAPISI · KAMERA 1 · gece görüşü</span><span>bu evde işlendi</span></div>
+        <div class="frame" id="frame">
+          <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><radialGradient id="ir" cx=".5" cy=".55" r=".75"><stop offset="0" stop-color="#7C8783"/><stop offset=".6" stop-color="#4A5350"/><stop offset="1" stop-color="#232927"/></radialGradient></defs>
+            <rect width="640" height="400" fill="url(#ir)"/>
+            <path d="M0 290 L640 270 L640 400 L0 400z" fill="#5F6966"/>
+            <path d="M240 400 L300 270 L360 270 L440 400z" fill="#8B9591"/>
+            <rect x="0" y="180" width="250" height="100" fill="#3E4744"/>
+            <path d="M0 180h250" stroke="#6E7874" stroke-width="4"/>
+            <rect x="390" y="180" width="250" height="96" fill="#3E4744"/>
+            <path d="M390 180h250" stroke="#6E7874" stroke-width="4"/>
+            <g stroke="#A9B3AE" stroke-width="4"><path d="M262 120v160M378 120v160"/></g>
+            <g stroke="#7F8984" stroke-width="2.5"><path d="M270 140h100M270 170h100M270 200h100M270 230h100M270 260h100"/><path d="M290 130v140M310 130v140M330 130v140M350 130v140"/></g>
+            <path d="M560 60c-30 20-40 60-20 110 20-40 60-50 80-90-20-30-40-30-60-20z" fill="#2B3230"/>
+            <g id="subj"></g>
+          </svg>
+          <span class="osd" id="osdT">2026-11-10 03:41:12</span>
+          <span class="osd r">IR · 15 fps</span>
+          <div class="box alert" id="box" style="left:44%;top:30%;width:13%;height:48%"><span id="boxL">Tanınmayan kişi · 0.91</span></div>
+        </div>
+        <div class="decision al" id="dec" aria-live="polite"><span class="dot"></span><div><b id="decT">Bildirim gönderildi (sessiz, titreşim)</b><p id="decP">Bahçe kapısının önünde 41 saniye durdu, kapıya iki kez dokundu, girmedi. Tanınan yüz değil, kurye kıyafeti yok, elinde paket yok.</p></div></div>
+        <div class="timeline">
+          <div class="tl-bar" id="tl"></div>
+          <div class="tl-hours"><span>20:00</span><span>22:00</span><span>00:00</span><span>02:00</span><span>04:00</span><span>06:00</span></div>
+          <div class="tl-legend"><span><i style="background:#D9A55A"></i>kedi</span><span><i style="background:#7D8A85"></i>dal / ışık</span><span><i style="background:#B7C6BF"></i>komşu</span><span><i style="background:#8FB3C8"></i>kurye</span><span><i style="background:#F08A7A"></i>tanınmayan</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why" id="neden" aria-labelledby="h-why">
+  <div class="wrap">
+    <h2 class="h2" id="h-why">Her hareket alarm değildir. Neden çalmadığını da söyler.</h2>
+    <p class="intro">Eski kameranız piksel değişimine bakıyordu; kedi de, rüzgârda sallanan erik dalı da, geçen arabanın farı da “hareket”ti. Ev Güvende neyin hareket ettiğine ve ne yaptığına bakar. Kuralları siz değiştirebilirsiniz; varsayılanlar şöyle:</p>
+    <div class="tablewrap">
+    <table class="rules">
+      <thead><tr><th>Gördüğü</th><th>Nasıl ayırır</th><th>Ne yapar</th></tr></thead>
+      <tbody>
+        <tr><td>Kendi kediniz</td><td>Boyut, yürüyüş, tüy deseni; Pamuk’u bir kez tanıtırsınız<small>Sokak kedisi de kedi olarak geçer, ayrıca sayılır</small></td><td class="act q">sessiz · sabah özetinde</td></tr>
+        <tr><td>Dal, gölge, far</td><td>Şekil yok, yer değiştirmiyor, ışık bir anda tüm kareyi değiştiriyor</td><td class="act q">yok sayılır</td></tr>
+        <tr><td>Aile ve tanıdık</td><td>Evdekilerin ve sizin eklediğiniz komşuların yüzü, telefonda saklanan tanıma kalıbıyla<small>Yüz fotoğrafı değil, geri çevrilemeyen bir sayı dizisi</small></td><td class="act q">sessiz</td></tr>
+        <tr><td>Kurye</td><td>Paket, kısa bekleme, kapıya bırakıp ayrılma</td><td class="act q">“Kapıda paket var” notu</td></tr>
+        <tr><td>Tanınmayan kişi</td><td>Kapıda 20 saniyeden uzun durma, bahçeye girme, pencereye yaklaşma</td><td class="act a">bildirim + 6 sn klip</td></tr>
+        <tr><td>Gece kapı ya da pencere zorlama</td><td>Kol ya da pencere çerçevesiyle temas, tekrar eden itme</td><td class="act a">alarm + siren (isteğe bağlı)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section class="house" id="evde" aria-labelledby="h-evde">
+  <div class="wrap">
+    <div class="grid">
+      <svg class="diagram" viewBox="0 0 560 360" role="img" aria-label="Kamera görüntüsü evdeki cihazda işlenir; telefonunuza yalnızca kısa not ve isterseniz 6 saniyelik klip gider; bulut sunucusuna hiçbir şey gitmez">
+        <rect x="20" y="40" width="360" height="290" fill="#F6F8F8" stroke="#1A2633" stroke-width="1.5"/>
+        <text x="36" y="66" font-family="Chivo Mono" font-size="13" fill="#4D5B67">EVİNİZ</text>
+        <rect x="48" y="120" width="96" height="64" fill="#fff" stroke="#1A2633"/><text x="96" y="157" text-anchor="middle" font-family="Chivo" font-size="14" fill="#1A2633">Kamera</text>
+        <rect x="206" y="110" width="152" height="84" fill="#D7E3EA" stroke="#3D6A86" stroke-width="1.5"/><text x="282" y="145" text-anchor="middle" font-family="Chivo" font-size="14" fill="#1A2633">Evdeki cihaz</text><text x="282" y="166" text-anchor="middle" font-family="Chivo Mono" font-size="10.5" fill="#4D5B67">eski telefon / tablet</text>
+        <path d="M144 152h56" stroke="#1A2633" stroke-width="2" marker-end="url(#a)"/>
+        <text x="150" y="142" font-family="Chivo Mono" font-size="11" fill="#4D5B67">görüntü</text>
+        <rect x="216" y="240" width="132" height="54" fill="#fff" stroke="#1A2633"/><text x="282" y="272" text-anchor="middle" font-family="Chivo" font-size="13" fill="#1A2633">7 günlük kayıt</text>
+        <path d="M282 194v40" stroke="#1A2633" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="430" y="110" width="110" height="84" rx="14" fill="#fff" stroke="#1A2633"/><text x="485" y="146" text-anchor="middle" font-family="Chivo" font-size="14" fill="#1A2633">Telefonunuz</text><text x="485" y="166" text-anchor="middle" font-family="Chivo Mono" font-size="11" fill="#4D5B67">dışarıdayken</text>
+        <path d="M358 152h66" stroke="#3D6A86" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#a2)"/>
+        <text x="362" y="142" font-family="Chivo Mono" font-size="11" fill="#3D6A86">not + 6 sn</text>
+        <text x="362" y="178" font-family="Chivo Mono" font-size="11" fill="#3D6A86">uçtan uca</text>
+        <path d="M430 40c0-16 14-26 30-22 6-14 28-14 36 0 18-4 30 10 26 24z" fill="none" stroke="#A3ADA8" stroke-width="1.5"/>
+        <text x="476" y="34" text-anchor="middle" font-family="Chivo Mono" font-size="11" fill="#7C8783">bulut</text>
+        <path d="M400 70 450 52" stroke="#B5382A" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M418 52l14 14M432 52l-14 14" stroke="#B5382A" stroke-width="2"/>
+        <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#1A2633"/></marker><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#3D6A86"/></marker></defs>
+      </svg>
+      <div>
+        <h2 class="h2" id="h-evde">Bahçenizin geceleri bir sunucuda izlenmez.</h2>
+        <p class="intro">Kapınızın önü; kimin ne zaman gelip gittiği, çocuğunuzun okul dönüşü, gece kaçta eve girdiğiniz. Ev Güvende bunları evinizdeki bir cihazda, kendi ağınızın içinde işler. Dışarıdayken telefonunuza yalnızca kısa bir not ve isterseniz 6 saniyelik klip gelir, doğrudan ve şifreli.</p>
+        <ul>
+          <li><strong>0 MB</strong><span>video buluta yüklenir. Bulut aboneliği de yok, çünkü bulut yok.</span></li>
+          <li><strong>7 gün</strong><span>kayıt evdeki cihazda döner; süreyi siz belirlersiniz.</span></li>
+          <li><strong>İnternet</strong><span>kesilse de tanıma ve siren çalışır; bildirim bağlantı gelince düşer.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="real" id="gercek" aria-labelledby="h-real">
+  <div class="wrap">
+    <h2 class="h2" id="h-real">Gerçekten biri gelirse, ilk saniyeden ciddiye alır.</h2>
+    <p class="intro">Gereksiz alarm vermemek, gerçek olanı yumuşatmak demek değil. Pencere ya da kapı zorlandığında akış şöyle:</p>
+    <div class="steps">
+      <div><time>0 sn</time><b>Görür</b><p>Kapı kolunda tekrar eden zorlama; tanınmayan kişi.</p></div>
+      <div><time>2 sn</time><b>Size söyler</b><p>Telefonunuz alarm sesiyle çalar; sessiz moddayken de.</p></div>
+      <div><time>5 sn</time><b>Evde ses</b><p>İsterseniz bağlı siren ya da akıllı hoparlörden “Kayıt alınıyor” anonsu.</p></div>
+      <div><time>30 sn</time><b>Komşu ve 155</b><p>Yanıt vermezseniz seçtiğiniz komşuya not gider. 155’i aramak tek dokunuş; arama sizin kararınız.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="qp" id="fiyat" aria-label="Kullanıcı yorumu ve fiyat">
+  <div class="wrap">
+    <div class="grid">
+      <blockquote>
+        <p>“Eski uygulama Pamuk yüzünden gecede dört kez çalardı; sonunda bildirimleri kapatmıştım. Bu en kötüsüydü. Şimdi telefon yalnızca bir kez çaldı, o da gerçekten kapıyı yoklayan biri içindi. Geceleri yeniden uyuyorum.”</p>
+        <footer><b>Nermin Aksoy</b> · Urla, İzmir · bahçeli müstakil ev, bir kedi, iki kamera</footer>
+      </blockquote>
+      <div class="price">
+        <h2>Bir kez alınır. Bulut ücreti yoktur.</h2>
+        <div class="r"><span>1 kamera, tanıma, sabah özeti</span><b>0 ₺</b></div>
+        <div class="r"><span>Bütün ev: 8 kameraya kadar, 7 günlük kayıt, siren, komşu notu</span><b>549 ₺</b></div>
+        <div class="r"><span>Aylık abonelik</span><b>yok</b></div>
+        <div class="ctas"><a class="btn btn-ink" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="h-sss">
+  <div class="wrap">
+    <h2 class="h2" id="h-sss">Sık sorulanlar</h2>
+    <div class="cols">
+      <div><h3>Mevcut kameramla çalışır mı?</h3><p>RTSP ya da ONVIF destekleyen Wi-Fi ve kablolu kameraların çoğuyla. Kameranın kendi bulut hizmetini kapatabilirsiniz; Ev Güvende ona ihtiyaç duymaz.</p></div>
+      <div><h3>Evdeki cihaz ne olmalı?</h3><p>Prizde duran bir telefon ya da tablet: 2019 sonrası iPhone ya da 6 GB bellekli Android. İki kamera için bir cihaz yeterli; sekiz kamera için iki.</p></div>
+      <div><h3>Yüz tanıma yasal mı, komşum ne der?</h3><p>Tanıma yalnızca sizin eklediğiniz kişiler için ve yalnızca sizin cihazınızda yapılır. Kameranın kamusal alanı (sokak, komşunun kapısı) görmemesi için kayıt alanını maskeleyebilirsiniz; KVKK açısından önerimiz de budur.</p></div>
+      <div><h3>Yanlış alarm olursa?</h3><p>Bildirimdeki “bu yanlış” düğmesine basın. Ev Güvende o durumu (ör. sabahçı fırının servisi) öğrenir ve bir daha sizi uyandırmaz.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Ev Güvende · İzmir Teknopark</span>
+    <span>destek@evguvende.com.tr</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // minutes from 20:00 (0..660)
+  var E=[
+    {t:'20:48',m:48,k:'cat',l:'Kedi · Pamuk · 0.97',box:[16,58,12,16],dec:['Sessiz','Pamuk bahçe duvarında yürüdü, 12 saniye. Tanıdık kedi.'],s:'cat'},
+    {t:'21:30',m:90,k:'tree',l:'Dal hareketi',box:[82,10,16,34],dec:['Yok sayıldı','Erik dalı rüzgârda sallandı; şekil sabit, yer değiştirmiyor.'],s:'none'},
+    {t:'22:15',m:135,k:'nb',l:'Komşu · Ahmet Bey · 0.94',box:[56,34,11,46],dec:['Sessiz','Ahmet Bey köpeğiyle kapının önünden geçti, durmadı.'],s:'person'},
+    {t:'23:02',m:182,k:'cat',l:'Kedi · tanınmayan · 0.92',box:[30,64,11,13],dec:['Sessiz','Sokaktan bir kedi bahçeye girdi, 3 dakika kaldı. Kedi olarak sayıldı.'],s:'cat2'},
+    {t:'00:40',m:280,k:'tree',l:'Far ışığı',box:[0,0,100,100],dec:['Yok sayıldı','Geçen arabanın farı bütün kareyi aydınlattı; nesne yok.'],s:'none'},
+    {t:'01:55',m:355,k:'cat',l:'Kedi · Pamuk · 0.96',box:[60,62,12,15],dec:['Sessiz','Pamuk kapının önünden geçti.'],s:'cat'},
+    {t:'03:41',m:461,k:'who',l:'Tanınmayan kişi · 0.91',box:[44,30,13,48],dec:['Bildirim gönderildi (sessiz, titreşim)','Bahçe kapısının önünde 41 saniye durdu, kapıya iki kez dokundu, girmedi. Tanınan yüz değil, kurye kıyafeti yok, elinde paket yok.'],s:'person',al:1},
+    {t:'05:20',m:560,k:'cat',l:'Kedi · Pamuk · 0.95',box:[20,60,12,16],dec:['Sessiz','Pamuk sabah turundan döndü.'],s:'cat'},
+    {t:'06:48',m:648,k:'pkg',l:'Kurye · paket · 0.89',box:[48,32,12,46],dec:['Sabah notu','Kurye kapıya paket bıraktı, 18 saniye kaldı. “Kapıda paket var” notu sabah özetinde.'],s:'person'}
+  ];
+  function subj(s){
+    if(s==='cat'||s==='cat2')return '<g fill="#D4DBD8"><ellipse cx="0" cy="0" rx="30" ry="14"/><circle cx="28" cy="-12" r="11"/><path d="M22-22l4-8 4 8M30-22l4-8 4 8"/><path d="M-30 0c-14-6-18-20-10-26" stroke="#D4DBD8" stroke-width="5" fill="none"/><circle cx="32" cy="-13" r="2.2" fill="#fff"/></g>';
+    if(s==='person')return '<g fill="#C9D1CD"><circle cx="0" cy="-70" r="18"/><path d="M-26-46h52l6 70h-18l-4 70h-12l-4-60-4 60h-12l-4-70h-18z"/></g>';
+    return '';
+  }
+  var pos={cat:[0,0],cat2:[0,0]};
+  var tl=document.getElementById('tl'),btns=[];
+  E.forEach(function(e,i){var b=document.createElement('button');b.className='tl-ev '+e.k;b.style.left=(e.m/660*100)+'%';b.setAttribute('aria-label',e.t+' '+e.l);b.setAttribute('aria-pressed',e.al?'true':'false');b.addEventListener('click',function(){show(i)});tl.appendChild(b);btns.push(b);});
+  function show(i){var e=E[i];
+    btns.forEach(function(b,j){b.setAttribute('aria-pressed',j===i?'true':'false')});
+    var box=document.getElementById('box');box.style.left=e.box[0]+'%';box.style.top=e.box[1]+'%';box.style.width=e.box[2]+'%';box.style.height=e.box[3]+'%';
+    box.className='box'+(e.al?' alert':'');box.style.display=e.s==='none'&&e.box[2]===100?'none':'block';
+    document.getElementById('boxL').textContent=e.l;
+    document.getElementById('osdT').textContent='2026-11-'+(e.m<240?'09':'10')+' '+e.t+':12';
+    var d=document.getElementById('dec');d.className='decision'+(e.al?' al':'');
+    document.getElementById('decT').textContent=e.dec[0];document.getElementById('decP').textContent=e.dec[1];
+    var g=document.getElementById('subj');
+    var x=(e.box[0]+e.box[2]/2)/100*640,y=(e.box[1]+e.box[3])/100*400;
+    if(e.s==='person'){g.innerHTML='<g transform="translate('+x+' '+(y-96)+')">'+subj('person')+'</g>';}
+    else if(e.s.indexOf('cat')===0){g.innerHTML='<g transform="translate('+(x-6)+' '+(y-14)+')">'+subj('cat')+'</g>';}
+    else if(e.k==='tree'&&e.box[2]===100){g.innerHTML='<rect width="640" height="400" fill="#fff" opacity=".35"/>';}
+    else g.innerHTML='';
+  }
+  show(6);
+})();
+</script>
+</body>
+</html>

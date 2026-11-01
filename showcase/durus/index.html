@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duruş — Boynunuz akşam 18:00'de de hafif kalsın</title>
+<meta name="description" content="Duruş dizüstünüzün kamerasıyla omuz ve boyun açınızı izler, görüntü kaydetmeden duruşunuz bozulunca nazikçe uyarır ve 20 saniyelik esneme önerir. Mac ve Windows için.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#E3ECF1; --sky-2:#F2F6F8; --alu:#D6DADF; --alu-2:#BFC5CC; --char:#262B31; --char-2:#535B64;
+  --lamp:#F2C94C; --lamp-soft:#FBF1CF; --sage:#4F7D67; --sage-soft:#E2EEE7; --white:#FFFFFF;
+  --serif:"Young Serif",Georgia,serif; --sans:"Manrope",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sky-2);color:var(--char);font:400 18px/1.65 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid #2F6FB3;outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px 12px;z-index:9}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.005em}
+
+/* menubar header */
+.menubar{position:sticky;top:0;z-index:5;height:38px;background:rgba(236,239,242,.94);border-bottom:1px solid var(--alu-2);font-size:14px;backdrop-filter:saturate(1.2)}
+.menubar .wrap{display:flex;align-items:center;justify-content:space-between;height:100%;max-width:none;padding:0 18px}
+.menubar .left{display:flex;align-items:center;gap:20px}
+.menubar .app{font-weight:700;text-decoration:none;display:flex;align-items:center;gap:8px}
+.menubar nav a{text-decoration:none;color:var(--char);margin-right:18px}
+.menubar nav a:hover{text-decoration:underline}
+.tray{display:flex;align-items:center;gap:16px;color:var(--char)}
+.tray .icon{display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:5px;background:var(--char)}
+.tray .dl{font-weight:700;text-decoration:none;background:var(--char);color:#fff;border-radius:6px;padding:3px 10px}
+
+/* hero */
+.hero{padding:56px 0 40px;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(34px,4.3vw,56px);line-height:1.1;margin:0 0 20px}
+.hero .lede{font-size:19px;color:var(--char-2);margin:0 0 28px;max-width:30em}
+.btn{display:inline-block;font:700 16.5px var(--sans);padding:14px 22px;border-radius:999px;text-decoration:none}
+.btn.dark{background:var(--char);color:#fff}
+.btn.dark:hover{background:#3A4149}
+.btn.soft{background:var(--white);color:var(--char);box-shadow:inset 0 0 0 1.5px var(--alu-2)}
+.btn.soft:hover{box-shadow:inset 0 0 0 1.5px var(--char)}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.small{font-size:15px;color:var(--char-2);margin-top:14px}
+
+.scene{position:relative;background:radial-gradient(circle at 8% 0%,#FBEFC9 0,rgba(251,239,201,.55) 26%,rgba(227,236,241,0) 58%),var(--sky);border-radius:28px;padding:20px 20px 0;min-height:480px;overflow:hidden}
+.scene svg.desk{display:block;width:100%;height:auto}
+.notif{position:absolute;top:16px;right:16px;width:300px;background:rgba(255,255,255,.96);border-radius:14px;padding:12px 14px;box-shadow:0 12px 30px -12px rgba(38,43,49,.4);font-size:14.5px;line-height:1.45}
+.notif .h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;color:var(--char-2)}
+.notif .h i{width:18px;height:18px;border-radius:5px;background:var(--char);display:inline-block}
+.notif .h span{margin-left:auto;font-weight:500}
+.notif p{margin:4px 0 10px}
+.notif .acts{display:flex;gap:8px}
+.notif .acts a{flex:1;text-align:center;font-weight:700;font-size:13.5px;text-decoration:none;padding:6px 8px;border-radius:8px;background:var(--sky-2)}
+.notif .acts a.go{background:var(--lamp);color:#3A2E05}
+.gauge{position:absolute;left:20px;bottom:20px;background:rgba(255,255,255,.92);border-radius:14px;padding:10px 14px;font-size:14px;display:flex;gap:18px}
+.gauge b{display:block;font:400 26px var(--serif);line-height:1.1}
+.gauge .now b{color:#8A5A00}
+.gauge .am b{color:var(--sage)}
+
+section{padding:96px 0}
+h2{font-size:clamp(28px,3.1vw,40px);line-height:1.15;margin:0 0 16px;max-width:22ch}
+.sub{color:var(--char-2);max-width:56ch;margin:0 0 40px}
+
+/* day chart */
+.day{background:var(--white)}
+.chart{position:relative;overflow-x:auto}
+.chart svg{min-width:720px}
+.chart svg{display:block;width:100%;height:auto}
+.insight{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:30px}
+.insight div{border-top:2px solid var(--alu);padding-top:14px}
+.insight b{display:block;font:400 22px var(--serif);margin-bottom:4px}
+.insight p{margin:0;color:var(--char-2);font-size:16px}
+
+/* stretch player (moment) */
+.stretch{background:linear-gradient(180deg,var(--sky-2),var(--sky))}
+.player{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--white);border-radius:28px;overflow:hidden;box-shadow:0 30px 60px -44px rgba(38,43,49,.6)}
+.stage{background:radial-gradient(circle at 30% 20%,#FFF8E2 0,#FBF1CF 45%,#F3E3B0 100%);display:flex;align-items:center;justify-content:center;padding:30px;position:relative;min-height:400px}
+.stage svg{width:100%;max-width:340px;height:auto}
+.stage svg.ring{position:absolute;top:22px;right:22px;width:78px;height:78px;max-width:none}
+.ring text{font:700 22px var(--sans);fill:var(--char)}
+.ctrl{padding:40px 40px 36px;display:flex;flex-direction:column}
+.ctrl h2{margin-bottom:10px}
+.moves{list-style:none;padding:0;margin:14px 0 24px}
+.moves li{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid var(--alu);color:var(--char-2);transition:color .3s}
+.moves li span:last-child{font-weight:600;white-space:nowrap}
+.moves li.on{color:var(--char);font-weight:700}
+.moves li.on span:first-child::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--lamp);margin-right:10px;box-shadow:0 0 0 3px var(--lamp-soft)}
+.moves li.done{color:var(--sage)}
+.play{align-self:flex-start;border:0;cursor:pointer;font:700 17px var(--sans);background:var(--char);color:#fff;border-radius:999px;padding:14px 26px}
+.play:hover{background:#3A4149}
+.after{margin-top:14px;font-size:15.5px;color:var(--char-2);min-height:1.6em}
+#head{transition:transform 1.2s ease-in-out;transform-origin:150px 110px}
+#shoulder{transition:transform 1.2s ease-in-out;transform-origin:150px 150px}
+.s-tuck #head{transform:translateX(-12px)}
+.s-roll #shoulder{transform:rotate(-8deg)}
+.s-roll #head{transform:translateX(-6px)}
+.s-open #shoulder{transform:rotate(-14deg) translateX(-4px)}
+.s-up #head{transform:rotate(-14deg) translateX(-6px)}
+
+/* camera sees */
+.sees{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.frame{background:var(--char);border-radius:22px;padding:18px;position:relative;aspect-ratio:4/3}
+.frame svg{width:100%;height:100%;display:block}
+.frame .rec{position:absolute;top:16px;left:18px;color:#C8D0D8;font-size:13.5px;display:flex;gap:8px;align-items:center}
+.frame .rec i{width:8px;height:8px;border-radius:50%;background:#56C27E}
+.sees ul{list-style:none;padding:0;margin:24px 0 0}
+.sees li{padding:12px 0 12px 28px;border-top:1px solid var(--alu);position:relative}
+.sees li::before{content:"";position:absolute;left:4px;top:22px;width:12px;height:2px;background:var(--sage)}
+
+.quote{background:#EEF4F0}
+.quote figure{margin:0;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start;max-width:900px}
+.quote .mark{font:400 120px/0.8 var(--serif);color:var(--lamp)}
+.quote blockquote{margin:0;font:400 clamp(22px,2.4vw,29px)/1.45 var(--serif)}
+.quote figcaption{grid-column:2;color:var(--char-2);font-size:16px}
+
+.price{background:#E6EFE9}
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.offer{background:var(--white);border-radius:24px;padding:30px 32px;box-shadow:inset 0 0 0 1.5px var(--alu)}
+.offer .amt{font:400 54px/1 var(--serif)}
+.offer .amt small{font:500 16px var(--sans);color:var(--char-2)}
+.offer ul{padding-left:20px;margin:16px 0 24px}
+.offer li{margin:5px 0;font-size:16.5px}
+.faq details{border-bottom:1px solid var(--alu)}
+.faq summary{cursor:pointer;padding:16px 0;font-weight:700;font-size:17.5px}
+.faq p{margin:0 0 16px;color:var(--char-2);font-size:16.5px}
+
+footer{background:#E6EFE9;padding:34px 0 28px;font-size:15px;color:var(--char-2);border-top:1px solid var(--alu)}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .credit{margin-top:16px;font-size:13.5px}
+
+@media (max-width:980px){
+  .menubar nav{display:none}
+  .hero .wrap,.sees,.price .wrap{grid-template-columns:1fr}
+  .player{grid-template-columns:1fr}
+  .insight{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  body{font-size:17px}
+  .wrap{padding:0 18px}
+  .hero{padding-top:30px}
+  .scene{min-height:0;padding:12px 12px 0;border-radius:20px}
+  .notif{position:relative;top:auto;right:auto;width:auto;margin:0 0 10px}
+  .gauge{position:relative;left:auto;bottom:auto;display:inline-flex;margin:8px 0 12px;padding:8px 10px;gap:12px}
+  .gauge b{font-size:21px}
+  .tray .date{display:none}
+  .stage{min-height:300px}
+  .ctrl{padding:26px 22px}
+  section{padding:68px 0}
+  .quote figure{grid-template-columns:1fr}
+  .quote .mark{display:none}
+  .quote figcaption{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){#head,#shoulder,.moves li{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+<header class="menubar">
+  <div class="wrap">
+    <div class="left">
+      <a class="app" href="#" aria-label="Duruş ana sayfa">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="3.4" r="2.4" fill="#262B31"/><path d="M8 6.5v8" stroke="#262B31" stroke-width="2.2" stroke-linecap="round"/></svg>Duruş
+      </a>
+      <nav aria-label="Bölümler"><a href="#gun">Gününüz</a><a href="#esneme">20 sn esneme</a><a href="#kamera">Kamera ne görür</a><a href="#fiyat">Fiyat</a></nav>
+    </div>
+    <div class="tray">
+      <span class="icon" aria-hidden="true"><svg width="12" height="14" viewBox="0 0 12 14"><circle cx="6" cy="3" r="2.2" fill="#fff"/><path d="M6 6v7" stroke="#F2C94C" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      <span class="date">Sal 14 Eki</span><span>17:42</span>
+      <a class="dl" href="#fiyat">İndir</a>
+    </div>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="hero" aria-labelledby="h1" style="padding-top:56px">
+  <div class="wrap">
+    <div>
+      <h1 id="h1">Akşam 18:00'de boynunuz sabahki kadar hafif olsun.</h1>
+      <p class="lede">Duruş dizüstünüzün kamerasıyla boyun ve omuz açınızı izler. Ekrana doğru çöktüğünüzde azarlamaz; köşede küçük bir not bırakır ve isterseniz 20 saniyelik bir esneme açar. Görüntü kaydedilmez.</p>
+      <div class="ctas"><a class="btn dark" href="#fiyat">Mac için indir</a><a class="btn soft" href="#fiyat">Windows için indir</a></div>
+      <p class="small">14 gün ücretsiz · internet gerekmez · kamera görüntüsü bilgisayardan çıkmaz</p>
+    </div>
+    <div class="scene" aria-label="Masa başında çalışan birinin yan profili; boyun açısı ölçülüyor">
+      <svg class="desk" viewBox="0 0 520 440" aria-hidden="true">
+        <rect x="300" y="300" width="210" height="12" rx="3" fill="#BFC5CC"/>
+        <path d="M360 300 L400 210 L470 210 L440 300 Z" fill="#D6DADF" stroke="#9AA2AB" stroke-width="2"/>
+        <rect x="380" y="312" width="10" height="128" fill="#BFC5CC"/>
+        <!-- morning ghost -->
+        <g opacity=".45" stroke="#4F7D67" stroke-width="5" stroke-linecap="round" fill="none" stroke-dasharray="2 9">
+          <path d="M200 330 L205 210"/><path d="M205 210 L210 160"/>
+        </g>
+        <circle cx="210" cy="132" r="26" fill="none" stroke="#4F7D67" stroke-width="3" stroke-dasharray="3 7" opacity=".6"/>
+        <!-- chair -->
+        <path d="M150 260 L150 360 M150 360 L250 360 M215 360 L215 430 M190 430 L240 430" stroke="#535B64" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <!-- now posture -->
+        <g stroke="#262B31" stroke-width="7" stroke-linecap="round" fill="none">
+          <path d="M195 345 Q205 270 238 215"/>
+          <path d="M238 215 L262 182"/>
+          <path d="M232 230 Q290 255 352 292"/>
+          <path d="M200 350 L300 350 L300 430"/>
+        </g>
+        <circle cx="282" cy="160" r="27" fill="#262B31"/>
+        <!-- angle -->
+        <path d="M238 215 L330 215" stroke="#8A5A00" stroke-width="2" stroke-dasharray="4 4"/>
+        <path d="M238 215 L282 160" stroke="#8A5A00" stroke-width="2"/>
+        <path d="M290 215 A52 52 0 0 0 271 175" fill="none" stroke="#F2C94C" stroke-width="5"/>
+        <text x="300" y="200" font-family="Manrope" font-weight="700" font-size="17" fill="#8A5A00">38°</text>
+      </svg>
+      <div class="notif" role="img" aria-label="Duruş bildirimi">
+        <div class="h"><i></i>DURUŞ<span>şimdi</span></div>
+        <p>Son 25 dakikadır başınız ekrana doğru. Boyun açınız 38°, sabah 52°'ydi.</p>
+        <div class="acts"><a class="go" href="#esneme">20 sn esneyelim</a><a href="#gun">Sonra</a></div>
+      </div>
+      <div class="gauge" aria-hidden="true"><div class="am">sabah 09:40<b>52°</b></div><div class="now">şimdi 17:42<b>38°</b></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="day" id="gun" aria-labelledby="h-gun">
+  <div class="wrap">
+    <h2 id="h-gun">Boynunuz gün içinde nereye gidiyor</h2>
+    <p class="sub">Duruş saatte bir not tutmaz, her an ölçer. Akşam size tek bir çizgi gösterir: boyun açınızın gün boyu nasıl eğildiği ve küçük molaların onu nasıl geri getirdiği.</p>
+    <div class="chart">
+      <svg viewBox="0 0 1100 300" role="img" aria-label="Salı 09:00–18:00 boyun açısı: sabah 52 derece, öğleden sonra 15:00'ten sonra 40'ın altına iniyor, üç esneme molasından sonra her seferinde 48 dereceye çıkıyor">
+        <rect x="60" y="20" width="1020" height="80" fill="#E2EEE7"/>
+        <text x="70" y="93" font-family="Manrope" font-size="14" fill="#3E6B55" font-weight="700">rahat aralık</text>
+        <g font-family="Manrope" font-size="13" fill="#535B64">
+          <text x="52" y="28" text-anchor="end">55°</text><text x="52" y="104" text-anchor="end">45°</text><text x="52" y="184" text-anchor="end">35°</text>
+        </g>
+        <g stroke="#D6DADF"><path d="M60 100H1080"/><path d="M60 180H1080"/><path d="M60 260H1080"/></g>
+        <path id="line" d="" fill="none" stroke="#262B31" stroke-width="3" stroke-linejoin="round"/>
+        <g id="marks"></g>
+        <g font-family="Manrope" font-size="13" fill="#535B64" id="hrs"></g>
+      </svg>
+    </div>
+    <div class="insight">
+      <div><b>15:00'ten sonra</b><p>Öğle yemeğinden iki saat sonra açı hızla düşüyor. Duruş bu saatlerde biraz daha sık hatırlatır.</p></div>
+      <div><b>3 mola, 1 dakika</b><p>Bugün üç kez 20 saniye esnediniz. Her seferinde boyun 45°'nin üstüne döndü.</p></div>
+      <div><b>Toplantıda sessiz</b><p>Kamera görüntülü görüşmede kullanılırken Duruş susar; ekran paylaşırken not göstermez.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="stretch" id="esneme" aria-labelledby="h-es">
+  <div class="wrap">
+    <div class="player">
+      <div class="stage" id="stage">
+        <svg viewBox="0 0 300 300" aria-hidden="true">
+          <path d="M70 230 L70 280 M70 280 L170 280" stroke="#535B64" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <g id="shoulder">
+            <path d="M120 250 Q125 190 150 150" stroke="#262B31" stroke-width="8" stroke-linecap="round" fill="none"/>
+            <path d="M147 158 Q185 190 200 240" stroke="#262B31" stroke-width="7" stroke-linecap="round" fill="none"/>
+          </g>
+          <g id="head">
+            <path d="M150 150 L158 122" stroke="#262B31" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="166" cy="98" r="24" fill="#262B31"/>
+            <path d="M184 100 l6 3" stroke="#262B31" stroke-width="4" stroke-linecap="round"/>
+          </g>
+          <path d="M120 252 L215 252 L215 290" stroke="#262B31" stroke-width="7" stroke-linecap="round" fill="none"/>
+        </svg>
+        <svg class="ring" viewBox="0 0 80 80" aria-hidden="true">
+          <circle cx="40" cy="40" r="34" fill="#fff" stroke="#EADFB8" stroke-width="6"/>
+          <circle id="arc" cx="40" cy="40" r="34" fill="none" stroke="#262B31" stroke-width="6" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="0" transform="rotate(-90 40 40)"/>
+          <text id="sec" x="40" y="48" text-anchor="middle">20</text>
+        </svg>
+      </div>
+      <div class="ctrl">
+        <h2 id="h-es">Şimdi deneyin: 20 saniye</h2>
+        <p class="sub" style="margin:0">Bildirime “esneyelim” dediğinizde açılan şey bu. Okurken yapabilirsiniz; ayağa kalkmanız gerekmez.</p>
+        <ol class="moves" id="moves">
+          <li><span>Çenenizi geri çekin, çift çene yapar gibi</span><span>5 sn</span></li>
+          <li><span>Omuzlarınızı geriye doğru yuvarlayın</span><span>5 sn</span></li>
+          <li><span>Kürek kemiklerinizi birbirine yaklaştırın</span><span>5 sn</span></li>
+          <li><span>Yavaşça tavana bakın, nefes alın</span><span>5 sn</span></li>
+        </ol>
+        <button class="play" id="play" type="button">Başlat</button>
+        <p class="after" id="after" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kamera" aria-labelledby="h-kam">
+  <div class="wrap sees">
+    <div class="frame" aria-label="Kameranın Duruş'a verdiği tek şey: omuz, boyun ve kulak noktaları">
+      <span class="rec"><i></i>kamera açık · kayıt yok</span>
+      <svg viewBox="0 0 400 300" aria-hidden="true">
+        <g stroke="#56606B" stroke-width="2" stroke-dasharray="3 5" fill="none"><path d="M130 250 L170 170 L230 170 L270 250"/><path d="M200 170 L200 120"/></g>
+        <g fill="#F2C94C"><circle cx="200" cy="96" r="6"/><circle cx="172" cy="100" r="6"/><circle cx="228" cy="100" r="6"/><circle cx="200" cy="122" r="6"/><circle cx="170" cy="170" r="7"/><circle cx="230" cy="170" r="7"/><circle cx="130" cy="250" r="6"/><circle cx="270" cy="250" r="6"/><circle cx="200" cy="172" r="5"/></g>
+        <text x="200" y="285" text-anchor="middle" font-family="Manrope" font-size="13" fill="#C8D0D8">9 nokta · saniyede 4 kez · yüz yok, oda yok</text>
+      </svg>
+    </div>
+    <div>
+      <h2 id="h-kam">Kamera görür, kaydetmez</h2>
+      <p class="sub" style="margin-bottom:0">Ev ofisinizin dağınıklığı, arkadan geçen çocuk, pijamanız: hiçbiri bir yere gitmez. Duruş her kareden yalnız dokuz noktanın yerini çıkarır, kareyi aynı anda siler.</p>
+      <ul>
+        <li>Fotoğraf ya da video dosyası hiç oluşmaz; diskte de, bulutta da.</li>
+        <li>İnternet kapalıyken aynı şekilde çalışır. Sunucumuz yok.</li>
+        <li>Kamera ışığı yanar. İstediğiniz an menü çubuğundan duraklatırsınız.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı yorumu">
+  <div class="wrap">
+    <figure>
+      <span class="mark" aria-hidden="true">“</span>
+      <blockquote>Akşamları boynumu çıtlatmadan bilgisayarı kapatamıyordum. Duruş günde dört beş kez dürtüyor, o kadar. İki haftadır fizyoterapistin verdiği egzersizleri ilk kez gerçekten yapıyorum, çünkü 20 saniye.</blockquote>
+      <figcaption><b style="color:var(--char)">Burak Şen</b>, 31 · İstanbul, Kadıköy · ön yüz geliştirici, evden çalışıyor</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="price" id="fiyat" aria-labelledby="h-fiyat">
+  <div class="wrap">
+    <div class="offer">
+      <h2 id="h-fiyat" style="font-size:30px">14 gün dene, beğenirsen bir kez öde</h2>
+      <div class="amt">179 ₺ <small style="white-space:nowrap">tek seferlik · 2 bilgisayar</small></div>
+      <ul>
+        <li>macOS 12+ ve Windows 10/11, dahili ya da harici kamera</li>
+        <li>Sınırsız hatırlatma, 12 esneme seti</li>
+        <li>Günlük ve haftalık boyun çizgisi</li>
+      </ul>
+      <div class="ctas"><a class="btn dark" href="#">Mac için indir</a><a class="btn soft" href="#">Windows için indir</a></div>
+    </div>
+    <div class="faq">
+      <details><summary>Harici monitör kullanıyorum, kamera yanda kalıyor.</summary><p>Kurulumda bir kez dik oturup “bu benim iyi halim” dersiniz; Duruş açıyı o kameranın yerine göre hesaplar.</p></details>
+      <details><summary>Gün boyu dürtüp sinir etmez mi?</summary><p>Varsayılan ayarda 20 dakika boyunca kötü duruşta kalırsanız bir kez not bırakır, en fazla saatte iki kez. Odak modunda tamamen susar.</p></details>
+      <details><summary>Boyun fıtığım var, egzersizler uygun mu?</summary><p>Esnemeler genel masa başı hareketleridir, tedavi değildir. Tanınız varsa fizyoterapistinizin verdiği hareketleri Duruş'a ekleyebilirsiniz; ağrı artarsa durun.</p></details>
+      <details><summary>Şirketimiz için toplu alabilir miyiz?</summary><p>10 bilgisayar ve üzeri için kişi başı 129 ₺. Yöneticiye hiçbir çalışan verisi gitmez; rapor yoktur.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row"><span><b style="color:var(--char)">Duruş</b> · İzmir. Tıbbi cihaz değildir.</span><a href="mailto:selam@durus.app">selam@durus.app</a></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // day chart: minutes 9:00-18:00 -> x 60..1080 ; angle 55->20 .. 35->180 (y = 20 + (55-a)*8)
+  function X(m){return 60+(m/540)*1020} function Y(a){return 20+(55-a)*8}
+  var pts=[],breaks=[330,420,480],a=52;
+  for(var m=0;m<=540;m+=6){
+    var base = m<300 ? 52-m*0.02 : 46-(m-300)*0.045;
+    var b = breaks.filter(function(x){return m>=x&&m<x+30});
+    if(b.length){ base = Math.max(base, 48 - (m-b[0])*0.12); }
+    a = base + Math.sin(m*0.21)*1.2;
+    if(m>230&&m<275) a=50+Math.sin(m*.3); // lunch away/upright
+    pts.push(X(m).toFixed(1)+" "+Y(a).toFixed(1));
+  }
+  document.getElementById("line").setAttribute("d","M"+pts.join("L"));
+  var mk="";breaks.forEach(function(b,i){mk+='<line x1="'+X(b)+'" y1="20" x2="'+X(b)+'" y2="260" stroke="#F2C94C" stroke-width="2"/><circle cx="'+X(b)+'" cy="270" r="5" fill="#F2C94C"/>';});
+  breaks.forEach(function(b,i){mk+='<text x="'+(X(b)+8)+'" y="250" font-family="Manrope" font-size="13" font-weight="700" fill="#8A5A00">'+(i===0?'20 sn esneme':'esneme')+'</text>';});
+  document.getElementById("marks").innerHTML=mk;
+  var hr="";for(var h=9;h<=18;h++){hr+='<text x="'+X((h-9)*60)+'" y="296" text-anchor="middle">'+(h<10?"0":"")+h+':00</text>';}
+  document.getElementById("hrs").innerHTML=hr;
+  var ch=document.querySelector(".chart"); if(ch.scrollWidth>ch.clientWidth) ch.scrollLeft=ch.scrollWidth;
+
+  // stretch player
+  var stage=document.getElementById("stage"),lis=[].slice.call(document.querySelectorAll("#moves li")),btn=document.getElementById("play"),arc=document.getElementById("arc"),sec=document.getElementById("sec"),after=document.getElementById("after");
+  var cls=["s-tuck","s-roll","s-open","s-up"],timer=null,t=0;
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function setStep(i){stage.className="stage"+(i>=0&&i<4?" "+cls[i]:"");lis.forEach(function(l,j){l.className=j<i?"done":(j===i?"on":"")});}
+  function stop(done){clearInterval(timer);timer=null;btn.textContent=done?"Bir daha":"Başlat";if(done){setStep(4);after.textContent="Bitti. Boyun açınız 49°'ye döndü; bir sonraki not en erken 40 dakika sonra.";}}
+  btn.addEventListener("click",function(){
+    if(timer){stop(false);setStep(-1);sec.textContent="20";arc.style.strokeDashoffset=0;after.textContent="";return;}
+    t=0;after.textContent="";btn.textContent="Durdur";setStep(0);sec.textContent="20";arc.style.strokeDashoffset=0;
+    timer=setInterval(function(){t++;sec.textContent=20-t;arc.style.strokeDashoffset=(213.6*t/20).toFixed(1);
+      if(!reduce||true)setStep(Math.min(3,Math.floor(t/5)));
+      if(t>=20)stop(true);},1000);
+  });
+})();
+</script>
+</body>
+</html>

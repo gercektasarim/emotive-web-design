@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kod Yoldaşı — Bankanın kodu bankada kalır, kod asistanı dizüstünüzde çalışır</title>
+<meta name="description" content="Kod Yoldaşı tamamen çevrimdışı çalışan bir kod asistanıdır. Tamamlama, test yazma ve eski kodu açıklama dizüstünüzde yapılır; şirket kodu hiçbir sunucuya gitmez. Bulut yapay zekânın yasak olduğu bankalar ve kurumlar için.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF0F2; --panel:#F8F9FA; --ide:#FBFBFC; --ink:#1B1F24; --soft:#4D5562; --line:#D3D8DE;
+  --navy:#0F3D63; --navy-l:#DCE6F0; --amber:#B87503; --amber-bg:#FFF1D6; --green:#1F7A4D; --red:#B3261E;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace; --sans:"IBM Plex Sans", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.wrap{max-width:1220px;margin:0 auto;padding:0 28px}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:62px;border-bottom:1px solid var(--line)}
+.logo{font:700 16px var(--mono);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo b{color:var(--amber)}
+header nav{display:flex;gap:22px;font-size:15px}
+header nav a{text-decoration:none;color:var(--soft)}
+.btn{display:inline-block;font:600 15.5px/1 var(--sans);padding:13px 18px;border-radius:4px;text-decoration:none;background:var(--navy);color:#fff;border:1px solid var(--navy)}
+.btn.l{background:transparent;color:var(--navy)}
+.btn:hover{background:#0A2A45;color:#fff}
+/* hero */
+.hero{padding:52px 0 70px}
+.top{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:48px;align-items:end;margin-bottom:34px}
+h1{font:600 clamp(34px,4.2vw,54px)/1.08 var(--sans);letter-spacing:-.02em;margin:0}
+h1 code{font:500 .82em var(--mono);color:var(--navy);background:var(--navy-l);padding:0 .2em;border-radius:3px}
+.lede{color:var(--soft);font-size:18px;margin:0 0 18px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+/* ide */
+.ide{background:var(--ide);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 30px 60px -45px rgba(15,61,99,.55)}
+.tabs{display:flex;align-items:center;gap:0;background:#E6E9ED;border-bottom:1px solid var(--line);font:500 13px var(--mono);overflow:hidden}
+.tabs span{padding:10px 16px;border-right:1px solid var(--line);color:var(--soft);white-space:nowrap}
+.tabs span.on{background:var(--ide);color:var(--ink)}
+.tabs .air{margin-left:auto;padding:0 14px;color:var(--green);font-weight:700}
+.body{display:grid;grid-template-columns:210px minmax(0,1fr) 250px;min-height:430px}
+.tree{overflow:hidden;border-right:1px solid var(--line);padding:12px 0;font:400 13px/1.9 var(--mono);color:var(--soft);background:var(--panel)}
+.tree div{padding-left:14px;white-space:nowrap}
+.tree .d1{padding-left:28px}.tree .d2{padding-left:42px}
+.tree .on{background:var(--navy-l);color:var(--navy);font-weight:500}
+pre{white-space:normal;margin:0;padding:14px 0;font:400 13.5px/1.75 var(--mono);overflow:auto;counter-reset:ln}
+pre .l{display:block;padding:0 16px 0 0;white-space:pre}
+pre .l::before{counter-increment:ln;content:counter(ln);display:inline-block;width:44px;padding-right:14px;text-align:right;color:#A2A9B3}
+.k{color:#7A3E9D}.t{color:var(--navy)}.s{color:var(--green)}.c{color:#7B8490;font-style:italic}.n{color:#A3500E}
+.ghost:not(.taken) .l, .ghost:not(.taken) .l span{color:#8E96A1}
+.ghost{background:var(--amber-bg);display:block;border-left:3px solid var(--amber)}
+.ghost.taken{background:transparent;border-left-color:transparent}
+.ghost.taken .l{color:var(--ink)}
+.hint{display:flex;align-items:center;gap:10px;padding:8px 16px 8px 60px;font:500 12.5px var(--sans);color:var(--amber)}
+.hint button{font:700 12.5px var(--mono);border:1px solid var(--amber);background:#fff;color:var(--amber);border-radius:3px;padding:3px 8px;cursor:pointer}
+.side{border-left:1px solid var(--line);background:var(--panel);padding:14px 16px;font-size:13.5px}
+.side h3{font:600 12.5px var(--sans);color:var(--soft);margin:0 0 8px;letter-spacing:.02em}
+.kv{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #E3E6EA;font-family:var(--mono);font-size:12.5px}
+.kv b{font-weight:700}
+.kv .g{color:var(--green)}
+.side .box{margin-top:16px}
+.status{display:flex;gap:18px;flex-wrap:wrap;padding:6px 14px;background:var(--navy);color:#DCE6F0;font:500 12px var(--mono)}
+.status b{color:#fff}
+/* sections */
+section{padding:84px 0;border-top:1px solid var(--line)}
+h2{font:600 clamp(28px,3vw,40px)/1.15 var(--sans);letter-spacing:-.015em;margin:0 0 16px;max-width:22em}
+.p{color:var(--soft);max-width:38em}
+.audit{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:start}
+.term{background:#1B1F24;color:#D5DAE1;border-radius:8px;padding:18px 20px;font:400 13.5px/1.8 var(--mono);overflow:auto}
+.term .pr{color:#8FB3D9}.term .ok{color:#7FD1A0}.term .dim{color:#8A929E}
+.term div{white-space:pre}
+/* speed */
+.speed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--line);background:var(--ide);margin-top:30px}
+.speed > div{padding:24px;border-right:1px solid var(--line)}
+.speed > div:last-child{border-right:0}
+.speed b{font:700 38px/1 var(--mono);color:var(--navy);display:block;margin-bottom:8px}
+.speed p{margin:0;color:var(--soft);font-size:15.5px}
+/* uses */
+.uses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:30px}
+.use{background:var(--ide);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.use h3{font:600 17px var(--sans);margin:0;padding:14px 18px 4px}
+.use p{margin:0;padding:0 18px 12px;color:var(--soft);font-size:15.5px}
+.use pre{background:var(--panel);border-top:1px solid var(--line);font-size:12.5px;padding:10px 0}
+.use pre .l::before{width:30px}
+.add{background:#E5F4EB}.del{background:#FBE7E5}
+/* quote */
+.quote{background:var(--navy);color:#E9EFF5;border-top:0}
+.quote blockquote{margin:0;max-width:34em;font:500 clamp(22px,2.4vw,29px)/1.42 var(--sans)}
+.quote cite{display:block;font:400 15px var(--mono);font-style:normal;color:#A9C1D8;margin-top:18px}
+/* license */
+.lic{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;max-width:920px;margin-top:28px}
+.lc{background:var(--ide);border:1px solid var(--line);border-radius:6px;padding:26px}
+.lc.on{border:2px solid var(--navy)}
+.lc h3{margin:0;font:600 18px var(--sans)}
+.lc .a{font:700 34px/1.2 var(--mono);color:var(--navy);margin:10px 0 2px}
+.lc .a small{font:400 14px var(--sans);color:var(--soft)}
+.lc ul{padding-left:18px;color:var(--soft);font-size:15.5px}
+details{border-top:1px solid var(--line);padding:14px 0}
+summary{font:600 18px var(--sans);cursor:pointer}
+details p{color:var(--soft);max-width:46em;margin:8px 0 0}
+footer{border-top:1px solid var(--line);padding:30px 0;font:400 13.5px var(--mono);color:var(--soft)}
+footer .credit{margin-top:8px;font-size:12px}
+@media (max-width:1060px){
+  .body{grid-template-columns:180px minmax(0,1fr)}
+  .side{display:none}
+}
+@media (max-width:860px){
+  .top,.audit,.uses,.lic{grid-template-columns:1fr;gap:26px}
+  .body{grid-template-columns:1fr}
+  .tree{display:none}
+  .speed{grid-template-columns:1fr}
+  .speed > div{border-right:0;border-bottom:1px solid var(--line)}
+  header nav{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 14px}
+  pre{font-size:12px}
+  pre .l::before{width:30px;padding-right:10px}
+  .hint{padding-left:40px}
+  section{padding:60px 0}
+  .tabs span:nth-child(2){display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#"><b>&gt;_</b>kod-yoldaşı</a>
+    <nav aria-label="Ana menü"><a href="#denetim">Bilgi güvenliği</a><a href="#hiz">Hız</a><a href="#neler">Ne yapar</a><a href="#lisans">Kurum lisansı</a></nav>
+    <a class="btn l" href="#lisans">Pilot iste</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" style="border-top:0">
+  <div class="wrap">
+    <div class="top">
+      <h1>Kod asistanı, <code>kablo çekili</code> bir dizüstünde de çalışır.</h1>
+      <div>
+        <p class="lede">Bulut yapay zekânın yasak olduğu bankalar ve kurumlar için. Kod Yoldaşı’nın modeli geliştirici bilgisayarında çalışır; tamamlama, test yazma ve eski kodu açıklama için tek bayt dışarı gitmez.</p>
+        <div class="cta"><a class="btn" href="#lisans">30 günlük pilot</a><a class="btn l" href="#denetim">Güvenlik dökümanı</a></div>
+      </div>
+    </div>
+
+    <div class="ide" aria-label="Kod Yoldaşı IntelliJ eklentisinden örnek ekran">
+      <div class="tabs"><span class="on">EftLimitValidator.java</span><span>TransferRequest.java</span><span class="air">● çevrimdışı</span></div>
+      <div class="body">
+        <div class="tree" aria-hidden="true">
+          <div>odeme-servisi</div><div class="d1">src/main/java</div><div class="d2">eft/</div><div class="d2 on">EftLimitValidator.java</div><div class="d2">TransferRequest.java</div><div class="d2">TransferRepository.java</div><div class="d2">fast/</div><div class="d1">src/test/java</div><div class="d1">pom.xml</div>
+        </div>
+        <div>
+<pre aria-label="Java kodu"><span class="l"><span class="k">public final class</span> <span class="t">EftLimitValidator</span> {</span>
+<span class="l">    <span class="k">private static final</span> <span class="t">LocalTime</span> EFT_KAPANIS = <span class="t">LocalTime</span>.of(<span class="n">17</span>, <span class="n">0</span>);</span>
+<span class="l"></span>
+<span class="l">    <span class="k">public</span> <span class="t">ValidationResult</span> validate(<span class="t">TransferRequest</span> req, <span class="t">Customer</span> musteri) {</span>
+<span class="l">        <span class="k">if</span> (req.amount().signum() &lt;= <span class="n">0</span>) {</span>
+<span class="l">            <span class="k">return</span> <span class="t">ValidationResult</span>.reject(<span class="s">"TUTAR_GECERSIZ"</span>);</span>
+<span class="l">        }</span>
+<span class="l">        <span class="c">// Günlük limit: bugünkü transferler + bu işlem</span></span>
+<span class="ghost" id="ghost"><span class="l">        <span class="t">BigDecimal</span> bugun = transferRepo.sumToday(musteri.id(), req.currency());</span>
+<span class="l">        <span class="k">if</span> (bugun.add(req.amount()).compareTo(musteri.dailyLimit()) &gt; <span class="n">0</span>) {</span>
+<span class="l">            <span class="k">return</span> <span class="t">ValidationResult</span>.reject(<span class="s">"GUNLUK_LIMIT_ASILDI"</span>);</span>
+<span class="l">        }</span></span>
+<span class="l">        <span class="k">return</span> <span class="t">ValidationResult</span>.ok();</span>
+<span class="l">    }</span>
+<span class="l">}</span></pre>
+          <div class="hint" id="hint" aria-live="polite"><button type="button" id="accept">Tab</button><span id="hintText">öneriyi kabul et · 140 ms · yerel model</span></div>
+        </div>
+        <div class="side">
+          <h3>Ağ</h3>
+          <div class="kv"><span>giden bağlantı</span><b class="g">0</b></div>
+          <div class="kv"><span>giden veri</span><b class="g" id="bytes">0 B</b></div>
+          <div class="kv"><span>proxy</span><b>kapalı</b></div>
+          <div class="box"><h3>Model</h3>
+          <div class="kv"><span>ad</span><b>yoldas-code-7b</b></div>
+          <div class="kv"><span>konum</span><b>~/.kod-yoldasi</b></div>
+          <div class="kv"><span>donanım</span><b>M3 Pro · 36 GB</b></div>
+          <div class="kv"><span>bağlam</span><b>odeme-servisi</b></div></div>
+          <div class="box"><h3>Bugün</h3>
+          <div class="kv"><span>kabul edilen öneri</span><b id="acc">47</b></div>
+          <div class="kv"><span>yazılan test</span><b>12</b></div></div>
+        </div>
+      </div>
+      <div class="status"><span>Ağ: <b>0 B gönderildi</b></span><span>Model: <b>yerel</b></span><span>Telemetri: <b>kapalı</b></span><span>Java 21 · Spring 3.3</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="denetim">
+  <div class="wrap audit">
+    <div>
+      <h2>Bilgi güvenliği ekibiniz önce bunu soracak.</h2>
+      <p class="p">“Kod nereye gidiyor?” Cevap: hiçbir yere. Kod Yoldaşı ağ bağlantısı açmayan, imzalı bir eklenti ve yerel bir model dosyasından oluşur. Güncellemeler bile kurumun iç paket deposundan dağıtılır.</p>
+      <p class="p">BDDK bilgi sistemleri düzenlemeleri, iç denetim ve kaynak kod politikaları açısından değerlendirmeniz için ağ trafiği kaydı, yazılım malzeme listesi (SBOM) ve model kartı pilotla birlikte gelir.</p>
+    </div>
+    <div class="term" role="img" aria-label="Komut satırı denetim çıktısı: dış bağlantı yok, telemetri yok, model dosyası imzalı">
+      <div><span class="pr">$</span> kod-yoldasi denetim --ayrintili</div>
+      <div class="dim">  Kod Yoldaşı 2.4.1 · kurum sürümü</div>
+      <div>  dış ağ bağlantısı ........... <span class="ok">yok</span></div>
+      <div>  DNS çözümleme ............... <span class="ok">kapalı</span></div>
+      <div>  telemetri / çökme raporu .... <span class="ok">derlemeden çıkarıldı</span></div>
+      <div>  model dosyası ............... <span class="ok">imzalı · sha256 doğru</span></div>
+      <div>  kod önbelleği ............... <span class="ok">şifreli · yalnız bu kullanıcı</span></div>
+      <div>  eğitime kullanım ............ <span class="ok">yok</span></div>
+      <div class="dim">  rapor: ~/kod-yoldasi-denetim-2026-11-03.pdf</div>
+    </div>
+  </div>
+</section>
+
+<section id="hiz">
+  <div class="wrap">
+    <h2>VPN yok, kuyruk yok. Öneri, siz yazarken gelir.</h2>
+    <p class="p">Bulut asistanları her tuşta internete gidip döner; kurum ağında bu yavaş, çoğu zaman da kapalıdır. Kod Yoldaşı’nın cevabı dizüstünüzün işlemcisinden gelir.</p>
+    <div class="speed">
+      <div><b>140 ms</b><p>Satır içi tamamlama, Apple M3 Pro. Windows’ta RTX 4060 dizüstüyle 110 ms.</p></div>
+      <div><b>~8 sn</b><p>200 satırlık bir sınıf için birim testi taslağı (JUnit 5).</p></div>
+      <div><b>0</b><p>İnternete çıkan istek. Uçakta, sahada, ağdan ayrılmış test ortamında aynı hız.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="neler">
+  <div class="wrap">
+    <h2>Ne yapar?</h2>
+    <div class="uses">
+      <div class="use"><h3>Eski kodu açıklar</h3><p>Yirmi yıllık PL/SQL paketini, COBOL kopya kitabını, yorum satırı olmayan Java 6 sınıfını Türkçe anlatır.</p>
+<pre><span class="l"><span class="c">-- Yoldaş: Bu prosedür gün sonu faiz tahakkuku yapar;</span></span>
+<span class="l"><span class="c">-- tatil günleri için bir sonraki iş gününü kullanır.</span></span>
+<span class="l"><span class="k">PROCEDURE</span> GUN_SONU_FAIZ(p_tarih <span class="k">IN</span> DATE) <span class="k">IS</span></span></pre></div>
+      <div class="use"><h3>Test yazar</h3><p>Seçtiğiniz metodun sınır durumları için JUnit testleri: sıfır tutar, limit eşiği, kapanış saati.</p>
+<pre><span class="l"><span class="k">@Test</span> <span class="k">void</span> limitTamEsikteKabulEdilir() {</span>
+<span class="l">    givenSumToday(<span class="s">"249000.00"</span>); <span class="k">var</span> r = validate(<span class="s">"1000.00"</span>);</span>
+<span class="l">    assertThat(r.isOk()).isTrue(); }</span></pre></div>
+      <div class="use"><h3>Kod incelemesine ön göz</h3><p>Merge isteğini açmadan önce olası hataları ve politika ihlallerini gösterir.</p>
+<pre><span class="l del">-   <span class="t">double</span> tutar = req.getAmount();</span>
+<span class="l add">+   <span class="t">BigDecimal</span> tutar = req.amount(); <span class="c">// para için double kullanma</span></span></pre></div>
+      <div class="use"><h3>Kurumun kendi kurallarını bilir</h3><p>İç kodlama standardınızı ve ortak kütüphanelerinizi yerel olarak dizinler; önerileri ona göre yapar.</p>
+<pre><span class="l"><span class="c">// Yoldaş: Loglarda TCKN maskele → MaskUtil.tckn(...)</span></span>
+<span class="l">log.info(<span class="s">"Transfer: {}"</span>, <span class="t">MaskUtil</span>.tckn(musteri.tckn()));</span></pre></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>“Bankada yapay zekâ konusu iki yıl boyunca ‘bilgi güvenliği onaylamadı’ diye kapandı. Kod Yoldaşı’nın denetim raporu bir toplantıda geçti. Şimdi testlerin yarısını o taslaklıyor, ben düzeltiyorum.”</blockquote>
+    <cite>Burak Şen — Kıdemli yazılım geliştirici, ödeme sistemleri ekibi, özel banka, İstanbul</cite>
+  </div>
+</section>
+
+<section id="lisans">
+  <div class="wrap">
+    <h2>Kurum lisansı</h2>
+    <p class="p">Bireysel satış yok; kurumunuzun satın alma ve güvenlik süreciyle ilerleriz. Pilot ücretsizdir.</p>
+    <div class="lic">
+      <div class="lc on"><h3>Pilot</h3><div class="a">0 ₺ <small>· 30 gün · 10 geliştirici</small></div><ul><li>Kurulum paketi ve denetim dökümanları</li><li>Bilgi güvenliği ekibinizle ortak toplantı</li><li>Sonunda kabul edilen öneri ve test raporu</li></ul><a class="btn" href="#">Pilot iste</a></div>
+      <div class="lc"><h3>Kurum</h3><div class="a">4.800 ₺ <small>· geliştirici / yıl</small></div><ul><li>IntelliJ, VS Code, Eclipse eklentileri</li><li>Kurum içi model güncelleme sunucusu</li><li>Kaynak kod emaneti (escrow) ve SLA</li></ul><a class="btn l" href="#">Teklif iste</a></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="max-width:900px">
+    <h2>Geliştiricilerin sorduğu</h2>
+    <details open><summary>Bilgisayarım yeterli mi?</summary><p>32 GB bellekli Apple Silicon ya da 8 GB ekran kartlı bir Windows/Linux dizüstü rahat çalışır. 16 GB’de daha küçük model ile tamamlama yapılır, test yazma yavaşlar.</p></details>
+    <details><summary>Bizim kodumuzla eğitiliyor mu?</summary><p>Hayır. Model kurumunuzun koduyla eğitilmez. Projeyi yalnız öneri bağlamı için yerel olarak dizinler; dizin bilgisayardan çıkmaz ve silinebilir.</p></details>
+    <details><summary>Ürettiği kodun lisansı?</summary><p>Model, lisansı izin veren açık kaynak kodla eğitildi; uzun ve birebir eşleşen önerileri filtreler. Üretilen kodun hakları kurumunuza aittir.</p></details>
+    <details><summary>Hangi diller?</summary><p>Java, Kotlin, C#, Python, TypeScript, Go, SQL ve PL/SQL güçlü; COBOL ve RPG için açıklama ve okuma desteği.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">kod-yoldaşı · Maslak, İstanbul · kurum@kodyoldasi.com.tr · Bu sitede analitik betiği yok.
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var g=document.getElementById('ghost'),btn=document.getElementById('accept'),ht=document.getElementById('hintText'),acc=document.getElementById('acc'),taken=false;
+  function take(){if(taken){g.classList.remove('taken');btn.textContent='Tab';ht.textContent='öneriyi kabul et · 140 ms · yerel model';acc.textContent='47';taken=false;return}
+    g.classList.add('taken');btn.textContent='Geri al';ht.textContent='kabul edildi · giden veri hâlâ 0 B';acc.textContent='48';taken=true}
+  btn.addEventListener('click',take);
+})();
+</script>
+</body>
+</html>

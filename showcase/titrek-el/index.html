@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakin El — Eliniz titreyebilir, yazdığınız titremez</title>
+<meta name="description" content="Sakin El, Parkinson ve esansiyel tremoru olanlar için dokunmatik ekrandaki titremeyi süzen, yanlış dokunuşları düzelten klavye ve dokunma katmanı. Elinize göre telefonda öğrenir; yazdıklarınız cihazdan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Gelasio:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF2F1;     /* çizgili mektup kâğıdı */
+  --white:#FFFFFF;
+  --ink:#0F5260;       /* okul dolma kaleminin turkuaz mürekkebi, koyu */
+  --text:#21242C;
+  --graphite:#3A3F4B;
+  --red:#B42318;       /* öğretmenin kırmızı kalemi: yalnız hata */
+  --line:#CDD2DE;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--text);font:400 1.3rem/1.6 "Nunito Sans",system-ui,sans-serif;overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+a{color:var(--ink);text-underline-offset:.2em}
+:focus-visible{outline:3px solid var(--ink);outline-offset:4px;border-radius:4px}
+.skip{position:absolute;left:1rem;top:-6rem;background:var(--ink);color:#fff;padding:1rem;z-index:9}
+.skip:focus{top:1rem}
+.wrap{max-width:1160px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+h1,h2,h3{font-family:"Gelasio",Georgia,serif;font-weight:700;line-height:1.12;color:var(--ink)}
+h1{font-size:clamp(2.5rem,5vw,4rem);max-width:15ch}
+h2{font-size:clamp(1.9rem,3.6vw,2.7rem);max-width:22ch}
+h3{font-size:1.4rem}
+p{max-width:58ch}
+.g{color:var(--graphite)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:60px;padding:0 1.6rem;border-radius:10px;font:700 1.2rem "Nunito Sans";text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn.i{background:var(--ink);color:#fff}
+.btn.o{background:transparent;color:var(--ink)}
+
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:88px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:.7rem;font:700 1.6rem "Gelasio";color:var(--ink);text-decoration:none}
+header nav a{display:inline-flex;align-items:center;min-height:48px;padding:0 .9rem;color:var(--text);text-decoration:none;font-weight:500}
+header nav a:hover{text-decoration:underline}
+
+/* hero */
+.hero{padding:2.5rem 0 5rem;background:repeating-linear-gradient(180deg,transparent 0 41px,#D6E3E2 41px 42px)}
+.hero .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:3.5rem;align-items:center}
+.lede{font-size:1.4rem;margin:1.3rem 0 2rem;color:var(--graphite)}
+.ctas{display:flex;gap:.8rem;flex-wrap:wrap}
+.small{margin-top:1.2rem;font-size:1.1rem;color:var(--graphite)}
+
+.tablet{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:1.2rem;box-shadow:0 30px 60px -40px rgba(15,82,96,.45)}
+.chat-top{display:flex;align-items:center;gap:.7rem;padding:.2rem .3rem .9rem;border-bottom:1px solid var(--line);font-size:1.05rem}
+.chat-top .av{width:42px;height:42px;border-radius:50%;background:#D3E6E6;display:grid;place-items:center;font:700 1.1rem "Gelasio";color:var(--ink)}
+.chat-top b{display:block;font-size:1.15rem}
+.chat-top span{color:var(--graphite);font-size:.95rem}
+.thread{padding:1rem .3rem;min-height:9.5rem;display:flex;flex-direction:column;gap:.6rem}
+.bub{max-width:88%;padding:.6rem .9rem;border-radius:14px;font-size:1.2rem;line-height:1.4}
+.bub.in{background:var(--paper);align-self:flex-start;border-bottom-left-radius:4px}
+.bub.out{background:#D3E6E6;align-self:flex-end;border-bottom-right-radius:4px;min-height:2.6em}
+.bub.out .err{color:var(--red);text-decoration:underline wavy var(--red);text-underline-offset:.2em}
+.caret{display:inline-block;width:2px;height:1.1em;background:var(--ink);vertical-align:-.15em;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.kb{position:relative;background:#e4e7ee;border-radius:12px;padding:.5rem;user-select:none}
+.row{display:flex;justify-content:center;gap:4px;margin:4px 0}
+.k{flex:1;max-width:46px;height:44px;border-radius:6px;background:#fff;display:grid;place-items:center;font:500 1.05rem "Nunito Sans";color:var(--text);box-shadow:0 1px 0 #b9bfcc;transition:background .12s}
+.k.hit{background:var(--ink);color:#fff}
+.dots{position:absolute;inset:0;pointer-events:none}
+.dot{position:absolute;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:var(--red);opacity:.75}
+.ctrl{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.switch{display:inline-flex;align-items:center;gap:.8rem;min-height:56px;padding:0 1.1rem 0 .6rem;border-radius:30px;border:2px solid var(--ink);background:#fff;color:var(--ink);font:700 1.1rem "Nunito Sans";cursor:pointer}
+.switch .tr{width:52px;height:30px;border-radius:15px;background:#c9cede;position:relative;transition:background .2s}
+.switch .tr::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.switch[aria-checked="true"] .tr{background:var(--ink)}
+.switch[aria-checked="true"] .tr::after{left:25px}
+.stat{font-size:1.02rem;color:var(--graphite)}
+
+/* settings */
+.settings{padding:6rem 0;background:var(--white)}
+.settings .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:start}
+.panel{border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.panel .ph{background:var(--paper);padding:1rem 1.3rem;font-weight:700;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.panel .ph span{font-weight:400;color:var(--graphite);font-size:1.02rem}
+.set{display:grid;grid-template-columns:1fr auto;gap:.3rem 1.5rem;padding:1.15rem 1.3rem;border-top:1px solid var(--line);align-items:center}
+.set b{font-weight:700}
+.set p{grid-column:1/2;font-size:1.05rem;color:var(--graphite)}
+.set .val{grid-row:1/3;grid-column:2;font:700 1.05rem "Nunito Sans";color:var(--ink);background:#D3E6E6;padding:.35rem .8rem;border-radius:8px;white-space:nowrap}
+
+/* learning */
+.learn{padding:6rem 0}
+.learn .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center}
+.days{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.day{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:1rem;text-align:center}
+.day svg{width:100%;height:auto;display:block}
+.day b{display:block;margin-top:.5rem}
+.day span{font-size:1rem;color:var(--graphite)}
+
+/* private */
+.private{background:var(--ink);color:#fff;padding:6rem 0}
+.private h2{color:#fff}
+.private :focus-visible{outline-color:#fff}
+.private .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.private p{color:#D9ECEC;margin-top:1.1rem}
+.apps{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.apps li{border:1px solid #2D6F7C;border-radius:12px;padding:1rem}
+.apps b{display:block;color:#fff}
+.apps span{color:#D9ECEC;font-size:1.02rem}
+
+/* price */
+.price{padding:6rem 0}
+.price .wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.3rem;align-items:stretch}
+.price .intro{grid-column:1/-1;margin-bottom:1rem}
+.opt{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column;gap:.5rem}
+.opt.pick{border:2px solid var(--ink)}
+.opt .amt{font:700 2.6rem/1 "Gelasio";color:var(--ink);margin:.3rem 0}
+.opt .btn{margin-top:auto}
+
+.letter{padding:5rem 0;background:var(--white)}
+.letter figure{max-width:760px;margin:0 auto;padding:2.5rem 2.5rem 2rem;border:1px solid var(--line);border-radius:4px;background:
+  repeating-linear-gradient(180deg,transparent 0 46px,#DCE8E8 46px 47px),var(--white)}
+.letter blockquote{font:500 italic clamp(1.4rem,2.6vw,1.8rem)/47px "Gelasio";color:var(--ink)}
+.letter figcaption{margin-top:1.2rem;color:var(--graphite);font-size:1.1rem}
+
+.faq{padding:5rem 0 6rem}
+.faq .wrap{max-width:900px}
+details{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:1rem;font:700 1.3rem "Gelasio";color:var(--ink);padding:.8rem 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"Oku";font:500 1rem "Nunito Sans";color:var(--graphite);flex:none}
+details[open] summary::after{content:"Kapat"}
+details p{padding-bottom:1.4rem;color:var(--graphite)}
+
+footer{border-top:1px solid var(--line);padding:3rem 0 2rem;font-size:1.05rem;color:var(--graphite)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+footer .credit{margin-top:2rem;font-size:.95rem}
+footer .credit a{color:var(--graphite)}
+
+@media (max-width:960px){
+  .hero .wrap,.settings .wrap,.learn .wrap,.private .wrap{grid-template-columns:minmax(0,1fr);gap:2.4rem}
+  .price .wrap{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 1rem}
+  header nav{display:none}
+  .tablet{padding:.8rem;border-radius:16px}
+  .k{height:40px;font-size:.95rem}
+  .row{gap:3px}
+  .kb{padding:.3rem}
+  .btn{width:100%}
+  .apps{grid-template-columns:1fr}
+  .set{grid-template-columns:1fr}
+  .set .val{grid-row:auto;grid-column:auto;justify-self:start}
+  .letter figure{padding:1.5rem 1.2rem}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Sakin El ana sayfa">
+      <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="10" fill="#0F5260"/><path d="M7 21 q3 -6 6 0 t6 0 t6 0" stroke="#7FC4C9" stroke-width="2" fill="none"/><path d="M7 14 h22" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
+      Sakin El
+    </a>
+    <nav aria-label="Ana menü"><a href="#ayarlar">Ayarlar</a><a href="#ogrenir">Nasıl öğrenir</a><a href="#ucret">Ücret</a><a href="#sss">Sorular</a></nav>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <h1 id="h1">Eliniz titreyebilir. Yazdığınız titremez.</h1>
+      <p class="lede">Sakin El, telefonunuzun ve tabletinizin klavyesine eklenen bir katmandır. Titremeden gelen fazladan dokunuşları ayıklar, kayan parmağın hangi harfi kastettiğini anlar. Mesajı yine siz yazarsınız; yalnız harfler kaçmaz.</p>
+      <div class="ctas"><a class="btn i" href="#ucret">7 gün ücretsiz deneyin</a><a class="btn o" href="#ayarlar">Ayarları görün</a></div>
+      <p class="small">Parkinson ve esansiyel tremor için. Android ve iPad/iPhone'da her uygulamada çalışır.</p>
+    </div>
+
+    <div class="tablet" role="region" aria-labelledby="demo-h">
+      <h2 id="demo-h" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Örnek: torununa mesaj yazarken Sakin El açık ve kapalı</h2>
+      <div class="chat-top"><span class="av" aria-hidden="true">D</span><div><b>Defne</b><span>torunum · çevrimiçi</span></div></div>
+      <div class="thread">
+        <p class="bub in">Babaanneciğim, kitap geldi mi? 📚</p>
+        <p class="bub out" id="out"></p>
+      </div>
+      <div class="kb" id="kb" aria-hidden="true"><div class="dots" id="dots"></div></div>
+      <div class="ctrl">
+        <button class="switch" type="button" role="switch" aria-checked="true" id="sw"><span class="tr" aria-hidden="true"></span>Sakin El açık</button>
+        <span class="stat" id="stat">Süzülen dokunuş: 0</span><span id="sr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="settings" id="ayarlar" aria-labelledby="se-h">
+  <div class="wrap">
+    <div>
+      <h2 id="se-h">Ayarlar sizin elinize göre</h2>
+      <p class="g" style="margin-top:1.1rem">Titremenin her elde başka bir ritmi var. Sabah ilaçtan önce başka, öğleden sonra başka. Sakin El bunları ayrı ayrı hatırlar. Ayarları bir kez açarsınız; isterseniz hiç dokunmazsınız, kendisi önerir.</p>
+      <p class="g" style="margin-top:1rem">Ayar ekranı da büyük harfli, büyük düğmeli. Yanlışlıkla bir şey değişirse “Geri al” her zaman en üstte.</p>
+    </div>
+    <div class="panel" role="group" aria-label="Örnek ayar ekranı">
+      <div class="ph">Nevin Hanım'ın ayarları <span>son güncelleme: dün, kendiliğinden</span></div>
+      <div class="set"><b>Titreme süzgeci</b><span class="val">Orta</span><p>Yarım saniyeden kısa titrek dokunuşlar tek dokunuş sayılır.</p></div>
+      <div class="set"><b>Basılı tutma süresi</b><span class="val">0,6 sn</span><p>Daha uzun tutmadıkça kopyala, sil menüsü açılmaz.</p></div>
+      <div class="set"><b>Çift harf düzeltme</b><span class="val">Açık</span><p>“mmerhaba” gibi titremeyle gelen tekrarları siler; “anneciğim”deki gerçek tekrarı bilir.</p></div>
+      <div class="set"><b>Kayan parmak</b><span class="val">En uzun duruş</span><p>Parmağınız tuşların üstünde kayarsa, en uzun durduğunuz tuş seçilir.</p></div>
+      <div class="set"><b>Sabah ayarı</b><span class="val">07.00–10.00 güçlü</span><p>İlaç saatinize göre süzgeç kendiliğinden güçlenir.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="learn" id="ogrenir" aria-labelledby="le-h">
+  <div class="wrap">
+    <div>
+      <h2 id="le-h">Üç günde elinizi tanır</h2>
+      <p class="g" style="margin-top:1.1rem">İlk günlerde siz her zamanki gibi yazarsınız. Sakin El hangi tuşa basmak isterken nereye dokunduğunuzu izler ve her tuşun sizin için “gerçek” sınırını yeniden çizer. Ekrandaki tuşlar yerinde durur; değişen, dokunuşun nasıl okunduğudur.</p>
+      <p class="g" style="margin-top:1rem">Kırmızı noktalar: “A” harfine basmak isterken ekrana değen parmak. Sağdaki kare, Sakin El'in o dokunuşları “A” saydığı alan.</p>
+    </div>
+    <div class="days" aria-label="Üç günlük öğrenme: dokunuşlar ve tanınan alan">
+      <div class="day"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="35" y="35" width="30" height="30" rx="4" fill="#fff" stroke="#3A3F4B" stroke-width="1.5"/><text x="50" y="56" text-anchor="middle" font-size="16" font-family="Nunito Sans" fill="#21242C">A</text><g fill="#B42318" opacity=".75"><circle cx="22" cy="30" r="3"/><circle cx="70" cy="74" r="3"/><circle cx="78" cy="40" r="3"/><circle cx="30" cy="70" r="3"/><circle cx="55" cy="20" r="3"/><circle cx="48" cy="80" r="3"/><circle cx="16" cy="52" r="3"/></g></svg><b>1. gün</b><span>7 dokunuştan 2'si tuşta</span></div>
+      <div class="day"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="22" y="24" width="56" height="54" rx="6" fill="#D3E6E6" stroke="#0F5260" stroke-width="1.5" stroke-dasharray="4 3"/><rect x="35" y="35" width="30" height="30" rx="4" fill="#fff" stroke="#3A3F4B" stroke-width="1.5"/><text x="50" y="56" text-anchor="middle" font-size="16" font-family="Nunito Sans" fill="#21242C">A</text><g fill="#B42318" opacity=".75"><circle cx="26" cy="32" r="3"/><circle cx="68" cy="72" r="3"/><circle cx="74" cy="42" r="3"/><circle cx="32" cy="68" r="3"/><circle cx="56" cy="26" r="3"/></g></svg><b>2. gün</b><span>alan genişliyor</span></div>
+      <div class="day"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M14 30 Q20 12 60 16 Q88 22 84 60 Q80 88 40 84 Q12 80 14 30z" fill="#D3E6E6" stroke="#0F5260" stroke-width="2"/><rect x="35" y="35" width="30" height="30" rx="4" fill="#fff" stroke="#3A3F4B" stroke-width="1.5"/><text x="50" y="56" text-anchor="middle" font-size="16" font-family="Nunito Sans" fill="#21242C">A</text><g fill="#B42318" opacity=".75"><circle cx="22" cy="30" r="3"/><circle cx="70" cy="74" r="3"/><circle cx="78" cy="40" r="3"/><circle cx="30" cy="70" r="3"/></g></svg><b>3. gün</b><span>7 dokunuştan 7'si “A”</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="private" aria-labelledby="pr-h">
+  <div class="wrap">
+    <div>
+      <h2 id="pr-h">Klavyeniz konuşmalarınızı ezberlemez.</h2>
+      <p>Bir klavye her şeyi görür: banka şifrenizi, doktorunuza yazdığınızı, gelininize kızgın mesajınızı. Sakin El elinizin hareketini öğrenir, yazdıklarınızı değil. Öğrendiği de telefonunuzda kalır; internete hiç bağlanmaz, bağlanma izni bile istemez.</p>
+      <p>Telefon ayarlarında “Ağ erişimi: kapalı” yazdığını kendiniz görebilirsiniz.</p>
+    </div>
+    <ul class="apps" aria-label="Çalıştığı yerler">
+      <li><b>WhatsApp, SMS</b><span>Torunlarla, komşularla</span></li>
+      <li><b>Banka uygulaması</b><span>Şifre ve tutar alanında da süzer</span></li>
+      <li><b>e-Devlet, e-Nabız</b><span>Küçük düğmelerde dokunma katmanı</span></li>
+      <li><b>Görüntülü arama</b><span>“Kapat” düğmesine yanlışlıkla basmaz</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="price" id="ucret" aria-labelledby="fi-h">
+  <div class="wrap">
+    <div class="intro"><h2 id="fi-h">Önce deneyin, sonra karar verin</h2><p class="g" style="margin-top:.8rem">Kart bilgisi istemeden 7 gün. Beğenmezseniz kendiliğinden kapanır, eski klavyeniz geri gelir.</p></div>
+    <article class="opt"><h3>Deneme</h3><p class="amt">0 ₺</p><p class="g">7 gün, her özellik açık</p><a class="btn o" href="#">Hemen dene</a></article>
+    <article class="opt pick"><h3>Ömür boyu</h3><p class="amt">590 ₺</p><p class="g">Tek seferlik. Telefon ve tabletiniz, ikisi birden. Gelecek güncellemeler dahil.</p><a class="btn i" href="#">Satın al</a></article>
+    <article class="opt"><h3>Yıllık</h3><p class="amt">240 ₺</p><p class="g">Yılda bir. İstediğiniz zaman ömür boyuya geçin, ödediğiniz düşülür.</p><a class="btn o" href="#">Yıllık başla</a></article>
+  </div>
+</section>
+
+<section class="letter" aria-label="Kullanıcıdan bir not">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Otuz sekiz yıl çocuklara yazım kuralı öğrettim. Titremem başlayınca torunuma yazdığım her mesajda bir yanlış vardı ve ben bundan utanıyordum. Şimdi yazdığım gibi gidiyor. Noktası, virgülü yerinde.”</blockquote>
+      <figcaption><b style="color:var(--ink)">Nevin Arslan</b>, 74 · emekli Türkçe öğretmeni, 6 yıldır Parkinson · Samsun</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="faq" id="sss" aria-labelledby="sss-h">
+  <div class="wrap">
+    <h2 id="sss-h" style="margin-bottom:1.2rem">Merak edilenler</h2>
+    <details><summary>Klavyemin görünüşü değişecek mi?</summary><p>Hayır, alıştığınız klavye öyle kalır. İsterseniz tuşları büyütebilir, harf aralığını açabilirsiniz; ama zorunlu değil.</p></details>
+    <details><summary>Kurulumu kendim yapabilir miyim?</summary><p>Evet; dört ekranlık, büyük yazılı bir kurulum var. Takılırsanız bir yakınınız kendi telefonundan size uzaktan yardım edebilir; ekranınızı yalnız siz izin verdiğinizde görür.</p></details>
+    <details><summary>Ekrana dokunmak dışında yardım ediyor mu?</summary><p>Kaydırma sırasında sayfanın titremesini, yanlışlıkla açılan menüleri ve iki kez basılan düğmeleri de süzer. Telefonu salladığınızda “geri al” çıkmaz.</p></details>
+    <details><summary>Hastalığım ilerlerse ne olur?</summary><p>Sakin El her hafta ayarlarını sessizce yeniden ölçer. Titreme artarsa süzgeç güçlenir; yazmak çok yorucu hale gelirse sesle yazmaya geçmeyi önerir.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--ink)">Sakin El</b> · Ankara, Çankaya<br>yardim@sakinel.app · 0 850 000 33 12 (hafta içi 09.00–18.00, sabırla)</div>
+    <div><a href="#">Erişilebilirlik beyanı</a> · <a href="#">KVKK</a> · <a href="#">Nörologlar için bilgi</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var R=['qwertyuıopğü','asdfghjklşi','zxcvbnmöç'];
+  var kb=document.getElementById('kb'),dots=document.getElementById('dots'),out=document.getElementById('out'),sw=document.getElementById('sw'),stat=document.getElementById('stat');
+  var keys={};
+  R.forEach(function(r,ri){var row=document.createElement('div');row.className='row';r.split('').forEach(function(c){var k=document.createElement('span');k.className='k';k.textContent=c;row.appendChild(k);keys[c]={el:k,row:ri}});kb.appendChild(row)});
+  var sp=document.createElement('div');sp.className='row';var sk=document.createElement('span');sk.className='k';sk.style.maxWidth='260px';sk.style.flex='6';sk.textContent='boşluk';sp.appendChild(sk);kb.appendChild(sp);keys[' ']={el:sk,row:3};
+  var MSG='Geldi canım, çok sevindim. Bayramda gelince birlikte okuyalım.';
+  /* titremeyle oluşan hatalar (Sakin El kapalıyken) */
+  var seed=7;function rnd(){seed=(seed*9301+49297)%233280;return seed/233280}
+  var on=true,timer=null,filtered=0;
+  function norm(c){return c.toLocaleLowerCase('tr')}
+  function pos(c){var k=keys[norm(c)];if(!k)return null;var r=k.el.getBoundingClientRect(),b=kb.getBoundingClientRect();return [r.left-b.left+r.width/2,r.top-b.top+r.height/2]}
+  function tap(c,n){
+    var p=pos(c);if(!p)return;
+    for(var i=0;i<n;i++){var d=document.createElement('span');d.className='dot';d.style.left=(p[0]+(rnd()-.5)*34)+'px';d.style.top=(p[1]+(rnd()-.5)*26)+'px';dots.appendChild(d);setTimeout(function(x){return function(){x.remove()}}(d),900)}
+    var k=keys[norm(c)];k.el.classList.add('hit');setTimeout(function(){k.el.classList.remove('hit')},180);
+  }
+  function words(){return MSG.split(' ')}
+  function build(){
+    // her kelime: Sakin El kapalıysa bazılarını hatalı yaz
+    var w=words(),res=[];var badW={1:'cqnım,',3:'sevvindim.',4:'Bayrqmda',5:'hgelince',6:'birlkte',7:'okuyalım..'};
+    w.forEach(function(x,i){res.push(!on&&badW[i]?{t:badW[i],e:1}:{t:x,e:0})});
+    return res;
+  }
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function html(list){return list.map(function(w){return w.e?'<span class="err">'+w.t+'</span>':w.t}).join(' ')}
+  function run(){
+    clearTimeout(timer);out.innerHTML='';filtered=0;stat.textContent=on?'Süzülen dokunuş: 0':'Süzgeç kapalı';
+    var list=build();
+    if(reduce){out.innerHTML=html(list);stat.textContent=on?'Süzülen dokunuş: 23':'Hatalı harf: 9';return}
+    var flat=[];list.forEach(function(w,wi){w.t.split('').forEach(function(c){flat.push({c:c,wi:wi})});if(wi<list.length-1)flat.push({c:' ',wi:wi})});
+    var i=0,typed='';
+    function step(){
+      if(i>=flat.length){out.innerHTML=html(list);stat.textContent=on?'Süzülen dokunuş: '+filtered:'Hatalı kelime: 6';document.getElementById('sr').textContent=(on?'Sakin El açık. Gönderilen mesaj: ':'Sakin El kapalı. Altı kelime hatalı: ')+out.textContent;return}
+      var f=flat[i];typed+=f.c;
+      var n=on?1+Math.floor(rnd()*3):1;if(on)filtered+=n-1;tap(f.c,n);
+      // canlı gösterim: yazılan kısım
+      var partial=[],cnt=0;list.forEach(function(w,wi){if(cnt<typed.length){var take=w.t.slice(0,Math.max(0,typed.length-cnt));partial.push(w.e?'<span class="err">'+take+'</span>':take);cnt+=w.t.length+1}});
+      out.innerHTML=partial.join(' ')+'<span class="caret"></span>';
+      if(on)stat.textContent='Süzülen dokunuş: '+filtered;
+      i++;timer=setTimeout(step,95);
+    }
+    step();
+  }
+  sw.addEventListener('click',function(){on=!on;sw.setAttribute('aria-checked',on);sw.lastChild.textContent=on?'Sakin El açık':'Sakin El kapalı';run()});
+  run();
+})();
+</script>
+</body>
+</html>

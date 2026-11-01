@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engelsiz Rota — Tekerlekli sandalye için kaldırım, rampa ve asansör bilen rota</title>
+<meta name="description" content="Engelsiz Rota; kaldırım yüksekliğini, rampayı ve asansör durumunu kullanıcı fotoğraflarından öğrenip tekerlekli sandalyeyle gidilebilecek rotayı çizer. Fotoğraflar telefondan çıkmaz. Ücretsiz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#FFFFFF; --stone:#E4E1DC; --stone-2:#CFCBC6; --ink:#17151A; --muted:#4D4852;
+  --pink:#C2255C; --pink-soft:#FBE3EC; --blue:#2457C5; --ok:#1F7A4D;
+  --sans:"Lexend", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.6;font-weight:400}
+a{color:var(--blue)}
+:focus-visible{outline:4px solid var(--blue);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:24px;padding-right:24px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:9}
+
+.top{display:flex;justify-content:space-between;align-items:center;height:76px}
+.logo{white-space:nowrap;display:flex;align-items:center;gap:12px;font-weight:800;font-size:23px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.logo i{width:36px;height:36px;border-radius:50%;background:var(--pink);display:grid;place-items:center}
+.top nav a{white-space:nowrap;margin-left:22px;color:var(--muted);text-decoration:none;font-size:16px}
+.top nav a.j{background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px}
+
+/* hero: map is the hero */
+.hero{display:grid;grid-template-columns:1.35fr .65fr;min-height:640px;border-top:1px solid var(--stone-2);border-bottom:1px solid var(--stone-2)}
+.map{position:relative;background:var(--stone);overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+.toggle{position:absolute;right:20px;top:20px;display:flex;background:var(--white);border-radius:999px;padding:5px;box-shadow:0 6px 18px rgba(0,0,0,.12);z-index:2}
+.toggle button{font:inherit;font-size:16px;font-weight:600;border:0;background:transparent;color:var(--ink);padding:10px 18px;border-radius:999px;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.legend{position:absolute;left:20px;bottom:20px;background:var(--white);border-radius:14px;padding:14px 16px;max-width:330px;box-shadow:0 6px 18px rgba(0,0,0,.12);z-index:2}
+.legend b{display:block;font-size:20px}
+.legend span{font-size:15px;color:var(--muted)}
+#rShort,#rFree{transition:opacity .3s}
+.side{padding:48px 40px;display:flex;flex-direction:column;justify-content:center}
+h1{font-weight:800;font-size:clamp(36px,3.8vw,54px);line-height:1.08;margin:0 0 18px;letter-spacing:-.02em}
+.side p{color:var(--muted);font-size:19px;margin:0 0 22px}
+.place{border:2px solid var(--ink);border-radius:16px;padding:16px 18px;margin-bottom:24px}
+.place h2{font-size:18px;margin:0 0 8px}
+.place ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:16px}
+.place li{display:flex;justify-content:space-between;gap:12px}
+.place li b{font-weight:600}
+.place .y{color:var(--ok);font-weight:600}
+.place small{display:block;color:var(--muted);font-size:13px;margin-top:8px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-block;padding:13px 20px;border-radius:999px;font-weight:600;text-decoration:none;font-size:17px}
+.btn.p{background:var(--pink);color:#fff}
+.btn.o{border:2px solid var(--ink);color:var(--ink)}
+
+section{padding:100px 0}
+h2.s{font-weight:800;font-size:clamp(32px,3.8vw,50px);line-height:1.08;letter-spacing:-.02em;margin:0 0 18px;max-width:20ch}
+.lead{font-size:20px;color:var(--muted);max-width:56ch;font-weight:300}
+
+/* half hour planning */
+.before{background:var(--ink);color:#fff}
+.before h2{color:#fff}
+.before .lead{color:#D3CFD8}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
+.compare > div{border-radius:18px;padding:24px}
+.compare .old{background:#2A2730}
+.compare .new{background:var(--pink)}
+.compare h3{margin:0 0 12px;font-size:20px}
+.compare ol{margin:0;padding-left:22px;color:#E9E6EC}
+.compare .new ol{color:#fff}
+.compare li{margin-bottom:6px}
+.compare .t{font-size:44px;font-weight:800;line-height:1;margin-bottom:10px}
+
+/* measure from photo (proof) */
+.measure-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.photo{position:relative;border-radius:18px;overflow:hidden;background:#BDB7AF}
+.photo svg{width:100%;height:auto;display:block}
+.chip{position:absolute;background:var(--white);border-radius:12px;padding:10px 14px;font-size:15px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.chip b{display:block;font-size:20px}
+.flow{display:grid;gap:12px;margin-top:28px}
+.flow div{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.flow i{width:44px;height:44px;border-radius:50%;background:var(--pink-soft);color:var(--pink);font-style:normal;font-weight:800;display:grid;place-items:center}
+.flow p{margin:0}
+.flow b{display:block}
+
+/* signals */
+.signals{background:var(--stone)}
+.sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.sig{background:var(--white);border-radius:18px;padding:22px}
+.sig .ic{height:60px;margin-bottom:10px}
+.sig h3{margin:0 0 6px;font-size:21px}
+.sig p{margin:0 0 12px;color:var(--muted);font-size:16px}
+.sig .live{font-size:14px;background:var(--stone);border-radius:10px;padding:8px 10px}
+.sig .live b{color:var(--ok)}
+.sig .live b.no{color:var(--pink)}
+
+.story .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:center}
+.who{background:var(--pink-soft);border-radius:24px;padding:28px}
+.who .n{font-size:64px;font-weight:800;line-height:1;color:var(--pink)}
+.who p{margin:6px 0 0;color:var(--ink)}
+.story blockquote{margin:0;font-size:clamp(22px,2.4vw,30px);line-height:1.4;font-weight:400}
+.story cite{display:block;font-style:normal;margin-top:16px;color:var(--muted);font-size:17px}
+
+.join{background:var(--pink);color:#fff}
+.join h2{color:#fff}
+.join .lead{color:#FDEAF1}
+.join-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.join .box{background:#fff;color:var(--ink);border-radius:22px;padding:28px}
+.join .box .amt{font-size:52px;font-weight:800;line-height:1}
+.join .box p{color:var(--muted)}
+.join .btn.p{background:var(--ink)}
+.stats{display:flex;gap:36px;flex-wrap:wrap;margin-top:26px}
+.stats b{display:block;font-size:36px;font-weight:800;line-height:1.1}
+.stats span{font-size:15px;color:#FDEAF1}
+
+.faq details{border-top:2px solid var(--stone-2);padding:18px 0}
+.faq details:last-child{border-bottom:2px solid var(--stone-2)}
+.faq summary{cursor:pointer;font-weight:600;font-size:20px}
+.faq p{margin:10px 0 0;color:var(--muted);max-width:66ch}
+
+footer{border-top:1px solid var(--stone-2);padding:36px 0 28px;color:var(--muted);font-size:15px}
+footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer .made{margin-top:18px;font-size:13px}
+footer .made a{color:var(--muted)}
+
+@media (max-width:960px){
+  .top nav a:not(.j){display:none}
+  .hero{grid-template-columns:1fr}
+  .map{min-height:460px;order:2}
+  .side{padding:36px 24px}
+  .compare,.measure-grid,.story .wrap,.join-grid{grid-template-columns:1fr}
+  .sig-grid{grid-template-columns:1fr}
+  section{padding:72px 0}
+}
+@media (max-width:480px){
+  .wrap{padding-left:16px;padding-right:16px}
+  .side{padding:28px 16px}
+  .top nav a.j{padding:8px 14px;font-size:15px}
+  .logo{font-size:20px}
+  .legend{right:16px;max-width:none}
+  .toggle button{padding:9px 13px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){#rShort,#rFree{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe geç</a>
+<header class="wrap top">
+  <a class="logo" href="#"><i aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20"><circle cx="9" cy="13" r="5" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="10" cy="3" r="2" fill="#fff"/><path d="M10 6v5h5l2 5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></i>Engelsiz Rota</a>
+  <nav aria-label="Ana menü"><a href="#nasil">Nasıl öğrenir?</a><a href="#asansor">Asansörler</a><a href="#katil">Katıl</a><a class="j" href="#katil">Ücretsiz indir</a></nav>
+</header>
+<main id="ana">
+<div class="hero">
+  <div class="map">
+    <div class="toggle" role="group" aria-label="Rota türü">
+      <button type="button" id="bFree" aria-pressed="true">Engelsiz</button>
+      <button type="button" id="bShort" aria-pressed="false">En kısa</button>
+    </div>
+    <svg viewBox="0 0 800 640" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Kadıköy haritası: Kadıköy metro istasyonundan Moda'daki kafeye engelsiz rota; en kısa rotada 18 santimlik kaldırım ve merdivenli geçit var">
+      <rect width="800" height="640" fill="#E4E1DC"/>
+      <path d="M0 0 H130 C110 120 70 260 0 330Z" fill="#9EB7CF"/>
+      <text x="22" y="120" font-family="Lexend" font-size="14" fill="#2457C5">Kadıköy iskelesi</text>
+      <g stroke="#FFFFFF" stroke-linecap="round" fill="none">
+        <path d="M120 40 L760 120" stroke-width="22"/>
+        <path d="M150 210 L780 300" stroke-width="16"/>
+        <path d="M110 380 L770 470" stroke-width="18"/>
+        <path d="M200 0 L230 640" stroke-width="14"/>
+        <path d="M420 0 L400 640" stroke-width="18"/>
+        <path d="M600 0 L640 640" stroke-width="14"/>
+        <path d="M100 560 L760 600" stroke-width="12"/>
+      </g>
+      <g font-family="Lexend" font-size="13" fill="#4D4852">
+        <text x="470" y="96" transform="rotate(7 470 96)">Söğütlüçeşme Cd.</text>
+        <text x="470" y="276" transform="rotate(8 470 276)">Bahariye Cd.</text>
+        <text x="470" y="446" transform="rotate(8 470 446)">Moda Cd.</text>
+        <text x="414" y="560" transform="rotate(-87 414 560)">Muvakkithane Cd.</text>
+      </g>
+      <g id="rShort" opacity=".25">
+        <path d="M215 70 L222 250 L330 280 L300 420 L520 450" fill="none" stroke="#4D4852" stroke-width="7" stroke-dasharray="10 10" stroke-linecap="round"/>
+        <g transform="translate(318 340)"><circle r="16" fill="#C2255C"/><path d="M-6 -6 6 6 M6 -6 -6 6" stroke="#fff" stroke-width="3"/></g>
+        <g transform="translate(222 170)"><circle r="16" fill="#C2255C"/><path d="M-6 -6 6 6 M6 -6 -6 6" stroke="#fff" stroke-width="3"/></g>
+        <g font-family="Lexend" font-weight="600" font-size="14" fill="#17151A"><text x="340" y="345">Merdivenli geçit</text><text x="244" y="175">Kaldırım 18 cm</text></g>
+      </g>
+      <g id="rFree">
+        <path d="M215 70 L410 95 L405 240 L410 400 L520 450" fill="none" stroke="#C2255C" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <g font-family="Lexend" font-size="13" fill="#17151A">
+          <g transform="translate(410 95)"><circle r="11" fill="#1F7A4D"/><path d="M-5 0l3 4 6-7" stroke="#fff" stroke-width="2.4" fill="none"/></g><text x="426" y="80" font-weight="600">Rampa %6</text>
+          <g transform="translate(405 240)"><circle r="11" fill="#1F7A4D"/><path d="M-5 0l3 4 6-7" stroke="#fff" stroke-width="2.4" fill="none"/></g><text x="422" y="225" font-weight="600">Alçaltılmış bordür</text>
+          <g transform="translate(410 400)"><circle r="11" fill="#1F7A4D"/><path d="M-5 0l3 4 6-7" stroke="#fff" stroke-width="2.4" fill="none"/></g><text x="428" y="392" font-weight="600">Yaya geçidi, düz</text>
+        </g>
+      </g>
+      <g transform="translate(215 70)"><circle r="13" fill="#17151A"/><text x="-40" y="34" font-family="Lexend" font-weight="600" font-size="14" fill="#17151A">M4 Kadıköy</text><text x="-40" y="52" font-family="Lexend" font-size="13" fill="#1F7A4D" font-weight="600">asansör çalışıyor</text></g>
+      <g transform="translate(520 450)"><rect x="-14" y="-14" width="28" height="28" rx="8" fill="#C2255C"/><text x="20" y="5" font-family="Lexend" font-weight="800" font-size="15" fill="#17151A">Yaprak Kahve</text></g>
+    </svg>
+    <div class="legend" aria-live="polite"><b id="lgT">11 dakika · 0 basamak</b><span id="lgS">850 m · 3 kontrol noktası · en dik yer %6 rampa</span></div>
+  </div>
+  <div class="side">
+    <h1>Kadıköy'de bir kahve: 11 dakika, sıfır basamak.</h1>
+    <p>Engelsiz Rota kaldırım yüksekliğini, rampanın eğimini ve asansörün çalışıp çalışmadığını bilir; çünkü bu bilgiyi sizin gibi gidenler ekliyor. Yarım saatlik planlama yerine tek dokunuş.</p>
+    <div class="place">
+      <h2>Yaprak Kahve · Moda</h2>
+      <ul>
+        <li><b>Giriş</b><span class="y">Rampa, %5</span></li>
+        <li><b>Kapı genişliği</b><span class="y">92 cm</span></li>
+        <li><b>Tuvalet</b><span class="y">Erişilebilir, zemin kat</span></li>
+        <li><b>Masa altı</b><span>71 cm</span></li>
+      </ul>
+      <small>4 kullanıcının fotoğraf ölçümünden · son teyit 3 gün önce</small>
+    </div>
+    <div class="btns"><a class="btn p" href="#katil">iPhone için indir</a><a class="btn o" href="#katil">Android için indir</a></div>
+  </div>
+</div>
+
+<section class="before">
+  <div class="wrap">
+    <h2 class="s">Bir kafeye gitmek, bir proje olmamalı.</h2>
+    <p class="lead">Sokak görünümünde kaldırımları tek tek kontrol etmek, kafeyi arayıp "girişte basamak var mı?" diye sormak, yine de kapıda kalmak. Engelsiz Rota bu yarım saati şehre geri veriyor.</p>
+    <div class="compare">
+      <div class="old"><div class="t">32 dk</div><h3>Önce</h3><ol><li>Haritada en kısa yolu bul</li><li>Sokak görünümünde kaldırımlara bak (fotoğraf 2019'dan)</li><li>Kafeyi ara, "rampa var mı?"</li><li>Metro asansörü çalışıyor mu? Bilinmiyor</li><li>Yolda 18 cm'lik kaldırımda geri dön</li></ol></div>
+      <div class="new"><div class="t">1 dokunuş</div><h3>Şimdi</h3><ol><li>Kafeyi seç</li><li>Rota kaldırımı, rampayı, asansörü zaten biliyor</li><li>Yola çık. Sorun çıkarsa iki dokunuşla bildir, sonraki kişi bilsin</li></ol></div>
+    </div>
+  </div>
+</section>
+
+<section id="nasil">
+  <div class="wrap measure-grid">
+    <div class="photo">
+      <svg viewBox="0 0 600 420" role="img" aria-label="Kullanıcı fotoğrafı: kaldırım kenarı ve tekerlekli sandalye tekerleği; telefon kaldırım yüksekliğini 18 santim ölçmüş, geçen kişinin yüzü telefonda bulanıklaştırılmış">
+        <rect width="600" height="420" fill="#BDB7AF"/>
+        <path d="M0 250 L600 210 L600 420 L0 420Z" fill="#8E8A85"/>
+        <path d="M0 250 L600 210 L600 250 L0 300Z" fill="#D8D3CC"/>
+        <g stroke="#A49F98" stroke-width="2"><path d="M60 246 L60 296"/><path d="M160 240 L160 288"/><path d="M260 233 L260 281"/><path d="M360 226 L360 272"/><path d="M460 220 L460 264"/></g>
+        <circle cx="140" cy="330" r="70" fill="none" stroke="#17151A" stroke-width="12"/>
+        <circle cx="140" cy="330" r="10" fill="#17151A"/>
+        <line x1="300" y1="231" x2="300" y2="280" stroke="#C2255C" stroke-width="4"/>
+        <path d="M290 231h20M290 280h20" stroke="#C2255C" stroke-width="4"/>
+        <defs><filter id="bl" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+        <g filter="url(#bl)"><circle cx="505" cy="70" r="26" fill="#6B5A50"/><rect x="474" y="96" width="62" height="110" rx="20" fill="#3F4A5C"/></g>
+        <rect x="462" y="34" width="86" height="76" rx="8" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="5 5"/>
+        <text x="505" y="128" font-family="Lexend" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">yüz silindi</text>
+      </svg>
+      <div class="chip" style="left:322px;top:42%"><b>18 cm</b>kaldırım · rampa yok</div>
+    </div>
+    <div>
+      <h2 class="s">Fotoğraf telefonda kalır. Yalnız ölçü paylaşılır.</h2>
+      <p class="lead">Takıldığınız bir kaldırımın fotoğrafını çekin. Telefon kaldırımın yüksekliğini, rampanın eğimini tekerleğin boyutundan yola çıkarak hesaplar. Sonra fotoğrafı unutur.</p>
+      <div class="flow">
+        <div><i>1</i><p><b>Telefonda ölçülür</b>Yükseklik, eğim, kapı genişliği; internet gerekmez.</p></div>
+        <div><i>2</i><p><b>Yüzler ve plakalar telefonda silinir</b>Fotoğrafı paylaşmayı seçerseniz bile kimse tanınmaz; varsayılan: fotoğraf hiç gitmez.</p></div>
+        <div><i>3</i><p><b>Haritaya yalnız ölçü gider</b>"Moda Cd. 41 önü: kaldırım 18 cm." Kim eklediği görünmez.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="signals" id="asansor">
+  <div class="wrap">
+    <h2 class="s">Üç şeyi takip eder. Üçü de değişir.</h2>
+    <p class="lead">Bir rampa yıllarca yerinde durur; bir asansör sabah çalışır, öğlen bozulur. Engelsiz Rota, her bilginin ne zaman teyit edildiğini gösterir ve eskiyenleri yeniden sorar.</p>
+    <div class="sig-grid">
+      <div class="sig"><svg class="ic" viewBox="0 0 80 60" aria-hidden="true"><path d="M4 50h30v-18h42" fill="none" stroke="#17151A" stroke-width="4"/><path d="M34 32v18" stroke="#C2255C" stroke-width="4"/></svg><h3>Kaldırım yüksekliği</h3><p>3 cm altı geçilebilir, 3–8 cm zorlayıcı, 8 cm üstü geçilmez olarak işaretlenir. Eşikleri kendi sandalyenize göre ayarlarsınız.</p><div class="live">Moda Cd. 41 · <b class="no">18 cm</b> · 6 gün önce</div></div>
+      <div class="sig"><svg class="ic" viewBox="0 0 80 60" aria-hidden="true"><path d="M4 50 L76 26" stroke="#17151A" stroke-width="4"/><path d="M4 50h72" stroke="#CFCBC6" stroke-width="4"/></svg><h3>Rampa eğimi</h3><p>%8'e kadar tek başına, %8–12 yardımla. Sahil yolundaki uzun rampalar için dinlenme noktaları da işaretli.</p><div class="live">Kadıköy iskelesi · <b>%6</b> · dün</div></div>
+      <div class="sig"><svg class="ic" viewBox="0 0 80 60" aria-hidden="true"><rect x="20" y="4" width="40" height="52" rx="4" fill="none" stroke="#17151A" stroke-width="4"/><path d="M40 4v52" stroke="#17151A" stroke-width="3"/><path d="M30 22l-5 6h10zM50 34l-5-6h10z" fill="#C2255C"/></svg><h3>Asansör durumu</h3><p>Metro, vapur iskelesi ve üst geçit asansörleri. Bozuk bildirilen asansör rotadan çıkar; en yakın alternatif gösterilir.</p><div class="live">M4 Kadıköy, Rıhtım çıkışı · <b>çalışıyor</b> · 2 sa önce</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="story">
+  <div class="wrap">
+    <div class="who"><div class="n">417</div><p>Deniz'in Kadıköy'de eklediği ölçüm. Çoğunu her sabah işe giderken.</p></div>
+    <div>
+      <blockquote>"Eskiden arkadaşlarım 'Moda'da buluşalım' dediğinde önce yolu ben planlardım, sonra da çoğu zaman gitmezdim. Şimdi ilk ben varıyorum. Bir kaldırımda takılırsam fotoğrafını çekiyorum; ertesi gün başka biri takılmıyor."</blockquote>
+      <cite>Deniz Aksoy · Kadıköy · 31 yaşında, çevirmen, 9 yıldır tekerlekli sandalye kullanıyor</cite>
+    </div>
+  </div>
+</section>
+
+<section class="join" id="katil">
+  <div class="wrap join-grid">
+    <div>
+      <h2 class="s">Şehir hepimizin. Haritası da.</h2>
+      <p class="lead">Engelsiz Rota ücretsiz ve reklamsız. Her ölçüm bir sonraki kişinin yolunu açar: tekerlekli sandalye, bebek arabası, baston, valiz.</p>
+      <div class="stats">
+        <div><b>4.212</b><span>Kadıköy'de ölçülen nokta</span></div>
+        <div><b>186</b><span>takip edilen asansör</span></div>
+        <div><b>38</b><span>ilçede rota</span></div>
+      </div>
+    </div>
+    <div class="box">
+      <div class="amt">0 ₺</div>
+      <p>Tüm özellikler ücretsiz. Belediyeler ve mekânlar için erişilebilirlik raporları gelirimizin kaynağı; kullanıcıdan para ya da veri almıyoruz.</p>
+      <div class="btns"><a class="btn p" href="#">iPhone için indir</a><a class="btn o" href="#">Android için indir</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+    <h2 class="s">Sorular</h2>
+    <details><summary>Akülü sandalye ve manuel sandalye için farklı rota çıkar mı?</summary><p>Evet. Profilde sandalye türünü, tekerlek çapını ve geçebildiğiniz en yüksek eşiği seçersiniz; rota buna göre hesaplanır. Bebek arabası ve baston profilleri de var.</p></details>
+    <details><summary>Henüz ölçülmemiş sokaklarda ne olur?</summary><p>Rota bunu açıkça söyler: "Bu 120 metre için bilgi yok." Belediye kaldırım verisi varsa tahmin olarak gösterilir, ama teyit edilmiş bilgiden ayrı renkte.</p></details>
+    <details><summary>Konumum kaydediliyor mu?</summary><p>Hayır. Rota telefonda hesaplanır; harita verisi çevrimdışı iner. Bildirdiğiniz noktada yalnız ölçü ve saat paylaşılır, hesabınızla bağlantısı kurulmaz.</p></details>
+    <details><summary>Mekânımı erişilebilir olarak nasıl eklerim?</summary><p>Mekân sahipleri giriş, kapı ve tuvalet fotoğraflarını uygulamadan yükleyebilir; ölçüm, kullanıcılar teyit edene kadar "mekân beyanı" olarak görünür.</p></details>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="row"><b style="color:var(--ink)">Engelsiz Rota</b><span>merhaba@engelsizrota.org · Erişilebilirlik beyanı</span></div>
+    <div class="made"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  var f=document.getElementById('bFree'),s=document.getElementById('bShort'),rf=document.getElementById('rFree'),rs=document.getElementById('rShort'),t=document.getElementById('lgT'),d=document.getElementById('lgS');
+  function set(free){f.setAttribute('aria-pressed',free);s.setAttribute('aria-pressed',!free);rf.style.opacity=free?1:.2;rs.style.opacity=free?.25:1;
+    t.textContent=free?'11 dakika · 0 basamak':'7 dakika · geçilemez';
+    d.textContent=free?'850 m · 3 kontrol noktası · en dik yer %6 rampa':'560 m · 18 cm kaldırım ve merdivenli geçit: bu yoldan gidemezsiniz';}
+  f.addEventListener('click',function(){set(true)});s.addEventListener('click',function(){set(false)});
+})();
+</script>
+</body>
+</html>

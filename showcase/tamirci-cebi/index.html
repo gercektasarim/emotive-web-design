@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tamirci Cebi — Kombi F28 verdi. Kendin mi yaparsın, usta mı çağırırsın?</title>
+<meta name="description" content="Tamirci Cebi kombinin hata kodunu, damlayan musluğun sesini, prizdeki yanığı tanır ve dürüstçe söyler: kendin yap mı, usta mı çağır. İnternetsiz çalışır, evinizin fotoğrafları telefonda kalır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700;800;900&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#17202A;
+  --night-2:#212C38;
+  --enamel:#EEEFEB;
+  --steel:#5D6873;
+  --ink:#161B20;
+  --valve:#F2C230;
+  --valve-deep:#8A6A00;
+  --stop:#D2452F;
+  --lcd:#0F2E47;
+  --lcd-ink:#CFE7FF;
+  --ok:#2E7D4F;
+  --line:#D5D7D2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip}
+body{background:var(--enamel);color:var(--ink);font-family:"Hind",system-ui,sans-serif;font-size:18px;line-height:1.55}
+.mono{font-family:"Chakra Petch",ui-monospace,monospace}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--valve);outline-offset:3px}
+h1,h2,h3{font-weight:900;line-height:1.02;letter-spacing:-.02em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:800 16.5px/1 "Hind",sans-serif;padding:16px 22px 14px;border-radius:6px;text-decoration:none;border:2px solid currentColor;cursor:pointer;background:transparent}
+.btn-valve{background:var(--valve);color:var(--ink);border-color:var(--valve)}
+.btn-valve:hover{background:#f7d35c}
+.btn-ghost{color:#E9EDF1}
+.btn-ghost:hover{background:rgba(255,255,255,.08)}
+.btn-ink{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* hero (night) */
+.hero{background:var(--night);color:#E9EDF1;padding-bottom:90px}
+.nav{display:flex;justify-content:space-between;align-items:center;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;text-decoration:none;letter-spacing:-.01em}
+.nav nav{display:flex;gap:26px;font-size:15.5px;font-weight:600}
+.nav nav a{text-decoration:none;color:#AEB9C4}
+.nav nav a:hover{color:#fff}
+.nav .btn{padding:11px 16px 9px;font-size:14.5px}
+.hero-head{text-align:center;max-width:860px;margin:40px auto 46px}
+.hero-head .time{font-family:"Chakra Petch";font-size:14.5px;color:#AEB9C4;margin-bottom:16px}
+.hero-head .time b{color:var(--valve)}
+.hero h1{font-size:clamp(40px,5.4vw,72px)}
+.hero .lead{font-size:20px;color:#C6D0DA;margin:20px auto 0;max-width:34em}
+.scene{display:grid;grid-template-columns:1fr 1.1fr;gap:34px;align-items:center;max-width:1040px;margin:0 auto}
+.boiler{background:var(--enamel);border-radius:18px;padding:26px 26px 30px;color:var(--ink);box-shadow:0 40px 70px -30px rgba(0,0,0,.7),inset 0 -6px 0 #d9dbd5;position:relative}
+.boiler .brand{font-family:"Chakra Petch";font-size:12.5px;color:var(--steel);display:flex;justify-content:space-between}
+.lcd{margin:16px 0 18px;background:var(--lcd);border-radius:8px;padding:18px 20px;color:var(--lcd-ink);font-family:"Chakra Petch";display:grid;grid-template-columns:1fr auto;align-items:center;box-shadow:inset 0 0 20px rgba(0,0,0,.5)}
+.lcd .code{font-size:68px;font-weight:700;letter-spacing:.04em;line-height:1;animation:blink 1.2s steps(2) infinite}
+@keyframes blink{50%{opacity:.6}}
+.lcd .side{font-size:13px;text-align:right;line-height:1.6}
+.knobs{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.knob{width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d7d9d3);border:1px solid #c5c8c1;position:relative}
+.knob::after{content:"";position:absolute;left:50%;top:7px;width:4px;height:16px;margin-left:-2px;border-radius:2px;background:var(--ink)}
+.knob.r::after{transform:rotate(60deg);transform-origin:2px 24px}
+.gauge{width:84px;height:84px}
+.reset{font:800 13px "Hind";padding:9px 12px;border-radius:6px;background:#fff;border:1px solid #c5c8c1}
+.pipes{display:flex;justify-content:space-around;margin-top:22px;padding-top:16px;border-top:1px dashed #c5c8c1}
+.pipe{display:flex;flex-direction:column;align-items:center;gap:6px;font-family:"Chakra Petch";font-size:11.5px;color:var(--steel)}
+.pipe i{display:block;width:12px;height:40px;background:linear-gradient(90deg,#9aa3ab,#d5d9dc,#9aa3ab);border-radius:2px}
+.pipe.gas i{background:linear-gradient(90deg,#b8941c,#f2c230,#b8941c)}
+
+.verdict{background:var(--night-2);border:1px solid #33414f;border-radius:16px;padding:24px}
+.verdict .h{display:flex;justify-content:space-between;gap:10px;font-family:"Chakra Petch";font-size:13px;color:#AEB9C4;margin-bottom:10px}
+.verdict h2{font-size:28px;color:#fff;margin-bottom:12px;line-height:1.1}
+.meter{margin:6px 0 18px}
+.meter .bar{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--valve) 0 55%,#8a5b2a 55% 70%,var(--stop) 70%);position:relative}
+.meter .pin{position:absolute;top:-7px;width:4px;height:26px;background:#fff;border-radius:2px;box-shadow:0 0 0 3px var(--night-2);transition:left .7s cubic-bezier(.3,1.3,.5,1)}
+.meter .ends{display:flex;justify-content:space-between;font-family:"Chakra Petch";font-size:12.5px;color:#AEB9C4;margin-top:8px}
+.steps{list-style:none;counter-reset:s;display:grid;gap:10px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;font-size:16px;color:#DDE4EA}
+.steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--valve);color:var(--ink);font:800 14px/28px "Hind";text-align:center}
+.steps li b{color:#fff}
+.verdict .stopif{margin-top:16px;border-top:1px solid #33414f;padding-top:12px;font-size:15px;color:#F2B4A8}
+.verdict .stopif b{color:#FFD3CA}
+.hero .ctas{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:44px}
+.hero .ctas small{width:100%;text-align:center;font-size:14.5px;color:#AEB9C4}
+
+section{padding:96px 0}
+.h2{font-size:clamp(34px,4.4vw,58px);max-width:18ch}
+.intro{font-size:19px;max-width:36em;margin-top:16px;color:#323a42}
+
+/* cases */
+.cases .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:40px;border-bottom:2px solid var(--ink)}
+.tab{font:800 16px/1 "Hind";padding:14px 16px 12px;border:2px solid transparent;border-bottom:0;border-radius:8px 8px 0 0;background:transparent;cursor:pointer;color:var(--steel)}
+.tab[aria-selected="true"]{background:#fff;border-color:var(--ink);color:var(--ink);margin-bottom:-2px;padding-bottom:14px}
+.case{background:#fff;border:2px solid var(--ink);border-top:0;display:grid;grid-template-columns:.9fr 1.1fr;gap:0}
+.case .input{padding:28px;border-right:1px solid var(--line)}
+.case .input small{font-family:"Chakra Petch";font-size:13px;color:var(--steel)}
+.case .input h3{font-size:26px;margin:6px 0 14px}
+.case .media{background:#F3F4F1;border-radius:10px;height:180px;display:grid;place-items:center;overflow:hidden}
+.case .media svg{width:100%;height:100%}
+.case .heard{margin-top:14px;font-size:15.5px;color:#323a42}
+.case .out{padding:28px}
+.meter.light .pin{background:var(--ink);box-shadow:0 0 0 3px #fff}
+.meter.light .ends{color:var(--steel)}
+.badge{display:inline-flex;align-items:center;gap:8px;font:800 15px/1 "Hind";padding:10px 14px 8px;border-radius:6px}
+.badge.diy{background:var(--valve);color:var(--ink)}
+.badge.mix{background:#E9D3B3;color:#4a3210}
+.badge.pro{background:var(--stop);color:#fff}
+.case .out p.sum{font-size:17px;margin:14px 0}
+.case dl{display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:15.5px;border-top:1px solid var(--line);padding-top:14px}
+.case dt{font-family:"Chakra Petch";font-size:13px;color:var(--steel);padding-top:2px}
+
+/* line */
+.line-sec{background:var(--ink);color:#E9EDF1}
+.line-sec .intro{color:#B9C3CD}
+.line-sec .grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:46px;border:2px solid #3a4652;border-radius:12px;overflow:hidden}
+.col{padding:28px}
+.col+.col{border-left:2px solid #3a4652}
+.col h3{font-size:24px;display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.col h3 i{width:14px;height:14px;border-radius:3px}
+.col ul{list-style:none;display:grid;gap:10px;font-size:16.5px;color:#D5DCE3}
+.col li{padding-left:18px;position:relative}
+.col li::before{content:"";position:absolute;left:0;top:10px;width:8px;height:2px;background:#8C99A6}
+
+/* ticket */
+.ticket .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.fis{background:#fff;border:1px solid var(--line);padding:0;font-family:"Chakra Petch";font-size:14.5px;box-shadow:0 30px 50px -40px rgba(0,0,0,.5)}
+.fis header{background:var(--valve);padding:14px 20px;display:flex;justify-content:space-between;font-weight:700;color:var(--ink)}
+.fis .rows{padding:8px 20px 18px}
+.fis .r{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.fis .r span:first-child{color:var(--steel)}
+.fis .cost{margin:0 20px 20px;background:#F6F5EF;padding:14px 16px;border-left:4px solid var(--ink)}
+.fis .cost b{font-family:"Hind";font-size:22px;display:block}
+.facts{list-style:none;display:grid;gap:18px;margin-top:28px}
+.facts li{display:grid;grid-template-columns:120px 1fr;gap:16px;border-top:2px solid var(--ink);padding-top:12px;font-size:16.5px}
+.facts strong{font-size:30px;font-weight:900;line-height:1}
+
+/* quote/price */
+.qp{background:#fff;border-top:1px solid var(--line)}
+.qp .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+.qp blockquote p{font-size:clamp(24px,2.5vw,32px);font-weight:800;letter-spacing:-.015em;line-height:1.25}
+.qp blockquote footer{margin-top:16px;font-size:16px;color:var(--steel)}
+.qp blockquote footer b{color:var(--ink)}
+.price{border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+.price .top{background:var(--ink);color:#fff;padding:20px 24px}
+.price .top b{display:block;font-size:44px;font-weight:900;line-height:1}
+.price .top span{font-size:15px;color:#B9C3CD}
+.price ul{list-style:none;padding:18px 24px;display:grid;gap:8px;font-size:16px}
+.price li::before{content:"✓ ";font-weight:900;color:var(--ok)}
+.price .ctas{display:flex;gap:10px;flex-wrap:wrap;padding:0 24px 24px}
+
+.faq .grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 56px;margin-top:40px}
+.faq h3{font-size:19px;letter-spacing:-.01em;margin-bottom:6px;line-height:1.25}
+.faq p{font-size:16.5px;color:#323a42}
+
+footer.site{background:var(--night);color:#AEB9C4;padding:34px 0 40px;font-size:15px}
+footer.site .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.site .credit{width:100%;margin-top:10px;font-family:"Chakra Petch";font-size:12.5px}
+footer.site .credit a{text-decoration:none;color:#8C99A6}
+footer.site .credit a:hover{color:#fff}
+
+@media (max-width:1000px){
+  .nav nav{display:none}
+  .scene,.case,.ticket .grid,.qp .grid,.line-sec .grid{grid-template-columns:minmax(0,1fr)}
+  .boiler{max-width:440px;margin:0 auto;width:100%}
+  .case .input{border-right:0;border-bottom:1px solid var(--line)}
+  .col+.col{border-left:0;border-top:2px solid #3a4652}
+  .faq .grid{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  body{font-size:17px}
+  section{padding:66px 0}
+  .hero-head{margin:24px auto 30px;text-align:left}
+  .lcd .code{font-size:52px}
+  .verdict{padding:18px}
+  .tab{font-size:14px;padding:11px 10px 9px}
+  .case .input,.case .out,.col{padding:20px}
+  .case dl{grid-template-columns:minmax(0,1fr);gap:2px}
+  .fis .r{grid-template-columns:minmax(0,1fr);gap:0}
+  .facts li{grid-template-columns:minmax(0,1fr);gap:4px}
+  .hero .ctas{justify-content:flex-start}
+  .hero .ctas small{text-align:left}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="nav">
+      <a class="logo" href="#"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M19 3a6 6 0 0 0-5.6 8.1L3.5 21a2.1 2.1 0 0 0 3 3l9.9-9.9A6 6 0 0 0 24.5 9l-3.6 3.6-3.4-.9-.9-3.4L20.2 4.7A6 6 0 0 0 19 3z" fill="#F2C230"/></svg>Tamirci Cebi</a>
+      <nav aria-label="Ana menü"><a href="#arizalar">Gece arızaları</a><a href="#sinir">Kendin yap sınırı</a><a href="#fis">Usta fişi</a><a href="#fiyat">Fiyat</a></nav>
+      <a class="btn btn-valve" href="#fiyat">İndir</a>
+    </div>
+    <div class="hero-head">
+      <p class="time"><b>Ocak · 23:40</b> · dış hava −3 °C · ev 17 °C ve düşüyor</p>
+      <h1>Kombi F28 verdi. Önce sarı vanaya bakalım.</h1>
+      <p class="lead">Ekranın fotoğrafını çekin, musluğun sesini dinletin, prizi gösterin. Tamirci Cebi ne olduğunu söyler ve dürüstçe karar verir: bunu siz yaparsınız, şunu usta yapar.</p>
+    </div>
+
+    <div class="scene">
+      <div class="boiler" role="img" aria-label="Kombinin ön paneli: ekranda yanıp sönen F28 hata kodu, basınç göstergesi 1,4 bar, altta sarı gaz borusu">
+        <div class="brand"><span>Duvar tipi yoğuşmalı · 24 kW</span><span>2019</span></div>
+        <div class="lcd"><span class="code">F28</span><span class="side">ISITMA ✕<br>SICAK SU ✕<br>1,4 bar</span></div>
+        <div class="knobs">
+          <span class="knob" aria-hidden="true"></span>
+          <svg class="gauge" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" fill="#fff" stroke="#c5c8c1"/><path d="M14 56a30 30 0 1 1 56 0" fill="none" stroke="#e1e3de" stroke-width="7"/><path d="M14 56a30 30 0 0 1 8-28" fill="none" stroke="#D2452F" stroke-width="7"/><path d="M48 14a30 30 0 0 1 22 42" fill="none" stroke="#2E7D4F" stroke-width="7" opacity=".6"/><path d="M42 42 58 22" stroke="#161B20" stroke-width="3" stroke-linecap="round"/><circle cx="42" cy="42" r="4" fill="#161B20"/><text x="42" y="70" text-anchor="middle" font-family="Chakra Petch" font-size="9" fill="#5D6873">bar</text></svg>
+          <span class="reset">RESET</span>
+          <span class="knob r" aria-hidden="true"></span>
+        </div>
+        <div class="pipes" aria-hidden="true"><span class="pipe"><i></i>kalorifer</span><span class="pipe"><i></i>sıcak su</span><span class="pipe gas"><i></i>GAZ</span><span class="pipe"><i></i>soğuk su</span><span class="pipe"><i></i>dönüş</span></div>
+      </div>
+
+      <div class="verdict" aria-label="Uygulamanın değerlendirmesi">
+        <p class="h"><span>F28 · ateşleme başarısız, alev algılanmadı</span><span>telefonda · 0,6 sn</span></p>
+        <h2>Büyük olasılıkla gaz gelmiyor. Bunu siz çözersiniz.</h2>
+        <div class="meter"><div class="bar"><span class="pin" style="left:22%"></span></div><div class="ends"><span>Kendin yap</span><span>Usta çağır</span></div></div>
+        <ol class="steps">
+          <li><span><b>Kombinin altındaki sarı kollu vana</b> boruyla aynı yönde mi? Değilse çevirin.</span></li>
+          <li><span>Ocağı yakın. Yanmıyorsa sorun kombide değil: <b>sayaç kartında kredi</b> ya da bina vanası.</span></li>
+          <li><span>Ocak yanıyorsa RESET’e <b>bir kez</b> basın, 2 dakika bekleyin. En fazla 3 deneme.</span></li>
+        </ol>
+        <p class="stopif"><b>Gaz kokusu alırsanız:</b> hiçbir düğmeye dokunmayın, pencereleri açın, dışarı çıkın ve 187 Doğalgaz Acil’i arayın.</p>
+      </div>
+    </div>
+    <div class="ctas"><a class="btn btn-valve" href="#fiyat">iPhone için indir</a><a class="btn btn-ghost" href="#fiyat">Android için indir</a><small>İnternet gerekmez · 40 kombi markasının 900+ hata kodu telefonda</small></div>
+  </div>
+</header>
+
+<main>
+<section class="cases" id="arizalar" aria-labelledby="h-case">
+  <div class="wrap">
+    <h2 class="h2" id="h-case">Kış gecesinin dört klasik arızası</h2>
+    <p class="intro">Fotoğraf, ses ya da hata kodu. Tamirci Cebi ne duyduğunu, ne gördüğünü yazar; karar ibresini nereye koyduğunu da gerekçesiyle söyler.</p>
+    <div class="tabs" role="tablist" aria-label="Arıza seç">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="case" data-k="basinc">Kombi basıncı düştü</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="case" data-k="musluk">Musluk damlıyor</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="case" data-k="petek">Petek ısınmıyor</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="case" data-k="priz">Priz kararmış</button>
+    </div>
+    <div class="case" id="case" role="tabpanel" aria-live="polite">
+      <div class="input">
+        <small id="cIn">Fotoğraf · kombi ekranı ve basınç saati</small>
+        <h3 id="cTitle">0,4 bar, F22</h3>
+        <div class="media" id="cMedia"></div>
+        <p class="heard" id="cHeard">Gördüğü: ibre kırmızı bölgede, ekranda F22 (düşük su basıncı), kombinin altında doldurma musluğu.</p>
+      </div>
+      <div class="out">
+        <div class="meter light"><div class="bar"><span class="pin" id="cPin" style="left:12%"></span></div><div class="ends"><span>Kendin yap</span><span>Usta çağır</span></div></div>
+        <span class="badge diy" id="cBadge">Kendin yap · 10 dk</span>
+        <p class="sum" id="cSum">Tesisata su eksilmiş. Kombinin altındaki doldurma musluğunu yavaşça açıp ibre 1,5 bara gelince kapatın.</p>
+        <dl>
+          <dt>Gereken</dt><dd id="cTools">Hiçbir alet. Bir kova ve bez yakında dursun.</dd>
+          <dt>Dikkat</dt><dd id="cWarn">2 bar üstüne çıkarmayın; emniyet ventili su atar.</dd>
+          <dt>Usta ne zaman</dt><dd id="cPro">Haftada bir kereden sık düşüyorsa tesisatta kaçak vardır; usta çağırın.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="line-sec" id="sinir" aria-labelledby="h-sinir">
+  <div class="wrap">
+    <h2 class="h2" id="h-sinir">Elinizden iş gelir. Ama bazı işler sizin değil.</h2>
+    <p class="intro">Tamirci Cebi “kendin yap” demeyi sever; bu yüzden “yapma” dediğinde ciddiye alınır. Sınır sabittir, güncellemeyle esnemez.</p>
+    <div class="grid">
+      <div class="col"><h3><i style="background:var(--valve)"></i>Siz yaparsınız</h3><ul><li>Kombi basıncını doldurma musluğuyla ayarlamak</li><li>Petek havasını almak</li><li>Musluk contası ve kartuş değişimi</li><li>Sifon tıkanıklığı açmak</li><li>Klozet şamandırası ayarı</li><li>Sigorta atınca hangi cihazın attırdığını bulmak</li></ul></div>
+      <div class="col"><h3><i style="background:var(--stop)"></i>Usta yapar, nokta</h3><ul><li>Gaz kokusu, gaz hattı, kombinin kapağını açmak</li><li>Kararmış, ısınan ya da koku yapan priz ve kablo</li><li>Tavandan ya da duvardan gelen su</li><li>Sigorta kutusunun içi</li><li>Baca ve atık gaz uyarıları</li><li>Kaçak akım rölesi tekrar tekrar atıyorsa</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="ticket" id="fis" aria-labelledby="h-fis">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <h2 class="h2" id="h-fis">Usta gelecekse doğru parçayla gelsin.</h2>
+        <p class="intro">“Usta çağır” dediğinde Tamirci Cebi bir servis fişi hazırlar: ne denediniz, ne gördünüz, hangi parça olası. Telefonda ustaya okursunuz ya da mesajla siz gönderirsiniz. İkinci ziyaret ve “bir de şuna bakalım” faturası azalır.</p>
+        <ul class="facts">
+          <li><strong>0</strong><span>fotoğraf ve ses kaydı buluta gider. Evinizin içi, kombinin yeri, adresiniz bizde yok.</span></li>
+          <li><strong>Kesintide</strong><span>doğalgaz ya da internet kesikken de çalışır. Bodrum katta, yazlıkta, şebekesiz.</span></li>
+          <li><strong>Usta yok</strong><span>listesi satmıyoruz, komisyon almıyoruz. Kimi çağıracağınız sizin işiniz.</span></li>
+        </ul>
+      </div>
+      <article class="fis" aria-label="Örnek servis fişi">
+        <header><span>SERVİS FİŞİ · ÖN BİLGİ</span><span>14.01 · 23:58</span></header>
+        <div class="rows">
+          <div class="r"><span>Cihaz</span><span>Duvar tipi yoğuşmalı kombi, 24 kW, 2019</span></div>
+          <div class="r"><span>Hata</span><span>F28 · ateşleme başarısız</span></div>
+          <div class="r"><span>Denenen</span><span>Gaz vanası açık ✓ · ocak yanıyor ✓ · 3 reset ✕</span></div>
+          <div class="r"><span>Ses</span><span>Ateşleme tıkırtısı var, alev yok (kayıt telefonda)</span></div>
+          <div class="r"><span>Olası parça</span><span>Ateşleme/iyonizasyon elektrodu ya da gaz valfi</span></div>
+          <div class="r"><span>Aciliyet</span><span>Evde 2 yaş altı çocuk · bu gece</span></div>
+        </div>
+        <div class="cost"><b>1.900 – 3.400 ₺</b>İstanbul Anadolu yakası, Ekim 2026 ortalaması: servis ücreti + elektrot ya da valf. Fiyat ustadan teyit edilmeli.</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="qp" id="fiyat" aria-label="Kullanıcı yorumu ve fiyat">
+  <div class="wrap">
+    <div class="grid">
+      <blockquote>
+        <p>“Gece birde servise ulaşamazken uygulama sarı vanayı gösterdi. Kapıcı akşam sayaç bakımı için kapatmış. Açtım, kombi yandı. Sabah komşuya ben anlattım.”</p>
+        <footer><b>Serkan Yıldız</b> · Ümraniye, İstanbul · ev sahibi, kendini artık “yarım usta” sayıyor</footer>
+      </blockquote>
+      <div class="price">
+        <div class="top"><b>149 ₺</b><span>tek seferlik · ilk 3 arıza ücretsiz</span></div>
+        <ul><li>Kombi, su, elektrik, beyaz eşya hata kodları</li><li>Ses ve fotoğrafla tanıma, telefonda</li><li>Adım adım kendin yap rehberi</li><li>Servis fişi ve bölgesel fiyat aralığı</li><li>Evdeki cihazların listesi ve bakım takvimi</li></ul>
+        <div class="ctas"><a class="btn btn-ink" href="#">iPhone için indir</a><a class="btn" href="#">Android için indir</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="h-sss">
+  <div class="wrap">
+    <h2 class="h2" id="h-sss">Sorular</h2>
+    <div class="grid">
+      <div><h3>Kiracıyım, tamir bana mı düşer?</h3><p>Basınç doldurmak, petek havası almak gibi kullanım işleri kiracının işidir. Parça değişimi çoğu zaman ev sahibinin. Servis fişini ev sahibinize de gönderebilirsiniz.</p></div>
+      <div><h3>Garantili kombimi kurcalamak garantiyi bozar mı?</h3><p>Tamirci Cebi kapağı açmanızı hiçbir zaman önermez; yalnızca kullanıcı kılavuzunda size izin verilen işleri anlatır.</p></div>
+      <div><h3>Hata kodu listede yoksa?</h3><p>Kombinin etiketini çekin; marka ve modeli okur. Yine bilinmiyorsa dürüstçe “bilmiyorum” der ve servis fişini hazırlar.</p></div>
+      <div><h3>Fiyat aralıkları nereden geliyor?</h3><p>Her ay telefonunuza inen, il bazında anonim bir tablo. Sizin arızanız ya da konumunuz geri gönderilmez.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Tamirci Cebi · Bursa, Nilüfer · makine mühendisleri ve 30 yıllık bir kombi ustası tarafından</span>
+    <span>destek@tamircicebi.com.tr</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var M={
+    basinc:'<svg viewBox="0 0 300 180"><rect width="300" height="180" fill="#F3F4F1"/><circle cx="110" cy="90" r="60" fill="#fff" stroke="#c5c8c1" stroke-width="2"/><path d="M68 120a50 50 0 1 1 84 0" fill="none" stroke="#e1e3de" stroke-width="10"/><path d="M68 120a50 50 0 0 1 4-50" fill="none" stroke="#D2452F" stroke-width="10"/><path d="M110 90 76 112" stroke="#161B20" stroke-width="4" stroke-linecap="round"/><circle cx="110" cy="90" r="6" fill="#161B20"/><rect x="190" y="60" width="80" height="44" rx="6" fill="#0F2E47"/><text x="230" y="91" text-anchor="middle" font-family="Chakra Petch" font-size="24" font-weight="700" fill="#CFE7FF">F22</text></svg>',
+    musluk:'<svg viewBox="0 0 300 180"><rect width="300" height="180" fill="#F3F4F1"/><g fill="#8C99A6">'+[4,10,18,8,26,14,6,22,30,12,6,16,28,10,4,20,8,26,12,6,18,10,4,14,24,8].map(function(h,i){return '<rect x="'+(20+i*10)+'" y="'+(90-h)+'" width="6" height="'+(h*2)+'" rx="2"/>'}).join('')+'</g><text x="20" y="160" font-family="Chakra Petch" font-size="12" fill="#5D6873">damla aralığı 1,8 sn · metalik tını</text></svg>',
+    petek:'<svg viewBox="0 0 300 180"><rect width="300" height="180" fill="#F3F4F1"/><g>'+[0,1,2,3,4,5,6,7].map(function(i){return '<rect x="'+(40+i*28)+'" y="40" width="20" height="110" rx="4" fill="url(#pg)"/>'}).join('')+'</g><defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fb3c8"/><stop offset=".45" stop-color="#9fb3c8"/><stop offset=".55" stop-color="#E07B4F"/><stop offset="1" stop-color="#D2452F"/></linearGradient></defs><text x="40" y="30" font-family="Chakra Petch" font-size="12" fill="#5D6873">termal: üst yarı soğuk</text></svg>',
+    priz:'<svg viewBox="0 0 300 180"><rect width="300" height="180" fill="#F3F4F1"/><rect x="95" y="35" width="110" height="110" rx="14" fill="#fff" stroke="#c5c8c1" stroke-width="2"/><circle cx="150" cy="90" r="34" fill="#f1f1ee" stroke="#c5c8c1"/><circle cx="136" cy="90" r="6" fill="#161B20"/><circle cx="164" cy="90" r="6" fill="#161B20"/><ellipse cx="166" cy="82" rx="18" ry="14" fill="#3b2a20" opacity=".55"/><ellipse cx="170" cy="78" rx="9" ry="7" fill="#1a120d" opacity=".6"/></svg>'
+  };
+  var C={
+    basinc:{in:'Fotoğraf · kombi ekranı ve basınç saati',t:'0,4 bar, F22',h:'Gördüğü: ibre kırmızı bölgede, ekranda F22 (düşük su basıncı), kombinin altında doldurma musluğu.',b:['diy','Kendin yap · 10 dk'],s:'Tesisata su eksilmiş. Kombinin altındaki doldurma musluğunu yavaşça açıp ibre 1,5 bara gelince kapatın.',tools:'Hiçbir alet. Bir kova ve bez yakında dursun.',w:'2 bar üstüne çıkarmayın; emniyet ventili su atar.',p:'Haftada bir kereden sık düşüyorsa tesisatta kaçak vardır; usta çağırın.',pin:12},
+    musluk:{in:'Ses · 12 saniye, banyo lavabosu',t:'Tık… tık… her 1,8 saniyede',h:'Duyduğu: kapalı muslukta düzenli damla, metalik tını. Tek kollu bataryada kartuş aşınması belirtisi.',b:['diy','Kendin yap · 25 dk'],s:'Kartuş değişimi. Ana vanayı kapatın, kolun altındaki vidayı söküp kartuşu çıkarın, aynısını hırdavattan alın.',tools:'Alyan anahtar takımı, İngiliz anahtarı, yeni kartuş (35 mm, ~280 ₺).',w:'Eski kartuşu hırdavata götürün; çap ve diş sayısı farklı olabilir.',p:'Batarya gövdesinden sızıyorsa ya da duvar içinden ses geliyorsa.',pin:18},
+    petek:{in:'Fotoğraf · salon peteği, el ile yoklama',t:'Üstü soğuk, altı sıcak',h:'Gördüğü: üst dilimler soğuk, alt sıcak; tesisatın en üst katı. Petekte hava toplanmış.',b:['diy','Kendin yap · 5 dk'],s:'Peteğin üst köşesindeki hava alma tapasını bir bezle tutarak çeyrek tur açın; su gelince kapatın. Sonra kombi basıncını kontrol edin.',tools:'Hava alma anahtarı ya da düz tornavida, bez, küçük kap.',w:'Kombiyi önce kapatın; sıcak su sıçrayabilir.',p:'Alt kısım soğuk, üst sıcaksa: tortu birikmiş, tesisat temizliği gerekir.',pin:8},
+    priz:{in:'Fotoğraf · mutfak tezgâhı üstü priz',t:'Sağ deliğin çevresi kararmış',h:'Gördüğü: tek tarafta is izi, plastikte erime başlangıcı. Gevşek bağlantı ya da aşırı yük (fırın + kettle aynı hatta).',b:['pro','Usta çağır · dokunmayın'],s:'Bu hattın sigortasını kapatın ve prizi kullanmayın. Gevşek bağlantı ısınmaya devam eder; yangın riski var.',tools:'Yok. Yalnızca sigorta kutusunda hangi sigorta olduğunu bulmanız.',w:'“Bir şey olmaz” diye fişi takmayın; kararma tekrar eder ve büyür.',p:'Şimdi. Elektrikçiye fotoğrafla birlikte servis fişini gönderin.',pin:90}
+  };
+  var media=document.getElementById('cMedia');
+  function show(k){var c=C[k];
+    document.getElementById('cIn').textContent=c.in;document.getElementById('cTitle').textContent=c.t;document.getElementById('cHeard').textContent=c.h;
+    var b=document.getElementById('cBadge');b.className='badge '+c.b[0];b.textContent=c.b[1];
+    document.getElementById('cSum').textContent=c.s;document.getElementById('cTools').textContent=c.tools;document.getElementById('cWarn').textContent=c.w;document.getElementById('cPro').textContent=c.p;
+    media.innerHTML=M[k];document.getElementById('cPin').style.left=c.pin+'%';
+  }
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  tabs.forEach(function(t,i){t.addEventListener('click',function(){tabs.forEach(function(x){x.setAttribute('aria-selected','false');x.tabIndex=-1});t.setAttribute('aria-selected','true');t.tabIndex=0;show(t.dataset.k);});
+    t.addEventListener('keydown',function(e){var j=null;if(e.key==='ArrowRight')j=(i+1)%tabs.length;if(e.key==='ArrowLeft')j=(i+tabs.length-1)%tabs.length;if(j!==null){tabs[j].focus();tabs[j].click();}});if(i)t.tabIndex=-1;});
+  show('basinc');
+})();
+</script>
+</body>
+</html>

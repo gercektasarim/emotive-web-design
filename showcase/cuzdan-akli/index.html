@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cüzdan Aklı — Maaş nerede kaçtı, telefonun söylesin</title>
+<meta name="description" content="Cüzdan Aklı banka SMS'lerini ve fişleri telefonda okur, harcamayı kategorilere ayırır, ay sonunda paranın nerede kaçtığını sakin bir dille anlatır. Banka şifresi istemez, veri telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+@font-face{font-family:"TLisareti";src:local("Helvetica Neue"),local("Arial"),local("Roboto");unicode-range:U+20BA}
+:root{
+  --zemin:#ECEDE9;   /* sıradan masa, gri gün ışığı */
+  --kagit:#FAFAF7;   /* termal fiş kâğıdı */
+  --murekkep:#1C1E22;
+  --soluk:#55595F;
+  --petrol:#13605F;  /* sakin kontrol */
+  --acik:#B5432F;    /* eksi bakiye */
+  --fosfor:#EFE06A;  /* fişin üstüne çekilen fosforlu kalem */
+  --cizgi:#D3D5CF;
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--zemin);color:var(--murekkep);font:400 17px/1.55 "TLisareti","Schibsted Grotesk",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--petrol);outline-offset:3px}
+h1,h2,h3{margin:0;line-height:1.05;letter-spacing:-.025em;font-weight:700}
+.mono{font-family:"TLisareti","IBM Plex Mono",monospace}
+.w{max-width:1160px;margin:0 auto;padding:0 28px}
+.ust{display:flex;justify-content:space-between;align-items:center;padding:20px 0;gap:16px;border-bottom:1px solid var(--cizgi)}
+.logo{font:800 20px/1 "TLisareti","Schibsted Grotesk";text-decoration:none;display:flex;gap:10px;align-items:center}
+.logo b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:6px;background:var(--petrol);color:#fff;font:600 15px "TLisareti","IBM Plex Mono"}
+.ust nav{display:flex;gap:26px;font-size:15px;font-weight:500}
+.ust nav a{text-decoration:none;color:var(--soluk)}
+.ust nav a:hover{color:var(--murekkep)}
+.btn{display:inline-block;font:600 16px/1 "TLisareti","Schibsted Grotesk";padding:15px 20px;border-radius:8px;text-decoration:none;border:1.5px solid var(--murekkep)}
+.btn.dolu{background:var(--petrol);border-color:var(--petrol);color:#fff}
+.btn.dolu:hover{background:#0E4E4D}
+.btn.bos:hover{background:#E0E2DC}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;padding:56px 0 80px;align-items:start}
+.hero h1{font-size:clamp(42px,5.4vw,72px);font-weight:800}
+.hero .alt{font-size:20px;color:var(--soluk);max-width:28em;margin:24px 0 30px}
+.hero .alt strong{color:var(--murekkep);font-weight:600}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.guv{margin-top:34px;display:grid;grid-template-columns:repeat(3,auto);gap:10px 28px;justify-content:start;font-size:14px;color:var(--soluk)}
+.guv b{display:block;font:600 22px/1.1 "TLisareti","IBM Plex Mono";color:var(--murekkep)}
+
+.masa{position:relative}
+.sms{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.sms div{background:#fff;border:1px solid var(--cizgi);border-radius:14px 14px 14px 4px;padding:9px 12px;font:400 13px/1.4 "TLisareti","IBM Plex Mono";color:#3B3F45;max-width:92%}
+.sms div:nth-child(2){margin-left:18px;opacity:.85}
+.sms div:nth-child(3){margin-left:36px;opacity:.65}
+.sms small{display:block;color:#7A7E84;font-size:11px;margin-bottom:2px}
+.fis{position:relative;background:var(--kagit);font:400 14px/1.6 "TLisareti","IBM Plex Mono";padding:26px 24px 30px;box-shadow:0 18px 30px -22px rgba(0,0,0,.45);transform:rotate(.6deg)}
+.fis::after{content:"";position:absolute;left:0;right:0;bottom:-12px;height:12px;background:conic-gradient(from -45deg at bottom,var(--kagit) 90deg,transparent 0) 0 0/16px 12px repeat-x}
+.fis .bas{text-align:center;font-weight:600;letter-spacing:.06em}
+.fis .tar{text-align:center;color:var(--soluk);font-size:13px}
+.fis hr{border:0;border-top:1.5px dashed #9EA29B;margin:12px 0}
+.fis .r{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.fis .r span:last-child{white-space:nowrap}
+.fis .eksi{color:var(--acik);font-weight:600}
+.fis mark{background:linear-gradient(transparent 12%,var(--fosfor) 12% 88%,transparent 88%);color:inherit;padding:0 3px;margin:0 -3px}
+.fis .yorum{font-size:13.5px;line-height:1.55;margin-top:6px}
+.fis .kod{text-align:center;margin-top:14px;font-size:12px;color:#7A7E84;letter-spacing:.2em}
+
+/* ay sonunu kaydır */
+section{padding:88px 0}
+.koyu{background:var(--murekkep);color:#E7E9E4}
+.bas2{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:34px}
+.bas2 h2{font-size:clamp(34px,4.2vw,54px)}
+.bas2 p{margin:0;color:#B9BDB6;max-width:34em}
+.oyun{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;background:#25282D;border-radius:14px;padding:26px}
+.grafik svg{display:block;width:100%;height:auto}
+.grafik .eks{display:flex;justify-content:space-between;font:400 12px "TLisareti","IBM Plex Mono";color:#8F948C;margin-top:4px}
+.kontrol label{display:block;font-weight:600;margin-bottom:6px}
+.kontrol .deger{font:600 30px/1 "TLisareti","IBM Plex Mono";color:#fff}
+.kontrol .deger small{font-size:14px;color:#9AA096;font-weight:400}
+input[type=range]{width:100%;accent-color:#5FB3A8;margin:14px 0 4px;height:28px}
+.kutu{display:flex;gap:10px;align-items:flex-start;margin-top:20px;font-size:15px;color:#D4D7D0;cursor:pointer}
+.kutu input{width:20px;height:20px;accent-color:#5FB3A8;margin-top:2px;flex:none}
+.sonuc{margin-top:22px;padding-top:18px;border-top:1px solid #3A3E44}
+.sonuc .gun{font:700 clamp(30px,3.4vw,42px)/1.05 "TLisareti","Schibsted Grotesk";color:#fff}
+.sonuc p{margin:8px 0 0;color:#B9BDB6;font-size:15px}
+.ok{color:#7FD1C4}
+
+/* sakin dil */
+.bildirimler{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 40px;margin-top:10px}
+.bil{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--cizgi)}
+.bil .saat{font:500 13px/1.6 "TLisareti","IBM Plex Mono";color:var(--soluk);width:62px}
+.bil p{margin:0;font-size:18px}
+.bil .neden{font-size:14px;color:var(--soluk);margin-top:4px}
+.demez{margin-top:30px;font-size:16px;color:var(--soluk);border-left:3px solid var(--petrol);padding-left:16px;max-width:44em}
+
+/* karşılaştırma */
+table{width:100%;border-collapse:collapse;font-size:16px;background:#fff;border-radius:10px;overflow:hidden}
+caption{text-align:left;font-size:14px;color:var(--soluk);padding-bottom:10px}
+th,td{text-align:left;padding:16px 18px;border-bottom:1px solid var(--cizgi);vertical-align:top}
+thead th{font-size:14px;font-weight:600;color:var(--soluk);background:#F4F5F1}
+tbody th{font-weight:600;width:32%}
+td.biz{background:#EEF5F3;font-weight:600;color:#0E4E4D}
+tr:last-child th,tr:last-child td{border-bottom:0}
+
+/* adımlar */
+.adimlar{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--murekkep);margin-top:30px}
+.adim{padding:22px 24px 0 0}
+.adim+.adim{padding-left:24px;border-left:1px solid var(--cizgi)}
+.adim .n{font:600 14px "TLisareti","IBM Plex Mono";color:var(--petrol)}
+.adim h3{font-size:22px;margin:8px 0}
+.adim p{margin:0;color:var(--soluk);font-size:16px}
+
+.soz{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.soz blockquote{margin:0;font:600 clamp(26px,3vw,38px)/1.2 "TLisareti","Schibsted Grotesk";letter-spacing:-.02em}
+.soz cite{display:block;font:400 15px/1.4 "TLisareti","Schibsted Grotesk";font-style:normal;color:var(--soluk);margin-top:16px}
+.mini-fis{background:var(--kagit);font:400 14px/1.7 "TLisareti","IBM Plex Mono";padding:20px 22px;box-shadow:0 14px 26px -20px rgba(0,0,0,.4);max-width:380px;justify-self:end;transform:rotate(-1deg)}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
+.paket{background:#fff;border-radius:12px;padding:28px;border:1px solid var(--cizgi)}
+.paket.tam{border:2px solid var(--petrol)}
+.paket h3{font-size:24px}
+.paket .tl{font:600 44px/1 "TLisareti","IBM Plex Mono";margin:14px 0 6px}
+.paket .tl small{font:400 15px "TLisareti","Schibsted Grotesk";color:var(--soluk)}
+.paket ul{padding-left:18px;margin:14px 0 22px;color:#33373C}
+.paket li{margin:5px 0}
+
+.sss details{border-top:1px solid var(--cizgi);padding:18px 0}
+.sss details:last-child{border-bottom:1px solid var(--cizgi)}
+.sss summary{cursor:pointer;font-weight:600;font-size:20px}
+.sss p{margin:8px 0 0;color:#33373C;max-width:44em}
+
+footer{background:var(--murekkep);color:#B9BDB6;padding:48px 0 28px;font-size:15px}
+footer .w{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:center}
+footer h2{color:#fff;font-size:32px;max-width:18em}
+footer .imza{width:100%;border-top:1px solid #3A3E44;padding-top:16px;font-size:13px}
+
+@media (max-width:900px){
+  .hero,.bas2,.oyun,.soz,.fiyat{grid-template-columns:1fr}
+  .bildirimler{grid-template-columns:1fr}
+  .adimlar{grid-template-columns:1fr}
+  .adim+.adim{padding-left:0;border-left:0;border-top:1px solid var(--cizgi)}
+  .adim{padding-bottom:20px}
+  .ust nav{display:none}
+  .mini-fis{justify-self:start}
+}
+@media (max-width:520px){
+  .w{padding:0 16px}
+  .guv{grid-template-columns:1fr 1fr}
+  .fis{padding:22px 16px 26px;font-size:13px}
+  .oyun{padding:18px 14px}
+  section{padding:64px 0}
+  th,td{padding:12px 10px;font-size:14px}
+  .ust .btn{display:none}
+}
+</style>
+</head>
+<body>
+<div class="w">
+  <header class="ust">
+    <a class="logo" href="#"><b>₺?</b>Cüzdan Aklı</a>
+    <nav aria-label="Sayfa içi"><a href="#kaydir">Ay sonunu kaydır</a><a href="#banka">Neden banka değil</a><a href="#fiyat">Fiyat</a><a href="#sss">Sorular</a></nav>
+    <a class="btn bos" href="#fiyat">İndir</a>
+  </header>
+</div>
+
+<main>
+<div class="w hero">
+  <div>
+    <h1>Maaş yattıktan on iki gün sonra hesap sıfır. Nedeni şu fişte.</h1>
+    <p class="alt">Cüzdan Aklı, telefonuna zaten gelen banka SMS'lerini ve fiş fotoğraflarını <strong>telefonun içinde</strong> okur. Harcamanı kendisi ayırır, ay sonunda nerede kaçtığını suçlamadan, rakamla anlatır. Banka şifresi istemez.</p>
+    <div class="cta"><a class="btn dolu" href="#fiyat">Android için indir</a><a class="btn bos" href="#fiyat">iPhone için indir</a></div>
+    <div class="guv">
+      <div><b>0</b>banka bağlantısı</div>
+      <div><b>3 ay</b>geçmiş SMS, 40 sn'de</div>
+      <div><b>249 ₺</b>bir kere, abonelik yok</div>
+    </div>
+  </div>
+
+  <div class="masa">
+    <div class="sms" aria-label="Telefona gelen örnek banka SMS'leri">
+      <div><small>26 Mart 22:47</small>Kartınızdan LEZZET KAPINDA*ONLINE 238,50 TL harcama yapılmıştır. Kullanılabilir limit 4.112,30 TL.</div>
+      <div><small>26 Mart 13:05</small>Hesabınızdan 64,00 TL KÖŞE BÜFE harcaması yapılmıştır.</div>
+      <div><small>26 Mart 08:12</small>Kartınızdan 34,00 TL ULAŞIM KARTI dolumu yapılmıştır.</div>
+    </div>
+    <div class="fis" aria-label="Cüzdan Aklı'nın aylık özet fişi">
+      <div class="bas">CÜZDAN AKLI · AY ÖZETİ</div>
+      <div class="tar">15 MART → 14 NİSAN · telefonda hazırlandı</div>
+      <hr>
+      <div class="r"><span>MAAŞ</span><span>28.400,00</span></div>
+      <hr>
+      <div class="r"><span>KİRA</span><span>-11.500,00</span></div>
+      <div class="r"><span>KART ASGARİ</span><span>-2.600,00</span></div>
+      <div class="r"><span>FATURALAR</span><span>-1.940,00</span></div>
+      <div class="r"><span>MARKET</span><span>-4.210,35</span></div>
+      <div class="r"><mark>YEMEK SİPARİŞİ ×23</mark><span><mark>-5.112,60</mark></span></div>
+      <div class="r"><span>ULAŞIM</span><span>-980,00</span></div>
+      <div class="r"><span>ABONELİK ×6</span><span>-894,97</span></div>
+      <div class="r"><span>DİĞER</span><span>-3.812,08</span></div>
+      <hr>
+      <div class="r eksi"><span>AÇIK (KARTA KALDI)</span><span>-2.650,00</span></div>
+      <div class="r"><span>HESAP SIFIRLANDI</span><span>26 MART · 12. GÜN</span></div>
+      <hr>
+      <div class="yorum">Yemek siparişi geçen aydan 1.640 ₺ fazla. 23 siparişin 17'si 22:00'den sonra. Market bu yılın en düşüğü; o tarafta bir sorun yok.</div>
+      <div class="kod" aria-hidden="true">||| || ||| | || ||| |</div>
+    </div>
+  </div>
+</div>
+
+<section class="koyu" id="kaydir">
+  <div class="w">
+    <div class="bas2">
+      <h2>Ay sonunu kendin kaydır.</h2>
+      <p>Bütçe yapmanı istemiyoruz. Sadece bir şeyi biraz değiştirsen paranın kaçıncı gün biteceğini gör. Aşağıdaki rakamlar fişteki örnek aydan.</p>
+    </div>
+    <div class="oyun">
+      <div class="grafik">
+        <svg id="graf" viewBox="0 0 600 260" role="img" aria-labelledby="gT"><title id="gT">Maaş gününden sonraki 30 günde hesap bakiyesi</title></svg>
+        <div class="eks"><span>15 Mart · maaş</span><span>30 Mart</span><span>14 Nisan</span></div>
+      </div>
+      <div class="kontrol">
+        <label for="yemek">Bu ay yemek siparişi</label>
+        <div class="deger"><span id="yAdet">23</span> <small>sipariş · ortalama 222 ₺</small></div>
+        <input id="yemek" type="range" min="0" max="23" value="23" step="1" aria-describedby="sonucMetin">
+        <label class="kutu"><input type="checkbox" id="abo"> <span>3 aydır açılmayan 3 aboneliği kapat (412,97 ₺)</span></label>
+        <div class="sonuc" aria-live="polite">
+          <div class="gun" id="sonucGun">Hesap 12. gün sıfırlanıyor</div>
+          <p id="sonucMetin">Ay sonunda 2.650 ₺ karta kalıyor.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="w">
+    <div class="bas2">
+      <h2 style="color:var(--murekkep)">Sakin konuşur. Parmak sallamaz.</h2>
+      <p style="color:var(--soluk)">Bildirimler haftada en fazla iki kez gelir, hep aynı biçimde: ne oldu, neye göre, istersen ne yapabilirsin.</p>
+    </div>
+    <div class="bildirimler">
+      <div class="bil"><span class="saat">Pzt 09:00</span><div><p>Geçen hafta 7 yemek siparişi vardı, bu hafta 4.</p><div class="neden">Haftalık özet · yalnızca rakam</div></div></div>
+      <div class="bil"><span class="saat">Çar 19:30</span><div><p>Bir video aboneliği 94 gündür açılmadı. Ayda 149,99 ₺.</p><div class="neden">İptal etmek istersen nasıl yapılacağını gösterir</div></div></div>
+      <div class="bil"><span class="saat">Cum 18:00</span><div><p>Maaşa 9 gün var, hesapta 1.840 ₺. Günde 204 ₺ demek.</p><div class="neden">Ayın ikinci yarısında, ayda bir</div></div></div>
+      <div class="bil"><span class="saat">Paz 11:00</span><div><p>Market fişi okundu: 37 kalem, 1.126,40 ₺. Temizlik ürünleri ayrı yazıldı.</p><div class="neden">Fiş fotoğrafından, telefonda</div></div></div>
+    </div>
+    <p class="demez">Ne demez: "Tasarruf et!", "Bu ay kötü gitti", "Hedefinin gerisindesin." Hedef koymak zorunda değilsin. Rakamı görmek çoğu zaman yeter.</p>
+  </div>
+</section>
+
+<section id="banka" style="padding-top:0">
+  <div class="w">
+    <div class="bas2">
+      <h2 style="color:var(--murekkep)">Neden bankana bağlanmıyoruz?</h2>
+      <p style="color:var(--soluk)">Çünkü harcama geçmişin, hayatının en açık haritasıdır: nerede oturduğun, ne zaman uyuduğun, kimi sevdiğin. O harita telefonundan çıkmasın.</p>
+    </div>
+    <table>
+      <caption>Bankaya bağlanan bütçe uygulamaları ile karşılaştırma</caption>
+      <thead><tr><th scope="col"></th><th scope="col">Bankaya bağlanan uygulamalar</th><th scope="col">Cüzdan Aklı</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Banka şifresi ya da hesap izni</th><td>İster</td><td class="biz">İstemez</td></tr>
+        <tr><th scope="row">Harcama geçmişin nerede</th><td>Şirketin sunucusunda</td><td class="biz">Yalnız telefonunda</td></tr>
+        <tr><th scope="row">Kategorileri kim ayırıyor</th><td>Sunucudaki model</td><td class="biz">Telefondaki model, uçak modunda da</td></tr>
+        <tr><th scope="row">Para nereden kazanılıyor</th><td>Abonelik, kredi teklifi, reklam</td><td class="biz">249 ₺, bir kere</td></tr>
+        <tr><th scope="row">Uygulamayı silince</th><td>Veri sunucuda kalabilir</td><td class="biz">Her şey silinir</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w">
+    <h2 style="font-size:clamp(30px,3.6vw,44px)">Başlamak üç adım.</h2>
+    <div class="adimlar">
+      <div class="adim"><div class="n">1 · 10 sn</div><h3>SMS okuma izni</h3><p>Yalnız bankalardan gelen mesajlar okunur; kişisel mesajlarına bakılmaz, filtre telefonda çalışır.</p></div>
+      <div class="adim"><div class="n">2 · 40 sn</div><h3>Son 3 ay okunur</h3><p>Geçmiş SMS'ler kategorilere ayrılır. Yanlış ayrılanı bir dokunuşla düzeltirsin, bir daha karıştırmaz.</p></div>
+      <div class="adim"><div class="n">3 · istersen</div><h3>Fişin fotoğrafı</h3><p>Market fişini çekersen kalem kalem ayrılır: "market" yerine "temizlik, kahvaltılık, atıştırmalık".</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w soz">
+    <div>
+      <blockquote>"Kimse bana 'şunu yeme' demedi. Sadece 23 sayısını gördüm. Ertesi ay 11'e indi, maaş 24'ünü gördü."</blockquote>
+      <cite>Selin Karaca · 24 · hemşire, Ankara</cite>
+    </div>
+    <div class="mini-fis" aria-label="Selin'in iki aylık karşılaştırması">
+      ŞUBAT &nbsp;&nbsp;YEMEK ×23 &nbsp;-5.112,60<br>
+      MART &nbsp;&nbsp;&nbsp;YEMEK ×11 &nbsp;-2.401,90<br>
+      ─────────────────────────<br>
+      HESAP SIFIRLANDI &nbsp;12. → 24. GÜN
+    </div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:0">
+  <div class="w">
+    <h2 style="font-size:clamp(30px,3.6vw,44px)">Abonelik satmıyoruz. Abonelikleri bulduruyoruz.</h2>
+    <div class="fiyat">
+      <div class="paket"><h3>Ücretsiz</h3><div class="tl">0 ₺</div><ul><li>SMS'ten otomatik kategoriler</li><li>Son 3 ayın özeti</li><li>Haftalık sakin bildirim</li></ul><a class="btn bos" href="#">Ücretsiz başla</a></div>
+      <div class="paket tam"><h3>Tam</h3><div class="tl">249 ₺ <small>bir kere, ömür boyu</small></div><ul><li>Sınırsız geçmiş ve ay fişi</li><li>Fiş fotoğrafından kalem kalem ayırma</li><li>Ay sonunu kaydır, kendi rakamlarınla</li><li>Abonelik avcısı</li></ul><a class="btn dolu" href="#">Tam sürümü al</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sss" id="sss" style="padding-top:0">
+  <div class="w" style="max-width:840px">
+    <h2 style="font-size:40px;margin-bottom:12px">Sorular</h2>
+    <details open><summary>Hangi bankalarla çalışıyor?</summary><p>Türkiye'de harcama SMS'i gönderen bütün bankalarla. SMS biçimi değişirse uygulama yeni biçimi telefonda öğrenir; bir güncelleme beklemen gerekmez.</p></details>
+    <details><summary>iPhone'da SMS okunabiliyor mu?</summary><p>iPhone, uygulamaların SMS okumasına izin vermiyor. Orada SMS'i "Paylaş"la Cüzdan Aklı'na gönderir ya da kısayolu bir kez kurarsın; sonrası otomatik. Fiş fotoğrafı iki telefonda da aynı çalışır.</p></details>
+    <details><summary>Telefonumu kaybedersem?</summary><p>Verin şifreli olarak yalnız telefonda durur. İstersen kendi bulut yedeğine (iCloud ya da Google Drive) şifreli bir dosya bırakırsın; anahtarı yalnız sen bilirsin.</p></details>
+    <details><summary>Kredi teklifi ya da reklam gösterecek mi?</summary><p>Hayır. Kimseyle anlaşmamız yok, olamaz da: senin harcamanı biz hiç görmüyoruz.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <h2>Bu ayın fişini, ay bitmeden gör.</h2>
+    <a class="btn dolu" href="#fiyat">İndir</a>
+    <div class="imza">Cüzdan Aklı · İstanbul · destek@cuzdanakli.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+ const MAAS=28400, KIRA=11500, ASG=2600, FAT=1940, DEG=15010, SIP=222.29, ABO=412.97;
+ const w=[];let t=0;for(let d=1;d<=30;d++){const v=Math.exp(-d/7);w.push(v);t+=v}
+ const svg=document.getElementById('graf');const yR=document.getElementById('yemek');const ab=document.getElementById('abo');
+ const fmt=n=>Math.round(n).toLocaleString('tr-TR');
+ function hesap(){
+  const az=(23-+yR.value)*SIP+(ab.checked?ABO:0);
+  const deg=DEG-az;let b=MAAS-KIRA;const pts=[[0,b]];let sifir=null;
+  for(let d=1;d<=30;d++){b-=deg*w[d-1]/t; if(d===3)b-=ASG; if(d===5)b-=FAT; pts.push([d,b]); if(sifir===null&&b<0)sifir=d;}
+  return {pts,sifir,son:b};
+ }
+ function ciz(){
+  const {pts,sifir,son}=hesap();
+  const X=d=>20+d*(560/30),Y=v=>20+(17000-v)*(200/20000);
+  let s='<g stroke="#3A3E44">';[15000,10000,5000,0,-3000].forEach(v=>{s+='<line x1="20" x2="580" y1="'+Y(v)+'" y2="'+Y(v)+'"'+(v===0?' stroke="#8F948C" stroke-width="1.5"':'')+'/>'});s+='</g>';
+  s+='<g fill="#8F948C" font-family="TLisareti, IBM Plex Mono" font-size="11">';[15000,10000,5000,0].forEach(v=>{s+='<text x="584" y="'+(Y(v)+4)+'" text-anchor="end" dy="-6">'+fmt(v)+' ₺</text>'});s+='</g>';
+  const pos=pts.map(p=>X(p[0])+','+Y(Math.max(p[1],0))).join(' ');
+  const neg=pts.filter(p=>p[1]<0);
+  s+='<polyline points="'+pos+'" fill="none" stroke="#5FB3A8" stroke-width="3" stroke-linejoin="round"/>';
+  if(neg.length){const first=pts[pts.indexOf(neg[0])-1];s+='<polyline points="'+[first].concat(neg).map(p=>X(p[0])+','+Y(p[1])).join(' ')+'" fill="none" stroke="#E07A63" stroke-width="3" stroke-dasharray="6 5"/>';}
+  if(sifir){s+='<line x1="'+X(sifir)+'" x2="'+X(sifir)+'" y1="20" y2="240" stroke="#E07A63" stroke-width="1.5"/><text x="'+(X(sifir)+6)+'" y="34" fill="#F2B3A5" font-family="TLisareti, IBM Plex Mono" font-size="13">'+(14+sifir)+' Mart</text>';}
+  svg.innerHTML='<title id="gT">Maaş gününden sonraki 30 günde hesap bakiyesi</title>'+s;
+  document.getElementById('yAdet').textContent=yR.value;
+  const g=document.getElementById('sonucGun'),m=document.getElementById('sonucMetin');
+  if(sifir){g.textContent='Hesap '+sifir+'. gün sıfırlanıyor';g.classList.remove('ok');m.textContent='Ay sonunda '+fmt(-son)+' ₺ karta kalıyor.';}
+  else{g.textContent='Para maaşa yetiyor';g.classList.add('ok');m.textContent='Ay sonunda hesapta '+fmt(son)+' ₺ kalıyor. Kart borcu yok.';}
+ }
+ yR.addEventListener('input',ciz);ab.addEventListener('change',ciz);ciz();
+})();
+</script>
+</body>
+</html>

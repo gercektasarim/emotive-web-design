@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kovan — Kapağı açmadan kovanı dinle</title>
+<meta name="description" content="Kovan, çerçevelerin arasına konan küçük bir mikrofonla arıların vızıltısını dinler; oğul hazırlığını, ana arı kaybını ve zayıflayan koloniyi sesinden fark eder. Arılıkta çekim olmasa da telefonda çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..800,0..100&family=Karla:wght@400;500;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --bal:#E3A22A;        /* süzülmüş çiçek balı */
+  --bal-koyu:#C9841A;
+  --propolis:#2A1A0D;   /* kovan içi propolis */
+  --propolis-2:#3E2A16;
+  --mum:#F5E8C6;        /* balmumu petek */
+  --mavi:#6E97AC;       /* boyalı kovan mavisi */
+  --yesil:#6E8B3D;      /* çam/çayır */
+  --kirmizi:#B5432B;    /* kovan kapağı kırmızısı */
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--mum);color:var(--propolis);font:400 17px/1.6 "Karla",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--propolis);outline-offset:3px}
+.koyu :focus-visible{outline-color:var(--bal)}
+h1,h2,h3{font-family:"Fraunces",serif;font-variation-settings:"SOFT" 100;font-weight:700;line-height:1.02;margin:0;letter-spacing:-.015em}
+.w{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* hero */
+.hero{background:var(--bal);padding-bottom:64px;position:relative;overflow:hidden}
+.ust{display:flex;justify-content:space-between;align-items:center;padding:22px 0;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font:700 26px/1 "Fraunces";text-decoration:none}
+.ust nav{display:flex;gap:26px;font-weight:500}
+.ust nav a{text-decoration:none}
+.ust nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.hero h1{font-size:clamp(50px,8.2vw,124px);font-weight:800;margin:40px 0 0;max-width:11ch}
+.hero-alt{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:end;margin-top:28px}
+.hero-alt p{font-size:20px;line-height:1.5;margin:0;max-width:30em}
+.dugmeler{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.btn{font:700 17px/1 "Karla";padding:16px 22px;border-radius:999px;text-decoration:none;border:2px solid var(--propolis);display:inline-block}
+.btn.dolu{background:var(--propolis);color:var(--mum)}
+.btn.dolu:hover{background:var(--propolis-2)}
+.btn.bos:hover{background:rgba(42,26,13,.08)}
+
+/* ses şeridi */
+.serit{margin-top:44px;background:var(--propolis);color:var(--mum);border-radius:18px;padding:22px 24px 18px}
+.serit-ust{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;font-size:15px;color:#D9C9A6}
+.serit-ust b{color:var(--mum);font-weight:700}
+.serit svg{display:block;width:100%;height:auto;margin-top:10px}
+.olay{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-top:14px;padding-top:16px;border-top:1px solid #4C3720}
+.olay .nokta{width:14px;height:14px;border-radius:50%;background:var(--bal);box-shadow:0 0 0 6px rgba(227,162,42,.22)}
+.olay strong{font:600 22px/1.2 "Fraunces";display:block}
+.olay span{color:#D9C9A6;font-size:15px}
+.olay .gun{font:700 15px/1.3 "Karla";color:var(--bal);text-align:right}
+
+/* dört ses */
+section{padding:84px 0}
+.bas{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:36px}
+.bas h2{font-size:clamp(36px,4.6vw,60px)}
+.bas p{margin:0;max-width:32em;font-size:18px}
+.sesler{border-top:2px solid var(--propolis)}
+.ses{display:grid;grid-template-columns:150px 1.1fr 110px 1.4fr;gap:24px;align-items:center;padding:22px 0;border-bottom:1px solid #D9C69A}
+.ses svg{width:150px;height:44px}
+.ses h3{font-size:24px}
+.ses .hz{font:700 18px/1 "Karla";font-variant-numeric:tabular-nums}
+.ses .hz small{display:block;font-weight:400;font-size:13px;margin-top:4px;color:#6B5233}
+.ses p{margin:0;font-size:16px}
+
+/* arılık haritası */
+.arilik{background:#E9DDB8}
+.harita{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:stretch}
+.yamac{background:linear-gradient(#DCE3C6,#C8D3A6);border-radius:18px;padding:28px 24px 22px;position:relative}
+.yamac .yon{position:absolute;right:18px;top:14px;font-size:13px;color:#4F5A33}
+.kovanlar{display:grid;grid-template-columns:repeat(6,1fr);gap:18px 14px;margin-top:20px}
+.kovanlar button{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;font:700 13px/1 "Karla";color:var(--propolis);border-radius:8px;padding:6px 0}
+.kovanlar button:focus-visible{outline:3px solid var(--propolis);outline-offset:2px}
+.kutu{position:relative;width:62px;height:58px}
+.kutu .cati{position:absolute;left:-4px;right:-4px;top:0;height:10px;background:#5B5149;border-radius:2px}
+.kutu .govde{position:absolute;left:0;right:0;top:10px;bottom:0;border-radius:2px;background:var(--c);box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.kutu .govde::before{content:"";position:absolute;left:0;right:0;top:20px;height:2px;background:rgba(0,0,0,.14)}
+.kutu .govde::after{content:"";position:absolute;left:50%;bottom:6px;width:22px;height:4px;margin-left:-11px;background:#2A1A0D;border-radius:2px}
+.kutu i{position:absolute;right:-6px;top:-6px;width:16px;height:16px;border-radius:50%;border:2px solid #F5E8C6;background:#5E7F3A}
+.kutu i.og{background:var(--bal)}
+.kutu i.an{background:var(--kirmizi)}
+.kutu i.hu{background:#7A4E9A}
+.kutu i.za{background:#8A8178}
+.kovanlar button[aria-pressed="true"] .kutu{transform:translateY(-4px)}
+.kovanlar button[aria-pressed="true"]{text-decoration:underline;text-underline-offset:4px}
+.lejant{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:22px;font-size:14px}
+.lejant span{display:inline-flex;align-items:center;gap:6px}
+.lejant i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.kart{background:var(--propolis);color:var(--mum);border-radius:18px;padding:26px}
+.kart .kno{font:500 14px/1 "Karla";color:#D9C9A6}
+.kart h3{font-size:32px;margin:8px 0 6px;color:var(--bal)}
+.kart .durum{font-size:17px;margin:0 0 16px}
+.kart dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0 0 18px;font-size:15px}
+.kart dt{color:#BFAE8A}
+.kart dd{margin:0}
+.kart .yap{background:#3E2A16;border-radius:10px;padding:14px 16px;font-size:16px}
+.kart .yap b{color:var(--bal);display:block;font-size:13px;letter-spacing:.02em;margin-bottom:4px}
+
+/* çekim yok */
+.dag{background:var(--propolis);color:var(--mum)}
+.dag .w{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.dag h2{font-size:clamp(36px,4.6vw,58px);color:var(--bal)}
+.telefon-durum{border:1px solid #5A4128;border-radius:14px;padding:22px;font-size:16px}
+.td{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:12px 0;border-bottom:1px dashed #5A4128}
+.td:last-child{border-bottom:0}
+.td svg{margin-top:3px}
+.td b{color:var(--bal)}
+
+/* alıntı */
+.soz{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.soz blockquote{margin:0;font:500 clamp(26px,3vw,36px)/1.25 "Fraunces";font-variation-settings:"SOFT" 100}
+.soz cite{display:block;font:400 16px/1.4 "Karla";font-style:normal;margin-top:16px;color:#6B5233}
+.soz .ikinci blockquote{font-size:22px}
+
+/* fiyat — kavanoz etiketi */
+.etiketler{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.etiket{background:#FFF8E6;border:2px solid var(--propolis);border-radius:28px 28px 10px 10px;padding:26px 24px;text-align:center;position:relative}
+.etiket::before{content:"";position:absolute;inset:7px;border:1px solid #CDB27A;border-radius:22px 22px 6px 6px;pointer-events:none}
+.etiket h3{font-size:26px}
+.etiket .fiyat{font:800 46px/1 "Fraunces";margin:12px 0 4px}
+.etiket .birim{font-size:14px;color:#6B5233}
+.etiket ul{list-style:none;padding:0;margin:16px 0 20px;font-size:15px}
+.etiket li{padding:5px 0;border-top:1px dotted #CDB27A}
+.etiket.vurgu{background:var(--bal)}
+.etiket.vurgu::before{border-color:var(--propolis)}
+
+/* sss */
+.sss{max-width:820px}
+.sss details{border-bottom:1px solid #D9C69A;padding:18px 0}
+.sss summary{cursor:pointer;font:600 22px/1.3 "Fraunces";list-style:none}
+.sss summary::-webkit-details-marker{display:none}
+.sss summary::before{content:"›";display:inline-block;width:22px;transition:transform .2s;color:var(--bal-koyu);font-weight:800}
+.sss details[open] summary::before{transform:rotate(90deg)}
+.sss p{margin:8px 0 0 22px}
+
+footer{background:var(--bal);padding:56px 0 26px}
+footer .w{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;align-items:end}
+footer h2{font-size:clamp(32px,4vw,48px);max-width:14ch}
+.alt{width:100%;font-size:14px;border-top:1px solid rgba(42,26,13,.3);padding-top:16px;margin-top:8px}
+
+@media (max-width:900px){
+  .hero-alt,.bas,.harita,.dag .w,.soz{grid-template-columns:1fr}
+  .dugmeler{justify-content:flex-start}
+  .ust nav{display:none}
+  .ses{grid-template-columns:110px 1fr;gap:8px 16px}
+  .ses svg{width:110px}
+  .ses p{grid-column:1/-1}
+  .etiketler{grid-template-columns:1fr}
+  .kovanlar{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:520px){
+  .w{padding:0 16px}
+  .kovanlar{grid-template-columns:repeat(3,1fr)}
+  .olay{grid-template-columns:auto 1fr}
+  .olay .gun{grid-column:2;text-align:left}
+  section{padding:60px 0}
+  .serit{padding:18px 14px}
+  .kaydir{overflow-x:auto;margin:0 -14px;padding:0 14px}
+  .kaydir svg{width:640px;max-width:none}
+  .olay .nokta{display:none}
+  .olay{grid-template-columns:1fr}.olay .gun{grid-column:1}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="w">
+    <div class="ust">
+      <a class="logo" href="#"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="3" y="9" width="24" height="18" rx="2" fill="#2A1A0D"/><rect x="1" y="5" width="28" height="5" rx="1.5" fill="#2A1A0D"/><rect x="11" y="21" width="8" height="2.5" rx="1" fill="#E3A22A"/><path d="M8 15c2-2 4 2 6 0s4 2 6 0 3 1 4 0" stroke="#E3A22A" stroke-width="1.6" fill="none"/></svg>Kovan</a>
+      <nav aria-label="Sayfa içi"><a href="#sesler">Dört ses</a><a href="#arilik">Arılık</a><a href="#fiyat">Fiyat</a><a href="#sss">Sorular</a></nav>
+    </div>
+    <h1>Kapağı açmadan kovanı dinle.</h1>
+    <div class="hero-alt">
+      <p>Çerçevelerin arasına konan parmak boyu bir mikrofon, vızıltının perdesinden oğul hazırlığını, ana arı kaybını ve zayıflayan koloniyi fark eder. Arılığa vardığında telefonuna söyler — dağda çekim olmasa da.</p>
+      <div class="dugmeler"><a class="btn dolu" href="#fiyat">Kovan kulağı edin</a><a class="btn bos" href="#arilik">Arılığı dinle</a></div>
+    </div>
+
+    <div class="serit" aria-label="Kovan 7'nin son 48 saatlik vızıltı kaydı">
+      <div class="serit-ust"><span><b>Kovan 7</b> · mavi kovan · Kafkas · 10 çerçeve</span><span>Pazartesi 00:00 → Çarşamba 00:00 · baskın perde (Hz)</span></div>
+      <div class="kaydir" tabindex="0" aria-label="Grafik; yana kaydırılabilir"><svg viewBox="0 0 960 240" role="img" aria-labelledby="st">
+        <title id="st">Vızıltı perdesi iki gün boyunca 230–260 Hz arasında; Salı sabahı 420–460 Hz'de yedi kısa ötüş var.</title>
+        <g stroke="#4C3720" stroke-width="1">
+          <line x1="0" y1="191.4" x2="960" y2="191.4"/><line x1="0" y1="134.3" x2="960" y2="134.3"/><line x1="0" y1="77.1" x2="960" y2="77.1"/>
+          <line x1="480" y1="0" x2="480" y2="220" stroke-dasharray="3 4"/>
+        </g>
+        <g fill="#BFAE8A" font-family="Karla" font-size="13">
+          <text x="4" y="186">200 Hz</text><text x="4" y="129">300 Hz</text><text x="4" y="72">400 Hz</text>
+          <text x="6" y="238">Pzt 00</text><text x="230" y="238">Pzt 12</text><text x="486" y="238">Salı 00</text><text x="712" y="238">Salı 12</text>
+        </g>
+        <rect x="600" y="30" width="72" height="54" fill="#E3A22A" opacity=".14" rx="4"/>
+        <path d="M0,166.9 L6,168.8 L12,166.1 L18,170.9 L24,168.5 L30,170.4 L36,173.3 L42,171.1 L48,175.1 L54,173.2 L60,176.5 L66,177.1 L72,175.6 L78,173.5 L84,179.0 L90,179.0 L96,176.9 L102,175.2 L108,178.3 L114,180.0 L120,176.5 L126,183.3 L132,178.0 L138,182.2 L144,183.4 L150,183.7 L156,182.4 L162,179.0 L168,183.3 L174,180.4 L180,179.8 L186,181.4 L192,179.9 L198,182.9 L204,182.5 L210,181.0 L216,177.3 L222,178.4 L228,178.6 L234,176.1 L240,176.3 L246,176.7 L252,172.5 L258,172.4 L264,174.8 L270,171.7 L276,171.2 L282,168.0 L288,168.2 L294,170.4 L300,164.9 L306,170.0 L312,167.2 L318,164.2 L324,167.6 L330,164.7 L336,167.1 L342,162.2 L348,161.0 L354,161.9 L360,159.4 L366,162.9 L372,159.9 L378,160.3 L384,160.2 L390,161.0 L396,158.3 L402,157.5 L408,160.8 L414,159.6 L420,163.9 L426,159.8 L432,160.5 L438,158.4 L444,160.0 L450,164.2 L456,164.0 L462,162.6 L468,167.7 L474,165.3 L480,168.0 L486,169.1 L492,170.2 L498,166.1 L504,171.3 L510,171.2 L516,171.1 L522,168.6 L528,174.8 L534,173.1 L540,173.2 L546,171.7 L552,172.9 L558,173.3 L564,178.0 L570,177.7 L576,178.7 L582,175.7 L588,175.7 L594,179.8 L600,177.2 L606,174.6 L612,172.7 L618,169.6 L624,168.1 L630,170.1 L636,172.3 L642,170.5 L648,172.4 L654,173.1 L660,172.9 L666,177.3 L672,180.1 L678,179.1 L684,178.3 L690,182.1 L696,175.8 L702,176.0 L708,174.8 L714,174.6 L720,176.7 L726,176.0 L732,177.3 L738,172.9 L744,176.0 L750,175.2 L756,173.4 L762,172.9 L768,170.9 L774,172.1 L780,171.6 L786,169.8 L792,169.4 L798,166.9 L804,168.5 L810,162.0 L816,163.2 L822,165.8 L828,164.6 L834,163.4 L840,162.9 L846,164.2 L852,158.9 L858,157.6 L864,161.0 L870,160.8 L876,163.4 L882,163.3 L888,161.7 L894,162.4 L900,158.7 L906,163.5 L912,164.7 L918,158.7 L924,162.0 L930,165.1 L936,162.9 L942,167.0 L948,164.2 L954,161.8 L960,163.2" fill="none" stroke="#F5E8C6" stroke-width="2.2" stroke-linejoin="round"/>
+        <g fill="#E3A22A">
+          <circle cx="165" cy="64.6" r="4"/><circle cx="143" cy="68.1" r="4"/><circle cx="169" cy="54.5" r="4"/>
+          <circle cx="650" cy="62" r="5"/><circle cx="614" cy="44.1" r="5"/><circle cx="663" cy="42.6" r="5"/><circle cx="652" cy="43.9" r="5"/><circle cx="647" cy="65.9" r="5"/><circle cx="633" cy="61.1" r="5"/><circle cx="602" cy="73.2" r="5"/>
+        </g>
+        <text x="684" y="50" fill="#E3A22A" font-family="Karla" font-weight="700" font-size="14">tüt · tüt · tüt</text>
+      </svg></div>
+      <div class="olay">
+        <span class="nokta" aria-hidden="true"></span>
+        <div><strong>Ana arı ötüşü: oğul hazırlığı başlamış olabilir.</strong><span>Salı sabahı yedi kez 420–460 Hz "tüt" sesi; pazartesi üç kezdi. Genelde 3–6 gün içinde oğul çıkar.</span></div>
+        <div class="gun">Salı 06:10–09:00<br>Arılığa girince bildirildi</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="sesler">
+  <div class="w">
+    <div class="bas">
+      <h2>Bir kovanın dört sesi var. Kovan dördünü de tanır.</h2>
+      <p>Yıllardır arıcılık yapan biri kapağa kulak verince çoğunu duyar. Ama haftada bir, kırk kovanın başında, ve her açışta kuluçkayı üşüterek. Kovan her saat dinler; sana yalnız değişeni söyler.</p>
+    </div>
+    <div class="sesler">
+      <div class="ses">
+        <svg viewBox="0 0 150 44" aria-hidden="true"><path d="M0 22 Q10 16 20 22 T40 22 T60 22 T80 22 T100 22 T120 22 T150 22" stroke="#6E8B3D" stroke-width="3" fill="none"/></svg>
+        <h3>Sakin koloni</h3>
+        <div class="hz">220–260 Hz<small>gün içinde yavaş iner çıkar</small></div>
+        <p>Düzenli, gece biraz pesleşen uğultu. Bildirim yok; haftalık özette "iyi" yazar.</p>
+      </div>
+      <div class="ses">
+        <svg viewBox="0 0 150 44" aria-hidden="true"><path d="M0 30 Q10 26 20 30 T40 30" stroke="#C9841A" stroke-width="3" fill="none"/><path d="M44 30 L48 8 L54 8 L58 30 M70 30 L74 8 L80 8 L84 30 M96 30 L100 8 L106 8 L110 30" stroke="#C9841A" stroke-width="3" fill="none"/><path d="M114 30 Q124 26 134 30 T150 30" stroke="#C9841A" stroke-width="3" fill="none"/></svg>
+        <h3>Oğul hazırlığı</h3>
+        <div class="hz">400–500 Hz<small>kısa, kesik "tüt" ve "kuak"</small></div>
+        <p>Yeni ana arıların ötüşü. Sayısı günden güne artıyorsa ana arı memelerine bakma, bölme yapma ya da kat verme zamanı.</p>
+      </div>
+      <div class="ses">
+        <svg viewBox="0 0 150 44" aria-hidden="true"><path d="M0 26 Q8 14 16 26 T32 24 T48 18 T64 12 T80 20 T96 10 T112 18 T128 8 T150 14" stroke="#B5432B" stroke-width="3" fill="none"/></svg>
+        <h3>Ana arı kaybı</h3>
+        <div class="hz">+40–80 Hz<small>tiz, dalgalı "ağlama"</small></div>
+        <p>Anasız kalan koloni birkaç saat içinde huzursuzlaşır. Çerçevede taze yumurta yoksa ana ver ya da ana memesi bırak.</p>
+      </div>
+      <div class="ses">
+        <svg viewBox="0 0 150 44" aria-hidden="true"><path d="M0 22 Q10 18 20 22 T40 22 Q50 20 60 23 T80 24 Q90 25 100 25 T120 26 T150 27" stroke="#8A8178" stroke-width="3" fill="none" stroke-dasharray="1 0"/><path d="M0 22 H150" stroke="#8A8178" stroke-width="1" opacity=".4"/></svg>
+        <h3>Sönen ses</h3>
+        <div class="hz">−%30 ses<small>haftalar içinde azalan güç</small></div>
+        <p>Koloni zayıflıyor. Çoğu zaman varroa, açlık ya da yağmacılık. Uygulama sana önce bir varroa sayımı yapmanı söyler.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="arilik" id="arilik">
+  <div class="w">
+    <div class="bas">
+      <h2>Arılığa varınca, hangi kovanı açacağını bil.</h2>
+      <p>Telefonu cebinde, arılığın kenarına geldiğin an on iki kovanın son haftası sıralanır. Bir kovana dokun.</p>
+    </div>
+    <div class="harita">
+      <div class="yamac">
+        <span class="yon">Yatağan · Kafaca arılığı · 12 kovan</span>
+        <div class="kovanlar" role="group" aria-label="Arılıktaki kovanlar">
+          <button type="button" data-k="1"><span class="kutu" style="--c:#F2EDE1"><span class="cati"></span><span class="govde"></span><i></i></span>1</button>
+          <button type="button" data-k="2"><span class="kutu" style="--c:#E3C24A"><span class="cati"></span><span class="govde"></span><i></i></span>2</button>
+          <button type="button" data-k="3"><span class="kutu" style="--c:#6E97AC"><span class="cati"></span><span class="govde"></span><i></i></span>3</button>
+          <button type="button" data-k="4"><span class="kutu" style="--c:#8DAA6A"><span class="cati"></span><span class="govde"></span><i class="hu"></i></span>4</button>
+          <button type="button" data-k="5"><span class="kutu" style="--c:#F2EDE1"><span class="cati"></span><span class="govde"></span><i></i></span>5</button>
+          <button type="button" data-k="6"><span class="kutu" style="--c:#C96B4B"><span class="cati"></span><span class="govde"></span><i></i></span>6</button>
+          <button type="button" data-k="7" aria-pressed="true"><span class="kutu" style="--c:#6E97AC"><span class="cati"></span><span class="govde"></span><i class="og"></i></span>7</button>
+          <button type="button" data-k="8"><span class="kutu" style="--c:#E3C24A"><span class="cati"></span><span class="govde"></span><i></i></span>8</button>
+          <button type="button" data-k="9"><span class="kutu" style="--c:#F2EDE1"><span class="cati"></span><span class="govde"></span><i class="za"></i></span>9</button>
+          <button type="button" data-k="10"><span class="kutu" style="--c:#8DAA6A"><span class="cati"></span><span class="govde"></span><i></i></span>10</button>
+          <button type="button" data-k="11"><span class="kutu" style="--c:#6E97AC"><span class="cati"></span><span class="govde"></span><i class="an"></i></span>11</button>
+          <button type="button" data-k="12"><span class="kutu" style="--c:#C96B4B"><span class="cati"></span><span class="govde"></span><i></i></span>12</button>
+        </div>
+        <div class="lejant">
+          <span><i style="background:#5E7F3A"></i>Sakin</span><span><i style="background:#E3A22A"></i>Oğul hazırlığı</span><span><i style="background:#B5432B"></i>Ana kaybı şüphesi</span><span><i style="background:#7A4E9A"></i>Huzursuz</span><span><i style="background:#8A8178"></i>Sönen ses</span>
+        </div>
+      </div>
+      <div class="kart" aria-live="polite">
+        <div class="kno" id="kNo">Kovan 7 · mavi · Kafkas · 10 çerçeve</div>
+        <h3 id="kBas">Oğul hazırlığı</h3>
+        <p class="durum" id="kDur">Ana arı ötüşü iki günde 3'ten 7'ye çıktı.</p>
+        <dl id="kDl"><dt>Baskın perde</dt><dd>244 Hz (geçen hafta 238)</dd><dt>Ötüş</dt><dd>Salı 06:10–09:00, 7 kez</dd><dt>Son açılış</dt><dd>19 gün önce</dd></dl>
+        <div class="yap"><b>Bugün</b><span id="kYap">Bu kovanı aç. Ana arı memelerine bak; kapalıysa bölme yap ya da üstüne kat ver.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dag koyu">
+  <div class="w">
+    <div>
+      <h2>Arılık dağın başında. Telefon "Hizmet yok" diyor. Kovan yine söyler.</h2>
+      <p style="font-size:18px;max-width:32em">Ses kovanın içinde dinlenir, yalnız perde ve şiddet özeti saklanır. Arılığa 30 metre yaklaşınca telefonun bu özetleri Bluetooth'la alır ve yorumu orada yapar. Arının sesi ne bir sunucuya gider ne bize; ham ses hiç kaydedilmez.</p>
+    </div>
+    <div class="telefon-durum" aria-label="Arılıkta telefonun durumu">
+      <div class="td"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 16h2M6 16V13M10 16V10M14 16V6" stroke="#8A7A5C" stroke-width="2.4" stroke-linecap="round"/><path d="M2 2l14 14" stroke="#B5432B" stroke-width="2"/></svg><span><b>Şebeke:</b> yok. Kafaca'da sinyal yalnız köy meydanında.</span></div>
+      <div class="td"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 5l8 8-4 4V1l4 4-8 8" stroke="#E3A22A" stroke-width="2" fill="none"/></svg><span><b>Bluetooth:</b> 12 kovandan 12'si bağlandı, 4 saniye.</span></div>
+      <div class="td"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="4" y="1" width="10" height="16" rx="2" stroke="#E3A22A" stroke-width="2" fill="none"/></svg><span><b>Yorum:</b> telefonda yapıldı. 7 günlük özet 180 KB.</span></div>
+      <div class="td"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="7" width="14" height="9" rx="1" stroke="#E3A22A" stroke-width="2" fill="none"/><path d="M5 7V5a4 4 0 0 1 8 0v2" stroke="#E3A22A" stroke-width="2" fill="none"/></svg><span><b>Pil:</b> kovan kulağında %71. İki AA pil bir sezon gider.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="w soz">
+    <div>
+      <blockquote>"Eskiden her pazar kırk kovanı tek tek açardım. Şimdi arılığa varınca telefon üçünü söylüyor, onları açıyorum. Bu bahar tek oğul kaçırmadım."</blockquote>
+      <cite>İsmail Aydoğdu · 40 kovan, çam balı · Yatağan, Muğla</cite>
+    </div>
+    <div class="ikinci">
+      <blockquote>"Ana arının öldüğünü üçüncü gün değil, ilk akşam öğrendim. Kovanı kurtaran o iki gün oldu."</blockquote>
+      <cite>Zeynep Kurt · 14 kovan, ikinci yılı · Kabadüz, Ordu</cite>
+    </div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:0">
+  <div class="w">
+    <div class="bas">
+      <h2>Uygulama ücretsiz. Kovan kulağı bir kere alınır.</h2>
+      <p>Abonelik yok. Mikrofon çerçevelerin arasına, kapağın altına girer; arılar birkaç günde üstünü propolisle sıvar, bu normal.</p>
+    </div>
+    <div class="etiketler">
+      <div class="etiket"><h3>Uygulama</h3><div class="fiyat">0 ₺</div><div class="birim">Android ve iPhone</div><ul><li>Sınırsız kovan</li><li>Arılık haritası, kovan defteri</li><li>Haftalık özet, çevrimdışı</li></ul><a class="btn bos" href="#">Telefona indir</a></div>
+      <div class="etiket vurgu"><h3>Kovan kulağı</h3><div class="fiyat">1.250 ₺</div><div class="birim">tek kovan için, bir kere</div><ul><li>Parmak boyu mikrofon, 2 × AA pil</li><li>Bir sezon pil, 3 yıl garanti</li><li>Ilık suyla temizlenir</li></ul><a class="btn dolu" href="#">Sipariş ver</a></div>
+      <div class="etiket"><h3>Arılık seti</h3><div class="fiyat">10.900 ₺</div><div class="birim">10 kovan kulağı</div><ul><li>Adet başı 1.090 ₺</li><li>Kovan numarası etiketleri</li><li>Kargo dahil, 2 iş günü</li></ul><a class="btn bos" href="#">Seti al</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="sss" style="padding-top:0">
+  <div class="w sss">
+    <h2 style="font-size:44px;margin-bottom:12px">Arıcıların sorduğu</h2>
+    <details open><summary>Mikrofon arıları rahatsız eder mi?</summary><p>Ses çıkarmaz, ısıtmaz, titreşmez. Çerçeve aralığına girecek kadar ince. İlk birkaç gün arılar etrafını propolisle kapatır; mikrofon bunun içinden de duyar.</p></details>
+    <details><summary>Hangi kovan tipine uyar?</summary><p>Langstroth ve Dadant tipi tüm standart kovanlara. Ruşet ve kütük kovanlarda kapak altına bantla tutturulur, sonuçlar biraz daha az isabetli olur.</p></details>
+    <details><summary>Hastalığı da söyler mi?</summary><p>Teşhis koymaz. Sesin haftalar içinde sönmesi, gece huzursuzluğu ve düzensiz uğultu gibi işaretleri görür ve "bu kovanda varroa sayımı yap" der. Kesin karar senin ve muayenenin.</p></details>
+    <details><summary>Göçer arıcılık yapıyorum, taşırken ne olacak?</summary><p>Kovan kulağı yerinde kalır. Uygulamada kovanın yeni yerini işaretlersin; kamyonda geçen saatler özetten ayrılır.</p></details>
+    <details><summary>Kayıtlar nerede duruyor?</summary><p>Yalnız senin telefonunda ve kovan kulağının hafızasında (son 14 gün). Hesap açman bile gerekmez.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <h2>Bu hafta hangi kovanı açacağını kovan söylesin.</h2>
+    <a class="btn dolu" href="#fiyat">Kovan kulağı edin</a>
+    <div class="alt">Kovan · Muğla · merhaba@kovan.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.kaydir').forEach(k=>k.scrollLeft=k.scrollWidth);
+const K={
+ 1:["beyaz · Kafkas · 10 çerçeve","Sakin","Uğultu düzenli, gece pesleşiyor.",[["Baskın perde","236 Hz"],["Ses gücü","geçen haftayla aynı"],["Son açılış","12 gün önce"]],"Açmana gerek yok. Kat ihtiyacına 10 gün sonra bak."],
+ 2:["sarı · Anadolu · 9 çerçeve","Sakin","Nektar akımı güçlü, gündüz uğultusu yüksek.",[["Baskın perde","248 Hz"],["Ses gücü","+%8"],["Son açılış","9 gün önce"]],"Açmana gerek yok. Bal katı dolmak üzere olabilir."],
+ 3:["mavi · Kafkas · 10 çerçeve","Sakin","Her şey yolunda görünüyor.",[["Baskın perde","232 Hz"],["Ses gücü","geçen haftayla aynı"],["Son açılış","15 gün önce"]],"Açmana gerek yok."],
+ 4:["yeşil · Kafkas · 8 çerçeve","Huzursuz","Akşamüstü sert, tıslayan sesler; üç gündür.",[["Baskın perde","262 Hz, akşam 290"],["Saat","17:00–19:30"],["Son açılış","8 gün önce"]],"Eşek arısı saldırısı olabilir. Uçuş deliğini daralt, arılığa tuzak as."],
+ 5:["beyaz · Anadolu · 9 çerçeve","Sakin","Uğultu düzenli.",[["Baskın perde","240 Hz"],["Ses gücü","−%2"],["Son açılış","12 gün önce"]],"Açmana gerek yok."],
+ 6:["kırmızı · Kafkas · 10 çerçeve","Sakin","Uğultu düzenli, sabah erken uçuş.",[["Baskın perde","238 Hz"],["Ses gücü","+%3"],["Son açılış","12 gün önce"]],"Açmana gerek yok."],
+ 7:["mavi · Kafkas · 10 çerçeve","Oğul hazırlığı","Ana arı ötüşü iki günde 3'ten 7'ye çıktı.",[["Baskın perde","244 Hz (geçen hafta 238)"],["Ötüş","Salı 06:10–09:00, 7 kez"],["Son açılış","19 gün önce"]],"Bu kovanı aç. Ana arı memelerine bak; kapalıysa bölme yap ya da üstüne kat ver."],
+ 8:["sarı · Kafkas · 10 çerçeve","Sakin","Uğultu düzenli.",[["Baskın perde","234 Hz"],["Ses gücü","geçen haftayla aynı"],["Son açılış","12 gün önce"]],"Açmana gerek yok."],
+ 9:["beyaz · Anadolu · 7 çerçeve","Sönen ses","Ses gücü üç haftada %34 düştü.",[["Baskın perde","226 Hz"],["Ses gücü","−%34, 3 hafta"],["Son açılış","22 gün önce"]],"Bu kovanı aç. Önce varroa sayımı yap; stok balı kontrol et."],
+ 10:["yeşil · Kafkas · 10 çerçeve","Sakin","Uğultu düzenli.",[["Baskın perde","242 Hz"],["Ses gücü","+%2"],["Son açılış","12 gün önce"]],"Açmana gerek yok."],
+ 11:["mavi · Kafkas · 9 çerçeve","Ana kaybı şüphesi","Dün 18:20'den beri tiz, dalgalı uğultu.",[["Baskın perde","238 → 304 Hz"],["Başlangıç","Dün 18:20"],["Son açılış","6 gün önce"]],"Bugün aç. Taze yumurta yoksa ana ver ya da 7 numaradan ana memeli çerçeve al."],
+ 12:["kırmızı · Anadolu · 9 çerçeve","Sakin","Uğultu düzenli.",[["Baskın perde","236 Hz"],["Ses gücü","geçen haftayla aynı"],["Son açılış","12 gün önce"]],"Açmana gerek yok."]
+};
+const bs=document.querySelectorAll('.kovanlar button');
+bs.forEach(b=>{if(!b.hasAttribute('aria-pressed'))b.setAttribute('aria-pressed','false');
+ b.setAttribute('aria-label','Kovan '+b.dataset.k+': '+K[b.dataset.k][1]);
+ b.addEventListener('click',()=>{const d=K[b.dataset.k];
+  bs.forEach(x=>x.setAttribute('aria-pressed',x===b));
+  kNo.textContent='Kovan '+b.dataset.k+' · '+d[0];kBas.textContent=d[1];kDur.textContent=d[2];
+  kDl.innerHTML=d[3].map(r=>'<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>').join('');kYap.textContent=d[4];});});
+</script>
+</body>
+</html>

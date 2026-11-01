@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Çevirmen Cebi — Çarşıda, otelde, lokantada 40 dilde konuşun; internetsiz</title>
+<meta name="description" content="Çevirmen Cebi otel, çarşı ve lokanta çalışanları için cep telefonunda internetsiz konuşma çevirisi yapar. 40 dil; kubbenin altında, çekmeyen dükkânda da çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,500;0,700;0,800;1,500;1,700;1,800&family=Mulish:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --indigo:#1F2E5C; --indigo-d:#16213F; --madder:#9B2C2C; --saffron:#E0A43A; --stone:#EDE5D6; --stone-d:#DCD0BA;
+  --ink:#241B16; --soft:#55473B; --wool:#FAF6EE;
+  --serif:"Vollkorn", Georgia, serif; --sans:"Mulish", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--stone);color:var(--ink);font:400 19px/1.6 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:3px;border-radius:3px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.kilim{height:34px;background-color:var(--madder);
+  background-image:
+    linear-gradient(135deg,var(--saffron) 25%,transparent 25%),linear-gradient(225deg,var(--saffron) 25%,transparent 25%),
+    linear-gradient(45deg,var(--indigo) 25%,transparent 25%),linear-gradient(315deg,var(--indigo) 25%,transparent 25%);
+  background-size:34px 34px;background-position:17px 0,17px 0,0 0,0 0}
+.hero{background:var(--indigo);color:var(--wool)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:20px;padding-bottom:10px;gap:16px}
+.logo{font:800 26px/1 var(--serif);text-decoration:none;color:var(--wool)}
+.logo span{color:var(--saffron)}
+header nav{display:flex;gap:24px;font-size:17px}
+header nav a{text-decoration:none;color:#CFD5E6}
+.btn{display:inline-block;padding:15px 24px;border-radius:4px;font:700 18px/1 var(--sans);text-decoration:none;background:var(--saffron);color:var(--ink);border:2px solid var(--saffron)}
+.btn.l{background:transparent;color:var(--wool);border-color:#8C97BB}
+.btn.d{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.btn:hover{background:var(--wool);border-color:var(--wool);color:var(--ink)}
+.hero .main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:52px;align-items:center;padding-top:40px;padding-bottom:70px}
+h1{font:800 clamp(40px,5vw,66px)/1.04 var(--serif);margin:0 0 20px;letter-spacing:-.01em}
+.lede{font-size:21px;color:#D4D9E8;max-width:28em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 14px}
+.fine{font-size:16px;color:#AEB7D2}
+/* the table */
+.table{background:var(--madder);padding:22px;border-radius:6px;position:relative;
+  background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 2px,transparent 2px 6px)}
+.table::after{content:"";position:absolute;inset:8px;border:2px dashed rgba(224,164,58,.5);border-radius:3px;pointer-events:none}
+.phone{background:#121726;border-radius:26px;padding:12px;max-width:400px;margin:0 auto;position:relative;z-index:1;box-shadow:0 30px 40px -24px rgba(0,0,0,.7)}
+.half{background:var(--wool);color:var(--ink);border-radius:16px;padding:16px 18px;min-height:150px}
+.half.them{transform:rotate(180deg);background:#FFF3D9;margin-bottom:10px}
+.half small{display:block;font:700 13px var(--sans);color:var(--soft);margin-bottom:6px;letter-spacing:.02em}
+.half p{margin:0;font:500 20px/1.35 var(--serif)}
+.half .q{margin-top:10px;padding-top:10px;border-top:1px dashed var(--stone-d);font:400 16px/1.4 var(--sans);color:var(--soft)}
+.half .q b{color:var(--madder)}
+.langs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:14px;position:relative;z-index:1}
+.langs button{font:700 15px var(--sans);padding:7px 12px;border-radius:999px;border:2px solid var(--wool);background:transparent;color:var(--wool);cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--wool);color:var(--madder)}
+.cap{text-align:center;color:#F6E7D3;font-size:15px;margin:10px 0 0;position:relative;z-index:1}
+/* sections */
+section{padding:90px 0}
+h2{font:800 clamp(32px,3.8vw,48px)/1.08 var(--serif);margin:0 0 18px;max-width:17em}
+.p{max-width:36em;color:var(--soft)}
+.dome .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:60px;align-items:center}
+.arch svg{width:100%;height:auto;display:block}
+.facts{list-style:none;padding:0;margin:20px 0 0}
+.facts li{padding:12px 0;border-top:1px solid var(--stone-d)}
+.facts b{color:var(--madder)}
+/* trades */
+.trades{background:var(--wool)}
+.tg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:34px}
+.trade{border-top:5px solid var(--indigo);padding-top:14px}
+.trade:nth-child(2){border-color:var(--madder)} .trade:nth-child(3){border-color:var(--saffron)} .trade:nth-child(4){border-color:#5C7A4E}
+.trade h3{font:700 22px/1.2 var(--serif);margin:0 0 4px}
+.trade .w{font-size:15px;color:var(--soft);margin:0 0 12px}
+.trade ul{list-style:none;padding:0;margin:0}
+.trade li{font:italic 500 17px/1.4 var(--serif);padding:8px 0;border-bottom:1px dotted var(--stone-d)}
+/* how */
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;margin-top:30px}
+.how h3{font:700 22px var(--serif);margin:0 0 6px;color:var(--indigo)}
+.how p{margin:0;color:var(--soft)}
+/* voices */
+.voices{background:var(--indigo);color:var(--wool)}
+.voices .vg{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px}
+.voices blockquote{margin:0;font:500 clamp(23px,2.5vw,30px)/1.38 var(--serif)}
+.voices blockquote.s{font-size:20px;border-left:3px solid var(--saffron);padding-left:20px}
+.voices cite{display:block;font:500 16px var(--sans);font-style:normal;color:#B8C0DA;margin-top:14px}
+/* price */
+.prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:30px}
+.pr{background:var(--wool);border-radius:6px;padding:26px;display:flex;flex-direction:column;border:2px solid transparent}
+.pr.on{border-color:var(--madder)}
+.pr h3{margin:0;font:700 21px var(--serif)}
+.pr .a{font:800 40px/1.1 var(--serif);color:var(--madder);margin:10px 0 4px}
+.pr ul{padding-left:20px;color:var(--soft);font-size:17px;margin:10px 0 20px}
+.pr .btn{margin-top:auto;text-align:center}
+details{border-top:1px solid var(--stone-d);padding:16px 0}
+summary{font:700 21px var(--serif);cursor:pointer}
+details p{color:var(--soft);max-width:44em;margin:8px 0 0}
+footer{background:var(--indigo-d);color:#C4CBE0;padding:32px 0;font-size:16px}
+footer .credit{margin-top:8px;font-size:13px}
+@media (max-width:960px){
+  .hero .main,.dome .wrap,.voices .vg{grid-template-columns:1fr}
+  .tg{grid-template-columns:1fr 1fr}
+  .how,.prices{grid-template-columns:1fr}
+  header nav{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .tg{grid-template-columns:1fr}
+  .table{padding:14px}
+  .half p{font-size:18px}
+  section{padding:64px 0}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <header>
+    <div class="wrap">
+      <a class="logo" href="#">Çevirmen <span>Cebi</span></a>
+      <nav aria-label="Ana menü"><a href="#kubbe">İnternetsiz</a><a href="#esnaf">Esnafın dili</a><a href="#fiyat">Fiyat</a></nav>
+    </div>
+  </header>
+  <div class="wrap main">
+    <div>
+      <h1>Halıyı siz anlatın, telefon her dile çevirsin.</h1>
+      <p class="lede">Telefonu tezgâha koyun. Siz Türkçe konuşun, misafir kendi dilinde. Çevirmen Cebi iki tarafı da dinler, iki tarafa da kendi dilinde yazar ve okur. 40 dil, internet olmadan.</p>
+      <div class="cta"><a class="btn" href="#fiyat">Android için indir</a><a class="btn l" href="#fiyat">iPhone için indir</a></div>
+      <p class="fine">Halıcı, kuyumcu, otel resepsiyonu, lokanta, eczane, taksi.</p>
+    </div>
+    <div class="table" aria-label="Örnek: telefon tezgâhta, üst yarısı misafire ters çevrilmiş">
+      <div class="phone">
+        <div class="half them" lang="es" id="them" aria-live="polite"><small id="themLabel">Misafir · İspanyolca</small><p id="themText">Esta alfombra es de seda de Kayseri; se teje un metro cuadrado al mes. Se la dejo en 2.400 euros.</p></div>
+        <div class="half"><small>Siz · Türkçe</small><p>Bu halı Kayseri ipeği, ayda bir metrekare dokunur. Size 2.400 avroya bırakırım.</p>
+          <div class="q"><b>Misafir sordu:</b> <span id="ask">Madrid’e kargoyla gönderebilir misiniz?</span></div></div>
+      </div>
+      <div class="langs" role="group" aria-label="Misafirin dili">
+        <button type="button" data-l="es" aria-pressed="true">İspanyolca</button>
+        <button type="button" data-l="ja">Japonca</button>
+        <button type="button" data-l="de">Almanca</button>
+        <button type="button" data-l="ar">Arapça</button>
+        <button type="button" data-l="ko">Korece</button>
+      </div>
+      <p class="cap">Üst yarı misafire dönük. Uçak modu açık.</p>
+    </div>
+  </div>
+  <div class="kilim" aria-hidden="true"></div>
+</div>
+
+<main>
+<section class="dome" id="kubbe">
+  <div class="wrap">
+    <div class="arch">
+      <svg viewBox="0 0 460 300" role="img" aria-label="Çarşı kemeri altında dükkân çizimi; telefonda sinyal yok">
+        <rect width="460" height="300" fill="#DCD0BA"/>
+        <path d="M40 300V130a190 110 0 0 1 380 0v170" fill="#EDE5D6" stroke="#9B2C2C" stroke-width="10"/>
+        <path d="M40 130a190 110 0 0 1 380 0" fill="none" stroke="#E0A43A" stroke-width="4" stroke-dasharray="16 10"/>
+        <rect x="120" y="170" width="220" height="130" fill="#9B2C2C"/>
+        <g fill="#E0A43A"><path d="M230 186l26 24-26 24-26-24z"/><path d="M230 246l26 24-26 24-26-24z"/></g>
+        <g fill="#1F2E5C"><path d="M160 210l14 14-14 14-14-14z"/><path d="M300 210l14 14-14 14-14-14z"/></g>
+        <g transform="translate(330 60)"><rect width="56" height="90" rx="10" fill="#121726"/><g fill="#55473B"><rect x="12" y="62" width="6" height="10"/><rect x="21" y="56" width="6" height="16"/><rect x="30" y="50" width="6" height="22"/><rect x="39" y="44" width="6" height="28"/></g><path d="M8 40l40 36M48 40L8 76" stroke="#E0A43A" stroke-width="4"/></g>
+      </svg>
+    </div>
+    <div>
+      <h2>Kubbenin altında çekmez. Çevirmen Cebi yine konuşur.</h2>
+      <p class="p">Çarşının taş duvarları, han içleri, bodrumdaki depo… İnternet çevirileri orada susar, misafir de “sonra gelirim” deyip çıkar. Çevirmen Cebi’nin dil modelleri telefonun içindedir; çeviri için sinyale ihtiyacı yoktur.</p>
+      <ul class="facts">
+        <li><b>Konuşma</b> telefondan çıkmaz. Misafirin söylediği otel adı, kargo adresi kimsenin sunucusuna gitmez.</li>
+        <li><b>Pazarlık</b> sizin aranızdadır. Kayıt tutulmaz; isterseniz konuşma bitince “Temizle”ye basarsınız.</li>
+        <li><b>Diller</b> ilk kurulumda Wi-Fi’la iner; dil başına yaklaşık 120 MB.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="trades" id="esnaf">
+  <div class="wrap">
+    <h2>Her esnafın kendi kelimeleri var.</h2>
+    <p class="p">Genel çeviri “kilim” ile “halı”yı karıştırır, “Hereke”yi bilmez. Çevirmen Cebi’nin esnaf sözlükleri işinizin kelimelerini doğru çevirir.</p>
+    <div class="tg">
+      <div class="trade"><h3>Halıcı</h3><p class="w">düğüm, yün, kök boya, el dokuma</p><ul><li>“Metrekarede 900 bin düğüm var.”</li><li>“Boyası kök boya, yıkanınca solmaz.”</li><li>“Kargo sigortası fiyata dahil.”</li></ul></div>
+      <div class="trade"><h3>Otel resepsiyonu</h3><p class="w">oda, kahvaltı, havalimanı transferi</p><ul><li>“Kahvaltı 07:00–10:30 arası, terasta.”</li><li>“Odanız saat 14:00’te hazır olur.”</li><li>“Transfer için 6 saat önceden haber verin.”</li></ul></div>
+      <div class="trade"><h3>Lokanta</h3><p class="w">alerjen, acı, helal, vejetaryen</p><ul><li>“Bu yemekte ceviz var.”</li><li>“Acısını az yapalım mı?”</li><li>“Hesabı ayrı mı alalım?”</li></ul></div>
+      <div class="trade"><h3>Kuyumcu</h3><p class="w">ayar, gram, işçilik, fatura</p><ul><li>“Bu 22 ayar, 8,4 gram.”</li><li>“Vergi iadesi formunu doldurayım.”</li><li>“Yüzüğü yarın öğlene küçültürüz.”</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Nasıl konuşulur?</h2>
+    <div class="how">
+      <div><h3>Tezgâha koyun</h3><p>Ekran ikiye bölünür, üst yarısı misafire döner. Kimse telefonu eline almaz; misafir de sizin yüzünüze bakar.</p></div>
+      <div><h3>Sırayla konuşun</h3><p>Dil kendiliğinden anlaşılır. Misafir İspanyolca konuşur, siz Türkçe; telefon çeviriyi hem yazar hem sesli okur.</p></div>
+      <div><h3>Rakamlar net kalır</h3><p>Fiyat, gram, metrekare, saat: rakamlar iki tarafta da büyük yazılır ki pazarlıkta yanlış anlaşılma olmasın.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="voices">
+  <div class="wrap vg">
+    <blockquote>“Yirmi beş yıl el kol işaretiyle halı sattım. Japon bir çift geçen ay bir saat oturdu, kök boyayı, düğümü sordu, çay içtik. Telefon olmasa beş dakikada kalkarlardı.”<cite>Nurettin Aydemir — Halıcı, Kapalıçarşı Takkeciler Sokağı</cite></blockquote>
+    <blockquote class="s">“Arap misafirlerimize alerjeni artık kendi dillerinde söylüyorum. Mutfakla salon arası koşturma bitti.”<cite>Zeynep Kaplan — Şef garson, Sultanahmet</cite></blockquote>
+  </div>
+</section>
+
+<section id="fiyat">
+  <div class="wrap">
+    <h2>Fiyat</h2>
+    <div class="prices">
+      <div class="pr"><h3>Çırak</h3><div class="a">Ücretsiz</div><ul><li>İngilizce, Almanca, Rusça, Arapça, İspanyolca</li><li>Günde 30 dakika konuşma</li></ul><a class="btn d" href="#">Android için indir</a></div>
+      <div class="pr on"><h3>Usta</h3><div class="a">149 ₺ / ay</div><ul><li>40 dil, sınırsız konuşma</li><li>Esnaf sözlükleri (halı, otel, lokanta, kuyumcu, eczane)</li><li>Yıllık ödemede 1.290 ₺</li></ul><a class="btn d" href="#">iPhone için indir</a></div>
+      <div class="pr"><h3>Han / otel</h3><div class="a">Teklif</div><ul><li>10 telefon ve üstü</li><li>Kendi ürün ve menü sözlüğünüz</li><li>Çarşıda yerinde kurulum</li></ul><a class="btn d" href="#">Bizi arayın</a></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:10px">
+  <div class="wrap" style="max-width:860px">
+    <h2>Esnafın sorduğu</h2>
+    <details open><summary>Gürültülü çarşıda anlar mı?</summary><p>Çarşı uğultusu, çay ocağı ve müzikte test edildi. Telefonu konuşan kişiye yakın tutmak yeter; ekranda o anda kimin konuştuğu görünür.</p></details>
+    <details><summary>Hangi 40 dil?</summary><p>Avrupa dillerinin çoğu, Arapça, Farsça, Rusça, Ukraynaca, Japonca, Korece, Çince (Mandarin), Hintçe, Endonezce ve daha fazlası. Tam liste uygulamada; her dil ayrı indirilir.</p></details>
+    <details><summary>Eski telefonda çalışır mı?</summary><p>2021 ve sonrası orta seviye bir telefon yeterli. Telefonda en az 2 GB boş yer bırakın.</p></details>
+  </div>
+</section>
+</main>
+
+<div class="kilim" aria-hidden="true"></div>
+<footer>
+  <div class="wrap">Çevirmen Cebi · Beyazıt, İstanbul · merhaba@cevirmencebi.com · Hoş geldiniz · Welcome · Bienvenido · ようこそ · أهلاً
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var L={
+    es:["İspanyolca","Esta alfombra es de seda de Kayseri; se teje un metro cuadrado al mes. Se la dejo en 2.400 euros.","Madrid’e kargoyla gönderebilir misiniz?","ltr"],
+    ja:["Japonca","この絨毯はカイセリのシルクです。ひと月に1平方メートルしか織れません。2,400ユーロでお譲りします。","Boyası doğal mı? Yıkanınca solar mı?","ltr"],
+    de:["Almanca","Dieser Teppich ist aus Kayseri-Seide, pro Monat wird ein Quadratmeter geknüpft. Ich gebe ihn Ihnen für 2.400 Euro.","Fatura verip vergi iadesi yapabilir misiniz?","ltr"],
+    ar:["Arapça","هذا السجاد من حرير قيصري، يُنسج متر مربع واحد في الشهر. أتركه لك بـ ٢٤٠٠ يورو.","Daha küçük ölçüsü var mı, salon için?","rtl"],
+    ko:["Korece","이 카펫은 카이세리 실크로, 한 달에 1제곱미터씩 짭니다. 2,400유로에 드릴게요.","Kredi kartı geçiyor mu?","ltr"]
+  };
+  var them=document.getElementById('them'),tl=document.getElementById('themLabel'),tt=document.getElementById('themText'),ask=document.getElementById('ask');
+  [].forEach.call(document.querySelectorAll('[data-l]'),function(b){b.addEventListener('click',function(){
+    var x=L[b.dataset.l];tl.textContent='Misafir · '+x[0];tt.textContent=x[1];ask.textContent=x[2];them.setAttribute('lang',b.dataset.l);tt.setAttribute('dir',x[3]);
+    [].forEach.call(document.querySelectorAll('[data-l]'),function(y){y.setAttribute('aria-pressed',y===b?'true':'false')});})});
+})();
+</script>
+</body>
+</html>

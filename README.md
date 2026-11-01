@@ -56,6 +56,28 @@ Skill önce eksik bilgileri sorar (ya da "sormadan üret" denirse varsayımları
 üç yorum taslağı çıkarıp puanlar, seçileni kodlar, ekran görüntüsünden yeniden puanlar
 ve teslimde seçilen yorumu, elenenleri, son puanı ve varsayımları bir paragrafla söyler.
 
+## Örnek arşivi: 100 cihaz-içi yapay zekâ uygulaması
+
+**Canlı:** https://emotive-web-design.caliptic.com
+
+Cihaz üzerinde çalışan yapay zekâ ile hayatı kolaylaştıran 100 kurgusal uygulama için
+100 ayrı tanıtım sitesi. Ortak şablon yok: her site bu skill'in akışıyla, o uygulamanın
+ziyaretçisine ve hedef duygusuna göre ayrı tasarlandı ve puanlandı (ortalama 26,8/30).
+
+| Yol | İçerik |
+|---|---|
+| `showcase/apps.json` | 100 uygulama: ne yapar, ziyaretçi, çıkış duygusu |
+| `showcase/<slug>/index.html` | Site (tek dosya, yalnız Google Fonts) |
+| `showcase/<slug>/notes.md` | 2-3 yön taslağı, puanlar, seçim, revizyonlar |
+| `showcase/<slug>/meta.json` | Seçilen yorum, palet, fontlar, son puan |
+| `showcase/tools/` | Brif, ekran görüntüsü ve galeri betikleri |
+
+Galeriyi yeniden üretip yayınlamak için:
+
+```bash
+node showcase/tools/build-index.mjs && npx wrangler deploy
+```
+
 ## Lisans
 
 MIT

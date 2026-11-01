@@ -1,0 +1,21 @@
+{
+  "slug": "terapi-arasi",
+  "name": "Terapi Arası",
+  "interpretation": "Ödev kâğıdı",
+  "world": "Salı öğleden sonra terapi odası: gül kurusu kadife koltuk, okuma lambası, yeşil ciltli kitaplar ve masada A4 düşünce kaydı formu.",
+  "palette": [
+    "#F2F2EE",
+    "#FFFFFF",
+    "#9C4A55",
+    "#22386A",
+    "#2F5D5A",
+    "#D9A441"
+  ],
+  "fonts": [
+    "Source Serif 4",
+    "Figtree"
+  ],
+  "score": 26,
+  "lowest": "Konudan gelen palet/doku",
+  "moment": "Düşünce kaydında \"Duygu, şimdi\" kaydırıcısı ve \"Terapistimle paylaş\" anahtarı: varsayılan kapalı, karar danışanda."
+}

@@ -1,0 +1,20 @@
+{
+  "slug": "sinav-ritmi",
+  "name": "Sınav Ritmi",
+  "interpretation": "Optik form ve duvardaki geri sayım",
+  "world": "Masa lambası altında deneme sınavının pembe-kırmızı baskılı optik formu, kurşun kalemle doldurulmuş baloncuklar ve duvara asılı '200 gün' geri sayımı.",
+  "palette": [
+    "#FFFDFB",
+    "#FBEAEA",
+    "#C23A52",
+    "#1C1C21",
+    "#605E67"
+  ],
+  "fonts": [
+    "Saira Condensed",
+    "Saira"
+  ],
+  "score": 28,
+  "lowest": "Duygu yolculuğu",
+  "moment": "Unutma eğrisi: bir konu seçilir, 'Bugün tekrar ettim' denince eğri yeniden yükselir, daha yavaş iner ve sıradaki tekrar günü ileri atılır."
+}

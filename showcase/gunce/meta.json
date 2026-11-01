@@ -1,0 +1,21 @@
+{
+  "slug": "gunce",
+  "name": "Günce",
+  "interpretation": "Kendini yazan defter",
+  "world": "Akşam 22:30 mutfak: uyuyan çocuklar, sıcak çay, çekmecede hiç yazılmamış mavi çizgili okul defteri ve lacivert mürekkep.",
+  "palette": [
+    "#FBFBF7",
+    "#B9CCE0",
+    "#D8857E",
+    "#1F2D4D",
+    "#3F7E69",
+    "#B9821F"
+  ],
+  "fonts": [
+    "Literata",
+    "Work Sans"
+  ],
+  "score": 28,
+  "lowest": "Konudan gelen palet/doku",
+  "moment": "Oynat düğmesine basınca akşam kaydının defter sayfasına satır satır yazılması, duygu kelimelerinin renkli altı çizgisi."
+}

@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taş Anlatır — Kitabeyi, freski, peribacasını okuyan çevrimdışı rehber</title>
+<meta name="description" content="Kamerayı bir kitabeye, kilise freskine ya da kubbeye tutun; Taş Anlatır hikâyesini anlatır, Osmanlıca kitabeleri okur. İnternetsiz, rehbersiz gezenler için.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cave:#1A1512; --cave-2:#241D18; --cave-3:#2F2620;
+  --tuff:#D9BFA0; --tuff-pale:#EBDCC7; --rose:#C98466;
+  --lapis:#3A5BA0; --lapis-deep:#22335E; --ochre:#D29A3E; --fresco:#A4432E;
+  --serif:"Alegreya", Georgia, serif; --sans:"Alegreya Sans", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cave);color:var(--tuff-pale);font-family:var(--sans);font-size:19px;line-height:1.6}
+a{color:var(--ochre)}
+:focus-visible{outline:2px solid var(--ochre);outline-offset:4px}
+.wrap{max-width:1160px;margin:0 auto;padding-left:28px;padding-right:28px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:var(--ochre);color:#000;padding:8px;z-index:9}
+
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:74px}
+.mark{font-family:var(--serif);font-size:25px;font-weight:700;color:var(--tuff-pale);text-decoration:none;display:flex;gap:10px;align-items:center}
+.mark svg{width:28px;height:28px}
+header nav a{color:#BFAE98;text-decoration:none;margin-left:22px;font-size:17px}
+header nav a:hover{color:var(--tuff-pale)}
+
+/* hero: centered viewfinder at dusk */
+.hero{position:relative;text-align:center;padding:30px 0 230px;overflow:hidden;
+  background:
+    radial-gradient(60% 50% at 50% 30%, rgba(58,91,160,.35), transparent 70%),
+    linear-gradient(180deg,#1E2440 0%, #2C2540 40%, #4A3340 72%, #7A4E43 100%)}
+.ridge{position:absolute;left:0;right:0;bottom:0;height:220px;pointer-events:none}
+.ridge svg{width:100%;height:100%}
+.hero .eyeline{font-family:var(--serif);font-style:italic;color:#CDB89C;font-size:19px;margin:20px 0 8px}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.4vw,72px);line-height:1.04;margin:0 auto 18px;max-width:16ch;letter-spacing:-.01em;color:#F3E7D6}
+.hero .lede{max-width:46ch;margin:0 auto 34px;color:#D8C7B0;font-size:20px}
+
+.finder{position:relative;z-index:2;margin:0 auto;width:min(860px,100%);display:grid;grid-template-columns:1.1fr .9fr;gap:0;text-align:left;
+  background:var(--cave-2);border:1px solid #4A3C30;border-radius:4px;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.stone{position:relative;padding:28px;background:
+   radial-gradient(circle at 30% 20%, rgba(255,255,255,.05), transparent 40%),
+   repeating-radial-gradient(circle at 70% 80%, rgba(0,0,0,.05) 0 2px, transparent 2px 7px),
+   #B99D80;min-height:330px;display:flex;align-items:center;justify-content:center}
+.corner{position:absolute;width:28px;height:28px;border:3px solid #fff;opacity:.9}
+.corner.tl{top:12px;left:12px;border-right:0;border-bottom:0}.corner.tr{top:12px;right:12px;border-left:0;border-bottom:0}
+.corner.bl{bottom:12px;left:12px;border-right:0;border-top:0}.corner.br{bottom:12px;right:12px;border-left:0;border-top:0}
+.slab{background:#A88B6D;border:6px double #7C6249;padding:18px 18px 14px;width:100%;box-shadow:inset 0 2px 10px rgba(0,0,0,.35)}
+.slab button{all:unset;display:block;width:100%;text-align:center;font-family:"Amiri",serif;direction:rtl;color:#3B2A1C;font-size:30px;line-height:1.6;cursor:pointer;border-radius:3px;text-shadow:0 1px 0 rgba(255,255,255,.35);transition:background .2s,color .2s}
+.slab button:hover,.slab button[aria-pressed="true"]{background:rgba(255,236,190,.5);color:#1E140C}
+.slab button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.slab hr{border:0;border-top:2px solid #7C6249;margin:6px 0}
+.scanline{position:absolute;left:12px;right:12px;height:2px;background:linear-gradient(90deg,transparent,#fff,transparent);top:20%;opacity:.7;animation:scan 3.6s ease-in-out infinite alternate}
+@keyframes scan{to{top:78%}}
+.hint{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:14px;color:#2A1D12;font-weight:700}
+.reading{padding:26px 26px 24px;display:flex;flex-direction:column;gap:12px}
+.reading .where{font-size:14px;color:#BFAE98;letter-spacing:.02em}
+.reading .translit{font-family:var(--serif);font-style:italic;font-size:26px;line-height:1.25;color:#F3E7D6;min-height:66px}
+.reading .meaning{font-size:18px;color:#D8C7B0;min-height:58px}
+.reading .story{border-top:1px solid #4A3C30;padding-top:12px;font-family:var(--serif);font-size:18px;color:#E6D6BF}
+.reading .listen{display:flex;gap:10px;align-items:center;font-size:15px;color:#BFAE98}
+.reading .listen i{width:30px;height:30px;border-radius:50%;background:var(--ochre);display:grid;place-items:center;color:#1A1512;font-style:normal}
+
+.dl{margin-top:36px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;position:relative;z-index:2}
+.btn{display:inline-block;padding:14px 24px;font-weight:700;text-decoration:none;font-size:17px;border-radius:2px}
+.btn.o{background:var(--ochre);color:#1A1512}
+.btn.g{border:1px solid #8F7A62;color:var(--tuff-pale)}
+.off{font-size:15px;color:#BFAE98;margin-top:14px;position:relative;z-index:2}
+
+section{padding:110px 0}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,3.8vw,50px);line-height:1.1;margin:0 0 18px;color:#F3E7D6;max-width:20ch}
+.lead{color:#D8C7B0;max-width:56ch;font-size:20px}
+
+/* three things it reads */
+.reads{background:var(--cave-2)}
+.read-row{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;padding:56px 0;border-top:1px solid #3B3028}
+.read-row:first-of-type{border-top:0}
+.read-row.flip{grid-template-columns:1.1fr .9fr}
+.read-row.flip .vis{order:2}
+.read-row h3{font-family:var(--serif);font-weight:700;font-size:30px;margin:0 0 10px;color:#F3E7D6}
+.read-row p{color:#D8C7B0;margin:0 0 14px;max-width:48ch}
+.read-row .out{font-family:var(--serif);font-style:italic;color:var(--tuff);border-left:3px solid var(--ochre);padding-left:16px;font-size:19px}
+.vis{border-radius:3px;overflow:hidden;border:1px solid #4A3C30}
+.vis svg{display:block;width:100%;height:auto}
+
+/* underground proof */
+.deep{background:linear-gradient(180deg,var(--cave) 0%, #120E0C 100%)}
+.deep-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.levels{font-size:16px;border-left:2px solid #4A3C30}
+.levels div{display:grid;grid-template-columns:90px 1fr;gap:10px;padding:10px 0 10px 18px;color:#BFAE98;position:relative}
+.levels div::before{content:"";position:absolute;left:-7px;top:18px;width:12px;height:12px;border-radius:50%;background:#4A3C30}
+.levels div b{color:var(--tuff-pale);font-weight:500}
+.levels div.now{color:var(--tuff-pale)}
+.levels div.now::before{background:var(--ochre);box-shadow:0 0 0 5px rgba(210,154,62,.25)}
+
+/* day route */
+.day-route{background:var(--tuff);color:#2A1E15}
+.day-route h2{color:#2A1E15}
+.day-route .lead{color:#4A3A2C}
+.route{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:40px;position:relative}
+.route::before{content:"";position:absolute;left:0;right:0;top:15px;border-top:2px dashed #7C6249}
+.stop{position:relative;padding:40px 22px 0 0}
+.stop::before{content:"";position:absolute;top:6px;left:0;width:18px;height:18px;border-radius:50%;background:var(--fresco);border:3px solid var(--tuff)}
+.stop .t{font-size:15px;color:#5A4634}
+.stop b{display:block;font-family:var(--serif);font-size:24px;line-height:1.2;margin:2px 0 6px}
+.stop p{margin:0;font-size:17px;color:#4A3A2C}
+
+.voice{text-align:center}
+.voice blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(24px,2.8vw,34px);line-height:1.4;max-width:30ch;margin:0 auto;color:#F3E7D6}
+.voice cite{display:block;margin-top:20px;font-style:normal;color:#BFAE98;font-size:17px}
+
+.price{background:var(--cave-2)}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.pack{border:1px solid #4A3C30;padding:26px;border-radius:3px;background:var(--cave)}
+.pack.main{border-color:var(--ochre)}
+.pack h3{font-family:var(--serif);font-size:24px;margin:0;color:#F3E7D6}
+.pack .amt{font-family:var(--serif);font-size:44px;color:var(--ochre);margin:6px 0}
+.pack .amt small{font-family:var(--sans);font-size:16px;color:#BFAE98}
+.pack ul{padding-left:18px;color:#D8C7B0;font-size:17px;margin:0 0 18px}
+
+.faq .q{display:grid;grid-template-columns:1fr 1.4fr;gap:40px;padding:24px 0;border-top:1px solid #3B3028}
+.faq .q h3{font-family:var(--serif);font-weight:500;font-size:22px;margin:0;color:#F3E7D6}
+.faq .q p{margin:0;color:#D8C7B0}
+
+footer{border-top:1px solid #3B3028;padding:40px 0 30px;color:#BFAE98;font-size:16px}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .made{margin-top:24px;font-size:14px}
+footer .made a{color:#A8967F}
+
+@media (max-width:900px){
+  header nav a:not(:last-child){display:none}
+  .finder{grid-template-columns:1fr}
+  .read-row,.read-row.flip,.deep-grid{grid-template-columns:1fr;gap:28px}
+  .read-row.flip .vis{order:0}
+  .route{grid-template-columns:1fr 1fr;row-gap:30px}
+  .packs{grid-template-columns:1fr}
+  .faq .q{grid-template-columns:1fr;gap:8px}
+  section{padding:76px 0}
+}
+@media (max-width:480px){
+  .wrap{padding-left:16px;padding-right:16px}
+  .slab button{font-size:24px}
+  .route{grid-template-columns:1fr}
+  .route::before{display:none}
+  .hero .lede{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){.scanline{animation:none;top:50%}.slab button{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe geç</a>
+<header>
+  <div class="wrap">
+    <a class="mark" href="#"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 2c-3 0-4 4-4 8v4c-3 1-6 6-6 12h20c0-6-3-11-6-12v-4c0-4-1-8-4-8z" fill="#D9BFA0"/><circle cx="14" cy="9" r="1.6" fill="#1A1512"/></svg>Taş Anlatır</a>
+    <nav aria-label="Ana menü"><a href="#okur">Neyi okur?</a><a href="#yeralti">Kapsama yokken</a><a href="#rota">Bir gün</a><a href="#paket">Paketler</a></nav>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero">
+  <div class="ridge" aria-hidden="true">
+    <svg viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice"><g fill="#241D18"><path d="M-31 260 C-8.05 200.6 8.78 170 10.82 160 L29.18 160 C31.22 170 48.05 200.6 71 260Z"/><ellipse cx="20" cy="158" rx="15" ry="9"/><path d="M74 260 C103.69999999999999 211.05 125.48 189 128.12 179 L151.88 179 C154.52 189 176.3 211.05 206 260Z"/><ellipse cx="140" cy="177" rx="20" ry="9"/><path d="M151 260 C178.45 183.0 198.58 138 201.02 128 L222.98 128 C225.42 138 245.55 183.0 273 260Z"/><path d="M239 260 C261.5 185.2 278.0 142 280.0 132 L298.0 132 C300.0 142 316.5 185.2 339 260Z"/><ellipse cx="289" cy="130" rx="15" ry="9"/><path d="M347 260 C368.15 163.75 383.66 103 385.54 93 L402.46 93 C404.34 103 419.85 163.75 441 260Z"/><ellipse cx="394" cy="91" rx="14" ry="9"/><path d="M454 260 C470.65 163.2 482.86 102 484.34 92 L497.66 92 C499.14 102 511.35 163.2 528 260Z"/><ellipse cx="491" cy="90" rx="11" ry="9"/><path d="M541 260 C564.85 208.3 582.34 184 584.46 174 L603.54 174 C605.66 184 623.15 208.3 647 260Z"/><ellipse cx="594" cy="172" rx="16" ry="9"/><path d="M642 260 C668.55 215.45 688.02 197 690.38 187 L711.62 187 C713.98 197 733.45 215.45 760 260Z"/><path d="M754 260 C781.0 186.3 800.8 144 803.2 134 L824.8 134 C827.2 144 847.0 186.3 874 260Z"/><ellipse cx="814" cy="132" rx="18" ry="9"/><path d="M849 260 C878.7 202.25 900.48 173 903.12 163 L926.88 163 C929.52 173 951.3 202.25 981 260Z"/><ellipse cx="915" cy="161" rx="20" ry="9"/><path d="M1000 260 C1024.75 221.5 1042.9 208 1045.1 198 L1064.9 198 C1067.1 208 1085.25 221.5 1110 260Z"/><path d="M1143 260 C1167.75 162.10000000000002 1185.9 100 1188.1 90 L1207.9 90 C1210.1 100 1228.25 162.10000000000002 1253 260Z"/><path d="M1230 260 C1257.9 191.8 1278.36 154 1280.84 144 L1303.16 144 C1305.64 154 1326.1 191.8 1354 260Z"/><ellipse cx="1292" cy="142" rx="19" ry="9"/><path d="M1353 260 C1381.8 210.5 1402.92 188 1405.48 178 L1428.52 178 C1431.08 188 1452.2 210.5 1481 260Z"/><ellipse cx="1417" cy="176" rx="19" ry="9"/><rect x="0" y="236" width="1440" height="24"/></g></svg>
+  </div>
+  <div class="wrap">
+    <p class="eyeline">Nevşehir, akşamüstü. Rehber yok, sinyal yok. Bir çeşme, üstünde okuyamadığınız bir yazı.</p>
+    <h1>Kamerayı tutun, taş anlatsın.</h1>
+    <p class="lede">Osmanlıca kitabeleri okur, freskteki azizi tanır, peribacasının nasıl oluştuğunu anlatır. Hepsi telefonunuzda, internetsiz.</p>
+
+    <div class="finder">
+      <div class="stone">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <span class="scanline" aria-hidden="true"></span>
+        <div class="slab" role="group" aria-label="Kitabe satırları; bir satır seçin">
+          <button type="button" data-l="0" aria-pressed="true" lang="ota">صاحب الخيرات والحسنات</button>
+          <hr>
+          <button type="button" data-l="1" aria-pressed="false" lang="ota">وزير اعظم ابراهيم پاشا</button>
+          <hr>
+          <button type="button" data-l="2" aria-pressed="false" lang="ota">سنة ١١٣٩</button>
+        </div>
+        <span class="hint">Bir satıra dokunun</span>
+      </div>
+      <div class="reading" aria-live="polite">
+        <div class="where">Çeşme kitabesi · Damat İbrahim Paşa Külliyesi, Nevşehir · örnek okuma</div>
+        <div class="translit" id="tr">Sâhibü'l-hayrât ve'l-hasenât</div>
+        <div class="meaning" id="mn">"Hayırların ve iyiliklerin sahibi." Bağışı yapanı anan kalıp bir açılış.</div>
+        <div class="story" id="st">Nevşehir, bir köyken sadrazam olan bir çocuğun memleketi diye bugünkü haline geldi. Bu çeşme, onun köyüne yaptırdığı külliyenin parçası.</div>
+        <div class="listen"><i aria-hidden="true">▶</i>Sesli anlatım · 1 dk 40 sn</div>
+      </div>
+    </div>
+    <div class="dl"><a class="btn o" href="#paket">iPhone için indir</a><a class="btn g" href="#paket">Android için indir</a></div>
+    <p class="off">Kapadokya paketi 1,1 GB · bir kez indirin, vadide internet aramayın.</p>
+  </div>
+</section>
+
+<section class="reads" id="okur">
+  <div class="wrap">
+    <h2>Taşın üç dili var. Üçünü de okur.</h2>
+    <div class="read-row">
+      <div class="vis">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Kaya kilisesi duvarında lacivert zeminli bir fresk; ortada halelı bir figür, kamera çerçevesi ve etiket 'Aziz Basileios, 11. yüzyıl'">
+          <rect width="520" height="300" fill="#6B5240"/>
+          <path d="M60 300 V120 Q260 -10 460 120 V300Z" fill="#22335E"/>
+          <circle cx="260" cy="110" r="38" fill="#D29A3E"/>
+          <circle cx="260" cy="112" r="24" fill="#C98466"/>
+          <path d="M210 300 V170 Q260 140 310 170 V300Z" fill="#A4432E"/>
+          <rect x="236" y="180" width="48" height="70" fill="#EBDCC7" opacity=".85"/>
+          <g fill="none" stroke="#fff" stroke-width="3"><path d="M190 60 h-16 v16"/><path d="M330 60 h16 v16"/><path d="M190 270 h-16 v-16"/><path d="M330 270 h16 v-16"/></g>
+          <rect x="300" y="24" width="196" height="30" rx="3" fill="#1A1512"/>
+          <text x="312" y="45" fill="#EBDCC7" font-family="Alegreya Sans" font-size="15">Aziz Basileios · 11. yy</text>
+        </svg>
+      </div>
+      <div>
+        <h3>Fresk</h3>
+        <p>Kayaya oyulmuş kiliselerin kubbesindeki, apsisindeki figürleri tanır: kim olduğunu, elindeki kitabın ve kıyafetin neden öyle çizildiğini, lacivertin o zamanlar ne kadar pahalı olduğunu.</p>
+        <p class="out">"Elindeki kapalı kitap, yazdığı kurallara bağlılığı simgeler. Kayseri piskoposuydu; bu vadideki keşişlerin yaşam düzenini o kurdu."</p>
+      </div>
+    </div>
+    <div class="read-row flip">
+      <div class="vis">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Peribacası kesiti: üstte sert bazalt şapka, altta yumuşak tüf katmanları ve aşınma okları">
+          <rect width="520" height="300" fill="#2A2236"/>
+          <path d="M0 300 V250 H520 V300Z" fill="#8F7358"/>
+          <path d="M228 250 C232 180 236 130 244 96 L276 96 C284 130 288 180 292 250Z" fill="#D9BFA0"/>
+          <path d="M226 210 H294 M232 170 H288 M238 130 H282" stroke="#C4A584" stroke-width="3"/>
+          <ellipse cx="260" cy="92" rx="38" ry="14" fill="#5A4A3E"/>
+          <g fill="#BFAE98" font-family="Alegreya Sans" font-size="15"><text x="312" y="96">bazalt şapka: sert</text><text x="312" y="176">tüf: Erciyes ve Hasandağı külü</text><text x="312" y="236">rüzgâr + yağmur, binlerce yıl</text></g>
+          <g stroke="#BFAE98" stroke-width="1.5"><line x1="300" y1="92" x2="308" y2="92"/><line x1="296" y1="172" x2="308" y2="172"/><line x1="296" y1="232" x2="308" y2="232"/></g>
+          <g stroke="#3A5BA0" stroke-width="2" fill="none"><path d="M150 140 h50 l-8 -6 m8 6 l-8 6"/><path d="M150 200 h56 l-8 -6 m8 6 l-8 6"/></g>
+        </svg>
+      </div>
+      <div>
+        <h3>Kaya</h3>
+        <p>Peribacasına, vadiye, kaya oyma bir eve tutun; taşın nereden geldiğini ve neden bu şekli aldığını anlatır. Jeoloji ders kitabı gibi değil, bir çobanın torununa anlatacağı gibi.</p>
+        <p class="out">"Şapkayı görüyor musunuz? Altındaki yumuşak tüfü yağmurdan o korudu. Şapkası düşen bacalar birkaç kuşakta erir."</p>
+      </div>
+    </div>
+    <div class="read-row">
+      <div class="vis">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Cami kubbesi içi: merkezde hat yazısı, okunuşu ekranda">
+          <rect width="520" height="300" fill="#1E2440"/>
+          <circle cx="260" cy="150" r="128" fill="#EBDCC7"/>
+          <circle cx="260" cy="150" r="104" fill="none" stroke="#22335E" stroke-width="10"/>
+          <circle cx="260" cy="150" r="58" fill="#22335E"/>
+          <text x="260" y="162" fill="#D29A3E" font-family="Amiri" font-size="34" text-anchor="middle">الله</text>
+          <g fill="#A4432E"><circle cx="260" cy="36" r="6"/><circle cx="260" cy="264" r="6"/><circle cx="146" cy="150" r="6"/><circle cx="374" cy="150" r="6"/></g>
+        </svg>
+      </div>
+      <div>
+        <h3>Kitabe ve hat</h3>
+        <p>Osmanlıca ve Arapça yazıları okur, Latin harfleriyle verir, bugünkü Türkçeye çevirir. Ebced hesabıyla gizlenmiş tarihleri bulur, Miladi takvime çevirir.</p>
+        <p class="out">"Son mısranın harf değerleri toplanınca 1139 çıkıyor: 1726-27. Şair tarihi bir kelime oyununa saklamış."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="deep" id="yeralti">
+  <div class="wrap deep-grid">
+    <div>
+      <h2>Yeraltı şehrinin yedinci katında da anlatır.</h2>
+      <p class="lead">Ihlara Vadisi'nin dibinde, kaya kiliselerinin içinde, Derinkuyu'nun alt katlarında telefon çekmez. Taş Anlatır'ın tüm bilgisi, tanıma modeli ve sesli anlatımları bölge paketinin içinde. Çektiğiniz kare bir yere gönderilmez, telefonda okunur ve silinir; galerinize bile kaydedilmez, siz istemedikçe.</p>
+    </div>
+    <div class="levels" role="img" aria-label="Yeraltı şehri katları ve kapsama durumu: yüzeyde 4G, birinci katta zayıf, ikinci kattan itibaren sinyal yok; Taş Anlatır yedinci katta da çalışıyor">
+      <div><b>Yüzey</b>4G · rehber uygulamaları çalışır</div>
+      <div><b>1. kat</b>tek çizgi, ahırlar ve şaraphane</div>
+      <div><b>3. kat</b>sinyal yok · havalandırma bacası</div>
+      <div><b>5. kat</b>sinyal yok · sürgü taşı kapı</div>
+      <div class="now"><b>7. kat</b>sinyal yok · Taş Anlatır sürgü taşını anlatıyor</div>
+    </div>
+  </div>
+</section>
+
+<section class="day-route" id="rota">
+  <div class="wrap">
+    <h2>Kendi hızınızda bir gün.</h2>
+    <p class="lead">Uygulama, ne kadar vaktiniz olduğunu sorar ve yürüyerek ya da arabayla gidebileceğiniz bir rota önerir. Grup turunun beklediği yerde beklemezsiniz; merak ettiğiniz yerde kalırsınız.</p>
+    <div class="route">
+      <div class="stop"><span class="t">09.00 · 2 saat</span><b>Göreme Açık Hava Müzesi</b><p>Karanlık Kilise'nin freskleri, tek tek.</p></div>
+      <div class="stop"><span class="t">11.30 · 1 saat</span><b>Uçhisar Kalesi</b><p>Vadilerin adını ve oluşumunu tepeden.</p></div>
+      <div class="stop"><span class="t">14.00 · 1,5 saat</span><b>Paşabağları</b><p>Üç başlı peribacaları ve keşiş hücreleri.</p></div>
+      <div class="stop"><span class="t">17.00 · 40 dk</span><b>Nevşehir Külliyesi</b><p>Çeşme kitabesi, gün batarken.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="voice">
+  <div class="wrap">
+    <blockquote>"Ürgüp'te bir mezar taşının önünde yarım saat kaldım. Taşın üstündeki fesin, gülün ne anlama geldiğini anlattı; ölen kadının ebe olduğunu yazıdan okudu. Bir tur otobüsü yanımdan geçip gitti."</blockquote>
+    <cite>Deniz Arıkan · Eskişehir · emekli tarih öğretmeni, Kapadokya'yı tek başına gezdi</cite>
+  </div>
+</section>
+
+<section class="price" id="paket">
+  <div class="wrap">
+    <h2>Bir kez indirin, vadide internet aramayın.</h2>
+    <div class="packs">
+      <div class="pack"><h3>Deneme</h3><div class="amt">0 ₺</div><ul><li>Günde 5 okuma</li><li>Kitabe okuma dahil</li><li>Sesli anlatım yok</li></ul><a class="btn g" href="#">Ücretsiz başla</a></div>
+      <div class="pack main"><h3>Kapadokya</h3><div class="amt">149 ₺ <small>tek seferlik</small></div><ul><li>Göreme, Ürgüp, Avanos, Ihlara, Derinkuyu, Kaymaklı</li><li>380+ yapı, 1.200+ fresk sahnesi</li><li>Sesli anlatım, Türkçe ve İngilizce</li><li>1,1 GB, internetsiz</li></ul><a class="btn o" href="#">Paketi al</a></div>
+      <div class="pack"><h3>Bütün Anadolu</h3><div class="amt">449 ₺ <small>tek seferlik</small></div><ul><li>14 bölge paketi, istediğiniz zaman indirin</li><li>Osmanlıca kitabe okuma her yerde</li><li>Gelecek paketler dahil</li></ul><a class="btn g" href="#">Paketleri gör</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+    <h2>Merak edilenler</h2>
+    <div class="q"><h3>Aşınmış, yarısı okunmayan kitabelerde ne olur?</h3><p>Okuyabildiği harfleri gösterir, emin olmadığı yerleri soru işaretiyle işaretler ve kayıtlı bir okuma varsa onunla karşılaştırır. Tahmin ettiğinde bunu açıkça söyler.</p></div>
+    <div class="q"><h3>Bilgiler nereden geliyor?</h3><p>Yayınlanmış kazı raporları, vakıf kayıtları ve sanat tarihi kaynakları. Her anlatımın altında kaynağı yazar; tartışmalı tarihlerde iki görüşü de verir.</p></div>
+    <div class="q"><h3>Müzelerde fotoğraf yasaksa?</h3><p>Kurallara uyun. Fresklerin çoğu paketin içinde kayıtlı; kilisenin adını seçip duvarı ekranda keşfedebilirsiniz, kamera açmadan.</p></div>
+    <div class="q"><h3>Paket ne kadar yer kaplar?</h3><p>Kapadokya 1,1 GB. Otelin Wi-Fi'ında indirip gezerken uçak modunda kullanabilirsiniz.</p></div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="row"><span>Taş Anlatır · Ürgüp'te hazırlandı</span><span>merhaba@tasanlatir.app</span></div>
+    <div class="made"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  var L=[
+    ['Sâhibü\'l-hayrât ve\'l-hasenât','"Hayırların ve iyiliklerin sahibi." Bağışı yapanı anan kalıp bir açılış.','Nevşehir, bir köyken sadrazam olan bir çocuğun memleketi diye bugünkü haline geldi. Bu çeşme, onun köyüne yaptırdığı külliyenin parçası.'],
+    ['Vezîr-i a\'zam İbrâhîm Paşa','"Sadrazam İbrahim Paşa." Lale Devri\'nin sadrazamı, Damat İbrahim Paşa.','Muşkara denen bu köyde doğdu, İstanbul\'da padişahın damadı oldu. Köyüne cami, medrese, han, hamam ve bu çeşmeyi yaptırdı; adı Nevşehir, "yeni şehir" oldu.'],
+    ['Sene 1139','Hicri 1139, Miladi 1726-27.','Kitabedeki tarih bazen rakamla, bazen ebced hesabıyla bir mısraya saklanır. Bu satır açık yazılmış: yapı bitince dikilen taşın son satırı.']
+  ];
+  var b=document.querySelectorAll('.slab button'),tr=document.getElementById('tr'),mn=document.getElementById('mn'),st=document.getElementById('st');
+  b.forEach(function(x){x.addEventListener('click',function(){
+    b.forEach(function(y){y.setAttribute('aria-pressed','false')});x.setAttribute('aria-pressed','true');
+    var l=L[+x.dataset.l];tr.textContent=l[0];mn.textContent=l[1];st.textContent=l[2];
+  })});
+})();
+</script>
+</body>
+</html>

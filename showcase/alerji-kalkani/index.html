@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alerji Kalkanı — Fıstığın on iki adı var</title>
+<meta name="description" content="Alerji Kalkanı ambalajdaki içindekiler listesini okur; çocuğunuzun fıstık, susam, süt alerjenlerini arachis, tahin, kazein gibi gizli adlarıyla da yakalar. Markette internet olmadan çalışır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Roboto+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFF0EC; --label:#FFFFFF; --ink:#131413; --ink-2:#4F524E; --rule:#131413;
+  --marker:#F3E24E; --marker-2:#FBF3A6; --safe:#0D6A50; --safe-bg:#DDEFE7; --stop:#A3221A; --stop-bg:#F8E1DE; --warn:#7A5A00; --warn-bg:#FBF0CC;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-size:18px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid #1B4FD6;outline-offset:3px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.cond{font-family:"Roboto Condensed",sans-serif}
+
+header.top{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:2px solid var(--rule)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:21px;text-decoration:none}
+.brand svg{width:28px;height:28px}
+header.top nav{display:flex;gap:22px;align-items:center;font-size:16px}
+header.top nav a{text-decoration:none}
+header.top nav a:hover{text-decoration:underline}
+.btn{display:inline-block;background:var(--ink);color:#fff!important;text-decoration:none!important;font-weight:700;padding:13px 20px;border-radius:6px;font-size:16px;border:2px solid var(--ink)}
+.btn:hover{background:#000}
+.btn.out{background:transparent;color:var(--ink)!important}
+.btn.out:hover{background:var(--ink);color:#fff!important}
+
+/* hero */
+.hero{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;padding:52px 0 70px;align-items:start}
+.hero>*{min-width:0}
+h1{font-size:clamp(40px,5vw,64px);line-height:1.02;letter-spacing:-.02em;margin:0 0 22px}
+.lede{font-size:20px;color:var(--ink-2);margin:0 0 28px;max-width:26em}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.facts{border-top:2px solid var(--rule);font-size:16px}
+.facts div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #BFC2BC}
+.facts b{font-variant-numeric:tabular-nums}
+
+/* scanner */
+.scan{background:var(--label);border:2px solid var(--rule);border-radius:4px;box-shadow:8px 8px 0 rgba(19,20,19,.12)}
+.scan-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:2px solid var(--rule)}
+.who{display:flex;align-items:center;gap:10px;font-weight:700}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--marker);display:grid;place-items:center;font-weight:700;border:2px solid var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{appearance:none;font:inherit;font-size:14.5px;padding:5px 11px;border-radius:999px;border:1.5px solid var(--ink);background:#fff;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.prods{display:flex;border-bottom:2px solid var(--rule)}
+.prod{appearance:none;flex:1;font:inherit;font-size:15px;padding:11px 8px;background:#F6F6F3;border:0;border-right:1px solid #C9CBC5;cursor:pointer;text-align:center}
+.prod:last-child{border-right:0}
+.prod[aria-selected="true"]{background:#fff;font-weight:700;box-shadow:inset 0 -4px 0 var(--ink)}
+.labelbox{position:relative;padding:20px 22px 18px;overflow:hidden}
+.labelbox .pname{font-family:"Roboto Condensed";font-weight:700;font-size:15px;letter-spacing:.02em;margin:0 0 6px}
+.ingr{font-family:"Roboto Condensed",sans-serif;font-size:17px;line-height:1.6;margin:0}
+.ingr strong{font-weight:700}
+.hit{transition:background .25s,box-shadow .25s;border-radius:2px;padding:0 1px}
+.hit.on{background:var(--marker);box-shadow:0 0 0 2px var(--marker)}
+.hit.trace.on{background:var(--marker-2);box-shadow:0 0 0 2px var(--marker-2)}
+.beam{position:absolute;left:0;right:0;height:3px;background:#1B4FD6;box-shadow:0 0 18px 4px rgba(27,79,214,.35);top:0;animation:beam 2.4s ease-in-out 1 forwards;opacity:0}
+@keyframes beam{0%{top:8%;opacity:1}90%{top:92%;opacity:1}100%{top:92%;opacity:0}}
+.verdict{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;padding:16px 20px;border-top:2px solid var(--rule)}
+.verdict .ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:22px;color:#fff}
+.verdict h3{margin:0;font-size:20px;line-height:1.2}
+.verdict ul{margin:6px 0 0;padding-left:18px;font-size:15.5px}
+.verdict.stop{background:var(--stop-bg)} .verdict.stop .ic{background:var(--stop)} .verdict.stop h3{color:var(--stop)}
+.verdict.warn{background:var(--warn-bg)} .verdict.warn .ic{background:var(--warn)} .verdict.warn h3{color:var(--warn)}
+.verdict.safe{background:var(--safe-bg)} .verdict.safe .ic{background:var(--safe)} .verdict.safe h3{color:var(--safe)}
+.scan-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 18px;border-top:1px solid #C9CBC5;font-size:13.5px;color:var(--ink-2)}
+
+/* sections */
+section{padding:84px 0}
+h2{font-size:clamp(30px,3.6vw,44px);line-height:1.08;letter-spacing:-.015em;margin:0 0 16px;max-width:20em}
+.sub{color:var(--ink-2);max-width:40em;margin:0 0 36px}
+
+/* names table: nutrition-panel rules */
+.names{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--rule);background:#fff}
+.names>div{padding:20px 22px 22px;border-right:2px solid var(--rule)}
+.names>div:last-child{border-right:0}
+.names h3{margin:0;font-size:26px;border-bottom:8px solid var(--rule);padding-bottom:8px}
+.names ul{list-style:none;padding:0;margin:0;font-family:"Roboto Condensed";font-size:17px}
+.names li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #C9CBC5}
+.names li span{color:var(--ink-2);font-size:14.5px;text-align:right}
+.names .count{font-size:14.5px;color:var(--ink-2);padding-top:10px;border-top:4px solid var(--rule);margin-top:-1px}
+
+/* trace */
+.trace-sec{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.trace-sec>*{min-width:0}
+.modes{display:grid;gap:12px}
+.mode{border:2px solid var(--rule);background:#fff;padding:16px 18px;border-radius:4px}
+.mode b{display:block;font-size:19px}
+.mode p{margin:4px 0 0;color:var(--ink-2);font-size:16px}
+.mode.sel{box-shadow:6px 6px 0 var(--ink)}
+
+/* offline */
+.aisle{background:var(--ink);color:#F1F2EE;border-radius:6px;padding:48px;display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}
+.aisle>*{min-width:0}
+.aisle h2{color:#fff}
+.aisle .sub{color:#C6C9C2;margin-bottom:0}
+.signal{border:2px solid #F1F2EE;border-radius:6px;padding:20px;font-family:"Roboto Condensed";font-size:17px}
+.signal .row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #45483F}
+.signal .row:last-child{border-bottom:0}
+.signal b{color:var(--marker)}
+
+/* share card */
+.share{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.share>*{min-width:0}
+.card{background:#fff;border:2px solid var(--rule);border-radius:10px;padding:24px;max-width:430px;transform:rotate(1deg)}
+.card .top{display:flex;justify-content:space-between;align-items:center;border-bottom:8px solid var(--ink);padding-bottom:10px}
+.card h3{margin:0;font-size:26px}
+.card dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:14px 0 0;font-size:16px}
+.card dt{color:var(--ink-2)}
+.card dd{margin:0;font-weight:700}
+.card .em{margin-top:14px;padding:10px 12px;background:var(--stop-bg);border-left:5px solid var(--stop);font-size:15.5px}
+
+.honest{border:2px solid var(--rule);background:var(--marker-2);padding:26px 28px;border-radius:4px;max-width:860px}
+.honest h3{margin:0 0 8px;font-size:22px}
+.honest p{margin:0}
+
+blockquote{margin:0;max-width:880px;border-left:8px solid var(--ink);padding:4px 0 4px 28px}
+blockquote p{font-size:clamp(22px,2.6vw,30px);line-height:1.3;margin:0 0 14px}
+blockquote footer{color:var(--ink-2);font-size:16px}
+
+.price{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--rule);background:#fff;max-width:900px}
+.price>div{padding:28px}
+.price>div+div{border-left:2px solid var(--rule)}
+.price h3{margin:0;font-size:22px}
+.price .amt{font-size:42px;font-weight:700;margin:8px 0 0}
+.price .per{color:var(--ink-2);font-size:15px}
+.price ul{padding-left:20px;margin:14px 0 22px;font-size:16.5px}
+
+.faq{max-width:840px;border-top:2px solid var(--rule)}
+details{border-bottom:1px solid #A9ACA5;padding:16px 0}
+summary{cursor:pointer;font-weight:700;font-size:19px}
+details p{color:var(--ink-2);margin:10px 0 0}
+
+footer.site{border-top:2px solid var(--rule);padding:36px 0 30px;font-size:15px;color:var(--ink-2)}
+footer.site .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+footer.site .credit{margin-top:24px;font-size:13px}
+
+@media (max-width:920px){
+  .hero,.trace-sec,.aisle,.share{grid-template-columns:1fr}
+  .names{grid-template-columns:1fr}
+  .names>div{border-right:0;border-bottom:2px solid var(--rule)}
+  .names>div:last-child{border-bottom:0}
+  .price{grid-template-columns:1fr}
+  .price>div+div{border-left:0;border-top:2px solid var(--rule)}
+  header.top nav a:not(.btn){display:none}
+}
+@media (max-width:520px){
+  .wrap{padding:0 16px}
+  body{font-size:17px}
+  .hero{padding-top:30px}
+  .aisle{padding:26px}
+  .labelbox{padding:16px}
+  .ingr{font-size:16px}
+  .prod{font-size:13.5px;padding:10px 4px}
+  section{padding:60px 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.beam{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="brand" href="#"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 2 25 6v8c0 6-5 10.5-11 12C8 24.5 3 20 3 14V6z" fill="#F3E24E" stroke="#131413" stroke-width="2"/><path d="M9 14h10" stroke="#131413" stroke-width="2.4" stroke-linecap="round"/></svg>Alerji Kalkanı</a>
+  <nav aria-label="Ana menü"><a href="#adlar">Gizli adlar</a><a href="#paylas">Okul kartı</a><a href="#fiyat">Fiyat</a><a href="#sss">SSS</a><a class="btn" href="#fiyat">İndir</a></nav>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h">
+  <div>
+    <h1 id="h">Fıstığın on iki adı var. Kalkan hepsini bilir.</h1>
+    <p class="lede">Ambalajın arkasını kameraya tutun. Alerji Kalkanı içindekiler listesini okur ve çocuğunuzun alerjenini gizli adlarıyla da yakalar: arachis yağı, tahin, kazein, peynir altı suyu. Rafın önünde, birkaç saniyede.</p>
+    <div class="ctas"><a class="btn" href="#fiyat">iPhone için indir</a><a class="btn out" href="#fiyat">Android için indir</a></div>
+    <div class="facts" aria-label="Kısa bilgiler">
+      <div><span>Tanıdığı alerjen adı</span><b>2.180</b></div>
+      <div><span>Okuma süresi</span><b>~2 sn</b></div>
+      <div><span>İnternet gerekir mi</span><b>Hayır</b></div>
+      <div><span>Çocuğun bilgisi nerede durur</span><b>Yalnız telefonunuzda</b></div>
+    </div>
+  </div>
+
+  <div class="scan" aria-label="Etiket okuma denemesi">
+    <div class="scan-head">
+      <div class="who"><span class="avatar" aria-hidden="true">E</span>Ela, 4 yaş</div>
+      <div class="chips" role="group" aria-label="Ela'nın alerjenleri">
+        <button class="chip" data-al="fistik" aria-pressed="true">Yer fıstığı</button>
+        <button class="chip" data-al="susam" aria-pressed="true">Susam</button>
+        <button class="chip" data-al="sut" aria-pressed="true">Süt</button>
+        <button class="chip" data-al="findik" aria-pressed="false">Fındık</button>
+      </div>
+    </div>
+    <div class="prods" role="tablist" aria-label="Ürün seç">
+      <button class="prod" role="tab" aria-selected="true" data-p="0">Kakaolu bisküvi</button>
+      <button class="prod" role="tab" aria-selected="false" data-p="1">Susamlı kraker</button>
+      <button class="prod" role="tab" aria-selected="false" data-p="2">Pirinç patlağı</button>
+    </div>
+    <div class="labelbox">
+      <div class="beam" aria-hidden="true"></div>
+      <p class="pname" id="pname"></p>
+      <p class="ingr" id="ingr"></p>
+    </div>
+    <div class="verdict" id="verdict" aria-live="polite"></div>
+    <div class="scan-foot"><span>Okundu: kamera · telefonda</span><span>Rafta, internetsiz</span></div>
+  </div>
+</section>
+
+<section id="adlar" aria-labelledby="ad" style="padding-top:20px">
+  <h2 id="ad">Etikette “fıstık” yazmayabilir.</h2>
+  <p class="sub">Üreticiler alerjeni Latince bitki adıyla, katkı koduyla ya da işlenmiş haliyle yazabilir. Bunlar Kalkan’ın tanıdığı adlardan birkaçı; liste Türkçe, İngilizce ve Almanca ambalajları kapsar.</p>
+  <div class="names">
+    <div><h3>Yer fıstığı</h3><ul class="cond">
+      <li>arachis yağı<span>yağ listesinde</span></li><li>Arachis hypogaea<span>Latince ad</span></li><li>yer fıstığı ezmesi<span>dolguda</span></li><li>bitkisel protein<span>kaynak yazmıyorsa sorar</span></li><li>groundnut, peanut<span>ithal ürün</span></li></ul>
+      <div class="count">+ 7 ad daha · toplam 12</div></div>
+    <div><h3>Susam</h3><ul class="cond">
+      <li>tahin<span>helva, humus</span></li><li>Sesamum indicum<span>Latince ad</span></li><li>susam yağı<span>Uzak Doğu sosları</span></li><li>gomasio, za’atar<span>baharat karışımı</span></li><li>sesame, Sesam<span>ithal ürün</span></li></ul>
+      <div class="count">+ 18 ad daha</div></div>
+    <div><h3>Süt</h3><ul class="cond">
+      <li>kazein, kazeinat<span>et ürünleri</span></li><li>peynir altı suyu tozu<span>bisküvi, gofret</span></li><li>laktoserum<span>aynı şeyin diğer adı</span></li><li>yağsız süt tozu<span>kraker, ekmek</span></li><li>tereyağı yağı (ghee)<span>hazır pilav</span></li></ul>
+      <div class="count">+ 44 ad daha</div></div>
+  </div>
+</section>
+
+<section aria-labelledby="ea">
+  <div class="trace-sec">
+    <div>
+      <h2 id="ea">“Eser miktarda içerebilir” ne demek?</h2>
+      <p class="sub" style="margin-bottom:0">Ürün aynı hatta, fıstıklı bir ürünün ardından üretilmiş olabilir. Bazı çocuklar için sorun değildir, bazıları için ciddidir. Bunu çocuğunuzun alerji uzmanıyla konuşun; sonra Kalkan’a söyleyin, o sizin kararınıza göre okusun.</p>
+    </div>
+    <div class="modes" role="list">
+      <div class="mode" role="listitem"><b>Yalnız içindekiler</b><p>“Eser miktar” satırı sarı işaretlenir, ürün reddedilmez.</p></div>
+      <div class="mode sel" role="listitem"><b>Eser miktarı da say <span style="font-weight:400;font-size:15px">· Ela için seçili</span></b><p>“Aynı tesiste üretilmiştir” ve “içerebilir” satırları da kırmızıya düşer.</p></div>
+      <div class="mode" role="listitem"><b>Bilinmeyen kaynakta dur</b><p>“Bitkisel protein”, “aroma” gibi kaynağı yazmayan ifadelerde size sorar.</p></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="mk" style="padding-top:0">
+  <div class="aisle">
+    <div>
+      <h2 id="mk">Bodrum kattaki markette sinyal yok. Kalkan’ın ihtiyacı da yok.</h2>
+      <p class="sub">Okuma ve eşleştirme telefonun içinde yapılır. Çocuğunuzun alerji listesi bir sağlık bilgisidir; hiçbir sunucuya yüklenmez, bir sigorta ya da reklam şirketinin eline geçemez. Hesap açmanız bile gerekmez.</p>
+    </div>
+    <div class="signal" aria-label="Markette çevrimdışı okuma kaydı">
+      <div class="row"><span>Şebeke</span><span>Yok</span></div>
+      <div class="row"><span>Okunan ürün</span><span>Kakaolu bisküvi, 150 g</span></div>
+      <div class="row"><span>Eşleşme</span><b>arachis yağı → yer fıstığı</b></div>
+      <div class="row"><span>Sunucuya giden</span><span>0 bayt</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="paylas" aria-labelledby="ok">
+  <div class="share">
+    <div>
+      <h2 id="ok">Okul, anneanne, bakıcı: aynı listeyi okusunlar.</h2>
+      <p class="sub">Kalkan, çocuğunuzun alerji kartını basılabilir bir sayfa olarak hazırlar. Telefonunda Kalkan olan biri kartın kodunu okutursa aynı profil onun telefonuna da kurulur; bulut yok, kod kâğıtta.</p>
+      <a class="btn out" href="#fiyat">Örnek kartı gör</a>
+    </div>
+    <div class="card" aria-label="Örnek alerji kartı">
+      <div class="top"><h3>Ela Kaya</h3><span>4 yaş</span></div>
+      <dl>
+        <dt>Alerjenler</dt><dd>Yer fıstığı (ağır), susam, süt</dd>
+        <dt>Eser miktar</dt><dd>Kabul edilmez</dd>
+        <dt>Tepkide</dt><dd>Adrenalin oto-enjektörü çantasında, ön göz</dd>
+        <dt>Veli</dt><dd>Merve Kaya · 0532 ••• •• 90</dd>
+      </dl>
+      <p class="em">Nefes darlığı, dudakta şişlik görürseniz önce enjektörü uygulayın, sonra 112’yi arayın.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-label="Sınırlar" style="padding-top:0">
+  <div class="honest">
+    <h3>Kalkan bir hekim değildir.</h3>
+    <p>Etiket yanlış ya da eksik basılmış olabilir; okunamayan, yırtık ya da başka dilde etiketlerde Kalkan “emin değilim” der ve ürünü onaylamaz. Hekiminizin verdiği adrenalin oto-enjektörünü yanınızda taşımaya devam edin.</p>
+  </div>
+</section>
+
+<section aria-label="Kullanıcı yorumu" style="padding-top:0">
+  <blockquote>
+    <p>“Ela iki yaşındayken bir bisküvi yüzünden acildeydik. Etikette ‘fıstık’ yazmıyordu, ‘arachis yağı’ yazıyordu. Şimdi rafın önünde on saniyede biliyorum, ama yine de kendim de okuyorum.”</p>
+    <footer><b>Merve Kaya</b>, iki çocuk annesi, öğretmen · Bursa</footer>
+  </blockquote>
+</section>
+
+<section id="fiyat" aria-labelledby="fy" style="padding-top:20px">
+  <h2 id="fy">Okuma ücretsiz. Aile profilleri yıllık.</h2>
+  <p class="sub">Etiket okuma hiçbir zaman ücretli olmayacak.</p>
+  <div class="price">
+    <div><h3>Kalkan</h3><div class="amt">0 ₺</div><div class="per">süresiz</div>
+      <ul><li>Sınırsız etiket okuma</li><li>1 profil, 14 ana alerjen</li><li>Gizli ad sözlüğü</li></ul>
+      <a class="btn out" href="#">Ücretsiz indir</a></div>
+    <div><h3>Kalkan Aile</h3><div class="amt">249 ₺</div><div class="per">yıllık</div>
+      <ul><li>5 profil, kardeşler ayrı ayrı</li><li>Basılabilir okul / bakıcı kartı</li><li>Eser miktar ve bilinmeyen kaynak ayarları</li><li>Okunan ürünlerin geçmişi</li></ul>
+      <a class="btn" href="#">7 gün ücretsiz dene</a></div>
+  </div>
+</section>
+
+<section id="sss" aria-labelledby="sq" style="padding-top:0">
+  <h2 id="sq">Sorulanlar</h2>
+  <div class="faq">
+    <details><summary>Barkoddan mı okuyor, yazıdan mı?</summary><p>Yazıdan. Barkod veritabanları eski tarifi gösterebilir; üretici içeriği değiştirdiğinde yalnız ambalajın üzerindeki yazı günceldir. Kalkan her seferinde elinizdeki paketi okur.</p></details>
+    <details><summary>Etiket buruşuk ya da çok küçük yazılıysa?</summary><p>Kalkan okuyamadığı satırı gri işaretler ve “bu satırı okuyamadım” der. Okuyamadığı ürünü hiçbir zaman “uygun” göstermez.</p></details>
+    <details><summary>Hangi alerjenleri biliyor?</summary><p>Türk Gıda Kodeksi’ndeki 14 ana alerjenin hepsi; ayrıca kivi, nohut, mercimek gibi ekleyebileceğiniz başka besinler.</p></details>
+    <details><summary>Restoranda menüyü de okur mu?</summary><p>Basılı menüyü okur ama menülerde içerik yazmaz; bu yüzden restoranda Kalkan’a değil, mutfağa sormanızı öneririz.</p></details>
+    <details><summary>Profil bilgilerini nasıl yedeklerim?</summary><p>Telefonunuzun kendi şifreli yedeğiyle. Bizim bir sunucumuz yok, bu yüzden biz de göremeyiz.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="row"><span><b style="color:var(--ink)">Alerji Kalkanı</b> · Ambalaj etiketini okuyan, çocuğunuzun alerjenini yakalayan uygulama</span><span>yardim@alerjikalkani.app · KVKK</span></div>
+  <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+</footer>
+</div>
+
+<script>
+const N={fistik:"yer fıstığı",susam:"susam",sut:"süt",findik:"fındık"};
+const P=[
+ {n:"KAKAOLU KREMALI BİSKÜVİ · 150 g",t:"<strong>İçindekiler:</strong> Buğday unu, şeker, bitkisel yağ (palm, [fistik|arachis yağı]), kakao tozu (%4,5), [sut|peynir altı suyu tozu], glikoz şurubu, kabartıcılar (sodyum bikarbonat, amonyum bikarbonat), tuz, emülgatör (soya lesitini), aroma verici (vanilin). [~findik,susam,sut|Fındık, susam ve süt içeren ürünlerin üretildiği tesiste üretilmiştir.]"},
+ {n:"SUSAMLI MİNİ KRAKER · 80 g",t:"<strong>İçindekiler:</strong> Buğday unu, bitkisel yağ (ayçiçek), [susam|Sesamum indicum tohumu] (%8), [susam|tahin] (%2), [sut|yağsız süt tozu], tuz, maya, malt ekstraktı (arpa), kabartıcı (sodyum bikarbonat). [~fistik|Yer fıstığı içerebilir.]"},
+ {n:"ESMER PİRİNÇ PATLAĞI · 100 g",t:"<strong>İçindekiler:</strong> Esmer pirinç (%98,6), deniz tuzu. Glütensizdir. Aynı hatta yalnız pirinç ve mısır ürünleri işlenmektedir."}
+];
+let cur=0;const on=new Set(['fistik','susam','sut']);
+function render(){
+  const p=P[cur];document.getElementById('pname').textContent=p.n;
+  const html=p.t.replace(/\[(~?)([a-z,]+)\|([^\]]+)\]/g,(m,tr,al,txt)=>`<span class="hit${tr?' trace':''}" data-al="${al}">${txt}</span>`);
+  document.getElementById('ingr').innerHTML=html;
+  const direct=[],trace=[];
+  document.querySelectorAll('#ingr .hit').forEach(s=>{
+    const als=s.dataset.al.split(',').filter(a=>on.has(a));
+    s.classList.toggle('on',als.length>0);
+    als.forEach(a=>(s.classList.contains('trace')?trace:direct).push([a,s.textContent]));
+  });
+  const v=document.getElementById('verdict');
+  if(direct.length){
+    v.className='verdict stop';
+    v.innerHTML=`<span class="ic" aria-hidden="true">✕</span><div><h3>Ela için uygun değil · ${direct.length} eşleşme</h3><ul>${direct.map(d=>`<li><b>${d[1]}</b> → ${N[d[0]]}</li>`).join('')}${trace.length?`<li>ayrıca eser miktar uyarısı: ${[...new Set(trace.map(t=>N[t[0]]))].join(', ')}</li>`:''}</ul></div>`;
+  }else if(trace.length){
+    v.className='verdict warn';
+    v.innerHTML=`<span class="ic" aria-hidden="true">!</span><div><h3>Eser miktar uyarısı</h3><ul><li>${[...new Set(trace.map(t=>N[t[0]]))].join(', ')} aynı tesiste işleniyor. Ela’nın ayarında bu da reddedilir.</li></ul></div>`;
+  }else{
+    v.className='verdict safe';
+    v.innerHTML=`<span class="ic" aria-hidden="true">✓</span><div><h3>Ela’nın alerjenleri bulunmadı</h3><ul><li>Tüm satırlar okundu, eser miktar uyarısı yok.</li></ul></div>`;
+  }
+}
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{const a=c.dataset.al;on.has(a)?on.delete(a):on.add(a);c.setAttribute('aria-pressed',on.has(a));render()});
+document.querySelectorAll('.prod').forEach(b=>b.onclick=()=>{cur=+b.dataset.p;document.querySelectorAll('.prod').forEach(x=>x.setAttribute('aria-selected',x===b));const bm=document.querySelector('.beam');bm.style.animation='none';bm.offsetHeight;bm.style.animation='';render()});
+render();
+</script>
+</body>
+</html>

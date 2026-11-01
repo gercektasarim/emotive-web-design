@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hece — Okumayı söken çocuğu sabırla dinleyen uygulama</title>
+<meta name="description" content="Hece, birinci sınıftaki çocuğunuz sesli okurken dinler, takıldığı heceyi bulur ve kızmadan tekrar ettirir. Ses kaydı alınmaz, telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --kagit:#FBFBF7;
+  --kilavuz:#9DB8DE;
+  --mavi:#2B5DA6;
+  --kirmizi:#C3343C;
+  --grafit:#2C2C31;
+  --soluk:#5B5B63;
+  --yildiz:#E9B524;
+  --line:32px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--kagit);color:var(--grafit);font-family:"Andika",system-ui,sans-serif;font-size:19px;line-height:1.55}
+a{color:var(--mavi)}
+:focus-visible{outline:3px solid var(--kirmizi);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+/* üst */
+header.top{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;max-width:1120px;margin:0 auto}
+.logo{display:flex;align-items:baseline;gap:2px;font-weight:700;font-size:28px;color:var(--grafit);text-decoration:none;letter-spacing:.5px}
+.logo span{color:var(--kirmizi)}
+.logo i{font-style:normal;color:var(--soluk);font-weight:400;font-size:18px;margin:0 2px}
+nav.top a{color:var(--grafit);text-decoration:none;margin-left:22px;font-size:17px}
+nav.top a:hover{text-decoration:underline;text-decoration-color:var(--kirmizi);text-underline-offset:5px}
+.btn{display:inline-block;font:inherit;font-weight:700;font-size:18px;padding:13px 22px;border-radius:10px;border:2px solid var(--grafit);background:var(--grafit);color:#fff;text-decoration:none;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--grafit)}
+.btn:hover{background:var(--mavi);border-color:var(--mavi);color:#fff}
+
+/* hero */
+.hero{padding-top:34px;padding-bottom:10px}
+.hero h1{font-size:clamp(40px,6vw,74px);line-height:1.04;margin:0 0 18px;font-weight:700;max-width:14ch;letter-spacing:-.5px}
+.hero h1 .h{color:var(--mavi)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:end}
+.lead{font-size:21px;max-width:34ch;margin:0 0 24px;color:var(--grafit)}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.small{font-size:16px;color:var(--soluk);margin-top:14px}
+
+/* defter */
+.defter{position:relative;margin:38px 0 0;background:#fff;border:1px solid #DADBD2;border-radius:6px 6px 0 0;box-shadow:0 1px 0 #E3E3DA, 0 3px 0 #F0F0EA, 0 18px 40px -24px rgba(40,40,60,.35);
+  background-image:
+    linear-gradient(90deg, transparent 70px, var(--kirmizi) 70px, var(--kirmizi) 72px, transparent 72px),
+    repeating-linear-gradient(180deg, transparent 0 calc(var(--line) - 1px), var(--kilavuz) calc(var(--line) - 1px) var(--line));
+  padding:var(--line) 28px calc(var(--line)*1) 96px;min-height:calc(var(--line)*9)}
+.defter .delik{position:absolute;left:24px;width:18px;height:18px;border-radius:50%;background:var(--kagit);box-shadow:inset 0 2px 3px rgba(0,0,0,.18)}
+.defter-head{display:flex;justify-content:space-between;align-items:center;min-height:var(--line);line-height:var(--line);font-size:16px;color:var(--soluk);gap:12px;flex-wrap:wrap}
+.defter-head b{color:var(--grafit)}
+.mic{display:inline-flex;align-items:center;gap:8px}
+.mic .dot{width:10px;height:10px;border-radius:50%;background:var(--kirmizi)}
+.okuma{font-size:clamp(28px,4vw,46px);line-height:calc(var(--line)*2);margin:calc(var(--line)*0) 0 0;letter-spacing:.5px}
+.w{border-radius:6px;padding:0 3px;transition:background .25s,color .25s}
+.w.okundu{color:var(--mavi)}
+.w.simdi{background:#E6EEFA}
+.w.takildi{background:#FBE3E4;color:var(--kirmizi)}
+.hece-kutu{display:flex;align-items:center;gap:18px;flex-wrap:wrap;min-height:calc(var(--line)*3);margin-top:0}
+.heceler{display:flex;gap:6px;font-size:clamp(28px,3.6vw,40px)}
+.heceler span{border-bottom:3px solid var(--kilavuz);padding:0 6px;line-height:1.5}
+.heceler span.on{border-color:var(--kirmizi);color:var(--kirmizi);font-weight:700}
+.balon{background:var(--grafit);color:#fff;border-radius:14px 14px 14px 4px;padding:10px 16px;font-size:18px;max-width:30ch}
+.yildizlar{display:flex;gap:4px;align-items:center;font-size:17px;color:var(--soluk)}
+.star{width:26px;height:26px}
+.demo-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0 0}
+.demo-bar p{margin:0;font-size:16px;color:var(--soluk)}
+
+/* bölümler */
+section{padding:84px 0}
+h2{font-size:clamp(30px,3.8vw,46px);line-height:1.12;margin:0 0 16px;font-weight:700;max-width:22ch}
+.p{max-width:60ch}
+.aksam{border-top:2px dashed var(--kilavuz)}
+.saatler{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:36px;border-left:2px solid var(--kirmizi)}
+.saat{padding:4px 24px 8px}
+.saat time{display:block;font-weight:700;color:var(--kirmizi);font-size:22px}
+.saat p{margin:6px 0 0;font-size:18px}
+.saat .eski{color:var(--soluk);text-decoration:line-through;text-decoration-color:rgba(195,52,60,.6);font-size:16px;display:block;margin-top:8px}
+
+.gruplar{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.tablo{border:2px solid var(--grafit);border-radius:4px;background:#fff}
+.tablo .r{display:grid;grid-template-columns:120px 1fr;border-top:1px solid #DADBD2}
+.tablo .r:first-child{border-top:0}
+.tablo .r b{padding:12px 14px;font-size:16px;color:var(--soluk);border-right:1px solid #DADBD2}
+.tablo .r div{padding:8px 14px;font-size:26px;letter-spacing:6px}
+.tablo .r.su{background:#F2F6FC}
+.tablo .r.su b{color:var(--mavi)}
+.tablo .r.su div .x{color:var(--mavi);font-weight:700}
+.tablo .r.gelecek div{color:#A7A7AE}
+.not{font-size:16px;color:var(--soluk);margin-top:10px}
+
+.karne{background:#fff;border:1px solid #DADBD2;padding:36px;border-radius:6px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;box-shadow:0 18px 40px -30px rgba(40,40,60,.4)}
+.karne h3{margin:0 0 4px;font-size:22px}
+.karne .ad{color:var(--soluk);font-size:16px;margin:0 0 20px}
+.cubuk{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;align-items:end;height:170px;border-bottom:2px solid var(--grafit);padding:0 4px}
+.cubuk div{background:var(--kilavuz);border-radius:4px 4px 0 0;position:relative}
+.cubuk div.son{background:var(--mavi)}
+.cubuk div span{position:absolute;top:-26px;left:0;right:0;text-align:center;font-size:15px;font-weight:700}
+.hafta{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;font-size:14px;color:var(--soluk);text-align:center;padding-top:6px}
+.kazanc li{margin:0 0 12px}
+.kazanc{padding-left:22px;margin:0}
+.kazanc li::marker{color:var(--yildiz);content:"★  "}
+
+.ses{background:var(--grafit);color:#F3F3EE}
+.ses h2{color:#fff}
+.ses .p{color:#D6D6D0}
+.fis{margin-top:30px;background:#FBFBF7;color:var(--grafit);border-radius:4px;padding:22px 26px;max-width:640px;font-size:18px;
+  background-image:repeating-linear-gradient(180deg, transparent 0 31px, var(--kilavuz) 31px 32px);line-height:32px}
+.fis b{color:var(--kirmizi)}
+.ses ul{margin:28px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:960px}
+.ses li{border-top:2px solid #6B6B73;padding-top:12px;font-size:17px;color:#D6D6D0}
+.ses li b{color:#fff;display:block;font-size:19px;margin-bottom:4px}
+
+blockquote{margin:0;font-size:clamp(24px,2.8vw,32px);line-height:1.4;max-width:30ch}
+.kim{margin-top:18px;font-size:17px;color:var(--soluk)}
+.alinti{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
+.tirnak{font-size:110px;line-height:.8;color:var(--kirmizi);font-weight:700}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:30px}
+.plan{border:2px solid var(--grafit);border-radius:8px;padding:28px;background:#fff}
+.plan.ana{border-color:var(--mavi);box-shadow:6px 6px 0 var(--mavi)}
+.plan h3{margin:0;font-size:22px}
+.tutar{font-size:48px;font-weight:700;margin:8px 0 2px}
+.tutar small{font-size:18px;font-weight:400;color:var(--soluk)}
+.plan ul{padding-left:20px;margin:14px 0 22px}
+.plan li{margin-bottom:6px}
+
+details{border-top:1px solid #CFD0C6;padding:16px 0}
+details:last-child{border-bottom:1px solid #CFD0C6}
+summary{cursor:pointer;font-weight:700;font-size:20px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--kirmizi);font-size:26px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;max-width:62ch}
+.sss{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px}
+
+footer{border-top:2px solid var(--grafit);padding:36px 0 30px;font-size:16px;color:var(--soluk)}
+footer .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.credit{margin-top:24px;font-size:14px}
+.credit a{color:var(--soluk)}
+
+@media (max-width:860px){
+  nav.top a:not(.btn){display:none}
+  .hero-grid{gap:8px}
+  .defter-head{column-gap:12px;row-gap:0}
+  .hero-grid,.gruplar,.karne,.fiyat,.sss{grid-template-columns:1fr}
+  .saatler{grid-template-columns:1fr 1fr;row-gap:22px}
+  .ses ul{grid-template-columns:1fr}
+  .defter{padding-left:64px;padding-right:18px;background-image:
+    linear-gradient(90deg, transparent 46px, var(--kirmizi) 46px, var(--kirmizi) 48px, transparent 48px),
+    repeating-linear-gradient(180deg, transparent 0 calc(var(--line) - 1px), var(--kilavuz) calc(var(--line) - 1px) var(--line));}
+  .defter .delik{left:14px;width:14px;height:14px}
+  section{padding:60px 0}
+  .alinti{grid-template-columns:1fr;gap:0}
+  .tirnak{font-size:80px}
+}
+@media (max-width:480px){
+  body{font-size:18px}
+  .saatler{grid-template-columns:1fr}
+  .karne{padding:22px}
+  .tablo .r{grid-template-columns:92px 1fr}
+  .tablo .r div{font-size:22px;letter-spacing:3px}
+  nav.top .btn{padding:10px 14px;font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="#" aria-label="Hece ana sayfa">He<i>-</i><span>ce</span></a>
+  <nav class="top" aria-label="Ana menü">
+    <a href="#aksam">Bir okuma akşamı</a>
+    <a href="#karne">İlerleme</a>
+    <a href="#ses">Ses kaydı</a>
+    <a href="#fiyat">Fiyat</a>
+    <a class="btn ghost" href="#fiyat">İndir</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div class="hero-grid">
+    <h1>O okusun, <span class="h">Hece</span> sabırla dinlesin.</h1>
+    <div>
+      <p class="lead">Birinci sınıftaki çocuğunuz sesli okurken Hece dinler, takıldığı heceyi bulur ve kızmadan, yorulmadan tekrar ettirir. Size kalan iş yanında oturmak.</p>
+      <div class="cta">
+        <a class="btn" href="#fiyat">iPhone için indir</a>
+        <a class="btn ghost" href="#fiyat">Android için indir</a>
+      </div>
+    </div>
+  </div>
+
+  <figure class="defter" aria-label="Hece uygulamasının okuma ekranı: çocuk cümleyi okurken takıldığı hece kırmızıyla işaretleniyor">
+    <span class="delik" style="top:44px" aria-hidden="true"></span>
+    <span class="delik" style="top:50%" aria-hidden="true"></span>
+    <span class="delik" style="bottom:44px" aria-hidden="true"></span>
+    <div class="defter-head">
+      <span><b>Kırmızı Uçurtma</b> · sayfa 3 · Emre, 1-B</span>
+      <span class="mic"><span class="dot" aria-hidden="true"></span><span id="durum">Dinliyor · kayıt yok</span></span>
+    </div>
+    <p class="okuma" id="okuma"><span class="w">Rüzgâr</span> <span class="w">esti,</span> <span class="w">kırmızı</span> <span class="w">uçurtma</span> <span class="w">havalandı.</span></p>
+    <div class="hece-kutu" aria-live="polite">
+      <div class="heceler" id="heceler" aria-label="Heceler: ha va lan dı"><span>ha</span><span>va</span><span class="on">lan</span><span>dı</span></div>
+      <div class="balon" id="balon">“lan” biraz zor geldi. Benimle: <b>lan</b>… ha‑va‑<b>lan</b>‑dı.</div>
+    </div>
+    <div class="demo-bar">
+      <div class="yildizlar" id="yildizlar" aria-label="Bu sayfada 3 yıldız kazanıldı">
+        <svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path fill="#E9B524" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path fill="#E9B524" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+        <svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path fill="#E9B524" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+        <span>&nbsp;bu sayfa: 3 yıldız</span>
+      </div>
+      <button class="btn ghost" id="oynat" type="button">▶ Bir okuma turunu izle</button>
+    </div>
+  </figure>
+  <p class="small">Yukarıdaki ekran örnektir. Uygulama internetsiz çalışır; çocuğun sesi telefonda işlenir ve hemen silinir.</p>
+</div>
+
+<section class="aksam" id="aksam">
+  <div class="wrap">
+    <h2>Saat 20.30. Kitap açık, sabır az.</h2>
+    <p class="p">Gün boyu çalışmış bir ebeveynin “bak yine yanlış okudun” dememesi zor. Hece o anda araya girer; düzelten o olur, siz gurur duyan kişi olarak kalırsınız.</p>
+    <div class="saatler">
+      <div class="saat"><time>20.30</time><p>Emre kitabı açar, Hece “Hazırsan başla” der.</p><span class="eski">Eskiden: “Hadi, ödev bitmeden televizyon yok.”</span></div>
+      <div class="saat"><time>20.32</time><p>“havalandı”da duraklar. Hece heceyi ayırır: ha‑va‑<b>lan</b>‑dı.</p><span class="eski">Eskiden: “Bunu dün de okumuştuk!”</span></div>
+      <div class="saat"><time>20.33</time><p>İki tekrar sonra kelime oturur. Bir yıldız yanar.</p><span class="eski">Eskiden: göz yaşı, silgi, kapanan kitap.</span></div>
+      <div class="saat"><time>20.41</time><p>Sayfa biter. Size tek satırlık özet gelir.</p><span class="eski">Eskiden: “Yarın devam ederiz.”</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap gruplar">
+    <div>
+      <h2>Öğretmenin sırasıyla ilerler.</h2>
+      <p class="p">Birinci sınıfta harfler ses gruplarıyla öğretilir. Hece, sınıfın hangi grupta olduğunu bilir ve henüz görülmemiş harfleri içeren kelimeleri zorlamaz. Takıldığı yer “r” ise bir hafta boyunca “r”li heceleri biraz daha sık getirir.</p>
+      <p class="p">Ayar ekranında çocuğun sınıfını ve okulun kullandığı okuma kitabının sayfasını seçmeniz yeter.</p>
+    </div>
+    <div>
+      <div class="tablo" role="table" aria-label="İlk okuma ses grupları">
+        <div class="r" role="row"><b role="rowheader">1. grup</b><div role="cell">e l a k i n</div></div>
+        <div class="r" role="row"><b role="rowheader">2. grup</b><div role="cell">o m u t ü y</div></div>
+        <div class="r su" role="row"><b role="rowheader">3. grup · şu an</b><div role="cell">ö <span class="x">r</span> ı d s b</div></div>
+        <div class="r gelecek" role="row"><b role="rowheader">4. grup</b><div role="cell">z ç g ş c p</div></div>
+        <div class="r gelecek" role="row"><b role="rowheader">5. grup</b><div role="cell">h ğ v f j</div></div>
+      </div>
+      <p class="not">Emre’nin bu haftaki zor sesi: <b style="color:var(--mavi)">r</b> (rü‑, ‑rı, ‑ra). Hece “ruh rüzgâr kırmızı” gibi kelimeleri öne alıyor.</p>
+    </div>
+  </div>
+</section>
+
+<section id="karne">
+  <div class="wrap">
+    <h2>Altı haftada neyin değiştiğini görün.</h2>
+    <p class="p" style="margin-bottom:32px">Her pazar akşamı kısa bir karne gelir. Not vermez, karşılaştırır: geçen haftaki Emre ile bu haftaki Emre.</p>
+    <div class="karne">
+      <div>
+        <h3>Dakikada okunan kelime</h3>
+        <p class="ad">Emre Yıldırım · 1-B · Eylül–Ekim</p>
+        <div class="cubuk" aria-label="Haftalık dakikada kelime: 9, 12, 14, 17, 21, 26">
+          <div style="height:30%"><span>9</span></div>
+          <div style="height:40%"><span>12</span></div>
+          <div style="height:47%"><span>14</span></div>
+          <div style="height:57%"><span>17</span></div>
+          <div style="height:70%"><span>21</span></div>
+          <div class="son" style="height:87%"><span>26</span></div>
+        </div>
+        <div class="hafta" aria-hidden="true"><span>1. hf</span><span>2. hf</span><span>3. hf</span><span>4. hf</span><span>5. hf</span><span>6. hf</span></div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:16px">Bu hafta neyi başardı</h3>
+        <ul class="kazanc">
+          <li>“-lan”, “-rüz”, “-tır” hecelerini artık takılmadan okuyor.</li>
+          <li>İlk kez bir sayfayı baştan sona tek başına bitirdi (Kırmızı Uçurtma, s. 3).</li>
+          <li>Okuma süresi ortalama 11 dakika; hiç ara vermeden.</li>
+        </ul>
+        <p class="not">Karnenin altında bir cümle olur, ona okuyun: “Emre, bu hafta 26 kelimeye çıktın.”</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ses" id="ses">
+  <div class="wrap">
+    <h2>Çocuğunuzun sesi telefonda kalmaz bile.</h2>
+    <p class="p">Hece okumayı dinler, heceyi işaretler ve sesi o saniye siler. Kayıt dosyası oluşmaz, buluta gitmez, bizim sunucumuz yoktur. Uçak modunda da aynen çalışır. Okuma bittiğinde telefonda yalnız şu satır kalır:</p>
+    <div class="fis" aria-label="Okuma özeti örneği">Salı · 20.41 · 11 dk 08 sn · 63 kelime · takıldığı heceler: <b>-lan-</b>, <b>-rüz-</b> · 3 yıldız</div>
+    <ul>
+      <li><b>Mikrofon yalnız sayfa açıkken</b>Kitap ekranı kapanınca mikrofon da kapanır. Arka planda dinleme yoktur.</li>
+      <li><b>Hesap açmanız gerekmez</b>E-posta, telefon numarası, çocuğun fotoğrafı istenmez. Sadece bir ad ve sınıf.</li>
+      <li><b>Silmek tek dokunuş</b>Ayarlar › Özetleri sil. Geriye hiçbir şey kalmaz.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap alinti">
+    <div class="tirnak" aria-hidden="true">“</div>
+    <div>
+      <blockquote>Eskiden ben düzeltiyordum, o ağlıyordu. Şimdi Hece düzeltiyor, ben dinliyorum. Geçen akşam sayfayı bitirince dönüp “Anne, duydun mu?” dedi. Duydum.</blockquote>
+      <p class="kim">Ayşe Karaca · Eskişehir · hemşire, 1-C velisi</p>
+    </div>
+  </div>
+</section>
+
+<section id="fiyat" style="padding-top:20px">
+  <div class="wrap">
+    <h2>Bir kez alınır, okul yılı boyunca kullanılır.</h2>
+    <div class="fiyat">
+      <div class="plan">
+        <h3>Deneme</h3>
+        <div class="tutar">Ücretsiz <small>14 gün</small></div>
+        <ul><li>Bütün okuma kitabı sayfaları</li><li>Haftalık karne</li><li>Kredi kartı istenmez</li></ul>
+        <a class="btn ghost" href="#">Ücretsiz başla</a>
+      </div>
+      <div class="plan ana">
+        <h3>Aile</h3>
+        <div class="tutar">449 ₺ <small>tek seferlik</small></div>
+        <ul><li>3 çocuğa kadar ayrı profil</li><li>1. ve 2. sınıf okuma metinleri</li><li>Abonelik yok, reklam yok</li></ul>
+        <div class="cta"><a class="btn" href="#">iPhone için indir</a><a class="btn ghost" href="#">Android için indir</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap sss">
+    <h2>Velilerin sorduğu</h2>
+    <div>
+      <details open><summary>Öğretmenin yöntemine ters düşer mi?</summary><p>Hayır. Hece ses gruplarının sırasını izler ve heceleyerek okumayı destekler. Okulun kitabını seçtiğinizde metinler de o kitabın sırasıyla gelir.</p></details>
+      <details><summary>Çocuğum yalnız mı kullanmalı, ben yanında mı olmalıyım?</summary><p>Yanında olmanızı öneriyoruz. Hece düzeltme işini üstlenir; sizin varlığınız okumayı keyifli kılar. Birçok aile ilk iki haftadan sonra yalnız da okutmaya başlıyor.</p></details>
+      <details><summary>Şivesi ya da tutukluğu olan çocukta çalışır mı?</summary><p>Hece bölgesel söyleyişleri hata saymaz; yalnız heceyi atlama ya da yanlış harf okumayı işaretler. Konuşma güçlüğü şüphesi varsa bir dil ve konuşma terapistine danışın; Hece bir tanı aracı değildir.</p></details>
+      <details><summary>İnternet olmadan çalışıyor mu?</summary><p>Evet. Kitap metinleri ve ses tanıma telefonda kurulu gelir. Güncellemeler dışında internete hiç ihtiyaç yoktur.</p></details>
+      <details><summary>Hangi telefonlarda çalışır?</summary><p>iOS 16 ve üzeri iPhone’lar, Android 10 ve üzeri, en az 4 GB belleği olan telefon ve tabletler.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <span><b style="color:var(--grafit)">Hece</b> · İlk okuma için sabırlı bir dinleyici</span>
+      <span>destek@hece.app · Gizlilik · KVKK aydınlatma metni</span>
+    </div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const words=[...document.querySelectorAll('#okuma .w')];
+  const hece=[...document.querySelectorAll('#heceler span')];
+  const balon=document.getElementById('balon');
+  const durum=document.getElementById('durum');
+  const btn=document.getElementById('oynat');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function finalState(){
+    words.forEach((w,i)=>{w.className='w '+(i<4?'okundu':'takildi')});
+  }
+  finalState();
+  let t=[];
+  function clear(){t.forEach(clearTimeout);t=[]}
+  function at(ms,fn){t.push(setTimeout(fn,ms))}
+  btn.addEventListener('click',()=>{
+    clear();
+    if(reduce){finalState();return}
+    words.forEach(w=>w.className='w');
+    hece.forEach(h=>h.classList.remove('on'));
+    balon.textContent='Hazırsan başla. Ben dinliyorum.';
+    durum.textContent='Dinliyor · kayıt yok';
+    words.forEach((w,i)=>{
+      at(400+i*750,()=>{ if(i>0) words[i-1].className='w okundu'; w.className='w simdi'; });
+    });
+    at(400+4*750+600,()=>{words[4].className='w takildi';balon.textContent='Durdun mu? Birlikte bakalım.'});
+    hece.forEach((h,i)=>at(4300+i*450,()=>{hece.forEach(x=>x.classList.remove('on'));h.classList.add('on')}));
+    at(6200,()=>{hece.forEach(x=>x.classList.remove('on'));hece[2].classList.add('on');balon.innerHTML='“lan” biraz zor geldi. Benimle: <b>lan</b>… ha‑va‑<b>lan</b>‑dı.'});
+    at(8200,()=>{words[4].className='w okundu';balon.innerHTML='İşte bu! <b>havalandı.</b> Bir yıldız daha.';durum.textContent='Sayfa bitti · ses silindi'});
+  });
+})();
+</script>
+</body>
+</html>

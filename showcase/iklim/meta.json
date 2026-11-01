@@ -1,0 +1,20 @@
+{
+  "slug": "iklim",
+  "name": "İklim",
+  "interpretation": "Akşam bülteni",
+  "world": "Akşam haberlerinden sonraki hava durumu bülteni: harita, izobar halkaları, yedi günlük şerit, kayan bant; Kasım'da 16:49 gün batımından sonra kalan lacivert-gri ışık.",
+  "palette": [
+    "#2B3550",
+    "#E8EDF2",
+    "#F5C140",
+    "#8C98A8",
+    "#3C78C8"
+  ],
+  "fonts": [
+    "Sofia Sans Condensed",
+    "Sofia Sans"
+  ],
+  "score": 24,
+  "lowest": "Tanınabilirlik",
+  "moment": "Yedi günlük ruh hali tahmininde bir güne dokununca o günün nedenlerini (uyku, takvim, gün ışığı) ve önlemi görmek."
+}

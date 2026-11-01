@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yudum — Böbrek taşı geçirenler için su takibi</title>
+<meta name="description" content="Yudum bardağın fotoğrafından ne kadar su içtiğinizi sayar, havanın sıcaklığına ve gün içindeki hareketinize göre hedefi ayarlar. Böbrek taşı geçirmiş olanlar için. Sağlık verisi telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --water:#FFFFFF; --water-2:#D5E6EA; --paper:#FFFFFF; --sheet:#F4F8F8; --deep:#0C3945; --deep-2:#3D5E67; --blue:#1F8FB0; --blue-2:#8FD0E2;
+  --u1:#FBF7D9; --u2:#F5EBA6; --u3:#EBD46A; --u4:#DDB13F; --u5:#C58A26; --u6:#9C6418;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--water);color:var(--deep);font-family:"Lexend",system-ui,sans-serif;font-weight:300;font-size:17.5px;line-height:1.6}
+b,strong{font-weight:600}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.serif{font-family:"Source Serif 4",Georgia,serif}
+
+header.top{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.brand{display:flex;gap:10px;align-items:center;font-weight:600;font-size:23px;text-decoration:none}
+.brand svg{width:22px;height:30px}
+header.top nav{display:flex;gap:24px;align-items:center;font-size:15.5px;font-weight:400}
+header.top nav a{text-decoration:none;color:var(--deep-2)}
+header.top nav a:hover{color:var(--deep)}
+.btn{display:inline-block;background:var(--deep);color:#fff!important;text-decoration:none;font-weight:500;padding:12px 20px;border-radius:999px;font-size:15.5px;border:0;cursor:pointer;font-family:inherit}
+.btn:hover{background:#062631}
+.btn.out{background:transparent;color:var(--deep)!important;box-shadow:inset 0 0 0 1.5px var(--deep)}
+
+/* tri-fold brochure hero */
+.fold{display:grid;grid-template-columns:1.05fr 1fr 1fr;margin:20px 0 70px;background:var(--paper);border:1px solid var(--water-2);box-shadow:0 30px 60px -36px rgba(12,57,69,.45);border-radius:4px;position:relative}
+.panel{padding:34px 30px 30px;position:relative;min-width:0}
+.panel+.panel{background:linear-gradient(90deg,rgba(12,57,69,.07),transparent 26px)}
+.panel+.panel::before{content:"";position:absolute;left:0;top:0;bottom:0;border-left:1px dashed #BFD6DC}
+.panel .tag{font-family:"Source Serif 4";font-style:italic;font-size:15px;color:var(--deep-2)}
+.panel h1{font-size:clamp(34px,3.8vw,52px);line-height:1.04;font-weight:600;letter-spacing:-.02em;margin:10px 0 18px}
+.panel .lede{font-family:"Source Serif 4";font-size:18.5px;line-height:1.55;color:var(--deep-2);margin:0 0 24px}
+.panel .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.panel h2{font-size:21px;font-weight:600;margin:6px 0 14px}
+
+.today{display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:end}
+.glass svg{width:100%;height:auto;display:block}
+.count{font-variant-numeric:tabular-nums}
+.count .big{font-size:42px;font-weight:600;line-height:1}
+.count .of{color:var(--deep-2);font-size:16px}
+.count .bar{height:10px;border-radius:5px;background:var(--water);margin:12px 0 8px;overflow:hidden}
+.count .bar span{display:block;height:100%;background:var(--blue);transition:width .5s}
+.count .why{font-size:14.5px;color:var(--deep-2)}
+.add{margin-top:18px}
+.add p{margin:0 0 8px;font-size:14.5px;color:var(--deep-2)}
+.add .row{display:flex;gap:8px;flex-wrap:wrap}
+.add button{appearance:none;font:inherit;font-size:14.5px;font-weight:400;border:1.5px solid var(--water-2);background:#fff;color:var(--deep);border-radius:12px;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:78px}
+.add button:hover{border-color:var(--blue)}
+.add button svg{height:30px}
+.add button small{color:var(--deep-2);font-size:12.5px}
+.log{margin:14px 0 0;padding:0;list-style:none;font-size:14.5px;color:var(--deep-2)}
+.log li{display:flex;justify-content:space-between;border-bottom:1px dotted var(--water-2);padding:3px 0}
+.heat{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.heat button{appearance:none;font:inherit;font-size:13.5px;border-radius:999px;border:1.5px solid var(--water-2);background:#fff;padding:4px 12px;cursor:pointer;color:var(--deep)}
+.heat button[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:#fff}
+
+.chart{list-style:none;margin:6px 0 0;padding:0}
+.chart li{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center;margin-bottom:6px;font-size:14.5px}
+.chart .sw{height:30px;border-radius:4px;border:1px solid rgba(12,57,69,.12);display:flex;align-items:center;padding:0 10px;font-size:13px;color:var(--deep)}
+.chart .n{font-variant-numeric:tabular-nums;color:var(--deep-2);text-align:right}
+.chart li.goal .sw{box-shadow:0 0 0 3px var(--deep)}
+.chart li.goal .sw b{margin-left:auto}
+.small{font-family:"Source Serif 4";font-style:italic;font-size:14.5px;color:var(--deep-2);margin-top:12px}
+
+section{padding:80px 0}
+h2.h{font-size:clamp(30px,3.8vw,46px);line-height:1.08;font-weight:600;letter-spacing:-.015em;margin:0 0 14px;max-width:18em}
+.sub{font-family:"Source Serif 4";font-size:19px;color:var(--deep-2);max-width:38em;margin:0 0 36px}
+
+/* photo read */
+.photo{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:20px;align-items:stretch}
+.photo>*{min-width:0}
+.shot{background:var(--sheet);border-radius:14px;padding:18px;text-align:center}
+.shot svg{width:120px;height:auto}
+.shot b{display:block;margin-top:8px}
+.shot span{font-size:14.5px;color:var(--deep-2)}
+.how{background:var(--deep);color:#DDEDF1;border-radius:14px;padding:24px}
+.how h3{color:#fff;margin:0 0 10px;font-weight:600;font-size:20px}
+.how ol{margin:0;padding-left:20px}
+.how li{margin-bottom:8px}
+
+/* week target */
+.week{background:var(--sheet);border-radius:14px;padding:28px}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;align-items:end;height:220px;border-bottom:1.5px solid var(--deep);padding-top:14px}
+.bars .b{position:relative;height:100%;display:flex;align-items:flex-end;justify-content:center}
+.bars .drank{width:60%;background:var(--blue-2);border-radius:4px 4px 0 0}
+.bars .target{position:absolute;left:8%;right:8%;border-top:3px solid var(--deep)}
+.bars .t{position:absolute;font-size:12.5px;transform:translateY(-120%);left:0;right:0;text-align:center;color:var(--deep);font-variant-numeric:tabular-nums}
+.labels{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;text-align:center;font-size:13.5px;color:var(--deep-2);margin-top:8px}
+.labels b{display:block;color:var(--deep);font-weight:500}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:14.5px;color:var(--deep-2);margin-top:18px}
+.legend i{display:inline-block;width:18px;height:10px;margin-right:6px;vertical-align:0}
+
+/* advice */
+.advice{display:grid;grid-template-columns:repeat(2,1fr);gap:0;background:var(--u1);border-radius:4px}
+.advice div{padding:24px 28px;border-bottom:1px dashed #BFD6DC}
+.advice div:nth-child(odd){border-right:1px dashed #BFD6DC}
+.advice h3{margin:0 0 6px;font-size:19px;font-weight:600}
+.advice p{margin:0;font-family:"Source Serif 4";color:var(--deep-2)}
+.disc{font-family:"Source Serif 4";font-style:italic;font-size:15.5px;color:var(--deep-2);margin-top:16px;max-width:46em}
+
+.private{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;border-top:1.5px solid var(--deep);border-bottom:1.5px solid var(--deep);padding:40px 0}
+.private>*{min-width:0}
+.stamp{border:3px double var(--deep);border-radius:6px;padding:20px 22px;transform:rotate(-2deg);font-family:"Source Serif 4";font-style:italic;color:var(--deep-2);max-width:340px}
+.stamp b{display:block;font-family:"Lexend";font-style:normal;font-size:24px;color:var(--deep);margin-bottom:6px}
+.private dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;margin:0;font-size:16px}
+.private dt{color:var(--deep-2)}
+.private dd{margin:0;font-weight:500}
+
+blockquote{margin:0;max-width:880px}
+blockquote p{font-family:"Source Serif 4";font-size:clamp(23px,2.6vw,31px);line-height:1.35;margin:0 0 14px}
+blockquote footer{color:var(--deep-2);font-size:16px}
+
+.price{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:880px}
+.p{background:var(--sheet);border-radius:14px;padding:28px}
+.p.main{background:var(--deep);color:#E5F1F4}
+.p h3{margin:0;font-size:21px;font-weight:600}
+.p .amt{font-size:44px;font-weight:600;margin:8px 0 0}
+.p .per{font-size:14.5px;color:var(--deep-2)}
+.p.main .per,.p.main li{color:#B9D4DB}
+.p ul{padding-left:20px;margin:14px 0 22px}
+.p.main .btn{background:#fff;color:var(--deep)!important}
+
+.faq{max-width:820px}
+details{border-bottom:1px solid var(--water-2);padding:18px 0}
+summary{cursor:pointer;font-weight:500;font-size:19px}
+details p{font-family:"Source Serif 4";color:var(--deep-2);margin:10px 0 0}
+
+footer.site{padding:36px 0 30px;font-size:14.5px;color:var(--deep-2)}
+footer.site .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;border-top:1px solid var(--water-2);padding-top:22px}
+footer.site .credit{margin-top:20px;font-size:12.5px}
+
+#wl{transition:y .6s,height .6s}
+
+@media (max-width:1000px){
+  .fold{grid-template-columns:1fr}
+  .panel+.panel{background:linear-gradient(180deg,rgba(12,57,69,.07),transparent 22px)}
+  .panel+.panel::before{border-left:0;border-top:1px dashed #BFD6DC;right:0;bottom:auto}
+  .photo,.private{grid-template-columns:1fr}
+  .advice{grid-template-columns:1fr}
+  .advice div:nth-child(odd){border-right:0}
+  .price{grid-template-columns:1fr}
+  header.top nav a:not(.btn){display:none}
+}
+@media (max-width:540px){
+  .wrap{padding:0 16px}
+  body{font-size:16.5px}
+  .panel{padding:26px 18px}
+  .today{grid-template-columns:84px 1fr}
+  .bars,.labels{gap:6px}
+  .bars{height:170px}
+  .bars .t{font-size:10.5px}
+  .week{padding:18px}
+  section{padding:60px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="brand" href="#"><svg viewBox="0 0 22 30" aria-hidden="true"><path d="M11 1C6 9 2 14 2 19a9 9 0 0 0 18 0c0-5-4-10-9-18z" fill="#1F8FB0"/><path d="M6 20a5 5 0 0 0 5 5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Yudum</a>
+  <nav aria-label="Ana menü"><a href="#bardak">Bardak okuma</a><a href="#hedef">Günlük hedef</a><a href="#oneriler">Öneriler</a><a href="#al">Fiyat</a><a class="btn" href="#al">İndir</a></nav>
+</header>
+
+<main>
+<div class="fold" role="region" aria-label="Yudum tanıtım broşürü">
+  <div class="panel">
+    <span class="tag">Böbrek taşı geçirmiş olanlar için</span>
+    <h1>Taşı bir kez düşüren, bir daha düşürmek istemez.</h1>
+    <p class="lede">Doktorunuz “günde iki buçuk, üç litre” dedi; ama gün içinde kaç bardak içtiğinizi kimse saymıyor. Yudum sayar: bardağın fotoğrafını çekersiniz, ne kadar içtiğinizi bilir. Hava ısınınca, çok yürüdüğünüz gün hedefi kendisi yükseltir.</p>
+    <div class="ctas"><a class="btn" href="#al">iPhone için indir</a><a class="btn out" href="#al">Android için indir</a></div>
+  </div>
+
+  <div class="panel" aria-labelledby="bg">
+    <span class="tag">Bugün · Salı, İzmir 31 °C</span>
+    <h2 id="bg">Bugünkü bardaklar</h2>
+    <div class="today">
+      <div class="glass" aria-hidden="true">
+        <svg viewBox="0 0 110 170"><defs><clipPath id="gc"><path d="M14 10h82l-10 150H24z"/></clipPath></defs>
+          <g clip-path="url(#gc)"><rect x="0" y="0" width="110" height="170" fill="#F2F9FA"/><rect id="wl" x="0" y="80" width="110" height="90" fill="#8FD0E2"/><rect id="wt" x="0" y="80" width="110" height="5" fill="#BFE6F0"/></g>
+          <path d="M14 10h82l-10 150H24z" fill="none" stroke="#0C3945" stroke-width="2.5"/>
+          <path d="M24 22l6 120" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+        </svg>
+      </div>
+      <div class="count" aria-live="polite">
+        <div><span class="big" id="ml">1.650</span> <span class="of">/ <span id="goal">2.900</span> ml</span></div>
+        <div class="bar"><span id="pb" style="width:57%"></span></div>
+        <div class="why" id="why">Hedef 2.500 + sıcak hava 400</div>
+      </div>
+    </div>
+    <div class="add">
+      <p>Bardağın fotoğrafını çekin (burada dokunun):</p>
+      <div class="row">
+        <button type="button" data-ml="100"><svg viewBox="0 0 24 34" aria-hidden="true"><path d="M5 2h14c-1 5-4 8-4 12s4 8 3 16H6C5 22 9 18 9 14S6 7 5 2z" fill="#8FD0E2" stroke="#0C3945" stroke-width="1.5"/></svg>çay bardağı<small>~100 ml</small></button>
+        <button type="button" data-ml="200"><svg viewBox="0 0 24 34" aria-hidden="true"><path d="M3 2h18l-2 30H5z" fill="#8FD0E2" stroke="#0C3945" stroke-width="1.5"/></svg>su bardağı<small>~200 ml</small></button>
+        <button type="button" data-ml="500"><svg viewBox="0 0 24 34" aria-hidden="true"><path d="M9 1h6v4l3 4v23H6V9l3-4z" fill="#8FD0E2" stroke="#0C3945" stroke-width="1.5"/></svg>pet şişe<small>~500 ml</small></button>
+      </div>
+    </div>
+    <div class="heat" role="group" aria-label="Bugünkü koşullar">
+      <button type="button" data-k="heat" aria-pressed="true">31 °C sıcak</button>
+      <button type="button" data-k="walk" aria-pressed="false">9.400 adım</button>
+    </div>
+    <ul class="log" id="log" aria-label="Bugün içilenler"></ul>
+  </div>
+
+  <div class="panel" aria-labelledby="rk">
+    <span class="tag">Broşürdeki renk skalası</span>
+    <h2 id="rk">Hedef: açık saman sarısı</h2>
+    <ul class="chart" aria-label="İdrar rengi skalası">
+      <li><span class="n">1</span><span class="sw" style="background:var(--u1)">çok iyi</span></li>
+      <li class="goal"><span class="n">2</span><span class="sw" style="background:var(--u2)">iyi <b>hedef</b></span></li>
+      <li><span class="n">3</span><span class="sw" style="background:var(--u3)">biraz su için</span></li>
+      <li><span class="n">4</span><span class="sw" style="background:var(--u4)">bir bardak, şimdi</span></li>
+      <li><span class="n">5</span><span class="sw" style="background:var(--u5);color:#fff">iki bardak, şimdi</span></li>
+      <li><span class="n">6</span><span class="sw" style="background:var(--u6);color:#fff">doktorunuzu arayın</span></li>
+    </ul>
+    <p class="small">Yudum rengi sizin yerinize okumaz; bu skala üroloji broşürlerinde verilen kendi kendine kontrol aracıdır. Gün sonunda “bugün kaçıncı renkteydi?” diye sorar, cevabınızı hedefe yansıtır.</p>
+  </div>
+</div>
+
+<section id="bardak" aria-labelledby="bk" style="padding-top:10px">
+  <h2 class="h" id="bk">Bardağı görür, ne kadar içtiğinizi bilir.</h2>
+  <p class="sub">İçmeden önce ve içtikten sonra birer fotoğraf yeter; sabah yalnız birini çekmek de yeter. Yudum bardağın biçiminden hacmini, su çizgisinden içtiğiniz miktarı tahmin eder. Kendi bardaklarınızı bir kez tanıttığınızda isabet ±20 ml’ye iner.</p>
+  <div class="photo">
+    <div class="shot"><svg viewBox="0 0 110 170" aria-hidden="true"><path d="M14 10h82l-10 150H24z" fill="#F2F9FA"/><path d="M17 40h76l-7 120H24z" fill="#8FD0E2"/><path d="M14 10h82l-10 150H24z" fill="none" stroke="#0C3945" stroke-width="2.5"/></svg><b>Önce · 09:12</b><span>Su bardağı (tanıtılmış) · 230 ml dolu</span></div>
+    <div class="shot"><svg viewBox="0 0 110 170" aria-hidden="true"><path d="M14 10h82l-10 150H24z" fill="#F2F9FA"/><path d="M22 124h66l-2 36H24z" fill="#8FD0E2"/><path d="M14 10h82l-10 150H24z" fill="none" stroke="#0C3945" stroke-width="2.5"/></svg><b>Sonra · 09:31</b><span>Kalan ~50 ml · içilen <b>180 ml</b></span></div>
+    <div class="how"><h3>Ne zaman fotoğraf istemez?</h3><ol><li>Aynı şişeden içiyorsanız: şişe tanıtılır, her dokunuş 100 ml sayılır.</li><li>Çay ve ayran da sayılır; kahve ve gazlı içecek sayılmaz, ayrı gösterilir.</li><li>Unuttuğunuz bardağı sesle eklersiniz: “öğlen iki bardak su”.</li></ol></div>
+  </div>
+</section>
+
+<section id="hedef" aria-labelledby="hd">
+  <h2 class="h" id="hd">Hedef her gün aynı değil.</h2>
+  <p class="sub">Sıcak bir İzmir öğleden sonrası, uzun bir yürüyüş ya da bir saat spor: terle kaybettiğinizi Yudum hedefe ekler. Telefonun adım sayacından ve hava sıcaklığından hesaplar; konumunuz hiçbir yere gönderilmez.</p>
+  <div class="week" aria-label="Haftalık hedef ve içilen su grafiği">
+    <div class="bars" id="bars"></div>
+    <div class="labels" id="labels"></div>
+    <div class="legend"><span><i style="background:var(--blue-2)"></i>içilen</span><span><i style="border-top:3px solid var(--deep);height:0"></i>o günün hedefi</span></div>
+  </div>
+</section>
+
+<section id="oneriler" aria-labelledby="on" style="padding-top:10px">
+  <h2 class="h" id="on">Üroloğun broşüründe yazanlar, gün içine dağıtılmış.</h2>
+  <p class="sub">Taşı düşürdükten sonra verilen kâğıt çekmeceye girer. Yudum o öğütleri hatırlatmaya çevirir, ama hiçbirini doktorunuzun yerine söylemez.</p>
+  <div class="advice">
+    <div><h3>Suyu güne yay</h3><p>Akşam bir litre içmek yerine iki saatte bir bardak. Yudum öğleden sonra geride kaldıysanız 15:00’te hatırlatır, 21:00’den sonra susar.</p></div>
+    <div><h3>Gece bir bardak</h3><p>Yatmadan önce bir bardak su, birçok üroloğun önerisidir. İstemezseniz kapatılır.</p></div>
+    <div><h3>Tuz ve sofra</h3><p>Turşu, salamura peynir ve hazır çorba günlerinde Yudum hedefe 200 ml ekler; siz “bugün tuzlu yedim” dersiniz.</p></div>
+    <div><h3>Limonlu su</h3><p>Doktorunuz sitrat için limon önerdiyse, yarım limonu bir sürahiye sıkmanız günlük hatırlatma olarak eklenir.</p></div>
+  </div>
+  <p class="disc">Yudum tıbbi bir cihaz değildir ve tanı koymaz. Böbrek, kalp yetmezliği gibi durumlarda sıvı hedefi farklı olabilir; hedefinizi doktorunuzla belirleyin. Yan ağrısı, ateş ya da idrarda kan varsa uygulamayı değil, doktorunuzu arayın.</p>
+</section>
+
+<section aria-labelledby="gz">
+  <div class="private">
+    <div>
+      <h2 class="h" id="gz">Ne kadar su içtiğiniz bir sağlık kaydıdır. Telefonunuzda kalır.</h2>
+      <p class="sub" style="margin:0">Taş öyküsü, günlük sıvı, idrar rengi: bunlar bir sigorta şirketinin ya da reklam ağının görmemesi gereken bilgiler. Yudum bardak fotoğrafını telefonda okur ve siler, kayıtları bulut hesabı açmadan saklar. Kontrol günü isterseniz tek sayfalık özeti doktorunuza kendiniz gösterirsiniz.</p>
+    </div>
+    <div class="stamp" aria-hidden="true"><b>Telefonda kalır</b>bardak fotoğrafı okununca silinir · konum yalnız sıcaklık için · hesap yok · doktor özeti yalnız siz gösterirseniz</div>
+  </div>
+</section>
+
+<section aria-label="Kullanıcı yorumu">
+  <blockquote>
+    <p>“O ağrıyı yaşayan bilir. Doktor üç litre dedi, ilk hafta içtim, sonra unuttum; altı ay sonra yine acildeydim. Şimdi şantiyede pet şişenin fotoğrafını çekiyorum, Yudum öğleden sonra ‘geridesin’ diyor. Bir buçuk yıldır taş yok.”</p>
+    <footer><b>Murat Çelik</b>, inşaat mühendisi · Adana</footer>
+  </blockquote>
+</section>
+
+<section id="al" aria-labelledby="fy" style="padding-top:20px">
+  <h2 class="h" id="fy">Temel takip ücretsiz, hep öyle kalacak.</h2>
+  <p class="sub">Sıcaklık ve hareket ayarı yıllık: ayda bir pet şişe su parası.</p>
+  <div class="price">
+    <div class="p"><h3>Yudum</h3><div class="amt">0 ₺</div><div class="per">süresiz</div><ul><li>Bardak fotoğrafı ile sayım</li><li>Sabit günlük hedef</li><li>Hatırlatmalar</li></ul><a class="btn out" href="#">Ücretsiz indir</a></div>
+    <div class="p main"><h3>Yudum Artı</h3><div class="amt">179 ₺</div><div class="per">yıllık · ayda 15 ₺</div><ul><li>Sıcaklığa ve harekete göre hedef</li><li>Renk skalası günlüğü</li><li>Doktor kontrolü için özet</li><li>Kendi bardaklarınızı tanıtma</li></ul><a class="btn" href="#">14 gün ücretsiz dene</a></div>
+  </div>
+</section>
+
+<section aria-labelledby="sq" style="padding-top:0">
+  <h2 class="h" id="sq">Sorulanlar</h2>
+  <div class="faq">
+    <details><summary>Her bardakta fotoğraf çekmek zahmetli değil mi?</summary><p>İlk hafta öyle gelebilir. Kendi bardağınızı ya da şişenizi tanıttıktan sonra çoğu kullanıcı yalnızca tek dokunuşla ekliyor; fotoğraf, emin olmadığınız bardaklar için.</p></details>
+    <details><summary>Hedefim neden 2.500 ml ile başlıyor?</summary><p>Taş geçirmiş yetişkinlere sık verilen öneri günde 2,5–3 litre sıvıdır. Doktorunuz başka bir hedef verdiyse ilk açılışta onu girersiniz, Yudum oradan hesaplar.</p></details>
+    <details><summary>Akıllı saatle çalışır mı?</summary><p>Evet. Saatinizden adım ve antrenman bilgisini telefonda okur; saatinizdeki bir dokunuşla bardak ekleyebilirsiniz.</p></details>
+    <details><summary>İnternet olmadan çalışır mı?</summary><p>Tamamen. Hava sıcaklığını bile, internet yoksa telefonun son bildiği değerden ve günün saatinden tahmin eder.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="row"><span><b style="color:var(--deep)">Yudum</b> · Böbrek taşı sonrası su takibi</span><span>destek@yudum.app · KVKK · Tıbbi cihaz değildir</span></div>
+  <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+</footer>
+</div>
+
+<script>
+(function(){
+  let ml=1650;const base=2500;const st={heat:true,walk:false};
+  const log=[["08:05","su bardağı",200],["09:31","su bardağı",180],["11:10","pet şişe",500],["12:40","ayran",250],["14:15","çay ×3",300],["15:02","su bardağı",220]];
+  const goal=()=>base+(st.heat?400:0)+(st.walk?300:0);
+  function draw(){
+    const g=goal(),p=Math.min(1,ml/g);
+    document.getElementById('ml').textContent=ml.toLocaleString('tr-TR');
+    document.getElementById('goal').textContent=g.toLocaleString('tr-TR');
+    document.getElementById('pb').style.width=(p*100)+'%';
+    const parts=['Hedef 2.500'];if(st.heat)parts.push('sıcak hava 400');if(st.walk)parts.push('yürüyüş 300');
+    document.getElementById('why').textContent=parts.join(' + ')+(ml>=g?' · bugün tamam':' · kalan '+(g-ml).toLocaleString('tr-TR')+' ml');
+    const y=160-150*p;document.getElementById('wl').setAttribute('y',y);document.getElementById('wl').setAttribute('height',170-y);document.getElementById('wt').setAttribute('y',y);
+    document.getElementById('log').innerHTML=log.slice().reverse().map(l=>`<li><span>${l[0]} · ${l[1]}</span><span>${l[2]} ml</span></li>`).join('');
+  }
+  let clock=15*60+40;
+  document.querySelectorAll('.add button').forEach(b=>b.onclick=()=>{const v=+b.dataset.ml;ml+=v;clock+=25;const t=String(Math.floor(clock/60)).padStart(2,'0')+':'+String(clock%60).padStart(2,'0');log.push([t,b.childNodes[1].textContent.trim(),v]);draw()});
+  document.querySelectorAll('.heat button').forEach(b=>b.onclick=()=>{st[b.dataset.k]=!st[b.dataset.k];b.setAttribute('aria-pressed',st[b.dataset.k]);draw()});
+  draw();
+  // haftalık grafik
+  const W=[["Pzt",24,2500,2600],["Sal",31,2900,2750],["Çar",33,2900,3050],["Per",29,2800,2400],["Cum",27,2500,2550],["Cmt",34,3200,3100],["Paz",26,2500,2650]];
+  const mx=3400;
+  document.getElementById('bars').innerHTML=W.map(w=>`<div class="b" aria-label="${w[0]}: hedef ${w[2]} ml, içilen ${w[3]} ml"><span class="drank" style="height:${w[3]/mx*100}%"></span><span class="target" style="bottom:${w[2]/mx*100}%"><span class="t">${(w[2]/1000).toLocaleString('tr-TR')} L</span></span></div>`).join('');
+  document.getElementById('labels').innerHTML=W.map(w=>`<span><b>${w[0]}</b>${w[1]} °C</span>`).join('');
+})();
+</script>
+</body>
+</html>

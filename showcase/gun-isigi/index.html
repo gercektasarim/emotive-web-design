@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gün Işığı — Demanslı yakınınız için daha sakin akşamlar</title>
+<meta name="description" content="Gün Işığı, evin akıllı lambalarını günün ritmine göre ayarlar ve akşamüstü huzursuzluğunun işaretlerini önceden sezer. Işık, huzursuzluk başlamadan yumuşar. Her şey evde işlenir, internet gerekmez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lime:#F4F2EE; --plum:#4A3550; --copper:#A85A1A; --morning:#F2C14E; --ink:#2A2329; --soft:#5B5158; --line:#DDD7CF; --white:#FFFDF9;
+  --sky:#F0B36A; --lamp:#F6C978; --room:#F3E3CA; --tint:#F6EEE3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--lime);color:var(--ink);font-family:"Outfit",system-ui,sans-serif;font-size:21px;line-height:1.65}
+a{color:var(--plum)}
+:focus-visible{outline:3px solid var(--plum);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:500;line-height:1.15;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+.hero-band{background:var(--tint);transition:background .6s}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-size:26px;text-decoration:none;color:var(--ink)}
+.top nav{display:flex;gap:28px;font-size:18px}
+.top nav a{text-decoration:none;color:var(--ink)}
+.top nav a:hover{text-decoration:underline}
+
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:26px 0 70px}
+.hero h1{font-size:clamp(38px,4.6vw,62px)}
+.hero .lead{margin-top:24px;font-size:22px;color:var(--soft);max-width:34ch}
+.btn{display:inline-block;margin-top:30px;background:var(--plum);color:#fff;font:700 19px "Outfit",sans-serif;padding:16px 28px;border-radius:40px;text-decoration:none}
+.btn:hover{background:#3a2940}
+.small{margin-top:16px;font-size:17px;color:var(--soft)}
+
+/* window scene */
+.scene{background:var(--white);border-radius:6px;padding:20px;border:1px solid var(--line)}
+.scene svg{width:100%;height:auto;display:block;border-radius:3px}
+.slider{margin-top:18px}
+.slider label{display:flex;justify-content:space-between;align-items:baseline;font-size:17px;color:var(--soft)}
+.slider label b{font-family:Fraunces,serif;font-size:34px;font-weight:500;color:var(--ink)}
+.slider input{width:100%;margin:8px 0 0;accent-color:var(--plum);height:28px;cursor:pointer}
+.ticks{display:flex;justify-content:space-between;font-size:14px;color:var(--soft)}
+.read{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.read div{background:var(--lime);border-radius:4px;padding:10px 14px}
+.read small{display:block;font-size:14px;color:var(--soft)}
+.read b{font-weight:700;font-size:19px}
+.state{margin-top:10px;padding:12px 14px;border-left:4px solid var(--plum);font-size:18px;background:#F4EEF4;min-height:76px}
+
+section{padding:92px 0}
+.h2{font-size:clamp(32px,3.6vw,46px);max-width:22ch}
+.lede{margin-top:16px;color:var(--soft);max-width:54ch}
+
+/* evening */
+.evening .rows{margin-top:44px;border-top:1px solid var(--line)}
+.evening .row{display:grid;grid-template-columns:110px 160px 1fr;gap:28px;padding:22px 0;border-bottom:1px solid var(--line);align-items:start}
+.evening time{font-family:Fraunces,serif;font-size:30px;line-height:1}
+.swatch{display:flex;align-items:center;gap:10px;font-size:16px;color:var(--soft)}
+.swatch i{width:34px;height:34px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.evening h3{font-family:"Outfit",sans-serif;font-weight:700;font-size:21px}
+.evening p{color:var(--soft);font-size:19px}
+
+/* sense */
+.sense{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sense .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;margin-top:40px;align-items:center}
+.sense svg{width:100%;height:auto;display:block}
+.sense svg text{font-family:"Outfit",sans-serif;font-size:13px;fill:#5B5158}
+.signs{list-style:none;margin:0;padding:0}
+.signs li{padding:14px 0;border-bottom:1px solid var(--line)}
+.signs b{display:block;font-size:20px}
+.signs span{color:var(--soft);font-size:18px}
+.honest{margin-top:20px;font-size:17px;color:var(--soft)}
+
+/* you */
+.you{background:var(--plum);color:#F4EEF4}
+.you .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.you .h2{color:#fff}
+.you p{color:#E4D9E6}
+.note{background:rgba(255,255,255,.08);border-radius:6px;padding:20px 22px}
+.note+.note{margin-top:14px}
+.note b{display:block;font-size:15px;color:#D8C6DB;font-weight:500}
+.note p{font-size:20px;color:#fff;margin-top:4px}
+
+/* proof */
+.proof .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.proof .big{font-family:Fraunces,serif;font-size:clamp(28px,3vw,38px);line-height:1.3}
+.proof p.s{color:var(--soft)}
+.proof p.s+p.s{margin-top:16px}
+.lamps{margin-top:22px;font-size:18px;color:var(--soft)}
+.lamps b{color:var(--ink)}
+
+.quote{padding:88px 0;background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.quote blockquote{margin:0;font-family:Fraunces,serif;font-size:clamp(26px,3vw,36px);line-height:1.4;max-width:28em}
+.quote cite{display:block;margin-top:20px;font-style:normal;color:var(--soft);font-size:18px}
+
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.price .amt{font-family:Fraunces,serif;font-size:60px;line-height:1}
+.price .amt small{font-family:"Outfit",sans-serif;font-size:19px;color:var(--soft)}
+.price ul{padding-left:22px;margin:18px 0 10px}
+.price li+li{margin-top:6px}
+.faq details{border-bottom:1px solid var(--line);padding:18px 0}
+.faq summary{cursor:pointer;font-weight:700;font-size:21px}
+.faq details p{margin-top:8px;color:var(--soft);font-size:19px}
+
+footer{padding:34px 0;font-size:17px;color:var(--soft);border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 30px}
+footer .credit{flex-basis:100%;font-size:14px}
+
+@media (max-width:960px){
+  .top nav{display:none}
+  .hero,.sense .grid,.you .wrap,.proof .wrap,.price .wrap{grid-template-columns:1fr;gap:36px}
+  .evening .row{grid-template-columns:90px 1fr;gap:14px 20px}
+  .evening .row .swatch{grid-column:2}
+  .evening .row>div:last-child{grid-column:1/3}
+}
+@media (max-width:520px){
+  body{font-size:20px}
+  .wrap{padding:0 16px}
+  .scene{padding:12px}
+  .read b{font-size:17px}
+  section{padding:64px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="hero-band" id="band">
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="#">
+        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="17" r="7" fill="#A85A1A"/><path d="M2 24h26" stroke="#4A3550" stroke-width="2.5" stroke-linecap="round"/><path d="M15 3v4M5 8l3 3M25 8l-3 3" stroke="#A85A1A" stroke-width="2.5" stroke-linecap="round"/></svg>
+        Gün Işığı
+      </a>
+      <nav aria-label="Sayfa içi"><a href="#aksam">Bir akşamüstü</a><a href="#sezer">Önceden sezer</a><a href="#siz">Sizin için</a><a href="#fiyat">Fiyat</a></nav>
+    </header>
+    <div class="hero">
+      <div>
+        <h1>Saat beşe doğru, ev annenizden önce sakinleşir.</h1>
+        <p class="lead">Akşamüstü huzursuzluğu çoğu zaman ışıkla birlikte gelir. Gün Işığı evin lambalarını gün batımına göre ayarlar, huzursuzluğun işaretlerini fark eder ve ışığı o başlamadan yumuşatır.</p>
+        <a class="btn" href="#fiyat">Annemin evine kurayım</a>
+        <p class="small">Var olan akıllı lambalarla çalışır. Kamera kullanmaz.</p>
+      </div>
+
+      <div class="scene" aria-label="Uygulama: salonun ışığı günün saatine göre">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Pencereli bir salon; pencerenin dışındaki gökyüzü ve lambanın ışığı seçilen saate göre değişir.">
+          <rect width="520" height="330" id="roomWall" style="fill:var(--room)"/>
+          <rect x="40" y="36" width="210" height="190" style="fill:var(--sky)" id="skyRect"/>
+          <circle cx="190" cy="180" r="26" id="sun" fill="#FBE3A4" opacity=".9"/>
+          <path d="M40 200 Q90 176 140 196 T250 190 V226 H40z" fill="#6E5B63" opacity=".35"/>
+          <rect x="40" y="36" width="210" height="190" fill="none" stroke="#FFFDF9" stroke-width="12"/>
+          <line x1="145" y1="36" x2="145" y2="226" stroke="#FFFDF9" stroke-width="8"/>
+          <line x1="40" y1="130" x2="250" y2="130" stroke="#FFFDF9" stroke-width="8"/>
+          <path d="M24 30 h20 v206 h-20z M246 30 h20 v206 h-20z" fill="#C9B9C8" opacity=".55"/>
+          <defs><radialGradient id="gl" cx="390" cy="150" r="170" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:var(--lamp);stop-opacity:.75"/><stop offset=".55" style="stop-color:var(--lamp);stop-opacity:.25"/><stop offset="1" style="stop-color:var(--lamp);stop-opacity:0"/></radialGradient></defs><rect x="220" y="0" width="300" height="330" fill="url(#gl)" id="glow"/>
+          <path d="M360 120 h60 l14 46 h-88z" fill="#EADBC6" stroke="#6E5B63" stroke-width="2"/>
+          <rect x="386" y="166" width="8" height="98" fill="#6E5B63"/><rect x="362" y="262" width="56" height="8" rx="3" fill="#6E5B63"/>
+          <rect x="280" y="232" width="180" height="56" rx="12" fill="#8C6F7E"/><rect x="280" y="214" width="40" height="74" rx="10" fill="#7A5F6D"/>
+          <rect x="0" y="288" width="520" height="42" fill="#CDB9A4"/>
+          <rect x="0" y="0" width="520" height="330" fill="#1B1420" id="dark" opacity="0"/>
+        </svg>
+        <div class="slider">
+          <label for="time"><span>Salon · annenizin evi, Antalya</span><b id="clock">17:30</b></label>
+          <input type="range" id="time" min="6" max="23" step="0.25" value="17.5" aria-valuetext="17:30">
+          <div class="ticks" aria-hidden="true"><span>06</span><span>10</span><span>14</span><span>18</span><span>23</span></div>
+        </div>
+        <div class="read">
+          <div><small>Salon lambası</small><b id="k">2700 K · %55</b></div>
+          <div><small>Gün batımı</small><b>17:21</b></div>
+        </div>
+        <p class="state" id="st" aria-live="polite">Koridorda gidip gelme başladı. Işık 20 dakika erken yumuşadı, radyo kendiliğinden kısıldı.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+<section class="evening" id="aksam">
+  <div class="wrap">
+    <h2 class="h2">Bir akşamüstü, Gün Işığı ile</h2>
+    <p class="lede">Ani değişiklik yok. Işık, pencerenin dışındaki gün gibi yavaş yavaş döner; anneniz fark etmez, yalnızca evi daha tanıdık bulur.</p>
+    <div class="rows">
+      <div class="row"><time>15:30</time><div class="swatch"><i style="background:#FFF4DA"></i>5000 K</div><div><h3>Gün ışığı hâlâ içeride</h3><p>Perdeler açık, salon aydınlık. Gölgeler uzamaya başlamadan lambalar devreye girer ki köşeler kararmasın.</p></div></div>
+      <div class="row"><time>16:50</time><div class="swatch"><i style="background:#FBE0A8"></i>3500 K</div><div><h3>Erken yumuşama</h3><p>Son iki haftada huzursuzluk ortalama 17:20'de başladı. Işık otuz dakika önceden sıcaklaşır, koridor lambası açılır.</p></div></div>
+      <div class="row"><time>17:30</time><div class="swatch"><i style="background:#F6C978"></i>2700 K</div><div><h3>Pencereden dışarı karanlık</h3><p>Pencere camındaki yansımalar korkutmasın diye pencere önü lambası yanar. Size: “Annenle çay saati, şimdi iyi bir an.”</p></div></div>
+      <div class="row"><time>19:00</time><div class="swatch"><i style="background:#EFA65A"></i>2200 K</div><div><h3>Yemek ve sessizlik</h3><p>Mutfakta ışık parlak kalır, salon kısılır. Televizyon kapanınca radyo kendiliğinden kısık sesle açılır.</p></div></div>
+      <div class="row"><time>21:30</time><div class="swatch"><i style="background:#C9713A"></i>1900 K · %10</div><div><h3>Gece yolu</h3><p>Yatak odasından banyoya giden koridor, ayak hizasında loş kalır. Gece kalkarsa yol hep aydınlık.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sense" id="sezer">
+  <div class="wrap">
+    <h2 class="h2">Huzursuzluğu, başlamadan yarım saat önce sezer</h2>
+    <p class="lede">Evdeki hareket sensörlerinden ve lamba anahtarlarından annenizin akşam ritmini öğrenir. Her gün biraz daha doğru tahmin eder.</p>
+    <div class="grid">
+      <figure style="margin:0">
+        <svg viewBox="0 0 520 260" role="img" aria-label="Son 14 günde huzursuzluğun başladığı saatler: ilk hafta 16:40 ile 17:00 arası, Gün Işığı'ndan sonra 17:20 ile 18:00 arası; bazı günler hiç olmadı.">
+          <g stroke="#E8E2DA"><line x1="60" y1="30" x2="500" y2="30"/><line x1="60" y1="90" x2="500" y2="90"/><line x1="60" y1="150" x2="500" y2="150"/><line x1="60" y1="210" x2="500" y2="210"/></g>
+          <g text-anchor="end"><text x="52" y="34">16:00</text><text x="52" y="94">17:00</text><text x="52" y="154">18:00</text><text x="52" y="214">yok</text></g>
+          <line x1="273" y1="22" x2="273" y2="226" stroke="#4A3550" stroke-dasharray="5 5" stroke-width="2"/>
+          <text x="280" y="22" style="fill:#4A3550;font-weight:700">Gün Işığı açıldı</text>
+          <g fill="#A85A1A"><circle cx="80" cy="74" r="7"/><circle cx="110" cy="66" r="7"/><circle cx="140" cy="82" r="7"/><circle cx="170" cy="70" r="7"/><circle cx="200" cy="62" r="7"/><circle cx="230" cy="78" r="7"/><circle cx="260" cy="72" r="7"/></g>
+          <g fill="#4A3550"><circle cx="290" cy="108" r="7"/><circle cx="320" cy="126" r="7"/><circle cx="350" cy="210" r="7"/><circle cx="380" cy="132" r="7"/><circle cx="410" cy="144" r="7"/><circle cx="440" cy="210" r="7"/><circle cx="470" cy="138" r="7"/></g>
+          <g text-anchor="middle"><text x="80" y="248">20 Eki</text><text x="260" y="248">26 Eki</text><text x="470" y="248">2 Kas</text></g>
+        </svg>
+        <figcaption style="font-size:17px;color:var(--soft);margin-top:8px">Hatice Hanım'ın son iki haftası. Turuncu: önce. Mor: sonra. İki akşam hiç huzursuzluk olmadı.</figcaption>
+      </figure>
+      <div>
+        <ul class="signs">
+          <li><b>Koridorda gidip gelme</b><span>Aynı iki oda arasında beş dakikada dördüncü geçiş.</span></li>
+          <li><b>Dış kapıyı yoklama</b><span>Kapı kolunun sensörü, açılmadan dokunulduğunu bilir.</span></li>
+          <li><b>Işığı açıp kapama</b><span>Aynı anahtara art arda basılması, karanlıktan rahatsızlık işaretidir.</span></li>
+        </ul>
+        <p class="honest">Işık düzeni bazı kişilerde akşam huzursuzluğunu hafifletebilir, herkeste değil. Gün Işığı ilaç ya da hekim önerisinin yerine geçmez; tahminlerini nöroloğunuzla paylaşabileceğiniz bir sayfa olarak verir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="you" id="siz">
+  <div class="wrap">
+    <div>
+      <h2 class="h2">Akşamları sizin de nefes almanız için</h2>
+      <p style="margin-top:18px">Bakım verenin akşamı da zordur: yemek, ilaç, aynı sorunun beşinci kez sorulması. Gün Işığı size yalnız işe yarayacak anlarda, kısa ve yumuşak bir dille seslenir.</p>
+    </div>
+    <div>
+      <div class="note"><b>16:45 · bugün için tahmin</b><p>Annen bugün öğleden sonra az uyudu; huzursuzluk daha erken gelebilir. Işıklar 16:30'da başladı.</p></div>
+      <div class="note"><b>17:10 · öneri</b><p>Balkonda birlikte oturmak için iyi bir an: güneş daha batmadı, gökyüzü açık.</p></div>
+      <div class="note"><b>21:50 · gün sonu</b><p>Bu akşam sakin geçti. Sen de dinlen.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="proof">
+  <div class="wrap">
+    <p class="big">Annenizin evdeki adımları evde kalır. Hangi odada ne zaman durduğunu yalnızca evdeki küçük merkez bilir.</p>
+    <div>
+      <p class="s">Öğrenme ve tahmin, lambaların bağlı olduğu ev merkezinde yapılır. Bir sunucuya hareket kaydı gönderilmez; size giden tek şey kısa notlardır.</p>
+      <p class="s">İnternet kesilirse ışık düzeni aynı şekilde sürer; akşam yine yumuşar, gece yolu yine yanar.</p>
+      <p class="lamps">Uyumlu: <b>Philips Hue</b>, <b>IKEA Dirigera</b> ve <b>Matter</b> destekli ampuller ile hareket sensörleri. Lamba yoksa başlangıç seti öneririz.</p>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>“Annem her akşam beşte çantasını alıp ‘eve gideceğim’ derdi, oysa evindeydi. Lambaları erken yumuşatmaya başladığımızdan beri bazı akşamlar hiç sormuyor. Her akşam değil, ama o akşamlar bana yetiyor.”</blockquote>
+    <cite>Nilgün Aksoy · Antalya, emekli hemşire. Annesi Hatice Hanım 84 yaşında, Alzheimer tanısı üç yıl önce kondu.</cite>
+  </div>
+</section>
+
+<section class="price" id="fiyat">
+  <div class="wrap">
+    <div>
+      <p class="amt">690 ₺ <small>bir kez, abonelik yok</small></p>
+      <ul><li>Bir evdeki tüm lamba ve sensörler</li><li>3 bakım verene kadar not</li><li>Aylık nörolog sayfası</li><li>Kurulumda görüntülü yardım</li></ul>
+      <p style="color:var(--soft);font-size:18px">Lambası olmayan evler için başlangıç seti (4 ampul + 2 hareket sensörü + merkez) yaklaşık 4.200 ₺.</p>
+      <a class="btn" href="#">Annemin evine kurayım</a>
+    </div>
+    <div class="faq">
+      <details><summary>Annem ışığın değiştiğini fark edip huzursuzlanır mı?</summary><p>Geçişler 20-40 dakikaya yayılır, pencere dışındaki ışık gibi. Anneniz bir lambayı elle açarsa Gün Işığı onun seçimine saygı duyar, o akşam o lambaya dokunmaz.</p></details>
+      <details><summary>Bakım evinde de kullanılabilir mi?</summary><p>Evet, oda başına kurulabilir. Her odanın kendi ritmi olur; personele tek bir sade ekran verilir.</p></details>
+      <details><summary>Annem gece uyanırsa?</summary><p>Yatak odasından banyoya giden yol ayak hizasında loş yanar, tavan ışığı açılmaz. İsterseniz size sessiz bir not düşer.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Gün Işığı · Antalya · merhaba@gunisigi.app</span>
+    <span>Sağlık uyarısı · Gizlilik</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // keyframes: hour -> sky, lamp, room, tint, darkness, sun y, kelvin text, state
+  var K=[
+    {h:6,  sky:[200,190,215],lamp:[255,236,200],room:[236,229,226],tint:[238,236,240],d:.25,sy:215,k:'4000 K · %40',s:'Sabah: anneniz uyanmadan önce yatak odası yavaşça aydınlanır.'},
+    {h:9,  sky:[196,222,240],lamp:[255,246,226],room:[243,239,232],tint:[242,242,240],d:0, sy:70, k:'5000 K · %80',s:'Gündüz: ışık parlak ve serin. Uyanık ve canlı bir sabah için.'},
+    {h:14, sky:[186,214,236],lamp:[255,244,220],room:[244,238,228],tint:[244,241,236],d:0, sy:60, k:'5000 K · %70',s:'Öğleden sonra: gölgeler uzamadan köşeler aydınlık tutulur.'},
+    {h:16.8,sky:[243,203,140],lamp:[251,224,168],room:[244,228,204],tint:[247,238,224],d:0,sy:150,k:'3500 K · %65',s:'Erken yumuşama: tahmin 17:20, ışık şimdiden sıcaklaşıyor.'},
+    {h:17.5,sky:[232,150,96],lamp:[246,201,120],room:[243,227,202],tint:[246,236,222],d:.05,sy:196,k:'2700 K · %55',s:'Koridorda gidip gelme başladı. Işık 20 dakika erken yumuşadı, radyo kendiliğinden kısıldı.'},
+    {h:19, sky:[86,62,96], lamp:[239,166,90],room:[232,212,190],tint:[238,226,214],d:.12,sy:260,k:'2200 K · %45',s:'Yemek saati: mutfak parlak, salon kısık. Bu akşam sakin.'},
+    {h:21.5,sky:[40,32,56],lamp:[201,113,58],room:[205,184,168],tint:[226,216,210],d:.35,sy:260,k:'1900 K · %10',s:'Gece yolu: koridor ayak hizasında loş yanıyor.'},
+    {h:23, sky:[30,24,44],lamp:[190,100,50],room:[190,170,160],tint:[220,212,210],d:.5,sy:260,k:'1800 K · %5',s:'Gece: yalnızca banyo yolu açık.'}
+  ];
+  var r=document.documentElement.style,inp=document.getElementById('time'),clock=document.getElementById('clock'),
+      k=document.getElementById('k'),st=document.getElementById('st'),dark=document.getElementById('dark'),sun=document.getElementById('sun');
+  function mix(a,b,t){return a.map(function(v,i){return Math.round(v+(b[i]-v)*t)})}
+  function rgb(c){return 'rgb('+c.join(',')+')'}
+  function fmt(h){var hh=Math.floor(h),mm=Math.round((h-hh)*60);return (hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm}
+  function update(){
+    var h=parseFloat(inp.value),i=0;while(i<K.length-2&&h>K[i+1].h)i++;
+    var a=K[i],b=K[i+1],t=Math.max(0,Math.min(1,(h-a.h)/(b.h-a.h)));
+    r.setProperty('--sky',rgb(mix(a.sky,b.sky,t)));r.setProperty('--lamp',rgb(mix(a.lamp,b.lamp,t)));
+    r.setProperty('--room',rgb(mix(a.room,b.room,t)));r.setProperty('--tint',rgb(mix(a.tint,b.tint,t)));
+    dark.setAttribute('opacity',(a.d+(b.d-a.d)*t).toFixed(2));sun.setAttribute('cy',Math.round(a.sy+(b.sy-a.sy)*t));
+    var n=t<.5?a:b;k.textContent=n.k;st.textContent=n.s;clock.textContent=fmt(h);inp.setAttribute('aria-valuetext',fmt(h));
+  }
+  inp.addEventListener('input',update);update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Müzik Kulağı — Evdeki keman ve piyano çalışmasını öğretmen gibi dinler</title>
+<meta name="description" content="Müzik Kulağı keman ve piyano çalışan çocuğu dinler, yanlış notayı ve ritim kaymasını öğretmen gibi işaretler. Nota bilmeyen ebeveyn de ilerlemeyi duyar. Kayıtlar telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Karla:wght@400;500;700&family=Noto+Music&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ceviz:#2A1A12;
+  --ceviz2:#3A2519;
+  --vernik:#C9802F;
+  --recine:#EED9A4;
+  --nota:#F6F2E8;
+  --kalem:#3A3633;
+  --kirmizi:#B3261E;
+  --yesil:#2E6B3F;
+  --soluk:#C9B79C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ceviz);color:#F2E8D8;font-family:"Karla",system-ui,sans-serif;font-size:18px;line-height:1.6}
+:focus-visible{outline:3px solid var(--recine);outline-offset:3px;border-radius:4px}
+a{color:var(--recine)}
+h1,h2,h3{font-family:"Bodoni Moda",Georgia,serif;font-weight:400}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+header{max-width:1160px;margin:0 auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:"Bodoni Moda";font-style:italic;font-size:26px;color:#F2E8D8;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo span{font-family:"Noto Music";font-style:normal;color:var(--vernik);font-size:30px;line-height:1}
+header nav a{margin-left:24px;color:var(--soluk);text-decoration:none;font-size:16px}
+header nav a:hover{color:var(--recine)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:700;font-size:17px;padding:13px 22px;border-radius:999px;background:var(--recine);color:var(--ceviz);text-decoration:none;border:2px solid var(--recine);cursor:pointer}
+.btn:hover{background:#fff;border-color:#fff}
+.btn.ince{background:transparent;color:var(--recine)}
+.btn.ince:hover{background:var(--recine);color:var(--ceviz)}
+header nav a.btn{color:var(--recine);margin-left:24px}
+header nav a.btn:hover{color:var(--ceviz)}
+
+.hero{padding-top:30px;padding-bottom:90px;
+  background:radial-gradient(ellipse 70% 60% at 50% 70%, rgba(201,128,47,.18), transparent 70%)}
+.hero-ust{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:end;margin-bottom:40px}
+.hero h1{font-size:clamp(40px,5.4vw,72px);line-height:1.04;margin:0;letter-spacing:-.5px}
+.hero h1 em{display:block}
+.hero p{margin:0 0 22px;color:#E3D5BF;max-width:40ch}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+
+/* nota sehpası */
+.sehpa{position:relative;max-width:1060px;margin:0 auto}
+.kagit{background:var(--nota);color:var(--kalem);border-radius:3px;padding:26px 30px 22px;box-shadow:0 40px 80px -30px rgba(0,0,0,.7), inset 0 0 60px rgba(160,130,80,.12)}
+.kagit .bas{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:baseline}
+.kagit .bas h2{font-size:24px;margin:0;font-style:italic}
+.kagit .bas span{font-size:15px;color:#6A625A}
+.porte{width:100%;height:auto;display:block;margin:6px 0 4px}
+.porte .n{transition:fill .15s}
+.porte .n.calan{fill:var(--vernik)}
+.isaret-yazi{font-family:"Karla";font-size:13px}
+.kontrol{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid #DDD3C2;padding-top:14px}
+.gunler{display:inline-flex;border:1.5px solid var(--kalem);border-radius:999px;overflow:hidden}
+.gunler button{font:inherit;font-weight:700;font-size:15px;padding:8px 18px;background:transparent;border:0;cursor:pointer;color:var(--kalem)}
+.gunler button[aria-pressed="true"]{background:var(--kalem);color:var(--nota)}
+.kontrol .ozet{font-size:16px;color:var(--kalem);margin:0;flex:1;min-width:220px}
+.kontrol .ozet b.k{color:var(--kirmizi)}
+.kontrol .ozet b.y{color:var(--yesil)}
+.cal{background:var(--kalem);color:var(--nota);border-color:var(--kalem)}
+.cal:hover{background:#000;border-color:#000;color:#fff}
+.kaydir-ipucu{display:none;margin:0 0 8px;font-size:13px;color:#6A625A}
+.sehpa .ayak{width:16px;height:70px;margin:0 auto;background:linear-gradient(90deg,#1A0F0A,#4A3020,#1A0F0A)}
+
+section{padding:90px 0}
+h2.b{font-size:clamp(30px,3.8vw,48px);line-height:1.12;margin:0 0 16px;max-width:20ch}
+.acik{max-width:58ch;color:#E3D5BF}
+.acik-b{background:var(--nota);color:var(--kalem)}
+.acik-b h2.b{color:var(--ceviz)}
+.acik-b .acik{color:#4A4440}
+
+/* işaretler */
+.isaretler{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:40px;border-top:1.5px solid var(--kalem)}
+.is{padding:24px 26px 0 0}
+.is + .is{padding-left:26px;border-left:1px solid #DDD3C2}
+.is svg{width:100%;max-width:240px;height:70px;display:block;margin-bottom:10px}
+.is h3{margin:0 0 6px;font-size:24px;color:var(--ceviz)}
+.is p{margin:0;font-size:16px;color:#4A4440}
+.is .ogret{display:block;margin-top:10px;font-style:italic;font-family:"Bodoni Moda";color:var(--kirmizi);font-size:17px}
+
+/* hafta */
+.hafta{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.defter{background:var(--ceviz2);border:1px solid #5A3E2B;border-radius:12px;padding:26px}
+.defter h3{margin:0 0 4px;font-size:22px;color:var(--recine)}
+.defter .alt{color:var(--soluk);font-size:15px;margin:0 0 18px}
+.satirlar{display:grid;gap:10px}
+.gs{display:grid;grid-template-columns:44px 1fr 96px;gap:12px;align-items:center;font-size:15px}
+.gs b{font-weight:700;color:#F2E8D8}
+.gs .cubuk{height:12px;background:#4A3324;border-radius:6px;overflow:hidden}
+.gs .cubuk i{display:block;height:100%;background:var(--vernik);border-radius:6px}
+.gs span{color:var(--soluk);text-align:right;font-variant-numeric:tabular-nums}
+.ogretmen-not{margin-top:20px;background:var(--nota);color:var(--kalem);border-radius:4px;padding:14px 16px;font-size:16px}
+.ogretmen-not b{font-family:"Bodoni Moda";font-style:italic;font-weight:400;font-size:18px;display:block;margin-bottom:2px}
+
+/* ebeveyn */
+.ebeveyn{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.cumleler{list-style:none;margin:0;padding:0}
+.cumleler li{padding:18px 0;border-bottom:1px solid #DDD3C2;display:grid;grid-template-columns:150px 1fr;gap:18px}
+.cumleler li:first-child{border-top:1.5px solid var(--kalem)}
+.cumleler small{color:#6A625A;font-size:14px;padding-top:4px}
+.cumleler q{font-family:"Bodoni Moda";font-size:21px;line-height:1.4;color:var(--ceviz)}
+
+/* kanıt */
+.kanit{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.kanit .liste div{padding:14px 0;border-bottom:1px solid #5A3E2B}
+.kanit .liste b{display:block;color:var(--recine)}
+.kanit .liste span{color:#E3D5BF;font-size:16px}
+
+.alintilar{display:grid;grid-template-columns:1fr 1fr;gap:50px}
+.alintilar figure{margin:0}
+.alintilar blockquote{margin:0;font-family:"Bodoni Moda";font-style:italic;font-size:clamp(22px,2.4vw,29px);line-height:1.4;color:#F2E8D8}
+.alintilar figcaption{margin-top:14px;color:var(--soluk);font-size:15px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.fk{background:var(--nota);color:var(--kalem);border-radius:6px;padding:30px}
+.fk h3{margin:0;font-size:24px;color:var(--ceviz)}
+.fk .t{font-family:"Bodoni Moda";font-size:50px;margin:4px 0 0;color:var(--ceviz);line-height:1.1}
+.fk .t small{font-family:Karla;font-size:16px;color:#6A625A}
+.fk ul{padding-left:20px;margin:14px 0 22px}
+.fk .btn{background:var(--ceviz);color:var(--recine);border-color:var(--ceviz)}
+.fk .btn:hover{background:#000}
+details{border-bottom:1px solid #5A3E2B;padding:16px 0}
+details:first-child{border-top:1px solid #5A3E2B}
+summary{cursor:pointer;font-weight:700}
+details p{margin:8px 0 0;color:#E3D5BF}
+footer{border-top:1px solid #5A3E2B;padding:34px 0;color:var(--soluk);font-size:15px}
+footer .r{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--soluk)}
+.credit{margin-top:14px;font-size:13px}
+
+@media (max-width:900px){
+  header nav a:not(.btn){display:none}
+  .hero-ust,.hafta,.ebeveyn,.kanit,.alintilar,.fiyat{grid-template-columns:1fr;gap:30px}
+  .isaretler{grid-template-columns:1fr}
+  .is,.is + .is{padding:22px 0;border-left:0;border-bottom:1px solid #DDD3C2}
+  section{padding:64px 0}
+}
+@media (max-width:560px){
+  .kagit{padding:18px 12px 16px}
+  .porte-kap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .porte{min-width:640px}
+  .kaydir-ipucu{display:block}
+  .cumleler li{grid-template-columns:1fr;gap:4px}
+  .gs{grid-template-columns:40px 1fr 80px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#" aria-label="Müzik Kulağı ana sayfa"><span aria-hidden="true">𝄞</span>Müzik Kulağı</a>
+  <nav aria-label="Ana menü">
+    <a href="#isaretler">Ne işaretler</a>
+    <a href="#hafta">Hafta</a>
+    <a href="#ebeveyn">Nota bilmeyenler için</a>
+    <a href="#fiyat">Fiyat</a>
+    <a class="btn ince" href="#fiyat">İndir</a>
+  </nav>
+</header>
+
+<main>
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-ust">
+      <h1>Doğru mu çalıyor? <em>Artık siz de duyarsınız.</em></h1>
+      <div>
+        <p>Müzik Kulağı keman ya da piyano çalışan çocuğunuzu dinler; yanlış notayı, kayan ritmi bir öğretmen gibi işaretler. Nota bilmeseniz de pazartesi ile cumayı yan yana dinleyip farkı kendi kulağınızla duyarsınız.</p>
+        <div class="cta"><a class="btn" href="#fiyat">iPhone ve iPad için indir</a><a class="btn ince" href="#fiyat">Android için indir</a></div>
+      </div>
+    </div>
+
+    <div class="sehpa">
+      <div class="kagit" aria-label="Nota sehpasındaki eser: yanlış notalar ve ritim kayması işaretlenmiş">
+        <div class="bas"><h2>Ah, vous dirai-je, maman — tema</h2><span>Deniz, 8 yaş · keman · 1. kitap · ♩ = 84</span></div>
+        <div class="porte-kap"><svg class="porte" id="porte" viewBox="0 0 980 170" role="img" aria-labelledby="ozet"></svg></div>
+        <p class="kaydir-ipucu" aria-hidden="true">Notayı yana kaydırın →</p>
+        <div class="kontrol">
+          <div class="gunler" role="group" aria-label="Kayıt günü"><button type="button" aria-pressed="true" data-g="pzt">Pazartesi</button><button type="button" aria-pressed="false" data-g="cum">Cuma</button></div>
+          <p class="ozet" id="ozet" aria-live="polite"></p>
+          <button class="btn cal" id="cal" type="button">▶ Dinle</button>
+        </div>
+      </div>
+      <div class="ayak" aria-hidden="true"></div>
+    </div>
+  </div>
+</div>
+
+<section class="acik-b" id="isaretler">
+  <div class="wrap">
+    <h2 class="b">Bir öğretmenin kurşun kalemiyle işaretler.</h2>
+    <p class="acik">Her çalışmanın sonunda Müzik Kulağı notanın üstüne üç tür işaret koyar. Hepsi çocuğun öğretmeninin anlayacağı dilde; hiçbiri “yanlış!” diye bağırmaz.</p>
+    <div class="isaretler">
+      <div class="is">
+        <svg viewBox="0 0 240 70" aria-hidden="true"><g stroke="#3A3633" stroke-width="1"><line x1="0" y1="14" x2="240" y2="14"/><line x1="0" y1="26" x2="240" y2="26"/><line x1="0" y1="38" x2="240" y2="38"/><line x1="0" y1="50" x2="240" y2="50"/><line x1="0" y1="62" x2="240" y2="62"/></g><ellipse cx="80" cy="44" rx="7" ry="5" fill="#3A3633" transform="rotate(-20 80 44)"/><ellipse cx="140" cy="14" rx="7" ry="5" fill="#3A3633" transform="rotate(-20 140 14)"/><circle cx="140" cy="14" r="13" fill="none" stroke="#B3261E" stroke-width="2"/></svg>
+        <h3>Yanlış nota</h3><p>Hangi ölçüde, hangi nota, ne çalındı. Kemanda parmak yerinin kaydığı yer de yazılır.</p><span class="ogret">“2. parmak yüksek olacak, fa diyez.”</span>
+      </div>
+      <div class="is">
+        <svg viewBox="0 0 240 70" aria-hidden="true"><g stroke="#3A3633" stroke-width="1"><line x1="0" y1="14" x2="240" y2="14"/><line x1="0" y1="26" x2="240" y2="26"/><line x1="0" y1="38" x2="240" y2="38"/><line x1="0" y1="50" x2="240" y2="50"/><line x1="0" y1="62" x2="240" y2="62"/></g><g fill="#3A3633"><ellipse cx="40" cy="38" rx="7" ry="5" transform="rotate(-20 40 38)"/><ellipse cx="90" cy="38" rx="7" ry="5" transform="rotate(-20 90 38)"/><ellipse cx="128" cy="32" rx="7" ry="5" transform="rotate(-20 128 32)"/><ellipse cx="160" cy="32" rx="7" ry="5" transform="rotate(-20 160 32)"/></g><path d="M110 6 H180 M180 2 L188 6 L180 10" stroke="#B3261E" stroke-width="2" fill="none"/></svg>
+        <h3>Ritim kayması</h3><p>Hızlanan, yavaşlayan ya da kısa tutulan notalar. Metronoma göre kaç milisaniye kaydığı değil, “acele etti” diye.</p><span class="ogret">“3. ölçüde acele, say: bir-iki-üç-dört.”</span>
+      </div>
+      <div class="is">
+        <svg viewBox="0 0 240 70" aria-hidden="true"><g stroke="#3A3633" stroke-width="1"><line x1="0" y1="14" x2="240" y2="14"/><line x1="0" y1="26" x2="240" y2="26"/><line x1="0" y1="38" x2="240" y2="38"/><line x1="0" y1="50" x2="240" y2="50"/><line x1="0" y1="62" x2="240" y2="62"/></g><ellipse cx="120" cy="32" rx="7" ry="5" fill="#3A3633" transform="rotate(-20 120 32)"/><path d="M112 4 l8 -2 l8 2" stroke="#2E6B3F" stroke-width="2" fill="none"/><text x="134" y="10" fill="#2E6B3F" font-family="Karla" font-size="12">biraz pes</text></svg>
+        <h3>Ses yüksekliği</h3><p>Nota doğru ama biraz pes ya da tiz. Kemanda en zor iş; piyanoda bu işaret çıkmaz.</p><span class="ogret">“Doğru nota, biraz pes. Kulağınla yukarı it.”</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hafta">
+  <div class="wrap hafta">
+    <div>
+      <h2 class="b">Hafta sonunda ilerlemeyi duyarsınız.</h2>
+      <p class="acik">“Çalıştın mı?” sorusu yerine “Bak, cuma çok daha temizdi” dersiniz. Müzik Kulağı her günün en iyi denemesini saklar; hafta sonunda pazartesiyle cumayı arka arkaya çalar.</p>
+      <p class="acik">Öğretmene giden haftalık not, dersin ilk beş dakikasını kazandırır.</p>
+    </div>
+    <div class="defter" aria-label="Haftalık çalışma özeti">
+      <h3>Deniz'in haftası</h3>
+      <p class="alt">3–7 Kasım · 5 gün · günde ortalama 22 dk</p>
+      <div class="satirlar">
+        <div class="gs"><b>Pzt</b><div class="cubuk"><i style="width:40%"></i></div><span>5 işaret</span></div>
+        <div class="gs"><b>Sal</b><div class="cubuk"><i style="width:55%"></i></div><span>4 işaret</span></div>
+        <div class="gs"><b>Çar</b><div class="cubuk"><i style="width:62%"></i></div><span>3 işaret</span></div>
+        <div class="gs"><b>Per</b><div class="cubuk"><i style="width:80%"></i></div><span>2 işaret</span></div>
+        <div class="gs"><b>Cum</b><div class="cubuk"><i style="width:95%"></i></div><span>temiz</span></div>
+      </div>
+      <p class="alt" style="margin:10px 0 0">Çubuk: temiz çalınan ölçü oranı</p>
+      <div class="ogretmen-not"><b>Öğretmene not</b>Tema artık temiz. Fa diyez çarşambadan beri yerinde. 1. varyasyonda 6. ölçüde yay değişimi hâlâ aceleye getiriliyor.</div>
+    </div>
+  </div>
+</section>
+
+<section class="acik-b" id="ebeveyn">
+  <div class="wrap ebeveyn">
+    <div>
+      <h2 class="b">Nota bilmiyorsanız, ne diyeceğinizi söyler.</h2>
+      <p class="acik">Evde keman sesi bazen hepsi aynı gelir. Müzik Kulağı her çalışmadan sonra size, çocuğa söyleyebileceğiniz somut bir cümle verir. Genel bir “aferin” değil; gerçekten duyduğu bir şey.</p>
+    </div>
+    <ul class="cumleler">
+      <li><small>Pazartesi, 5 işaret</small><q>Fa diyezi iki kere kaçırdın; dur, sadece o iki notayı yavaş çalalım mı?</q></li>
+      <li><small>Çarşamba, 3 işaret</small><q>Fa diyez bugün her seferinde yerindeydi. Ritim de daha sakin.</q></li>
+      <li><small>Cuma, temiz</small><q>Temayı baştan sona hiç durmadan, temiz çaldın. Pazartesiyi hatırlıyor musun?</q></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap kanit">
+    <div>
+      <h2 class="b">Gıcırtılar evde kalır.</h2>
+      <p class="acik">Yeni başlayan bir kemancının ilk ayları her zaman güzel çalmaz; bunun kaydı da ailenin malıdır. Müzik Kulağı sesi telefonun içinde dinler ve çözümler. Hiçbir kayıt buluta gitmez, internete gerek yoktur.</p>
+    </div>
+    <div class="liste">
+      <div><b>Saklanan</b><span>Her günün en iyi denemesi, en fazla 30 gün. Gerisi çalışma biter bitmez silinir.</span></div>
+      <div><b>Paylaşılan</b><span>Yalnız siz isterseniz: öğretmene giden metin notu. Ses dosyası gönderme isteğe bağlı.</span></div>
+      <div><b>Hiç olmayan</b><span>Hesap açma zorunluluğu, reklam, çocuğun sesiyle model eğitimi.</span></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:10px">
+  <div class="wrap alintilar">
+    <figure><blockquote>“Ben müzikten hiç anlamam. Eskiden ‘güzel olmuş kızım’ derdim, o da bilirdi ki anlamıyorum. Şimdi ‘fa diyez yerine oturmuş’ diyorum, gözleri parlıyor.”</blockquote><figcaption>Hakan Er · Eskişehir · inşaat mühendisi, Deniz'in babası</figcaption></figure>
+    <figure><blockquote>“Öğrencim derse geldiğinde haftanın notunu okuyorum. Aynı hatayı bir hafta boyunca tekrar edip yerleştirmemiş oluyor; en çok bunun için değerli.”</blockquote><figcaption>Elif Sarıgül · İzmir · keman öğretmeni, konservatuvar hazırlık</figcaption></figure>
+  </div>
+</section>
+
+<section id="fiyat">
+  <div class="wrap fiyat">
+    <div class="fk">
+      <h3>Aile</h3>
+      <p class="t">599 ₺ <small>/ yıl</small></p>
+      <ul><li>Keman ve piyano</li><li>İki çocuğa kadar</li><li>Suzuki ve konservatuvar hazırlık repertuvarı, kendi notanızı fotoğrafla ekleme</li><li>İlk 14 gün ücretsiz</li></ul>
+      <a class="btn" href="#">iPhone ve iPad için indir</a>
+    </div>
+    <div>
+      <details open><summary>Öğretmenin yerini mi alıyor?</summary><p>Hayır. Haftada bir dersin arasındaki altı günde çocuğun yanlışı yerleştirmemesi için var. Yeni teknik, duruş ve yay tutuşu öğretmenin işidir.</p></details>
+      <details><summary>Ucuz bir keman ya da akordu bozuk bir piyano sorun olur mu?</summary><p>Uygulama önce akordu dinler; enstrüman genel olarak pesse notaları ona göre değerlendirir ve size akort uyarısı verir.</p></details>
+      <details><summary>Kendi notamızı ekleyebilir miyiz?</summary><p>Evet. Öğretmenin verdiği notanın fotoğrafını çekin; Müzik Kulağı notayı okur ve o eser için dinlemeye başlar. Okuyamadığı ölçüleri size sorar.</p></details>
+      <details><summary>Hangi yaşlara uygun?</summary><p>5–14 yaş arası başlangıç ve orta düzey. Viyolonsel desteği 2027 baharında.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="r"><span><i>Müzik Kulağı</i> · Evde de bir öğretmen kulağı.</span><span>merhaba@muzikkulagi.app · Gizlilik · KVKK</span></div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+<script>
+(function(){
+  const svg=document.getElementById('porte'), NS='http://www.w3.org/2000/svg';
+  // porte: üst çizgi F5 y=50, aralık 14 → çizgiler 50,64,78,92,106
+  const L=[50,64,78,92,106], step=7;
+  const yOf={A4:85,'C#5':71,B4:78,D5:64,E5:57,'F#5':50,F5:50};
+  const fr={A4:440,B4:493.88,'C#5':554.37,D5:587.33,E5:659.25,'F#5':739.99,F5:698.46};
+  const mel=[['A4',1],['A4',1],['E5',1],['E5',1],['F#5',1],['F#5',1],['E5',2],['D5',1],['D5',1],['C#5',1],['C#5',1],['B4',1],['B4',1],['A4',2]];
+  const start=150, mw=205;
+  function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
+  L.forEach(y=>el('line',{x1:20,y1:y,x2:970,y2:y,stroke:'#3A3633','stroke-width':1.2}));
+  const cl=el('text',{x:24,y:112,'font-family':'Noto Music','font-size':74,fill:'#3A3633'});cl.textContent='𝄞';
+  [[82,50],[96,71],[110,43]].forEach(([x,y])=>{const t=el('text',{x:x,y:y+6,'font-family':'Noto Music','font-size':24,fill:'#3A3633'});t.textContent='♯'});
+  const sure=el('text',{x:134,y:84,'font-family':'Bodoni Moda','font-size':26,'font-weight':600,fill:'#3A3633'});sure.textContent='4';
+  const sure2=el('text',{x:134,y:106,'font-family':'Bodoni Moda','font-size':26,'font-weight':600,fill:'#3A3633'});sure2.textContent='4';
+  for(let m=1;m<=4;m++){const x=start+m*mw-6;el('line',{x1:x,y1:50,x2:x,y2:106,stroke:'#3A3633','stroke-width':m===4?4:1.2})}
+  const notes=[];let beat=0;
+  mel.forEach(([p,d],i)=>{
+    const x=start+20+beat*(mw/4)+(Math.floor(beat/4)*0), y=yOf[p];
+    const g=el('g',{});
+    const up=y>=78;
+    const head=el('ellipse',{cx:x,cy:y,rx:8,ry:5.6,transform:`rotate(-20 ${x} ${y})`,fill:d===2?'#F6F2E8':'#3A3633',stroke:'#3A3633','stroke-width':2,class:'n'},g);
+    el('line',{x1:up?x+7.4:x-7.4,y1:y,x2:up?x+7.4:x-7.4,y2:up?y-40:y+40,stroke:'#3A3633','stroke-width':1.6},g);
+    if(y>=113)el('line',{x1:x-13,y1:113,x2:x+13,y2:113,stroke:'#3A3633'},g);
+    notes.push({x,y,p,d,head,i});beat+=d;
+  });
+  const isaret=el('g',{});
+  const D={
+    pzt:{yanlis:[4,5],acele:true,ozet:'Pazartesi: <b class="k">2 yanlış nota</b> (fa diyez yerine fa) ve <b class="k">3. ölçüde acele</b>.'},
+    cum:{yanlis:[],acele:false,ozet:'Cuma: <b class="y">temiz</b>. Fa diyez yerinde, tempo 84\'te sabit.'}
+  };
+  let gun='pzt';
+  function ciz(){
+    while(isaret.firstChild)isaret.removeChild(isaret.firstChild);
+    const d=D[gun];
+    if(d.yanlis.length){
+      const a=notes[d.yanlis[0]],b=notes[d.yanlis[1]];
+      el('rect',{x:a.x-16,y:a.y-14,width:b.x-a.x+32,height:28,rx:14,fill:'none',stroke:'#B3261E','stroke-width':2.2},isaret);
+      const t=el('text',{x:a.x-16,y:136,fill:'#B3261E','font-family':'Karla','font-size':14,'font-weight':700},isaret);t.textContent='fa ♯ olacak · 2. parmak yüksek';
+    }
+    if(d.acele){
+      const x1=start+2*mw+10,x2=start+3*mw-20;
+      el('path',{d:`M${x1} 26 H${x2} M${x2-8} 21 L${x2} 26 L${x2-8} 31`,stroke:'#B3261E','stroke-width':2,fill:'none'},isaret);
+      const t=el('text',{x:x1,y:18,fill:'#B3261E','font-family':'Karla','font-size':14,'font-weight':700},isaret);t.textContent='acele · ♩ 84 → 97';
+    }else{
+      const t=el('text',{x:start+3*mw+40,y:30,fill:'#2E6B3F','font-family':'Karla','font-size':15,'font-weight':700},isaret);t.textContent='✓ temiz · ♩ 84';
+    }
+    document.getElementById('ozet').innerHTML=d.ozet;
+  }
+  document.querySelectorAll('.gunler button').forEach(b=>b.addEventListener('click',()=>{gun=b.dataset.g;document.querySelectorAll('.gunler button').forEach(x=>x.setAttribute('aria-pressed',x===b));ciz()}));
+  ciz();
+  // ses
+  let ctx=null,calisiyor=false;
+  document.getElementById('cal').addEventListener('click',()=>{
+    if(calisiyor)return;
+    try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)()}catch(e){return}
+    calisiyor=true;
+    const q=60/84, d=D[gun]; let t=ctx.currentTime+.1, beat=0;
+    notes.forEach((n,i)=>{
+      let p=n.p; if(d.yanlis.includes(i))p='F5';
+      let len=n.d*q; if(d.acele&&beat>=8&&beat<12)len*=0.86;
+      const o=ctx.createOscillator(),o2=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain();
+      o.type='sawtooth';o2.type='triangle';o.frequency.value=fr[p];o2.frequency.value=fr[p]*1.003;
+      f.type='lowpass';f.frequency.value=2200;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.06);g.gain.setValueAtTime(.12,t+len*.8);g.gain.linearRampToValueAtTime(0,t+len*.97);
+      o.connect(f);o2.connect(f);f.connect(g);g.connect(ctx.destination);
+      o.start(t);o2.start(t);o.stop(t+len);o2.stop(t+len);
+      const ms=(t-ctx.currentTime)*1000;
+      setTimeout(()=>{notes.forEach(x=>x.head.classList.remove('calan'));n.head.classList.add('calan')},ms);
+      t+=len;beat+=n.d;
+    });
+    setTimeout(()=>{notes.forEach(x=>x.head.classList.remove('calan'));calisiyor=false},(t-ctx.currentTime)*1000+100);
+  });
+})();
+</script>
+</body>
+</html>

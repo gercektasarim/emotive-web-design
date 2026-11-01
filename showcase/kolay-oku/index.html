@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kolay Oku — Disleksili çocuklar için okuma cetveli, hece vurgusu ve sesli okuma</title>
+<meta name="description" content="Kolay Oku, ders kitabının fotoğrafını çekince metni sadeleştirir, satır cetveli ve hece vurgusu ekler, zor kelimeyi sesli okur. Çocuğunuzun okuma verisi telefondan çıkmaz. Okul yılı boyunca 390 ₺.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Lexend:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FDFEFF;      /* defter sayfası */
+  --rule:#BCD3EE;       /* defter çizgisi */
+  --rule-soft:#EEF4FB;
+  --margin:#C8372D;     /* kırmızı kenar çizgisi, öğretmen kalemi */
+  --ruler:#FFEE8C;      /* sarı okuma cetveli (renkli şeffaf asetat) */
+  --graphite:#24262B;   /* kurşun kalem */
+  --blue:#1F5FA8;       /* tükenmez mavi: ikinci hece rengi */
+  --muted:#5B6170;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--graphite);font:400 1.2rem/1.75 "Lexend",system-ui,sans-serif;letter-spacing:.01em;overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+a{color:var(--blue);text-underline-offset:.22em}
+:focus-visible{outline:3px solid var(--margin);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:1rem;top:-6rem;background:var(--graphite);color:#fff;padding:1rem;z-index:9}
+.skip:focus{top:1rem}
+.wrap{max-width:1160px;margin:0 auto;padding:0 1.5rem}
+.wrap>*{min-width:0}
+h1,h2,h3{font-family:"Lexend",sans-serif;line-height:1.2;letter-spacing:0}
+h1{font-weight:800;font-size:clamp(2.1rem,4.4vw,3.3rem);max-width:22ch}
+h2{font-weight:800;font-size:clamp(1.7rem,3.2vw,2.4rem);max-width:24ch}
+h3{font-weight:600;font-size:1.25rem}
+p{max-width:58ch}
+.muted{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 1.5rem;border-radius:10px;font:600 1.1rem "Lexend";text-decoration:none;cursor:pointer;border:3px solid var(--graphite)}
+.btn.main{background:var(--graphite);color:#fff}
+.btn.alt{background:#fff;color:var(--graphite)}
+
+header .wrap{display:flex;align-items:center;justify-content:space-between;min-height:84px;gap:1rem;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:.6rem;font:800 1.45rem "Lexend";color:var(--graphite);text-decoration:none}
+header nav a{display:inline-flex;align-items:center;min-height:48px;padding:0 .8rem;color:var(--graphite);text-decoration:none;font-weight:600}
+header nav a:hover{text-decoration:underline}
+
+/* hero */
+.hero{padding:1.5rem 0 4rem}
+.hero-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.hero-intro p{font-size:1.2rem;margin-top:.8rem}
+.desk{display:grid;grid-template-columns:230px 1fr;gap:1.5rem;align-items:start}
+.tools{display:flex;flex-direction:column;gap:.6rem;position:sticky;top:1rem}
+.tools p{font-size:.95rem;color:var(--muted);margin-bottom:.2rem}
+.tool{display:flex;align-items:center;gap:.7rem;min-height:60px;padding:.5rem .9rem;border-radius:12px;border:2px solid #d6dbe4;background:#fff;color:var(--graphite);font:600 1.05rem "Lexend";cursor:pointer;text-align:left;width:100%}
+.tool svg{flex:none}
+.tool[aria-pressed="true"]{border-color:var(--graphite);background:var(--ruler)}
+.tool .st{margin-left:auto;font-size:.8rem;font-weight:400;color:var(--muted)}
+.tool[aria-pressed="true"] .st{color:var(--graphite)}
+.move{display:flex;gap:.5rem}
+.move button{flex:1;min-height:52px;border-radius:10px;border:2px solid #d6dbe4;background:#fff;font:600 1rem "Lexend";color:var(--graphite);cursor:pointer}
+
+.page{position:relative;background:#fff;border:1px solid #d6dbe4;border-radius:4px;padding:2rem 2.2rem 2.2rem 4.4rem;
+  background-image:linear-gradient(90deg,transparent 3.2rem,var(--margin) 3.2rem,var(--margin) calc(3.2rem + 2px),transparent calc(3.2rem + 2px));
+  box-shadow:0 2px 0 #e7ebf2,0 4px 0 #f1f4f8}
+.page .src{font-size:.9rem;color:var(--muted);margin-bottom:1rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.page h3{font-family:"Andika";font-size:1.5rem;margin-bottom:.8rem}
+.text{font-family:"Andika",sans-serif;font-size:1.45rem;line-height:2.05;word-spacing:.12em}
+.text .ln{display:block;border-radius:6px;padding:0 .4rem;margin:0 -.4rem;transition:background .2s,opacity .2s}
+.ruled .ln{color:#6A6F7C}
+.ruled .ln .s2{color:#4A78B0}
+.ruled .ln.on .s2{color:var(--blue)}
+.ruled .ln.on{color:var(--graphite);background:var(--ruler)}
+.text .s2{color:var(--blue)}
+.text .hard{text-decoration:underline dotted var(--margin) 3px;text-underline-offset:.3em;cursor:pointer;background:none;border:0;font:inherit;color:inherit;padding:0}
+.gloss{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:10px;background:var(--rule-soft);font-size:1.1rem;min-height:3.6rem}
+.gloss b{color:var(--margin)}
+
+/* parent */
+.parent{background:var(--rule-soft);padding:6rem 0;
+  background-image:repeating-linear-gradient(180deg,transparent 0 38px,var(--rule) 38px 39px)}
+.parent .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:start}
+.card{background:#fff;border-radius:12px;padding:2rem;border:1px solid #d6dbe4}
+.card p{margin-top:1rem}
+.clock{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.4rem}
+.clock div{border-radius:10px;padding:1rem;border:2px solid #d6dbe4}
+.clock div:last-child{border-color:var(--graphite);background:var(--ruler)}
+.clock b{display:block;font-size:2rem;font-weight:800;line-height:1.1}
+.clock span{font-size:.95rem}
+.sig{margin-top:1.4rem;font-size:1rem;color:var(--muted)}
+
+/* kid */
+.kid{padding:6rem 0}
+.kid-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;margin-top:2.5rem}
+.kid-grid article{padding:1.4rem;border-radius:12px;border:2px solid var(--graphite);background:#fff}
+.kid-grid article p{margin-top:.5rem;font-size:1.05rem;color:var(--muted)}
+.kid-grid .ex{display:block;font-family:"Andika";font-size:1.35rem;margin-bottom:.6rem}
+
+/* photo */
+.photo{padding:6rem 0;border-top:2px dashed var(--rule)}
+.photo .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:4rem;align-items:center}
+.sources{list-style:none;margin-top:1.4rem}
+.sources li{padding:.7rem 0 .7rem 2.2rem;position:relative;border-bottom:1px solid var(--rule)}
+.sources li::before{content:"";position:absolute;left:0;top:1.15rem;width:1.2rem;height:.7rem;border-left:3px solid var(--blue);border-bottom:3px solid var(--blue);transform:rotate(-45deg)}
+.snap{position:relative;background:#fff;border:1px solid #d6dbe4;border-radius:12px;padding:1.4rem;transform:rotate(-1.2deg)}
+.snap .corner{position:absolute;width:26px;height:26px;border:4px solid var(--blue)}
+.snap .c1{top:10px;left:10px;border-right:0;border-bottom:0}.snap .c2{top:10px;right:10px;border-left:0;border-bottom:0}
+.snap .c3{bottom:10px;left:10px;border-right:0;border-top:0}.snap .c4{bottom:10px;right:10px;border-left:0;border-top:0}
+.snap .bars span{display:block;height:10px;border-radius:5px;background:#dfe4ec;margin:14px 1.5rem}
+.snap .bars span.hl{background:var(--ruler)}
+.snap p{text-align:center;font-size:.95rem;color:var(--muted);margin:1rem auto 0}
+
+/* private */
+.priv{background:var(--graphite);color:#fff;padding:6rem 0}
+.priv :focus-visible{outline-color:var(--ruler)}
+.priv .wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.priv p{color:#E3E6EC;margin-top:1rem}
+.priv h2{color:#fff}
+.log{background:#33363d;border-radius:12px;padding:1.6rem;font-size:1.05rem}
+.log li{list-style:none;display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid #4a4e57}
+.log li:last-child{border:0}
+.log li b{color:var(--ruler)}
+
+/* price */
+.price{padding:6rem 0}
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.term{border:3px solid var(--graphite);border-radius:14px;padding:2rem;background:#fff}
+.term .amt{font-size:3rem;font-weight:800;line-height:1;margin:.7rem 0 .3rem}
+.term ul{margin:1.2rem 0 1.6rem 1.2rem}
+.term li{padding:.25rem 0}
+
+.quote{padding:5rem 0;background:var(--rule-soft)}
+.quote .wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.quote blockquote{font-family:"Andika";font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.45}
+.quote figcaption{margin-top:1rem;color:var(--muted);font-size:1.05rem}
+
+.faq{padding:5rem 0 6rem}
+.faq .wrap{max-width:880px}
+details{border-bottom:2px solid var(--rule)}
+summary{cursor:pointer;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-weight:600;font-size:1.2rem;padding:.8rem 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.6rem;color:var(--margin)}
+details[open] summary::after{content:"−"}
+details p{padding-bottom:1.3rem;color:var(--muted)}
+
+footer{border-top:2px solid var(--rule);padding:3rem 0 2rem;color:var(--muted);font-size:1rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+footer .credit{margin-top:2rem;font-size:.9rem}
+footer .credit a{color:var(--muted)}
+
+@media (max-width:960px){
+  .desk{grid-template-columns:minmax(0,1fr)}
+  .tools{position:static;display:grid;grid-template-columns:1fr 1fr}
+  .tools p{grid-column:1/-1}
+  .move{grid-column:1/-1}
+  .parent .wrap,.photo .wrap,.priv .wrap,.price .wrap,.quote .wrap{grid-template-columns:minmax(0,1fr);gap:2.4rem}
+  .kid-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 1rem}
+  header nav{display:none}
+  .tools{grid-template-columns:1fr}
+  .tool{min-height:56px}
+  .page{padding:1.4rem 1rem 1.4rem 2.6rem;background-image:linear-gradient(90deg,transparent 1.7rem,var(--margin) 1.7rem,var(--margin) calc(1.7rem + 2px),transparent calc(1.7rem + 2px))}
+  .text{font-size:1.25rem}
+  .kid-grid{grid-template-columns:1fr}
+  .btn{width:100%}
+  .clock b{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ana">İçeriğe atla</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Kolay Oku ana sayfa">
+      <svg width="38" height="30" viewBox="0 0 38 30" aria-hidden="true"><rect x="1" y="1" width="36" height="28" rx="4" fill="#fff" stroke="#24262B" stroke-width="2"/><rect x="1" y="11" width="36" height="9" fill="#FFEE8C"/><path d="M7 1v28" stroke="#C8372D" stroke-width="2"/><path d="M11 15.5h20" stroke="#24262B" stroke-width="2.4" stroke-linecap="round"/></svg>
+      Kolay Oku
+    </a>
+    <nav aria-label="Ana menü"><a href="#veli">Veliler için</a><a href="#gizli">Gizlilik</a><a href="#ucret">Ücret</a><a href="#sss">Sorular</a></nav>
+  </div>
+</header>
+
+<main id="ana">
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="hero-intro">
+      <div>
+        <h1 id="h1">Ödev paragrafı uzun değil. Sadece satırlar kaçıyor.</h1>
+        <p class="muted">Ders kitabının fotoğrafını çek. Kolay Oku satırı tutar, heceleri ayırır, zor kelimeyi sesli okur.</p>
+      </div>
+      <a class="btn main" href="#ucret">Tablete indir, 14 gün dene</a>
+    </div>
+
+    <div class="desk">
+      <div class="tools" role="group" aria-label="Okuma araçları">
+        <p>Araçları sen aç, sen kapat:</p>
+        <button class="tool" type="button" aria-pressed="true" id="t-ruler">
+          <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="8" width="24" height="10" rx="2" fill="#FFEE8C" stroke="#24262B" stroke-width="2"/></svg>Satır cetveli<span class="st">açık</span></button>
+        <button class="tool" type="button" aria-pressed="true" id="t-syl">
+          <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><text x="0" y="19" font-family="Andika" font-size="15" font-weight="700" fill="#24262B">ke</text><text x="14" y="19" font-family="Andika" font-size="15" font-weight="700" fill="#1F5FA8">di</text></svg>Heceler<span class="st">açık</span></button>
+        <button class="tool" type="button" aria-pressed="false" id="t-simple">
+          <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M4 7h18M4 13h12M4 19h8" stroke="#24262B" stroke-width="2.6" stroke-linecap="round"/></svg>Sadeleştir<span class="st">kapalı</span></button>
+        <div class="move" role="group" aria-label="Cetveli taşı">
+          <button type="button" id="up" aria-label="Cetveli bir satır yukarı al">↑ Yukarı</button>
+          <button type="button" id="down" aria-label="Cetveli bir satır aşağı al">↓ Aşağı</button>
+        </div>
+      </div>
+
+      <article class="page" aria-labelledby="pg-h">
+        <div class="src"><span>Fen Bilimleri 6 · Ünite 1 · s. 14</span><span>Fotoğraftan okundu · internet yok</span></div>
+        <h3 id="pg-h">Güneş Sistemi ve Tutulmalar</h3>
+        <div class="text" id="text" aria-live="polite"></div>
+        <p class="gloss" id="gloss" aria-live="polite">Altı noktalı kelimelere dokun: sesli okur ve ne demek olduğunu söyler.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="parent" id="veli" aria-labelledby="pa-h">
+  <div class="wrap">
+    <div>
+      <h2 id="pa-h">Akşam dokuzda, mutfak masasında</h2>
+      <p style="margin-top:1rem">Disleksi zekâyla ilgili değildir. Çocuğunuz konuyu anlıyor; onu yoran harflerin yer değiştirmesi, satırın kayması, aynı cümleyi üçüncü kez okumak. Ağlama da çoğu zaman buradan gelir: “Ben aptalım” cümlesinden.</p>
+      <p style="margin-top:1rem" class="muted">Kolay Oku metni ondan almaz, onun yerine okumaz. Satırı tutar, kelimeyi parçalara ayırır; okumayı yine çocuğunuz yapar. Bu yüzden ödev bittiğinde “ben okudum” diyebilir.</p>
+    </div>
+    <div class="card">
+      <h3>Zeynep'in bir paragrafı</h3>
+      <div class="clock">
+        <div><b>11 dk</b><span>kitaptan, iki kez baştan</span></div>
+        <div><b>4 dk</b><span>cetvel ve heceyle, tek seferde</span></div>
+      </div>
+      <p class="sig">Annesi Hülya Hanım'ın ilk hafta tuttuğu not, Kayseri. Her çocukta süre farklıdır; biz söz vermiyoruz, siz ölçün.</p>
+    </div>
+  </div>
+</section>
+
+<section class="kid" aria-labelledby="kid-h">
+  <div class="wrap">
+    <h2 id="kid-h">Sana dört alet. Hangisini istersen.</h2>
+    <p class="muted" style="margin-top:.8rem">Bazen hepsine ihtiyacın olur, bazen hiçbirine. Ayarları sen seçersin; kimseye sormana gerek yok.</p>
+    <div class="kid-grid">
+      <article><span class="ex" aria-hidden="true" style="background:var(--ruler);padding:0 .3rem;border-radius:4px">bu satır</span><h3>Satır cetveli</h3><p>Okuduğun satır sarı olur, ötekiler soluklaşır. Gözün kaymaz.</p></article>
+      <article><span class="ex" aria-hidden="true">yö<span style="color:var(--blue)">rün</span>ge</span><h3>Heceler</h3><p>Uzun kelimeler iki renkle parçalanır. Parça parça okursun.</p></article>
+      <article><span class="ex" aria-hidden="true">kısa cümle.</span><h3>Sadeleştir</h3><p>Uzun cümle kısalır. Anlam aynı kalır, öğretmenin sorusu yine cevaplanır.</p></article>
+      <article><span class="ex" aria-hidden="true" style="text-decoration:underline dotted #C8372D 3px;text-underline-offset:.3em">tutulma</span><h3>Sesli oku</h3><p>Takıldığın kelimeye dokun. Söyler ve ne demek olduğunu anlatır.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="photo" aria-labelledby="ph-h">
+  <div class="wrap">
+    <div>
+      <h2 id="ph-h">Fotoğrafını çekebildiğiniz her şeyle çalışır</h2>
+      <ul class="sources">
+        <li>MEB ders kitapları, 3. sınıftan 8. sınıfa</li>
+        <li>Öğretmenin dağıttığı çalışma kâğıdı</li>
+        <li>Yardımcı kaynak ve deneme kitapları</li>
+        <li>Okuma kitapları, hikâye ve romanlar</li>
+        <li>Tahtadaki yazı, el yazısı da dahil</li>
+      </ul>
+    </div>
+    <div class="snap" aria-hidden="true">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div class="bars"><span style="width:55%"></span><span></span><span class="hl"></span><span></span><span style="width:70%"></span><span></span><span style="width:40%"></span></div>
+      <p>Sayfa bulundu · 7 satır · 2 zor kelime</p>
+    </div>
+  </div>
+</section>
+
+<section class="priv" id="gizli" aria-labelledby="pr-h">
+  <div class="wrap">
+    <div>
+      <h2 id="pr-h">Hangi kelimede takıldığı, yalnız sizin tabletinizde.</h2>
+      <p>Bir çocuğun okuma güçlüğü, okulda, sınıfta, bir şirketin sunucusunda dolaşmaması gereken bir bilgidir. Kolay Oku fotoğrafı, okumayı ve sesi tabletin içinde işler; hiçbirini internete göndermez. Hesap açmanız, çocuğunuzun adını yazmanız gerekmez.</p>
+      <p>Arabada, köydeki dedenin evinde, internetin kesildiği akşam: ödev yine biter.</p>
+    </div>
+    <div>
+      <h3 style="margin-bottom:1rem">Bu haftanın notu (yalnız veli görür)</h3>
+      <ul class="log">
+        <li><span>Okunan sayfa</span><b>23</b></li>
+        <li><span>En çok dokunulan kelime</span><b>yörünge</b></li>
+        <li><span>Hece aracı kullanımı</span><b>%40 azaldı</b></li>
+        <li><span>İnternete giden veri</span><b>0 bayt</b></li>
+      </ul>
+      <p style="font-size:1rem">Bu notu öğretmeninizle paylaşmak isterseniz tek sayfalık PDF olarak siz gönderirsiniz.</p>
+    </div>
+  </div>
+</section>
+
+<section class="price" id="ucret" aria-labelledby="fi-h">
+  <div class="wrap">
+    <div>
+      <h2 id="fi-h">Bir okul yılı, bir ücret</h2>
+      <p class="muted" style="margin-top:1rem">Ödeme okul takvimine göre: Eylül'den Haziran'a. Yaz tatilinde okuma kitapları için ücretsiz açık kalır.</p>
+      <p class="muted" style="margin-top:1rem">Rehberlik Araştırma Merkezi'nden özel öğrenme güçlüğü tanısı aldıysa, raporu tablette gösterip %50 indirim alabilirsiniz.</p>
+    </div>
+    <div class="term">
+      <h3>2026–2027 okul yılı</h3>
+      <p class="amt">390 ₺</p>
+      <p class="muted">aylık değil, yıllık · 2 çocuğa kadar</p>
+      <ul>
+        <li>Satır cetveli, heceler, sadeleştirme, sesli okuma</li>
+        <li>3–8. sınıf MEB ders kitaplarıyla denenmiş</li>
+        <li>Tablet ve telefonda; internetsiz</li>
+        <li>14 gün ücretsiz deneme, kart bilgisi istemez</li>
+      </ul>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap"><a class="btn main" href="#">Android tablete indir</a><a class="btn alt" href="#">iPad'e indir</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı sözleri">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Hecelerin rengi olunca kelimeler kaçmıyor. Bu hafta fen ödevini annem uyumadan bitirdim.”</blockquote>
+      <figcaption><b style="color:var(--graphite)">Zeynep</b>, 12 · 6. sınıf, Kayseri</figcaption>
+    </figure>
+    <figure>
+      <blockquote>“Ağlamadan biten ilk ödevden sonra bana ‘yarın yine ben okuyacağım’ dedi. Masada başka bir şey konuşamadım.”</blockquote>
+      <figcaption><b style="color:var(--graphite)">Hülya Taşdelen</b>, annesi · hemşire, Kayseri</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="faq" id="sss" aria-labelledby="sss-h">
+  <div class="wrap">
+    <h2 id="sss-h" style="margin-bottom:1.4rem">Velilerin sorduğu</h2>
+    <details><summary>Disleksi tanısı olmayan çocuk kullanabilir mi?</summary><p>Evet. Okurken satır kaybeden, yavaş okuyan her çocuk deneyebilir. Kolay Oku tanı koymaz; okuma güçlüğünden şüpheleniyorsanız Rehberlik Araştırma Merkezi'ne başvurmanızı öneririz.</p></details>
+    <details><summary>Sadeleştirme ödevin cevabını değiştirir mi?</summary><p>Hayır. Sadeleştirme cümleyi kısaltır, bilgiyi çıkarmaz. Sınavda geçecek terimler (yörünge, tutulma) hep olduğu gibi kalır ve altı noktalı gösterilir.</p></details>
+    <details><summary>Çocuğum zamanla bağımlı olmaz mı?</summary><p>Uygulama, aracı daha az kullandığı haftaları size gösterir ve çocuğa “bugün hecesiz dener misin?” diye sorar. Amaç aracı bırakabilmesi.</p></details>
+    <details><summary>Okulda kullanabilir mi?</summary><p>Öğretmeninizin izniyle evet. Tablet sınıfta internete bağlanmadan çalışır. Öğretmen için tek sayfalık bir tanıtım notu hazırladık.</p></details>
+    <details><summary>Hangi yazı tipini kullanıyor?</summary><p>Varsayılan Andika; harf biçimleri karışmaması için tasarlanmış bir yazı tipidir. Ayarlardan 4 farklı yazı tipi, satır aralığı ve cetvel rengi (sarı, mavi, pembe, yeşil) seçilebilir.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--graphite)">Kolay Oku</b> · özel eğitim öğretmenleri ve disleksili yetişkinlerle hazırlandı<br>veli@kolayoku.app · 0 850 000 52 52 (hafta içi 10.00–20.00)</div>
+    <div><a href="#">Öğretmen notu (PDF)</a> · <a href="#">KVKK</a> · <a href="#">Erişilebilirlik</a></div>
+  </div>
+  <div class="wrap credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+</footer>
+
+<script>
+(function(){
+  var ORIG=[
+    'Gezegenler, Güneş’in çekim kuvveti etkisiyle',
+    'belirli yörüngelerde dolanır.',
+    'Ay, Dünya ile Güneş arasına girdiğinde',
+    'Güneş’in bir kısmı ya da tamamı görünmez;',
+    'bu olaya Güneş tutulması denir.',
+    'Tutulma sırasında Güneş’e çıplak gözle bakmak',
+    'gözde kalıcı hasara yol açabilir.'
+  ];
+  var SIMPLE=[
+    'Güneş gezegenleri kendine çeker.',
+    'Bu yüzden gezegenler hep aynı yolda döner.',
+    'Bu yolun adı yörüngedir.',
+    'Bazen Ay, Dünya ile Güneş’in arasına girer.',
+    'O zaman Güneş kararır.',
+    'Buna Güneş tutulması denir.',
+    'O sırada Güneş’e çıplak gözle bakma!'
+  ];
+  var HARD={'yörüngelerde':['yörünge','Bir gök cisminin, başka bir cismin çevresinde dönerken izlediği yol.'],'yörüngedir':['yörünge','Bir gök cisminin, başka bir cismin çevresinde dönerken izlediği yol.'],'tutulması':['tutulma','Ay, Güneş ile Dünya arasına girince Güneş’in görünmemesi.'],'Tutulma':['tutulma','Ay, Güneş ile Dünya arasına girince Güneş’in görünmemesi.'],'kuvveti':['kuvvet','Bir şeyi çeken ya da iten güç.'],'kalıcı':['kalıcı','Geçmeyen, hep kalan.']};
+  var V='aeıioöuüAEIİOÖUÜ';
+  function syl(w){ // Türkçe hece: ünsüz+ünlü öncesinden böl
+    var m=w.match(/^([^A-Za-zÇĞİÖŞÜçğıöşü]*)(.*?)([^A-Za-zÇĞİÖŞÜçğıöşü]*)$/);var pre=m[1],core=m[2],post=m[3];
+    var out=[],cur='';
+    for(var i=0;i<core.length;i++){
+      var c=core[i],n=core[i+1];
+      if(i>0&&V.indexOf(c)<0&&n&&V.indexOf(n)>=0&&/[aeıioöuüAEIİOÖUÜ]/.test(cur)){out.push(cur);cur=''}
+      else if(i>0&&V.indexOf(c)>=0&&V.indexOf(core[i-1])>=0){out.push(cur);cur=''}
+      cur+=c;
+    }
+    if(cur)out.push(cur);
+    return pre+out.map(function(s,j){return j%2?'<span class="s2">'+s+'</span>':s}).join('')+post;
+  }
+  var st={ruler:true,syl:true,simple:false,line:2};
+  var text=document.getElementById('text'),gloss=document.getElementById('gloss');
+  function word(w){
+    var key=w.replace(/[^A-Za-zÇĞİÖŞÜçğıöşü’']/g,'').split('’')[0];
+    var inner=st.syl?syl(w):w;
+    if(HARD[key])return '<button type="button" class="hard" data-k="'+key+'">'+inner+'</button>';
+    return inner;
+  }
+  function render(){
+    var L=st.simple?SIMPLE:ORIG;if(st.line>=L.length)st.line=L.length-1;
+    text.classList.toggle('ruled',st.ruler);
+    text.innerHTML=L.map(function(l,i){return '<span class="ln'+(i===st.line?' on':'')+'">'+l.split(' ').map(word).join(' ')+'</span>'}).join('');
+    text.querySelectorAll('.hard').forEach(function(b){b.addEventListener('click',function(){
+      var h=HARD[b.dataset.k];gloss.innerHTML='<b>'+h[0]+'</b>: '+h[1];
+      if('speechSynthesis' in window){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(h[0]+'. '+h[1]);u.lang='tr-TR';u.rate=.9;speechSynthesis.speak(u)}
+    })});
+    text.querySelectorAll('.ln').forEach(function(el,i){el.addEventListener('mouseenter',function(){if(st.ruler){st.line=i;mark()}})});
+  }
+  function mark(){text.querySelectorAll('.ln').forEach(function(el,i){el.classList.toggle('on',i===st.line)})}
+  function tog(id,key){var b=document.getElementById(id);b.addEventListener('click',function(){st[key]=!st[key];b.setAttribute('aria-pressed',st[key]);b.querySelector('.st').textContent=st[key]?'açık':'kapalı';render()})}
+  tog('t-ruler','ruler');tog('t-syl','syl');tog('t-simple','simple');
+  document.getElementById('up').addEventListener('click',function(){if(st.line>0){st.line--;mark()}});
+  document.getElementById('down').addEventListener('click',function(){var n=text.querySelectorAll('.ln').length;if(st.line<n-1){st.line++;mark()}});
+  render();
+})();
+</script>
+</body>
+</html>

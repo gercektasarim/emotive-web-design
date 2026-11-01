@@ -1,0 +1,21 @@
+{
+  "slug": "kus-sesi",
+  "name": "Ötüş",
+  "interpretation": "Saha defteri",
+  "world": "Şafakta şehir balkonu, çizgili doğa defteri, kurşun kalem ve dolma kalem mürekkebiyle tutulan kuş kayıtları.",
+  "palette": [
+    "#DCE4E6",
+    "#F1F3EE",
+    "#2B3035",
+    "#244A78",
+    "#B9522A",
+    "#6A7A4C"
+  ],
+  "fonts": [
+    "Gentium Book Plus",
+    "Patrick Hand"
+  ],
+  "score": 28,
+  "lowest": "Tanınabilirlik",
+  "moment": "'Balkonu dinle' düğmesiyle sonogram çizilir ve yeni kuş türü el yazısıyla deftere yazılır."
+}

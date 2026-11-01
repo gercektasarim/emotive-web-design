@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nabız — Babanızın kalp ritmi, gece de telefonunda okunur</title>
+<meta name="description" content="Nabız, akıllı saatin kalp ritmi verisini telefonda yorumlar; düzensiz ritim şüphesini kaydeder ve kardiyoloğa götürülecek tek sayfalık bir özet hazırlar. EKG verisi telefondan çıkmaz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF3F0; --paper-2:#F6E7E2; --grid:#F4E0DA; --grid-major:#EBC2B8;
+  --ink:#1A2130; --ink-2:#4A4F5C; --trace:#B21E2B; --night:#1E2C40; --night-2:#2A3B54;
+  --night-text:#E8ECF2; --ok:#2D6A4F; --white:#FFFDFC;
+  --mono:"IBM Plex Mono",ui-monospace,monospace; --sans:"IBM Plex Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--trace);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.grid-bg{
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid-major) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:40px 40px,40px 40px,8px 8px,8px 8px;
+}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 12px;z-index:10}
+.skip:focus{left:8px}
+
+/* header */
+header.top{border-bottom:1px solid var(--grid-major);background:var(--paper)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;text-decoration:none;letter-spacing:-.01em}
+.brand svg{width:34px;height:20px}
+nav.main{display:flex;gap:26px;font-size:15px}
+nav.main a{text-decoration:none;color:var(--ink-2)}
+nav.main a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 16px/1 var(--sans);padding:14px 20px;border-radius:6px;text-decoration:none;border:2px solid var(--ink);cursor:pointer}
+.btn.solid{background:var(--ink);color:var(--white)}
+.btn.solid:hover{background:#2c3549}
+.btn.line{background:transparent;color:var(--ink)}
+.btn.line:hover{background:var(--white)}
+.btn.small{padding:10px 14px;font-size:14px}
+.btn .short{display:none}
+
+/* hero */
+.hero{padding:56px 0 72px}
+.hero .wrap > *,.report-sec .wrap > *,.monitor > *,.split > *{min-width:0}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.08fr;gap:48px;align-items:start}
+.hero h1{font-size:clamp(34px,4.4vw,52px);line-height:1.12;letter-spacing:-.02em;font-weight:600;margin:0 0 20px;max-width:15ch}
+.hero .lede{font-size:20px;color:var(--ink-2);max-width:34ch;margin:0 0 28px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.assure{list-style:none;margin:0 0 22px;padding:0;font-size:16.5px}
+.assure li{padding:3px 0 3px 26px;position:relative}
+.assure li::before{content:"";position:absolute;left:2px;top:13px;width:12px;height:2px;background:var(--trace)}
+.urgent{display:flex;gap:12px;align-items:flex-start;background:var(--white);border:1px solid var(--grid-major);border-left:4px solid var(--trace);padding:14px 16px;font-size:15.5px;max-width:460px;border-radius:4px}
+
+.hero-visual{position:relative}
+.sheet{background:var(--white);box-shadow:0 1px 0 var(--grid-major),0 18px 40px -22px rgba(26,33,48,.35);border-radius:3px;padding:22px 24px 44px;position:relative}
+.sheet-head{display:flex;justify-content:space-between;font:400 13px/1.4 var(--mono);color:var(--ink-2);border-bottom:1px solid var(--grid);padding-bottom:10px;margin-bottom:12px;gap:12px;flex-wrap:wrap}
+.sheet-head b{color:var(--ink);font-weight:500}
+.strip{display:block;width:100%;height:150px;border:1px solid var(--grid-major)}
+.strip-cap{display:flex;justify-content:space-between;font:400 12.5px var(--mono);color:var(--ink-2);margin-top:6px}
+.finding{margin-top:16px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:baseline}
+.finding .t{font:500 15px var(--mono);color:var(--trace)}
+.finding .d{font-weight:600;font-size:18px}
+.finding .n{grid-column:2;font-size:15.5px;color:var(--ink-2);margin:0}
+.notif{position:relative;margin:-26px -14px 0 auto;width:min(330px,82%);background:var(--night);color:var(--night-text);border-radius:14px;padding:13px 15px;font-size:14.5px;line-height:1.45;box-shadow:0 18px 34px -16px rgba(10,16,28,.6)}
+.notif .app{display:flex;justify-content:space-between;font:500 12px var(--mono);color:#AEB8C8;margin-bottom:4px}
+
+/* night timeline */
+section{padding:88px 0}
+h2{font-size:clamp(28px,3vw,38px);line-height:1.2;letter-spacing:-.015em;font-weight:600;margin:0 0 14px;max-width:24ch}
+.sub{color:var(--ink-2);max-width:60ch;margin:0 0 40px}
+.night{background:var(--night);color:var(--night-text)}
+.night .sub{color:#C3CCDA}
+.night ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid #3E5170}
+.night li{padding:26px 26px 6px 0;border-right:1px solid #3E5170;margin-right:26px}
+.night li:last-child{border-right:0}
+.night .clock{font:500 30px var(--mono);color:#fff;letter-spacing:-.02em}
+.night h3{font-size:19px;margin:8px 0 6px}
+.night p{margin:0 0 18px;color:#C3CCDA;font-size:16.5px}
+
+/* monitor (moment) */
+.monitor{display:grid;grid-template-columns:280px 1fr;gap:0;border:1px solid var(--grid-major);background:var(--white);border-radius:4px;overflow:hidden}
+.rec-list{border-right:1px solid var(--grid-major);display:flex;flex-direction:column}
+.rec{all:unset;cursor:pointer;padding:16px 18px;border-bottom:1px solid var(--grid);display:block}
+.rec:focus-visible{outline:3px solid var(--trace);outline-offset:-3px}
+.rec .when{font:500 13px var(--mono);color:var(--ink-2);display:block}
+.rec .what{font-weight:600;font-size:16.5px;display:block;margin-top:2px}
+.rec[aria-selected="true"]{background:var(--paper-2);box-shadow:inset 4px 0 0 var(--trace)}
+.rec:hover{background:var(--paper)}
+.screen{padding:22px 26px 26px}
+.readout{display:flex;gap:28px;font:400 13px var(--mono);color:var(--ink-2);margin-bottom:10px;flex-wrap:wrap}
+.readout b{display:block;font:500 26px var(--mono);color:var(--ink)}
+.live{display:block;width:100%;height:170px;background-color:var(--paper);
+  background-image:linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:40px 40px,40px 40px,8px 8px,8px 8px;border:1px solid var(--grid-major)}
+.live .moving{animation:slide 6s linear infinite}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-800px)}}
+.verdict{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.verdict h3{font-size:14px;font-weight:600;color:var(--ink-2);margin:0 0 4px;font-family:var(--mono);font-weight:500}
+.verdict p{margin:0;font-size:17px}
+.verdict .act{border-left:3px solid var(--ink);padding-left:14px}
+.verdict .act.warn{border-color:var(--trace)}
+
+/* report */
+.report-sec .wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:56px;align-items:start}
+.a4{background:var(--white);padding:34px 36px;box-shadow:0 1px 0 var(--grid-major),0 26px 50px -30px rgba(26,33,48,.45);font-size:14.5px;line-height:1.5;transform:rotate(-.6deg)}
+.a4 header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:14px;gap:10px}
+.a4 h3{margin:0;font-size:19px}
+.a4 .meta{font:400 12px var(--mono);color:var(--ink-2);text-align:right}
+.a4 table{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 14px}
+@media (max-width:520px){.a4 table{font-size:12.5px}.a4 th,.a4 td{padding:5px 3px}}
+.a4 th,.a4 td{text-align:left;padding:6px 6px;border-bottom:1px solid var(--grid)}
+.a4 th{font:500 12px var(--mono);color:var(--ink-2)}
+.a4 td.m{font-family:var(--mono)}
+.a4 h4{font-size:13px;margin:12px 0 4px;font-family:var(--mono);font-weight:500;color:var(--ink-2)}
+.a4 ul{margin:0;padding-left:18px}
+.a4 .mini{display:block;width:100%;height:56px;margin:4px 0 2px}
+.checks{list-style:none;padding:0;margin:26px 0 0}
+.checks li{padding:14px 0;border-top:1px solid var(--grid-major)}
+.checks b{display:block}
+
+/* privacy */
+.priv{background:var(--paper-2)}
+.split{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:1px solid var(--grid-major);background:var(--white);border-radius:4px;overflow:hidden}
+.split > div{padding:28px 30px}
+.split .stays{border-right:1px solid var(--grid-major)}
+.split h3{font-size:18px;margin:0 0 12px}
+.split ul{margin:0;padding:0;list-style:none}
+.split li{padding:8px 0;border-bottom:1px dashed var(--grid-major);font-size:16.5px}
+.split li:last-child{border-bottom:0}
+.sms{background:var(--night);color:var(--night-text);border-radius:14px;padding:14px 16px;font-size:15.5px;margin-top:6px}
+.sms small{display:block;font:500 12px var(--mono);color:#AEB8C8;margin-bottom:4px}
+.fine{font-size:15px;color:var(--ink-2);margin-top:14px}
+
+/* quote */
+.quote figure{margin:0;max-width:820px}
+.quote blockquote{margin:0;font-size:clamp(22px,2.4vw,28px);line-height:1.45;font-weight:500;letter-spacing:-.01em}
+.quote figcaption{margin-top:18px;color:var(--ink-2);font-size:16px}
+.quote figcaption b{color:var(--ink)}
+
+/* price */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:920px}
+.plan{background:var(--white);border:1px solid var(--grid-major);border-radius:4px;padding:28px}
+.plan.feat{border:2px solid var(--ink)}
+.plan h3{margin:0;font-size:20px}
+.plan .price{font:500 34px var(--mono);margin:8px 0 4px;letter-spacing:-.02em}
+.plan .price small{font:400 14px var(--sans);color:var(--ink-2);letter-spacing:0}
+.plan ul{padding-left:20px;margin:14px 0 22px}
+.plan li{margin:4px 0;font-size:16.5px}
+.compat{margin-top:22px;font-size:15.5px;color:var(--ink-2)}
+
+/* faq */
+.faq{max-width:820px}
+.faq details{border-top:1px solid var(--grid-major);padding:4px 0}
+.faq details:last-child{border-bottom:1px solid var(--grid-major)}
+.faq summary{cursor:pointer;font-weight:600;font-size:18.5px;padding:16px 30px 16px 0;list-style:none;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:12px;font:400 24px var(--mono);color:var(--trace)}
+.faq details[open] summary::after{content:"–"}
+.faq p{margin:0 0 18px;color:var(--ink-2);max-width:66ch}
+
+footer{background:var(--ink);color:#C9CFDA;padding:48px 0 28px;font-size:15px}
+footer .wrap{display:grid;gap:22px}
+footer .row{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer a{color:#fff}
+footer .credit{border-top:1px solid #333c4f;padding-top:18px;font:400 12.5px var(--mono);color:#9AA3B3}
+footer .credit a{color:#9AA3B3}
+
+@media (max-width:920px){
+  nav.main{display:none}
+  .hero .wrap,.report-sec .wrap{grid-template-columns:1fr}
+  .notif{margin:-18px 0 0 auto}
+  .night ol{grid-template-columns:1fr}
+  .night li{border-right:0;margin-right:0;border-bottom:1px solid #3E5170;padding-right:0}
+  .monitor{grid-template-columns:1fr}
+  .rec-list{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--grid-major)}
+  .rec{min-width:200px;border-bottom:0;border-right:1px solid var(--grid)}
+  .verdict,.split,.plans{grid-template-columns:1fr}
+  .split .stays{border-right:0;border-bottom:1px solid var(--grid-major)}
+  .a4{transform:none;padding:24px 20px}
+}
+@media (max-width:520px){
+  body{font-size:17px}
+  .wrap{padding:0 18px}
+  .hero{padding-top:34px}
+  .top .btn{padding:9px 12px;font-size:14px}
+  .top .btn .long{display:none}
+  .top .btn .short{display:inline}
+  .strip-cap span:first-child{display:none}
+  .a4 th:last-child,.a4 td:last-child{display:none}
+  .a4 td.m{white-space:nowrap}
+  .a4 header{flex-direction:column;align-items:flex-start}
+  .a4 .meta{text-align:left}
+  .rec-list{flex-direction:column;overflow:visible}
+  .rec{min-width:0;border-right:0;border-bottom:1px solid var(--grid)}
+  .hero .lede{font-size:18px}
+  section{padding:64px 0}
+  .sheet{padding:16px}
+  .strip{height:120px}
+  .rec{min-width:170px;padding:12px 14px}
+  .screen{padding:16px}
+  .readout{gap:18px}
+  .readout b{font-size:21px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .live .moving{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Nabız ana sayfa">
+      <svg viewBox="0 0 34 20" aria-hidden="true"><path d="M0 12h9l2-4 3 10 4-18 3 12h13" fill="none" stroke="#B21E2B" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      Nabız
+    </a>
+    <nav class="main" aria-label="Bölümler">
+      <a href="#gece">Gece ne olur</a>
+      <a href="#kayitlar">Örnek kayıtlar</a>
+      <a href="#ozet">Kardiyolog özeti</a>
+      <a href="#veri">Veri nerede kalır</a>
+      <a href="#fiyat">Fiyat</a>
+      <a href="#sss">Sorular</a>
+    </nav>
+    <a class="btn solid small" href="#fiyat"><span class="long">Uygulamayı indir</span><span class="short">İndir</span></a>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="hero grid-bg" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <h1 id="h1">Babanızın kalbi gece düzensiz atarsa, sabah elinizde bir kayıt olur.</h1>
+      <p class="lede">Nabız, akıllı saatin ölçtüğü ritmi babanızın telefonunda okur. Şüpheli bir an olursa saatini, süresini ve şeklini kaydeder; kontrolde kardiyoloğa göstereceğiniz tek sayfayı hazırlar.</p>
+      <ul class="assure">
+        <li>Gece yalnız sizin seçtiğiniz eşik aşılırsa çalar; gerisi sabaha kalır.</li>
+        <li>EKG kayıtları babanızın telefonundan çıkmaz, internetsiz de okunur.</li>
+      </ul>
+      <div class="ctas">
+        <a class="btn solid" href="#fiyat">iPhone için indir</a>
+        <a class="btn line" href="#fiyat">Android için indir</a>
+      </div>
+      <div class="urgent" role="note">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="none" stroke="#B21E2B" stroke-width="2"/><path d="M11 5.5v7M11 15.5v1" stroke="#B21E2B" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <span>Nabız tanı koymaz, acil durumu beklemez. <strong>Göğüs ağrısı, nefes darlığı, bayılma:</strong> hemen <strong>112</strong>.</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="sheet" aria-label="Örnek ritim kaydı">
+        <div class="sheet-head">
+          <span><b>Ritim kaydı</b> · Kemal Aydın, 68</span>
+          <span>Salı 14 Ekim · 03:12:08</span>
+        </div>
+        <svg class="strip" id="heroStrip" viewBox="0 0 800 150" preserveAspectRatio="none" role="img" aria-label="EKG şeridi: düzenli vuruşlar, ortada 14 saniyelik düzensiz bölüm işaretli">
+          <rect x="300" y="0" width="260" height="150" fill="#B21E2B" opacity=".07"/>
+          <line x1="300" y1="0" x2="300" y2="150" stroke="#B21E2B" stroke-dasharray="3 3"/>
+          <line x1="560" y1="0" x2="560" y2="150" stroke="#B21E2B" stroke-dasharray="3 3"/>
+          <path id="heroPath" d="" fill="none" stroke="#1A2130" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+        <div class="strip-cap"><span>25 mm/sn · Derivasyon I (saat)</span><span>işaretli: 03:12:08–03:12:22</span></div>
+        <div class="finding">
+          <span class="t">03:12</span>
+          <span class="d">14 sn düzensiz ritim — olası atriyal fibrilasyon</span>
+          <p class="n">Vuruş aralıkları 0,52–1,18 sn arasında değişti, P dalgası seçilemedi. Bu gece başka kayıt yok. Bir sonraki kontrolde göstermek için özete eklendi.</p>
+        </div>
+      </div>
+      <div class="notif" role="img" aria-label="Telefon bildirimi örneği">
+        <div class="app"><span>NABIZ</span><span>07:30</span></div>
+        Babanın saati gece 03:12'de 14 saniyelik düzensiz ritim kaydetti. Şu an ritmi düzenli (71/dk). Acil belirti yoksa bugün doktoruyla paylaşabilirsiniz.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="night" id="gece" aria-labelledby="h-gece">
+  <div class="wrap">
+    <h2 id="h-gece">Siz uyurken bir gece böyle geçer</h2>
+    <p class="sub">Saat ölçer, telefon okur, siz sabah öğrenirsiniz. Gece sizi gereksiz yere uyandırmaz; yalnız ayarladığınız eşiği aşan bir şey olursa çalar.</p>
+    <ol>
+      <li><span class="clock">23:04</span><h3>Saat ölçmeye başlar</h3><p>Babanız uyur uymaz saat her vuruşun aralığını kaydeder. Nabız arka planda, şarjı yormadan dinler.</p></li>
+      <li><span class="clock">03:12</span><h3>Telefon şekle bakar</h3><p>Aralıklar düzensizleşince saat 30 saniyelik bir EKG şeridi alır. Telefon şeridi orada, internete göndermeden yorumlar.</p></li>
+      <li><span class="clock">07:30</span><h3>Size tek cümle gelir</h3><p>Ne oldu, ne kadar sürdü, şu an nasıl. Ayrıntı babanızın telefonunda, kontrol gününü bekler.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="kayitlar" aria-labelledby="h-kayit">
+  <div class="wrap">
+    <h2 id="h-kayit">Her kayıt sade bir cümleyle gelir</h2>
+    <p class="sub">Aşağıdaki üç kayıt bir haftadan. Birine dokunun: Nabız'ın ne gördüğünü ve size ne önerdiğini görün. Her şey alarm değildir; uykuda yavaşlayan kalp çoğu zaman normaldir.</p>
+    <div class="monitor">
+      <div class="rec-list" role="tablist" aria-label="Örnek kayıtlar">
+        <button class="rec" role="tab" aria-selected="true" aria-controls="screen" id="r0" data-i="0"><span class="when">Pzt 13 Eki · 22:41</span><span class="what">Düzenli ritim</span></button>
+        <button class="rec" role="tab" aria-selected="false" aria-controls="screen" id="r1" data-i="1" tabindex="-1"><span class="when">Sal 14 Eki · 03:12</span><span class="what">14 sn düzensiz</span></button>
+        <button class="rec" role="tab" aria-selected="false" aria-controls="screen" id="r2" data-i="2" tabindex="-1"><span class="when">Çar 15 Eki · 05:48</span><span class="what">Uykuda yavaşlama</span></button>
+      </div>
+      <div class="screen" id="screen" role="tabpanel" aria-labelledby="r0" aria-live="polite">
+        <div class="readout">
+          <span>Nabız<b id="ro-bpm">72/dk</b></span>
+          <span>Vuruş aralığı<b id="ro-rr">0,82 sn</b></span>
+          <span>Süre<b id="ro-dur">30 sn</b></span>
+        </div>
+        <svg class="live" viewBox="0 0 800 170" preserveAspectRatio="none" role="img" aria-label="Kayıttan EKG şeridi">
+          <g class="moving"><path id="livePath" d="" fill="none" stroke="#1A2130" stroke-width="1.7" stroke-linejoin="round"/><use href="#livePath" x="800"/></g>
+        </svg>
+        <div class="verdict">
+          <div><h3>Nabız ne gördü</h3><p id="v-saw">Vuruşlar eşit aralıklı, her vuruştan önce P dalgası var. Dinlenme ritmi.</p></div>
+          <div class="act" id="v-actbox"><h3>Ne yapmalı</h3><p id="v-act">Hiçbir şey. Bu kayıt özete yalnız ortalama olarak girer.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="report-sec grid-bg" id="ozet" aria-labelledby="h-ozet">
+  <div class="wrap">
+    <div>
+      <h2 id="h-ozet">Kontrol günü cebinizde tek bir sayfa</h2>
+      <p class="sub" style="margin-bottom:0">Kardiyoloğun on dakikası var. Nabız son 30 günü, onun okuduğu sırayla bir sayfaya döker: kaç kez, hangi saatte, ne kadar sürdü, o sırada ne yapıyordu. Yazdırın ya da telefondan gösterin.</p>
+      <ul class="checks">
+        <li><b>Olaylar tarih sırasıyla</b>Her düzensiz an için saat, süre ve nabız aralığı; en uzun kaydın şeridi sayfada.</li>
+        <li><b>İlaç ve belirti notları</b>“Sabah Beloc'u atladı”, “merdivende nefesi daraldı” gibi notlarınız olayın yanına düşer.</li>
+        <li><b>Doktora sorulacaklar</b>Kayıtlara göre hazırlanmış üç kısa soru. Unutmazsınız.</li>
+      </ul>
+    </div>
+    <article class="a4" aria-label="Kardiyolog özeti örneği">
+      <header>
+        <div><h3>Ritim özeti · 30 gün</h3><span style="font-size:13.5px">Kemal Aydın · 68 · CABG 2022</span></div>
+        <div class="meta">15 Eyl – 14 Eki 2025<br>Apple Watch Series 8</div>
+      </header>
+      <table>
+        <thead><tr><th>Tarih</th><th>Saat</th><th>Süre</th><th>Nabız</th><th>Not</th></tr></thead>
+        <tbody>
+          <tr><td>14 Eki</td><td class="m">03:12</td><td class="m">14 sn</td><td class="m">88–131</td><td>uykuda</td></tr>
+          <tr><td>02 Eki</td><td class="m">16:40</td><td class="m">9 sn</td><td class="m">94–122</td><td>merdiven çıkarken</td></tr>
+          <tr><td>21 Eyl</td><td class="m">02:55</td><td class="m">22 sn</td><td class="m">90–138</td><td>Beloc atlanmış</td></tr>
+        </tbody>
+      </table>
+      <h4>En uzun kayıt · 21 Eyl 02:55</h4>
+      <svg class="mini" viewBox="0 0 400 56" preserveAspectRatio="none" aria-hidden="true"><path id="miniPath" d="" fill="none" stroke="#1A2130" stroke-width="1.1"/></svg>
+      <h4>Dinlenme nabzı</h4>
+      <p style="margin:0">Ortalama 64/dk (gece 52, gündüz 71). Geçen aya göre değişim yok.</p>
+      <h4>Sorulacaklar</h4>
+      <ul>
+        <li>Üç kısa atak oldu, Holter gerekir mi?</li>
+        <li>Kan sulandırıcı değerlendirmesi yapılmalı mı?</li>
+        <li>Beloc'u atladığı gece atak oldu; doz saati değişsin mi?</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="priv" id="veri" aria-labelledby="h-veri">
+  <div class="wrap">
+    <h2 id="h-veri">Babanızın kalp kaydı onun telefonunda durur</h2>
+    <p class="sub">Şeritler bir sunucuya gitmez, bir şirkette yorumlanmaz. Telefon uçak modundayken de Nabız aynı yorumu yapar. Size giden tek şey, onun izin verdiği kısa cümledir.</p>
+    <div class="split">
+      <div class="stays">
+        <h3>Babanızın telefonunda kalanlar</h3>
+        <ul>
+          <li>Tüm EKG şeritleri ve vuruş aralıkları</li>
+          <li>Gece–gündüz nabız eğrileri</li>
+          <li>İlaç ve belirti notları</li>
+          <li>Kardiyolog özeti (yalnız siz yazdırınca ya da gösterince çıkar)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Size gelen</h3>
+        <div class="sms"><small>Nabız · Aile bildirimi</small>Babanın saati 03:12'de 14 sn düzensiz ritim kaydetti. Şu an düzenli.</div>
+        <p class="fine">Bildirim uçtan uca şifreli gider ve içinde şerit yoktur. Babanız aile bildirimini istediği an kapatabilir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" aria-label="Kullanıcı yorumu">
+  <div class="wrap">
+    <figure>
+      <blockquote>“Babam ‘bir şeyim yok’ diyordu. Üç gece üst üste kayıt düştü, sayfayı Dr. Ersoy'a gösterdim, iki hafta sonra Holter taktılar. Ben de artık telefonu yastığın altına koymadan uyuyabiliyorum.”</blockquote>
+      <figcaption><b>Selin Aydın</b>, 41 · Eskişehir · lise öğretmeni, babası 2022'de bypass oldu</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="fiyat" aria-labelledby="h-fiyat" style="padding-top:0">
+  <div class="wrap">
+    <h2 id="h-fiyat">Gece izleme ücretsiz. Özet ve aile bildirimi tek sefer.</h2>
+    <p class="sub">Abonelik yok. Kurulum babanızın telefonunda beş dakika sürer; saatine dokunmanız gerekmez.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>Nabız</h3>
+        <div class="price">0 ₺</div>
+        <ul>
+          <li>Gece ve gündüz düzensiz ritim kaydı</li>
+          <li>Her kayıt için sade dilde açıklama</li>
+          <li>Son 7 günün geçmişi</li>
+        </ul>
+        <a class="btn line" href="#">Ücretsiz indir</a>
+      </div>
+      <div class="plan feat">
+        <h3>Nabız Aile</h3>
+        <div class="price">449 ₺ <small>tek seferlik, aile başına</small></div>
+        <ul>
+          <li>30 günlük kardiyolog özeti (yazdırılabilir)</li>
+          <li>Size ve bir kardeşe aile bildirimi</li>
+          <li>İlaç ve belirti notları, 12 aylık geçmiş</li>
+        </ul>
+        <a class="btn solid" href="#">Aile sürümünü al</a>
+      </div>
+    </div>
+    <p class="compat">Çalıştığı saatler: Apple Watch Series 4 ve sonrası (iOS 16+), Samsung Galaxy Watch 4 ve sonrası (Android 11+). Saatin kendi EKG özelliği açık olmalıdır.</p>
+  </div>
+</section>
+
+<section id="sss" aria-labelledby="h-sss" style="padding-top:20px">
+  <div class="wrap">
+    <h2 id="h-sss">Sık sorulanlar</h2>
+    <div class="faq">
+      <details><summary>Nabız bir tıbbi cihaz mı, teşhis koyar mı?</summary><p>Hayır. Nabız saatin kaydettiği şeridi okuyup “düzensiz ritim şüphesi” der; teşhisi kardiyolog koyar. Amacı, kısa süren ve muayenede yakalanmayan anları kaydetmek ve doktora düzenli göstermektir.</p></details>
+      <details><summary>Gece bir şey olursa beni uyandırır mı?</summary><p>Siz seçersiniz. Varsayılan ayarda 30 saniyeden uzun düzensizlik ya da 10 dakika boyunca 40/dk altı nabız olursa çalar; daha kısa anları sabah 07:30 bildirimine bırakır. Göğüs ağrısı gibi belirtileri saat bilemez; onlar için 112.</p></details>
+      <details><summary>Babam teknolojiyle arası iyi değil. Ne yapması gerekiyor?</summary><p>Hiçbir şey. Kurulumu siz yaparsınız; o yalnız saati takıp şarj eder. Nabız ekranında büyük yazıyla tek bir satır görür: “Bu gece ritmin düzenliydi.”</p></details>
+      <details><summary>İnternet olmadan çalışır mı?</summary><p>Evet. Yorum telefonda yapılır. İnternet yalnız size aile bildirimi göndermek için gerekir; o da bağlantı gelince gider.</p></details>
+      <details><summary>Telefon değişirse kayıtlar ne olur?</summary><p>Telefonun kendi şifreli yedeğiyle (iCloud ya da Google yedeği) taşınır. Nabız'ın ayrı bir sunucusu yoktur, kayıtları bizim görmemiz mümkün değildir.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <div><strong style="color:#fff">Nabız</strong> · Ankara'da geliştirildi. Tıbbi cihaz değildir; tanı ve tedavi için hekiminize danışın.</div>
+      <div><a href="mailto:destek@nabiz.app">destek@nabiz.app</a> · KVKK aydınlatma metni</div>
+    </div>
+    <div class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // deterministic pseudo-random
+  function rng(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}}
+  // one beat at x, baseline y, amplitude a, horizontal scale s (px for 1 beat body ~ 60), withP
+  function beat(x,y,a,s,withP){
+    var p=[];
+    if(withP){p.push([x+4*s,y],[x+7*s,y-6*a],[x+10*s,y],[x+14*s,y]);} else {p.push([x+14*s,y]);}
+    p.push([x+16*s,y+5*a],[x+19*s,y-52*a],[x+22*s,y+14*a],[x+25*s,y],[x+33*s,y],[x+38*s,y-11*a],[x+44*s,y]);
+    return p;
+  }
+  function build(opts){
+    var r=rng(opts.seed||7),pts=[[0,opts.y]],x=0;
+    while(x<opts.w){
+      var ivl=opts.rr(x,r);
+      var irr=opts.irr&&opts.irr(x);
+      // baseline wiggle in irregular zones
+      if(irr){
+        var step=4,end=x+ivl-46*opts.s;
+        for(var xx=x+2;xx<end;xx+=step){pts.push([xx,opts.y+(r()-.5)*5*opts.a]);}
+        pts=pts.concat(beat(end-14*opts.s,opts.y,opts.a,opts.s,false));
+      } else {
+        pts.push([x+ivl-46*opts.s,opts.y]);
+        pts=pts.concat(beat(x+ivl-46*opts.s,opts.y,opts.a,opts.s,true));
+      }
+      x+=ivl;
+    }
+    pts=pts.filter(function(p){return p[0]<opts.w-2});pts.push([opts.w,opts.y]);
+    return "M"+pts.map(function(p){return p[0].toFixed(1)+" "+p[1].toFixed(1)}).join("L");
+  }
+  // hero strip
+  var hp=document.getElementById("heroPath");
+  if(hp){hp.setAttribute("d",build({w:800,y:96,a:1.25,s:1,seed:11,
+    irr:function(x){return x>290&&x<550},
+    rr:function(x,r){return (x>290&&x<550)? 34+r()*60 : 78+r()*4;}}));}
+  var mp=document.getElementById("miniPath");
+  if(mp){mp.setAttribute("d",build({w:400,y:40,a:.55,s:.55,seed:5,
+    irr:function(x){return x>60&&x<330},
+    rr:function(x,r){return (x>60&&x<330)? 20+r()*30 : 40;}}));}
+
+  var recs=[
+    {bpm:"72/dk",rr:"0,82 sn",dur:"30 sn",
+     saw:"Vuruşlar eşit aralıklı, her vuruştan önce P dalgası var. Dinlenme ritmi.",
+     act:"Hiçbir şey. Bu kayıt özete yalnız ortalama olarak girer.",warn:false,
+     gen:{seed:3,a:1.35,s:1,rr:function(x,r){return 80+r()*3}}},
+    {bpm:"88–131/dk",rr:"0,52–1,18 sn",dur:"14 sn",
+     saw:"Vuruş aralıkları düzensiz, P dalgası seçilemiyor, taban çizgisi titrek. Olası atriyal fibrilasyon.",
+     act:"Acil belirti yoksa beklemeyin ama telaş da etmeyin: bu hafta kardiyoloğunu arayın, özeti gösterin.",warn:true,
+     gen:{seed:9,a:1.35,s:1,irr:function(){return true},rr:function(x,r){return 34+r()*62}}},
+    {bpm:"46/dk",rr:"1,30 sn",dur:"30 sn",
+     saw:"Düzenli ama yavaş ritim, babanız derin uykudayken. Beta bloker kullananlarda sık görülür.",
+     act:"Gündüz de 50'nin altında kalırsa ya da baş dönmesi olursa doktoruna söyleyin. Özete not düşüldü.",warn:false,
+     gen:{seed:4,a:1.35,s:1,rr:function(x,r){return 128+r()*3}}}
+  ];
+  var live=document.getElementById("livePath");
+  function draw(i){
+    var g=recs[i].gen, d=build({w:800,y:110,a:g.a,s:g.s,seed:g.seed,irr:g.irr,rr:g.rr});
+    live.setAttribute("d",d);
+    document.getElementById("ro-bpm").textContent=recs[i].bpm;
+    document.getElementById("ro-rr").textContent=recs[i].rr;
+    document.getElementById("ro-dur").textContent=recs[i].dur;
+    document.getElementById("v-saw").textContent=recs[i].saw;
+    document.getElementById("v-act").textContent=recs[i].act;
+    document.getElementById("v-actbox").classList.toggle("warn",recs[i].warn);
+  }
+  var tabs=[].slice.call(document.querySelectorAll(".rec"));
+  function select(i,focus){
+    tabs.forEach(function(t,j){t.setAttribute("aria-selected",j===i);t.tabIndex=j===i?0:-1;});
+    document.getElementById("screen").setAttribute("aria-labelledby","r"+i);
+    draw(i); if(focus)tabs[i].focus();
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener("click",function(){select(i)});
+    t.addEventListener("keydown",function(e){
+      if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();select((i+1)%tabs.length,true)}
+      if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();select((i+tabs.length-1)%tabs.length,true)}
+    });
+  });
+  draw(0);
+})();
+</script>
+</body>
+</html>

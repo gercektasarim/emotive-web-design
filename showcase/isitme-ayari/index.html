@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duyum — Kalabalık sofrada konuşanın sesi önde</title>
+<meta name="description" content="Duyum, elinizdeki kulaklığı işitme testinize göre ayarlanmış bir yardımcıya çevirir; kalabalık lokantada karşınızda konuşanın sesini öne alır. Ses telefonunuzda işlenir, kaydedilmez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --wood:#2E1E19; --wood-2:#3B2822; --lamp:#F0B54A; --lamp-soft:#F7D89A; --cloth:#FAF8F4; --ink:#1F1A17; --soft:#5A504A;
+  --olive:#5D6B2F; --olive-soft:#E6E9D6; --line:#E3DDD3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cloth);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;font-size:20px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--lamp);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;margin:0;line-height:1.08;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* dark hero */
+.night{background:var(--wood);color:#F6EEE4;background-image:radial-gradient(ellipse 60% 70% at 72% 40%,rgba(240,181,74,.18),transparent 70%)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:28px;text-decoration:none;letter-spacing:-.02em}
+.top nav{display:flex;gap:26px;font-size:18px}
+.top nav a{text-decoration:none;color:#E2D5C6}
+.top nav a:hover{color:#fff;text-decoration:underline}
+.hero{display:grid;grid-template-columns:.95fr 1.05fr;gap:40px;align-items:center;padding:34px 0 80px}
+.hero h1{font-size:clamp(42px,5.2vw,72px);font-weight:800}
+.hero .lead{margin-top:24px;font-size:22px;color:#E2D5C6;max-width:34ch}
+.actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;font:600 19px "Instrument Sans",sans-serif;padding:16px 26px;border-radius:40px;text-decoration:none;border:2px solid transparent;cursor:pointer}
+.btn.lamp{background:var(--lamp);color:var(--wood)}
+.btn.lamp:hover{background:#f6c362}
+.btn.ghost{border-color:#8f7a68;color:#F6EEE4;background:transparent}
+.btn.ghost:hover{border-color:#F6EEE4}
+.btn.ink{background:var(--ink);color:#fff}
+.note{margin-top:16px;font-size:17px;color:#CDBFAF}
+
+.table-wrap{position:relative}
+.table-svg{width:100%;height:auto;display:block;overflow:visible}
+.seat{cursor:pointer}
+.seat text{font-family:"Instrument Sans",sans-serif;font-size:19px;font-weight:600;fill:#F6EEE4}
+.seat .ring{fill:none;stroke:var(--lamp);stroke-width:3;opacity:0;transition:opacity .3s}
+.seat.on .ring{opacity:1}
+.seat:focus{outline:none}
+.seat:focus-visible .ring{opacity:1;stroke-dasharray:4 4}
+.waves circle{fill:none;stroke:var(--lamp);stroke-width:2.5;opacity:0;animation:wave 2.4s infinite}
+.waves circle:nth-child(2){animation-delay:.8s}.waves circle:nth-child(3){animation-delay:1.6s}
+@keyframes wave{0%{r:30;opacity:.8}100%{r:120;opacity:0}}
+.noise circle{fill:#A99583;opacity:.35}
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.readout div{background:var(--wood-2);border-radius:14px;padding:12px 16px}
+.readout small{display:block;font-size:14px;color:#CDBFAF}
+.readout b{font-family:"Bricolage Grotesque",sans-serif;font-size:26px;font-weight:700;color:#fff}
+.readout b.lampc{color:var(--lamp)}
+.tip{font-size:16px;color:#CDBFAF;margin-top:10px;text-align:center}
+
+section{padding:92px 0}
+.h2{font-size:clamp(32px,3.8vw,50px);font-weight:800;max-width:20ch}
+.lede{margin-top:16px;color:var(--soft);font-size:21px;max-width:54ch}
+
+/* test */
+.test .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;margin-top:44px;align-items:center}
+.chart{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px 22px 14px}
+.chart svg{width:100%;height:auto;display:block}
+.chart svg text{font-family:"Instrument Sans",sans-serif;font-size:13px;fill:#5A504A}
+.chart .cap{display:flex;gap:20px;font-size:16px;margin-top:8px;color:var(--soft);flex-wrap:wrap}
+.chart .cap i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.result h3{font-size:30px;font-weight:700;margin-bottom:14px}
+.result dl{margin:0}
+.result .r{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.result dd{margin:0;font-weight:600}
+.result .honest{margin-top:22px;background:var(--olive-soft);border-radius:14px;padding:16px 18px;font-size:18px;color:#3a4220}
+
+/* places */
+.places{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.place-list{margin-top:40px;display:grid;gap:0}
+.place{display:grid;grid-template-columns:240px 1fr 200px;gap:28px;align-items:center;padding:26px 0;border-top:1px solid var(--line)}
+.place:last-child{border-bottom:1px solid var(--line)}
+.place h3{font-size:28px;font-weight:700}
+.place p{color:var(--soft)}
+.db{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:22px;text-align:right}
+.db small{display:block;font-family:"Instrument Sans",sans-serif;font-weight:400;font-size:15px;color:var(--soft)}
+
+/* private */
+.priv{background:var(--olive);color:#F5F3EA}
+.priv .wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.priv .h2{color:#fff}
+.priv p{color:#E7EAD8;font-size:21px}
+.priv p+p{margin-top:16px}
+.priv .big{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(28px,3vw,40px);font-weight:700;line-height:1.2;color:#fff}
+
+/* cost */
+.cost .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:40px;align-items:start}
+.compare{width:100%;border-collapse:collapse;font-size:19px}
+.compare th,.compare td{text-align:left;padding:14px 10px 14px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.compare th{font-weight:600;color:var(--soft);font-size:16px}
+.compare td:first-child{font-weight:600}
+.compare .us td{background:var(--olive-soft)}
+.compare .us td:first-child{padding-left:12px;border-radius:10px 0 0 10px}
+.buds{margin-top:0}
+.buds h3{font-size:26px;font-weight:700;margin-bottom:10px}
+.buds ul{padding-left:22px;margin:12px 0 26px;color:var(--soft)}
+.buds li+li{margin-top:6px}
+
+.quote{background:var(--wood);color:#F6EEE4;padding:88px 0}
+.quote blockquote{margin:0;font-family:"Bricolage Grotesque",sans-serif;font-weight:500;font-size:clamp(28px,3.2vw,42px);line-height:1.25;max-width:26em;letter-spacing:-.01em}
+.quote cite{display:block;margin-top:22px;font-style:normal;color:#CDBFAF;font-size:18px}
+
+.faq .wrap{max-width:900px}
+.faq details{border-bottom:1px solid var(--line);padding:20px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:22px}
+.faq details p{margin-top:10px;color:var(--soft)}
+.faq .list{margin-top:28px}
+
+footer{padding:36px 0;font-size:17px;color:var(--soft);border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 30px}
+footer .credit{flex-basis:100%;font-size:14px}
+
+@media (max-width:960px){
+  .top nav{display:none}
+  .hero,.test .grid,.priv .wrap,.cost .grid{grid-template-columns:1fr;gap:36px}
+  .place{grid-template-columns:1fr;gap:6px}
+  .db{text-align:left}
+}
+@media (max-width:520px){
+  body{font-size:19px}
+  .wrap{padding:0 16px}
+  .readout b{font-size:21px}
+  .compare{font-size:17px}
+  section{padding:64px 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}.waves circle:first-child{opacity:.6;r:60}}
+</style>
+</head>
+<body>
+<div class="night">
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="#">
+        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M9 21c0 4 7 5 8-1 1-4 6-5 6-11a8 8 0 0 0-16 0" fill="none" stroke="#F0B54A" stroke-width="3" stroke-linecap="round"/><circle cx="15" cy="10" r="2.5" fill="#F0B54A"/></svg>
+        Duyum
+      </a>
+      <nav aria-label="Sayfa içi"><a href="#test">İşitme testi</a><a href="#yerler">Nerede işe yarar</a><a href="#fiyat">Fiyat</a><a href="#sss">Sorular</a></nav>
+    </header>
+    <div class="hero">
+      <div>
+        <h1>Sofrada “ne dedin?” demeden.</h1>
+        <p class="lead">Duyum, kulağınızdaki sıradan kulaklığı işitmenize göre ayarlar. Lokanta ne kadar kalabalık olursa olsun, karşınızda konuşanın sesi öne gelir; tabak, çatal, yan masa geride kalır.</p>
+        <div class="actions">
+          <a class="btn lamp" href="#test">6 dakikalık testi deneyin</a>
+          <a class="btn ghost" href="#fiyat">1.490 ₺, bir kez</a>
+        </div>
+        <p class="note">İşitme cihazı değildir; hafif ve orta kayıpta yardımcıdır.</p>
+      </div>
+
+      <div class="table-wrap">
+        <svg class="table-svg" viewBox="0 0 560 470" role="group" aria-label="Lokanta masası, yukarıdan. Bir kişiye dokunarak onun sesini öne alın.">
+          <g class="noise" aria-hidden="true">
+            <circle cx="40" cy="60" r="20"/><circle cx="90" cy="30" r="14"/><circle cx="510" cy="50" r="18"/><circle cx="530" cy="410" r="22"/><circle cx="30" cy="420" r="16"/><circle cx="480" cy="455" r="10"/><circle cx="70" cy="250" r="9"/>
+          </g>
+          <circle cx="280" cy="235" r="150" fill="#F4EEE4"/>
+          <circle cx="280" cy="235" r="150" fill="none" stroke="#C9B9A3" stroke-width="2"/>
+          <g fill="#fff" stroke="#D9CCB9" stroke-width="2">
+            <circle cx="280" cy="118" r="30"/><circle cx="386" cy="180" r="30"/><circle cx="386" cy="292" r="30"/><circle cx="280" cy="352" r="30"/><circle cx="174" cy="292" r="30"/><circle cx="174" cy="180" r="30"/>
+          </g>
+          <g fill="#C8D1A9"><circle cx="280" cy="235" r="26"/></g><g fill="#B5362E" opacity=".85"><circle cx="265" cy="228" r="7"/><circle cx="292" cy="242" r="6"/><circle cx="280" cy="222" r="5"/></g>
+          <g fill="none" stroke="#E2D6C3" stroke-width="2"><path d="M300 200l10-8M250 270l-8 10"/></g>
+          <g class="waves" id="waves" aria-hidden="true"><circle cx="280" cy="40" r="30"/><circle cx="280" cy="40" r="30"/><circle cx="280" cy="40" r="30"/></g>
+          <g class="seat on" tabindex="0" role="button" aria-pressed="true" data-x="280" data-y="40" data-name="Nesrin" data-db="+14 dB"><circle cx="280" cy="40" r="30" fill="#7A5546"/><circle class="ring" cx="280" cy="40" r="38"/><text x="280" y="46" text-anchor="middle">Nesrin</text></g>
+          <g class="seat" tabindex="0" role="button" aria-pressed="false" data-x="470" data-y="160" data-name="Oğuz" data-db="+12 dB"><circle cx="470" cy="160" r="30" fill="#5C6B4A"/><circle class="ring" cx="470" cy="160" r="38"/><text x="470" y="166" text-anchor="middle">Oğuz</text></g>
+          <g class="seat" tabindex="0" role="button" aria-pressed="false" data-x="470" data-y="312" data-name="Ece" data-db="+16 dB"><circle cx="470" cy="312" r="30" fill="#8C6A3F"/><circle class="ring" cx="470" cy="312" r="38"/><text x="470" y="318" text-anchor="middle">Ece</text></g>
+          <g aria-hidden="true"><circle cx="280" cy="430" r="32" fill="#F0B54A"/><text x="280" y="436" text-anchor="middle" style="font-family:'Instrument Sans';font-size:17px;font-weight:600;fill:#2E1E19">Siz</text></g>
+          <g class="seat" tabindex="0" role="button" aria-pressed="false" data-x="90" data-y="312" data-name="Sevim" data-db="+13 dB"><circle cx="90" cy="312" r="30" fill="#6E4F5A"/><circle class="ring" cx="90" cy="312" r="38"/><text x="90" y="318" text-anchor="middle">Sevim</text></g>
+          <g class="seat" tabindex="0" role="button" aria-pressed="false" data-x="90" data-y="160" data-name="Cemal" data-db="+11 dB"><circle cx="90" cy="160" r="30" fill="#4F5F6B"/><circle class="ring" cx="90" cy="160" r="38"/><text x="90" y="166" text-anchor="middle">Cemal</text></g>
+        </svg>
+        <div class="readout" aria-live="polite">
+          <div><small>Lokanta gürültüsü</small><b>78 dB</b></div>
+          <div><small>Öne alınan ses</small><b class="lampc" id="who">Nesrin · +14 dB</b></div>
+        </div>
+        <p class="tip">Masadaki bir kişiye dokunun; Duyum o yöne döner.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+<section class="test" id="test">
+  <div class="wrap">
+    <h2 class="h2">Önce kulağınızı tanır. Kulaklığınız, sessiz bir odada, 6 dakika.</h2>
+    <p class="lede">Bip seslerini duydukça ekrana dokunursunuz. Duyum her kulak için hangi seslerin kısık kaldığını çıkarır ve kulaklığı yalnızca o seslerde yükseltir; her şeyi bağırtarak değil.</p>
+    <div class="grid">
+      <figure class="chart" style="margin:0">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Odyogram: iki kulakta da 2000 hertzden sonra hafif-orta düzeyde düşüş, sağ kulak biraz daha fazla.">
+          <g stroke="#EEE8DF"><line x1="60" y1="30" x2="500" y2="30"/><line x1="60" y1="80" x2="500" y2="80"/><line x1="60" y1="130" x2="500" y2="130"/><line x1="60" y1="180" x2="500" y2="180"/><line x1="60" y1="230" x2="500" y2="230"/></g>
+          <rect x="60" y="30" width="440" height="50" fill="#EEF1E2" opacity=".7"/>
+          <g text-anchor="end"><text x="494" y="46">normal</text><text x="494" y="96">hafif</text><text x="494" y="196">orta</text></g>
+          <g text-anchor="middle"><text x="80" y="270">250</text><text x="160" y="270">500</text><text x="240" y="270">1000</text><text x="320" y="270">2000</text><text x="400" y="270">4000</text><text x="480" y="270">8000 Hz</text></g>
+          <g text-anchor="end"><text x="52" y="34">0 dB</text><text x="52" y="134">40</text><text x="52" y="234">80</text></g>
+          <polyline points="80,60 160,65 240,75 320,105 400,150 480,160" fill="none" stroke="#B5362E" stroke-width="3"/>
+          <g fill="#B5362E"><circle cx="80" cy="60" r="6"/><circle cx="160" cy="65" r="6"/><circle cx="240" cy="75" r="6"/><circle cx="320" cy="105" r="6"/><circle cx="400" cy="150" r="6"/><circle cx="480" cy="160" r="6"/></g>
+          <polyline points="80,55 160,58 240,70 320,95 400,130 480,145" fill="none" stroke="#2E5B88" stroke-width="3" stroke-dasharray="7 5"/>
+          <g fill="none" stroke="#2E5B88" stroke-width="2.5"><path d="M74 49l12 12M86 49l-12 12M154 52l12 12M166 52l-12 12M234 64l12 12M246 64l-12 12M314 89l12 12M326 89l-12 12M394 124l12 12M406 124l-12 12M474 139l12 12M486 139l-12 12"/></g>
+        </svg>
+        <figcaption class="cap"><span><i style="background:#B5362E"></i>Sağ kulak</span><span><i style="background:#2E5B88"></i>Sol kulak</span><span>Ahmet Bey, 71 · 12 Ekim testi</span></figcaption>
+      </figure>
+      <div class="result">
+        <h3>Ahmet Bey'in ayarı</h3>
+        <dl>
+          <div class="r"><dt>Kalın sesler (erkek sesi, motor)</dt><dd>dokunulmadı</dd></div>
+          <div class="r"><dt>İnce sesler (“s”, “ş”, torunun sesi)</dt><dd>sağ +18, sol +14 dB</dd></div>
+          <div class="r"><dt>Gürültüde konuşma odağı</dt><dd>açık, önden 60°</dd></div>
+          <div class="r"><dt>Ani sesler (tabak kırılması)</dt><dd>yumuşatılır</dd></div>
+        </dl>
+        <p class="honest">Duyum tanı koymaz. Test sonucunuz orta düzeyin üstündeyse ya da tek kulakta belirgin fark varsa, bir kulak burun boğaz uzmanına görünmenizi açıkça söyler.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="places" id="yerler">
+  <div class="wrap">
+    <h2 class="h2">Utandığınız yerler, tek tek</h2>
+    <div class="place-list">
+      <div class="place"><h3>Lokanta, düğün</h3><p>Masadakilerin yüzü hangi yöndeyse oradan gelen konuşma öne alınır. Müzik ve uğultu bir kat kısılır, kaybolmaz; ortamın içinde kalırsınız.</p><p class="db">78 → 64 dB<small>arka plan, ölçülen</small></p></div>
+      <div class="place"><h3>Televizyon</h3><p>Dizideki konuşma, müzikten ayrılıp netleşir. Evdekiler için sesi 40'a açmanız gerekmez, siz kulaklıktan dinlersiniz.</p><p class="db">ses 40 → 18<small>evdekiler rahat</small></p></div>
+      <div class="place"><h3>Cami, konferans</h3><p>Vaaz ya da konuşma hoparlörden geldiğinde yankı azaltılır; uzak sesler yakına çekilir.</p><p class="db">yankı −9 dB<small>büyük salonda</small></p></div>
+      <div class="place"><h3>Telefonla konuşma</h3><p>Arayanın sesi sizin testinize göre işlenir. Kızınız İstanbul'dan aradığında “s”ler kaybolmaz.</p><p class="db">otomatik<small>her aramada</small></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="priv">
+  <div class="wrap">
+    <p class="big">Sofradaki sohbet sofrada kalır.</p>
+    <div>
+      <p>Sesi duyan, ayıklayan ve kulağınıza veren telefonunuzun kendisi. Konuşmalar kaydedilmez, yazıya dökülmez, hiçbir sunucuya gitmez.</p>
+      <p>Köy düğününde çekim olmasa da, uçakta, Karadeniz yaylasında da çalışır. İnternet yalnızca güncelleme indirmek içindir.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cost" id="fiyat">
+  <div class="wrap">
+    <h2 class="h2">Çekmecedeki kulaklık, bir kere 1.490 ₺</h2>
+    <div class="grid">
+      <table class="compare">
+        <thead><tr><th>Seçenek</th><th>Fiyat</th><th>Ne zaman</th></tr></thead>
+        <tbody>
+          <tr class="us"><td>Duyum + kendi kulaklığınız</td><td>1.490 ₺, tek sefer</td><td>Hafif-orta kayıp, gürültülü ortamlar</td></tr>
+          <tr><td>Duyum + önerdiğimiz kulaklık</td><td>yaklaşık 3.500 ₺</td><td>Kulaklığınız yoksa</td></tr>
+          <tr><td>Reçeteli işitme cihazı (çift)</td><td>40.000 – 120.000 ₺</td><td>Orta-ileri kayıp, uzman önerisiyle</td></tr>
+        </tbody>
+      </table>
+      <div class="buds">
+        <h3>Hangi kulaklık olur?</h3>
+        <p style="color:var(--soft)">Bluetooth 5.0 ve üzeri, mikrofonu olan hemen her kulak içi kulaklık. Test sırasında gecikmeyi ölçer, uygun değilse söyler.</p>
+        <ul><li>AirPods Pro 2, Galaxy Buds2 Pro ve FE: en iyi sonuç</li><li>Telefonla gelen kablolu kulaklıklar: televizyon ve telefon için yeterli</li><li>14 gün içinde memnun kalmazsanız ücret iadesi</li></ul>
+        <a class="btn ink" href="#">Telefonuma Duyum'u indir</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>“Bayramda yirmi kişi sofradaydık. Eskiden gülümseyip başımı sallardım, ne konuşulduğunu bilmeden. Bu sefer damadımın fıkrasına herkesle beraber güldüm. Kızım masanın öbür ucundan baktı, gözleri doldu.”</blockquote>
+    <cite>Ahmet Kaya, 71 · Mersin, emekli tapu memuru</cite>
+  </div>
+</section>
+
+<section class="faq" id="sss">
+  <div class="wrap">
+    <h2 class="h2">Sorular</h2>
+    <div class="list">
+      <details><summary>Kulaklık takınca insanlar sohbete kapalı sanmaz mı?</summary><p>Kulak içi küçük kulaklıklar artık çok yaygın. Duyum açıkken çevrenizi duyarsınız, kendi sesinizi de doğal duyarsınız. Çoğu kullanıcı “şimdi daha çok sohbete katılıyorum” diyor.</p></details>
+      <details><summary>Pil ne kadar dayanır?</summary><p>Çoğu kulaklıkta konuşma odağı açıkken 4-5 saat. Uzun bir düğün için kutusunda yarım saat şarj, bir saat daha demektir.</p></details>
+      <details><summary>Telefonu kullanmayı pek bilmiyorum.</summary><p>Kurulumdan sonra tek bir büyük düğme var: “Duyum açık”. Lokantada, televizyonda, camide ortamı kendisi anlar. İsterseniz çocuğunuz uzaktan ayar yapabilir.</p></details>
+      <details><summary>İşitme cihazım var, birlikte kullanılır mı?</summary><p>Hayır, ikisini aynı anda kullanmayın. İşitme cihazınız uzman ayarlıdır; Duyum onun yerini almaz.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Duyum · destek@duyum.app · 0850 222 38 86</span>
+    <span>Tıbbi uyarı · Gizlilik</span>
+    <p class="credit"><a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var seats=[].slice.call(document.querySelectorAll('.seat')),waves=[].slice.call(document.querySelectorAll('#waves circle')),who=document.getElementById('who');
+  function pick(s){
+    seats.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false')});
+    s.classList.add('on');s.setAttribute('aria-pressed','true');
+    waves.forEach(function(w){w.setAttribute('cx',s.dataset.x);w.setAttribute('cy',s.dataset.y)});
+    who.textContent=s.dataset.name+' · '+s.dataset.db;
+  }
+  seats.forEach(function(s){
+    s.addEventListener('click',function(){pick(s)});
+    s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(s)}});
+  });
+})();
+</script>
+</body>
+</html>

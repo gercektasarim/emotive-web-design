@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olta — Tuttun, ölç, küçükse denize</title>
+<meta name="description" content="Olta, tuttuğun balığı fotoğraftan tanır, boyunu ölçer, yasal en küçük boyu ve av sezonunu söyler. Kıyıda internet olmadan çalışır; avladığın yer telefonunda kalır.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --sis:#DCE5E8;      /* Haliç sabah sisi */
+  --su:#0E2F44;       /* derin su */
+  --su-2:#174560;
+  --gumus:#A9BAC2;    /* istavrit gümüşü */
+  --samandira:#C93A1F;/* şamandıra turuncusu */
+  --martı:#F7F9F9;
+  --soluk:#4A5E69;
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--sis);color:var(--su);font:400 18px/1.55 "Archivo",system-ui,sans-serif;font-variation-settings:"wdth" 100}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--samandira);outline-offset:3px}
+h1,h2,h3{margin:0;line-height:.98;font-weight:800;font-variation-settings:"wdth" 125;letter-spacing:-.01em;text-transform:none}
+.w{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* deniz bandı */
+.deniz{background:linear-gradient(180deg,#5D7F92 0,#2D5770 30%,var(--su) 62%);color:var(--martı);position:relative;overflow:hidden}
+.ust{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0}
+.logo{font:800 24px/1 "Archivo";font-variation-settings:"wdth" 125;text-decoration:none;display:flex;gap:10px;align-items:center}
+.ust nav{display:flex;gap:24px;font-weight:500;font-size:15px}
+.ust nav a{text-decoration:none;opacity:.9}
+.ust nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.siluet{position:absolute;left:0;right:0;top:118px;height:120px;pointer-events:none;opacity:.32}
+.siluet svg{width:100%;height:100%}
+.deniz h1{font-size:clamp(44px,7vw,104px);position:relative;margin-top:44px;max-width:13ch}
+.deniz .alt{position:relative;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;margin-top:24px;align-items:end}
+.deniz .alt p{margin:0;font-size:19px;color:#D7E3E9;max-width:32em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.btn{display:inline-block;font:700 17px/1 "Archivo";font-variation-settings:"wdth" 112;padding:16px 22px;border-radius:3px;text-decoration:none;border:2px solid currentColor}
+.btn.dolu{background:var(--samandira);border-color:var(--samandira);color:#fff}
+.btn.dolu:hover{background:#A92E17;border-color:#A92E17}
+.btn.bos:hover{background:rgba(255,255,255,.1)}
+
+/* cetvel */
+.tezgah{position:relative;margin-top:56px;padding-bottom:64px}
+.olcum{background:#E9DEC6;border-radius:4px;padding:16px 14px 8px;box-shadow:0 20px 40px -24px #000;color:var(--su)}
+.olcum svg{display:block;width:100%;height:auto}
+.kontroller>*{min-width:0}
+.kontroller{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;margin-top:22px;align-items:start}
+.turler{display:flex;flex-wrap:wrap;gap:8px}
+.turler button{font:600 15px/1 "Archivo";background:transparent;color:#DCE7EC;border:1.5px solid #5D8098;border-radius:40px;padding:10px 15px;cursor:pointer}
+.turler button[aria-pressed="true"]{background:var(--martı);color:var(--su);border-color:var(--martı)}
+.boy{margin-top:18px;display:flex;align-items:center;gap:14px}
+.boy label{font-size:15px;color:#BFD0D8;white-space:nowrap}
+.boy input{flex:1;accent-color:var(--samandira);height:30px}
+.boy output{font:800 30px/1 "Archivo";font-variation-settings:"wdth" 112;min-width:4.5ch;text-align:right}
+.hukum{border:2px solid var(--martı);border-radius:4px;padding:18px 20px}
+.hukum .tanim{font-size:14px;color:#BFD0D8}
+.hukum .soz{font:900 clamp(44px,5vw,64px)/1 "Archivo";font-variation-settings:"wdth" 125;margin:8px 0 10px;letter-spacing:.01em}
+.hukum.denize .soz{color:#9ED8E8}
+.hukum.kovaya .soz{color:#FFC9A6}
+.hukum p{margin:0;font-size:16px;color:#DCE7EC}
+
+section{padding:96px 0}
+.yer{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.yer h2{font-size:clamp(34px,4.4vw,58px)}
+.yer p{color:var(--soluk)}
+.not-defter{background:var(--martı);border-radius:4px;padding:22px 24px;font-size:16px;box-shadow:0 14px 30px -24px rgba(14,47,68,.6)}
+.not-defter .sat{display:grid;grid-template-columns:90px 1fr auto;gap:12px;padding:10px 0;border-bottom:1px solid #E1E8EB}
+.not-defter .sat:last-child{border:0}
+.not-defter .yer-ad{color:var(--soluk);font-style:italic}
+.not-defter b{font-weight:700}
+
+.birak{background:var(--martı)}
+.birak h2{font-size:clamp(34px,4.4vw,58px);max-width:14ch}
+.adimlar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:40px;border-top:3px solid var(--su)}
+.adim{padding:20px 22px 0 0}
+.adim+.adim{padding-left:22px;border-left:1px solid #D2DDE2}
+.adim .n{font:800 46px/1 "Archivo";font-variation-settings:"wdth" 125;color:var(--samandira)}
+.adim h3{font-size:22px;margin:10px 0 6px;font-variation-settings:"wdth" 110}
+.adim p{margin:0;font-size:16px;color:var(--soluk)}
+
+.ay{display:grid;grid-template-columns:1fr 1.5fr;gap:56px}
+.ay h2{font-size:clamp(34px,4.4vw,58px)}
+.ay .tablo{border-top:3px solid var(--su)}
+.ay .t{display:grid;grid-template-columns:1.2fr 90px 1.6fr;gap:16px;padding:16px 0;border-bottom:1px solid #B9C9D0;align-items:baseline}
+.ay .t b{font:800 22px/1.1 "Archivo";font-variation-settings:"wdth" 112}
+.ay .t .cm{font:700 18px "Archivo";color:var(--samandira)}
+.ay .t span:last-child{font-size:16px;color:var(--soluk)}
+.ay .dip{font-size:14px;color:var(--soluk);margin-top:14px}
+
+.ses{background:var(--su);color:var(--martı)}
+.ses .w{display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:end}
+.ses blockquote{margin:0;font:700 clamp(28px,3.4vw,44px)/1.15 "Archivo";font-variation-settings:"wdth" 108}
+.ses cite{display:block;font:400 16px/1.4 "Archivo";font-style:normal;margin-top:18px;color:#BFD0D8}
+.ses .ikinci{font-size:19px;color:#DCE7EC;border-left:3px solid var(--samandira);padding-left:18px}
+
+.fiyat{display:grid;grid-template-columns:1fr 1fr;gap:0;border:2px solid var(--su);margin-top:34px}
+.fiyat>div{padding:30px}
+.fiyat>div+div{border-left:2px solid var(--su);background:var(--martı)}
+.fiyat h3{font-size:26px}
+.fiyat .tl{font:800 50px/1 "Archivo";font-variation-settings:"wdth" 125;margin:14px 0 4px}
+.fiyat .tl small{font:400 16px "Archivo";color:var(--soluk)}
+.fiyat ul{padding-left:20px;margin:14px 0 22px}
+.fiyat .btn{color:var(--su)}
+.fiyat .btn.dolu{color:#fff}
+
+.sss details{border-top:1px solid #9FB2BC;padding:18px 0}
+.sss details:last-child{border-bottom:1px solid #9FB2BC}
+.sss summary{cursor:pointer;font:700 21px/1.3 "Archivo";font-variation-settings:"wdth" 108}
+.sss p{margin:8px 0 0;max-width:44em;color:#2C4655}
+
+footer{background:var(--su);color:#BFD0D8;padding:52px 0 30px}
+footer .w{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;align-items:center}
+footer h2{color:var(--martı);font-size:clamp(30px,3.8vw,48px)}
+footer .imza{width:100%;border-top:1px solid #2A4E66;padding-top:16px;font-size:14px}
+
+@media (max-width:900px){
+  .deniz .alt,.kontroller,.yer,.ay,.ses .w,.fiyat{grid-template-columns:1fr}
+  .cta{justify-content:flex-start}
+  .adimlar{grid-template-columns:1fr 1fr}
+  .adim:nth-child(3){padding-left:0;border-left:0}
+  .adim{padding-bottom:22px}
+  .fiyat>div+div{border-left:0;border-top:2px solid var(--su)}
+  .ust nav{display:none}
+}
+@media (max-width:520px){
+  .w{padding:0 16px}
+  .adimlar{grid-template-columns:1fr}
+  .adim+.adim{padding-left:0;border-left:0;border-top:1px solid #D2DDE2}
+  .ay .t{grid-template-columns:1fr 70px}
+  .ay .t span:last-child{grid-column:1/-1}
+  section{padding:64px 0}
+  .olcum{padding:10px 8px 4px}
+  .siluet{top:90px;height:80px}
+  .olcum{overflow-x:auto}
+  .olcum svg{width:620px;max-width:none}
+  .boy{flex-wrap:wrap}
+  .boy label{white-space:normal;flex-basis:100%}
+}
+</style>
+</head>
+<body>
+<header class="deniz">
+  <div class="siluet" aria-hidden="true">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="xMidYMax slice"><g fill="#0B2433">
+      <path d="M0 120V96h80v-8h40v8h60v-14h30v14h90v-6h40v6h70v10H0Z"/>
+      <path d="M470 120V70h10V30l12-22 12 22v40h10v50Z"/>
+      <path d="M520 120V92h40v-6h50v6h90V80h40v12h60v-8h40v8h360v28Z"/>
+      <path d="M760 120V60c0-14 24-14 24 0v60ZM790 120V74c0-10 18-10 18 0v46Z"/>
+      <path d="M900 88V30M908 88V40M960 92V24" stroke="#0B2433" stroke-width="4"/>
+      <path d="M940 92c0-30 40-30 40 0Z"/>
+      <path d="M0 108H1200" stroke="#0B2433" stroke-width="5"/>
+      <path d="M40 108V90M140 108V90M240 108V90M340 108V90M440 108V90M640 108V90M740 108V90M840 108V90M1040 108V90M1140 108V90" stroke="#0B2433" stroke-width="3"/>
+    </g></svg>
+  </div>
+  <div class="w">
+    <div class="ust">
+      <a class="logo" href="#"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 2V18a5 5 0 1 1-5-5" stroke="#F7F9F9" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="15" cy="4" r="3" fill="#C93A1F"/></svg>Olta</a>
+      <nav aria-label="Sayfa içi"><a href="#birak">Nasıl bırakılır</a><a href="#kasim">Kasımda köprüde</a><a href="#fiyat">Fiyat</a><a href="#sss">Sorular</a></nav>
+    </div>
+    <h1>Tuttun. Ölç. Küçükse denize.</h1>
+    <div class="alt">
+      <p>Olta, balığın fotoğrafından türünü tanır, boyunu ölçer ve yasal en küçük boyu söyler. Köprüde, kayalıkta, teknede; internet olmasa da.</p>
+      <div class="cta"><a class="btn dolu" href="#fiyat">Ücretsiz indir</a><a class="btn bos" href="#birak">Nasıl bırakılır?</a></div>
+    </div>
+
+    <div class="tezgah" aria-label="Balık ölçme ekranı, denenebilir örnek">
+      <div class="olcum">
+        <svg id="cetvel" viewBox="0 0 860 230" role="img" aria-labelledby="cT"><title id="cT">Balık cetveli üstünde seçilen balık ve yasal en küçük boy çizgisi</title>
+          <defs><linearGradient id="pul" x1="0" y1="0" x2="0" y2="1"><stop id="s1" offset="0" stop-color="#2E5D78"/><stop offset=".55" stop-color="#C7D3D9"/><stop id="s2" offset="1" stop-color="#E3EAEE"/></linearGradient></defs>
+          <rect x="0" y="150" width="860" height="80" fill="#F3EBD8"/>
+          <g id="cizgiler"></g>
+          <g id="sinir"></g>
+          <g id="balik"></g>
+        </svg>
+      </div>
+      <div class="kontroller">
+        <div>
+          <div class="turler" role="group" aria-label="Balık türü">
+            <button type="button" data-t="istavrit" aria-pressed="true">İstavrit</button>
+            <button type="button" data-t="lufer" aria-pressed="false">Lüfer / çinekop</button>
+            <button type="button" data-t="mezgit" aria-pressed="false">Mezgit</button>
+            <button type="button" data-t="levrek" aria-pressed="false">Levrek</button>
+            <button type="button" data-t="cipura" aria-pressed="false">Çipura</button>
+          </div>
+          <div class="boy"><label for="boy">Fotoğraftan ölçülen boy</label><input id="boy" type="range" min="6" max="40" step="0.5" value="11.5"><output id="boyOut" for="boy">11,5 cm</output></div>
+        </div>
+        <div class="hukum denize" id="hukum" aria-live="polite">
+          <div class="tanim" id="tanim">İstavrit (karagöz) · Trachurus mediterraneus · tanıma %94 · çevrimdışı</div>
+          <div class="soz" id="soz">DENİZE</div>
+          <p id="aciklama">Yasal en küçük boy 13 cm, bu 11,5 cm. Islak elle tut, iğneyi pensle çıkar, on saniyede suya.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="w yer">
+    <div>
+      <h2>Balıkçı yerini söylemez. Olta da söylemez.</h2>
+      <p>Tanıma ve ölçme telefonun içinde yapılır; Kilyos'un kayalıklarında, teknede, çekmeyen her kıyıda. Av defterindeki fotoğraf da, konum da telefonunda kalır. Hangi taşın dibinde lüfer döndüğünü bir sunucu bile bilmez.</p>
+    </div>
+    <div class="not-defter" aria-label="Av defterinden örnek kayıtlar">
+      <div class="sat"><span>06:40</span><span>İstavrit ×14 <span class="yer-ad">· yer gizli</span></span><b>1,1 kg</b></div>
+      <div class="sat"><span>07:15</span><span>İstavrit ×6 <span class="yer-ad">· denize, 12 cm altı</span></span><b>—</b></div>
+      <div class="sat"><span>07:52</span><span>Çinekop ×2 <span class="yer-ad">· denize, 17 cm</span></span><b>—</b></div>
+      <div class="sat"><span>08:30</span><span>Mezgit ×1</span><b>0,2 kg</b></div>
+      <div class="sat"><span>Bugün</span><span>Günlük 5 kg sınırının</span><b>1,3 kg</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="birak" id="birak">
+  <div class="w">
+    <h2>Küçük balık denize nasıl döner?</h2>
+    <p style="max-width:40em;color:var(--soluk)">Olta "denize" dediğinde ekranda bu dört adım çıkar. Köprüde ilk kez balık tutan çocuk da yapabilsin diye kısa.</p>
+    <div class="adimlar">
+      <div class="adim"><div class="n">1</div><h3>Elini ıslat</h3><p>Kuru el balığın koruyucu sümüğünü siler; mantar orada başlar.</p></div>
+      <div class="adim"><div class="n">2</div><h3>Solungaca dokunma</h3><p>Balığı karnından, nazikçe tut. Sıkma.</p></div>
+      <div class="adim"><div class="n">3</div><h3>İğneyi pensle çıkar</h3><p>Derinde kaldıysa misinayı iğneye yakın kes; iğne zamanla çözülür.</p></div>
+      <div class="adim"><div class="n">4</div><h3>On saniyede suya</h3><p>Köprüden atma; kepçeyle ya da merdivenden suya yakın bırak.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="kasim">
+  <div class="w ay">
+    <div>
+      <h2>Kasımda köprüde ne var?</h2>
+      <p style="color:var(--soluk)">Olta, ayın ve yerin balığını bilir. Bu ay Galata ve Unkapanı'nda en çok bunlar tanındı; yasal boyları yanında.</p>
+    </div>
+    <div>
+      <div class="tablo">
+        <div class="t"><b>İstavrit</b><span class="cm">13 cm</span><span>Sabah erken, çapari ile. Bu ay tanınanların yarısı yasal boyun altındaydı.</span></div>
+        <div class="t"><b>Çinekop → lüfer</b><span class="cm">20 cm</span><span>Kasımda çoğu çinekop boyunda; 20 cm'nin altı denize.</span></div>
+        <div class="t"><b>Mezgit</b><span class="cm">13 cm</span><span>Soğuklarla yaklaşır, dipte.</span></div>
+        <div class="t"><b>Levrek</b><span class="cm">25 cm</span><span>Akşamüstü, Sarayburnu tarafı.</span></div>
+        <div class="t"><b>Palamut</b><span class="cm">25 cm</span><span>Sezon sonu; köprüden nadir.</span></div>
+      </div>
+      <p class="dip">Boylar, amatör avcılık düzenlemesindeki asgari boylardan alınmış örneklerdir. Uygulama yürürlükteki listeyi çevrimdışı taşır ve her güncellemede yeniler.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ses">
+  <div class="w">
+    <div>
+      <blockquote>"Otuz yıl bu köprüde cetvel taşıdım, çocuklara bir türlü öğretemedim. Telefonu öğrettim. Şimdi minikleri onlar atıyor denize."</blockquote>
+      <cite>Cemil Ardıç · 63 · emekli tornacı, Galata Köprüsü'nde her sabah</cite>
+    </div>
+    <div class="ikinci">"Kayalıkta çekim yok. Çipurayı tanıdı, 18 cm dedi, bıraktım. Sonra cetvelle ölçtüm: 18,5."
+      <cite style="font-size:14px">Deniz Kaya · 29 · Rumelifeneri</cite></div>
+  </div>
+</section>
+
+<section id="fiyat">
+  <div class="w">
+    <h2 style="font-size:clamp(34px,4.4vw,58px)">Köprüdeki herkes için ücretsiz.</h2>
+    <div class="fiyat">
+      <div><h3>Olta</h3><div class="tl">0 ₺</div><ul><li>Türkiye kıyılarında 60 yaygın tür</li><li>Fotoğraftan boy ve yasal boy</li><li>Bırakma rehberi</li><li>Av defteri, günlük sınır sayacı</li></ul><a class="btn dolu" href="#">Ücretsiz indir</a></div>
+      <div><h3>Kaptan</h3><div class="tl">99 ₺ <small>bir kere</small></div><ul><li>210 tür, açık deniz dahil</li><li>Tekne modu: GPS'siz kayıt</li><li>Ay ve gelgit takvimi, çevrimdışı</li><li>Defteri PDF olarak dışa aktar</li></ul><a class="btn bos" href="#">Kaptan sürümü</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sss" id="sss" style="padding-top:0">
+  <div class="w" style="max-width:860px">
+    <h2 style="font-size:40px;margin-bottom:16px">Sorular</h2>
+    <details open><summary>Boyu nasıl ölçüyor?</summary><p>Fotoğrafta balığın yanındaki bilinen bir şeyi (elin, makara, kova kulpu) ya da telefonun derinlik sensörünü kullanır; ±1 cm. Yasal sınırın 1 cm yakınındaysa cetvelle ölçmeni ister.</p></details>
+    <details><summary>Islak, bulanık fotoğrafta tanır mı?</summary><p>Çoğu zaman. Emin değilse iki aday gösterir ve hangisini seçersen o türün kuralını uygular; hep daha sıkı olanı önce gösterir.</p></details>
+    <details><summary>Yasak dönemleri de söylüyor mu?</summary><p>Evet. Bölgene ve tarihe göre av yasağı, günlük sınır ve yasak avlanma alanları çevrimdışı listede. Kural değişince ilk Wi‑Fi'da güncellenir.</p></details>
+    <details><summary>Konumumu kaydediyor mu?</summary><p>Sen istemedikçe hayır. İstersen deftere "yer" eklersin, o da yalnız telefonunda durur; paylaşırken otomatik silinir.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <h2>Yarın sabah köprüde cebinde olsun.</h2>
+    <a class="btn dolu" href="#fiyat">Ücretsiz indir</a>
+    <div class="imza">Olta · İstanbul · merhaba@olta.app · <a href="../">emotive-web-design · 100 cihaz-içi yapay zekâ örneği</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+ const T={
+  istavrit:{ad:"İstavrit (karagöz)",lat:"Trachurus mediterraneus",min:13,sirt:"#2E5D78",karin:"#E3EAEE",h:.55,boy:11.5,g:94},
+  lufer:{ad:"Lüfer (bu boyda çinekop)",lat:"Pomatomus saltatrix",min:20,sirt:"#2F6F73",karin:"#DDE6E2",h:.62,boy:17,g:91},
+  mezgit:{ad:"Mezgit",lat:"Merlangius merlangus",min:13,sirt:"#8F826F",karin:"#EFEDE6",h:.55,boy:15,g:88},
+  levrek:{ad:"Levrek",lat:"Dicentrarchus labrax",min:25,sirt:"#4F5F68",karin:"#ECEFF0",h:.62,boy:23,g:92},
+  cipura:{ad:"Çipura",lat:"Sparus aurata",min:20,sirt:"#7F9198",karin:"#EEF0EA",h:1,boy:22,g:90}
+ };
+ const PX=20,X0=30,Y=86;
+ let tur='istavrit';
+ const fmt=n=>(Math.round(n*10)/10).toLocaleString('tr-TR');
+ let c='';for(let i=0;i<=40;i++){const x=X0+i*PX;const uzun=i%5===0;c+='<line x1="'+x+'" y1="150" x2="'+x+'" y2="'+(uzun?178:166)+'" stroke="#0E2F44" stroke-width="'+(uzun?2:1)+'"/>';if(uzun)c+='<text x="'+x+'" y="198" text-anchor="middle" font-family="Archivo" font-size="15" font-weight="700" fill="#0E2F44">'+i+'</text>';}
+ c+='<text x="'+(X0+40*PX)+'" y="220" text-anchor="end" font-family="Archivo" font-size="12" fill="#4A5E69">cm</text><rect x="0" y="40" width="'+X0+'" height="110" fill="#C9B994"/>';
+ document.getElementById('cizgiler').innerHTML=c;
+ const r=document.getElementById('boy'),o=document.getElementById('boyOut');
+ function ciz(){
+  const d=T[tur],L=+r.value,sx=L*PX/100,sy=Math.min(sx*d.h,3.4);
+  document.getElementById('s1').setAttribute('stop-color',d.sirt);document.getElementById('s2').setAttribute('stop-color',d.karin);
+  let b='<g transform="translate('+X0+' '+(Y-20*sy)+') scale('+sx+' '+sy+')">'+
+   '<path d="M0 20C10 6 40 0 72 8C78 10 82 13 84 15L100 2L95 20L100 38L84 25C82 27 78 30 72 32C40 40 10 34 0 20Z" fill="url(#pul)" stroke="#0E2F44" stroke-width="'+(1.2/sx)+'"/>'+
+   '<path d="M30 6C38 1 50 1 58 5" fill="none" stroke="'+d.sirt+'" stroke-width="'+(3/sx)+'"/>'+
+   '<path d="M14 19C34 16 60 18 82 20" fill="none" stroke="#0E2F44" stroke-opacity=".45" stroke-width="'+(1/sx)+'"'+(tur==='istavrit'?' stroke-dasharray="'+(2/sx)+' '+(1/sx)+'"':'')+'/>'+
+   '<path d="M18 9C17 16 17 25 19 31" fill="none" stroke="#0E2F44" stroke-opacity=".5" stroke-width="'+(1/sx)+'"/>'+
+   (tur==='cipura'?'<path d="M8 12C10 10 12 10 14 12" stroke="#D9A93A" stroke-width="'+(2.4/sx)+'" fill="none"/>':'')+
+   '<circle cx="9" cy="16" r="3.4" fill="#F7F9F9" stroke="#0E2F44" stroke-width="'+(.8/sx)+'"/><circle cx="9.4" cy="16" r="1.8" fill="#0E2F44"/></g>';
+  document.getElementById('balik').innerHTML=b;
+  const mx=X0+d.min*PX;
+  document.getElementById('sinir').innerHTML='<line x1="'+mx+'" y1="16" x2="'+mx+'" y2="182" stroke="#C93A1F" stroke-width="2.5" stroke-dasharray="6 5"/><text x="'+(mx+8)+'" y="30" font-family="Archivo" font-size="15" font-weight="800" fill="#C93A1F">yasal boy '+d.min+' cm</text>';
+  o.textContent=fmt(L)+' cm';
+  const h=document.getElementById('hukum'),ok=L>=d.min;
+  h.className='hukum '+(ok?'kovaya':'denize');
+  document.getElementById('tanim').textContent=d.ad+' · '+d.lat+' · tanıma %'+d.g+' · çevrimdışı';
+  document.getElementById('soz').textContent=ok?'KOVAYA':'DENİZE';
+  document.getElementById('aciklama').textContent=ok?
+   ('Yasal: '+fmt(L)+' cm, en küçük boy '+d.min+' cm.'+(L-d.min<1?' Sınıra çok yakın; cetvelle bir kez daha ölç.':'')+' Bugün kovanda 1,3 kg; günlük sınır 5 kg.'):
+   ('Yasal en küçük boy '+d.min+' cm, bu '+fmt(L)+' cm. Islak elle tut, iğneyi pensle çıkar, on saniyede suya.');
+ }
+ document.querySelectorAll('.turler button').forEach(b=>b.addEventListener('click',()=>{tur=b.dataset.t;document.querySelectorAll('.turler button').forEach(x=>x.setAttribute('aria-pressed',x===b));r.value=T[tur].boy;ciz();}));
+ r.addEventListener('input',ciz);ciz();
+})();
+</script>
+</body>
+</html>
